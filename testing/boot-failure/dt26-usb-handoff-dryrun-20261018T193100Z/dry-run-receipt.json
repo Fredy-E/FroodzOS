@@ -1,0 +1,68 @@
+{
+  "mode": "dry-run",
+  "started_utc": "2026-10-18T19:05:21.902536+00:00",
+  "usb_write_scope": [
+    "EFI/Linux/kestrel-live-dt26.efi",
+    "boot/grub/grub.cfg"
+  ],
+  "firmware_writes": 0,
+  "filesystem_repair": false,
+  "success": true,
+  "entries": [
+    {
+      "number": 1,
+      "title": "FroodzOS dt25b - Text + CPU temperature logging (default)"
+    },
+    {
+      "number": 2,
+      "title": "FroodzOS dt24 - Text recovery (previous image)"
+    },
+    {
+      "number": 3,
+      "title": "Ubuntu Concept - control boot (Try Ubuntu only)"
+    },
+    {
+      "number": 4,
+      "title": "FroodzOS dt26 - BOUNDED graphics diagnostic (opt-in)"
+    },
+    {
+      "number": 5,
+      "title": "Return to firmware boot menu"
+    }
+  ],
+  "menu_sha256": "1249291c07d42c4b07c456dfe4fb93c4ab8c792ec3b36672bde33be8a27ac935",
+  "menu_bytes": 3424,
+  "contract_tests": {
+    "valid_candidate": true,
+    "negative_rejections": [
+      "crlf",
+      "extra_entry",
+      "firmware_optin",
+      "graphics_in_text",
+      "missing_pstore_disable",
+      "wrong_console",
+      "wrong_default"
+    ],
+    "tests_passed": 8
+  },
+  "grub_script_check": {
+    "exit": 0
+  },
+  "identity_before": {
+    "Disk": "\\\\.\\PHYSICALDRIVE2",
+    "Model": "Kingston DataTraveler 3.0 USB Device",
+    "DiskSize": 61985710080,
+    "Interface": "USB",
+    "Partition": "Disk #2, Partition #0",
+    "PartitionSize": 17179869184,
+    "Offset": 1048576,
+    "Drive": "E:",
+    "Label": "KESTREL_A64",
+    "Filesystem": "FAT32",
+    "VolumeSerial": "USB_VOLUME_SERIAL"
+  },
+  "protected_before_ok": true,
+  "logs_preserved_count": 59,
+  "usb_files_written": [],
+  "finished_utc": "2026-10-18T19:05:52.752990+00:00"
+}

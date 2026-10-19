@@ -1,0 +1,35 @@
+{
+  "verified_utc": "2026-10-18T14:30:35.860606+00:00",
+  "success": true,
+  "menu_entries": [
+    "menuentry 'FroodzOS dt25b - Text + CPU temperature logging (default)' {",
+    "menuentry 'FroodzOS dt24 - Text recovery (previous image)' {",
+    "menuentry 'Ubuntu Concept - control boot (Try Ubuntu only)' {",
+    "menuentry 'Return to firmware boot menu' {"
+  ],
+  "default_number": 1,
+  "all_referenced_boot_files_exist": true,
+  "dt24_has_distinct_verified_file": true,
+  "device_readback": [
+    {
+      "path": "E:\\boot\\grub\\grub.cfg",
+      "bytes": 2682,
+      "sha256": "9c99836e41896defc99b3104eb3a65bf9c9d5d886c73a84cb7d58615078b4406"
+    },
+    {
+      "path": "E:\\EFI\\Linux\\kestrel-live-dt24.efi",
+      "bytes": 244503552,
+      "sha256": "4fca331543a347da2d431631ae002f90046507e485765ef24f383257902edc02"
+    },
+    {
+      "path": "E:\\EFI\\Linux\\kestrel-live.efi",
+      "bytes": 244424704,
+      "sha256": "b535444f8a3560b602d2a8549a35389d3914a8b8b4294c7408ca8e1840a11753"
+    },
+    {
+      "path": "E:\\arch\\aarch64\\airootfs.sfs",
+      "bytes": 1748525056,
+      "sha256": "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "reason": "The harness matched the menu instruction containing the prompt and sent before getty opened the TTY. Candidate reached normal systemd/getty and actual interactive Bash; rerun with anchored real-prompt predicate. Quiet kernel banner must be checked in captured kmsg, not serial.",
+  "v1_not_accepted": true,
+  "stopped_vm_pids": [
+    228
+  ]
+}

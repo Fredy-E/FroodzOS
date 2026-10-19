@@ -1,0 +1,134 @@
+{
+  "revision": "v2-dt25b",
+  "status": "ready-for-run-no-vm-executed",
+  "created_utc": "2026-10-18",
+  "owns_only": [
+    "testing/boot-failure/dt25b-efi-text-menu.cfg",
+    "testing/boot-failure/dt25b-efi-graphics-menu.cfg",
+    "testing/boot-failure/dt25b-efi-harness.py",
+    "testing/boot-failure/dt25b-efi-parser.py",
+    "testing/boot-failure/dt25b-efi-parser-test.py",
+    "testing/boot-failure/dt25b-efi-parser-test-result.json",
+    "testing/boot-failure/dt25b-efi-preparation.json"
+  ],
+  "no_edits_to_existing": true,
+  "no_vm_runs_yet": true,
+  "no_fat_created": true,
+  "no_lock_acquired": true,
+  "parser_tests": {
+    "command": "python D:/CachyOS-ARM64/testing/boot-failure/dt25b-efi-parser-test.py",
+    "result": "testing/boot-failure/dt25b-efi-parser-test-result.json",
+    "passed": 44,
+    "failed": 0,
+    "skipped": 0,
+    "total": 44,
+    "actual_v2_RED_verified": "dt25-efi-graphics-fw-off-v2.log parent-1147-active child-1169-active kill-rc0 parent-failed-pid0-signal child-stays-active-RED",
+    "positives_are_synthetic_only": "PIDs 5001/5002 boot-id 11111111-2222-3333-4444-555555555555",
+    "compile_only": [
+      "dt25b-efi-parser.py",
+      "dt25b-efi-harness.py",
+      "dt25b-efi-parser-test.py"
+    ],
+    "undefined_scan": "stdlib-only, no installs, no critical names"
+  },
+  "entry_commands": {
+    "run_A_only": "python3 testing/boot-failure/dt25b-efi-harness.py --audit <parent-verified-dt25b-artifact-audit.json> --case a --prefix dt25b-efi-fw-off-v1",
+    "run_BC_only_recovery": "python3 testing/boot-failure/dt25b-efi-harness.py --audit <parent-verified-dt25b-artifact-audit.json> --case bc --prefix dt25b-efi-fw-off-v1",
+    "run_all": "python3 testing/boot-failure/dt25b-efi-harness.py --audit <parent-verified-dt25b-artifact-audit.json> --case all --prefix dt25b-efi-fw-off-v1",
+    "note": "Execute inside WSL CachyOSBuilder (Linux ONLY). --audit must be a dt25b-artifact-audit.json path. --prefix must match dt25b-efi-[a-z0-9-]+. --case bc requires existing same-prefix A result with exact-hash pass; otherwise run --case a first. Never manually repair hash tokens."
+  },
+  "expected_new_paths_after_run": {
+    "tags": [
+      "dt25b-efi-fw-off-v1-text",
+      "dt25b-efi-fw-off-v1-graphics"
+    ],
+    "fat": [
+      "/home/builder/boot-failure-tests/dt25b-efi-fw-off-v1-text.fat",
+      "/home/builder/boot-failure-tests/dt25b-efi-fw-off-v1-graphics.fat"
+    ],
+    "grub_cfg": [
+      "testing/boot-failure/dt25b-efi-fw-off-v1-text-grub.cfg",
+      "testing/boot-failure/dt25b-efi-fw-off-v1-graphics-grub.cfg"
+    ],
+    "logs": [
+      "testing/boot-failure/dt25b-efi-fw-off-v1-text.log",
+      "testing/boot-failure/dt25b-efi-fw-off-v1-graphics.log"
+    ],
+    "results": [
+      "testing/boot-failure/dt25b-efi-fw-off-v1-text-result.json",
+      "testing/boot-failure/dt25b-efi-fw-off-v1-graphics-result.json"
+    ],
+    "extracts": [
+      "/home/builder/boot-failure-tests/dt25b-efi-fw-off-v1-text-extracted/",
+      "/home/builder/boot-failure-tests/dt25b-efi-fw-off-v1-graphics-extracted/"
+    ],
+    "guest_json_oracle": [
+      "<extract>/boot-<boot-id>/08-graphics-test.json",
+      "<extract>/boot-<boot-id>/09-unit-chaos.json"
+    ],
+    "old_logger_leaves_preserved": [
+      "00-status.txt",
+      "01-kernel-kmsg.log",
+      "06-text-startup.txt",
+      "07-typed-command.txt, never overwritten"
+    ]
+  },
+  "resource_guards": {
+    "flock": "/home/builder/boot-failure-tests/dt25-build.lock held across FAT+QEMU+cleanup",
+    "disk_free": "Windows D: >10GiB checked before each FAT",
+    "qemu": "volatile project QEMU_EFI.fd, -M virt,gic-version=3 -cpu cortex-a53 -accel tcg -m 2048 -smp 2, -nographic -no-reboot -monitor none, no -kernel/-initrd",
+    "serial": "[REDACTED_PRIVATE_FIELD]",
+    "firmware": "kestrel_efilog removed for VM, efi-pstore.pstore_disable=1 retained",
+    "fat_readback": "mtype hash UKI + SFS before boot must equal audit hashes",
+    "one_vm_slot": true,
+    "outer_real_exit": "sys.exit 0/1, poweroff observed, no direct-kernel/static-init/fake-CPU-temps/native claims",
+    "forbidden": [
+      "no USB/EFI vars on Windows",
+      "no internal disks",
+      "no Kali",
+      "no credentials/keys/shadow",
+      "no rootfs account changes",
+      "no QEMU now"
+    ]
+  },
+  "audit_contract": {
+    "source": "later parent-verified dt25b-artifact-audit.json",
+    "revision_must_be": "v2-dt25b",
+    "passed_must_be_true": true,
+    "hashes_derived_not_hardcoded": [
+      "uki_sha256",
+      "initramfs_sha256",
+      "sfs_sha256",
+      "qemu_firmware.sha256"
+    ],
+    "format_exactly": "64 lower-hex, never repaired, truncated/uppercase rejected",
+    "paths_private_build_root": [
+      "/home/builder/uki-v2-dt25b/vmlinuz-live.efi",
+      "/home/builder/uki-v2-dt25b/live-initramfs.img"
+    ],
+    "no_old_hash_literals_in_harness": true
+  },
+  "unit_contract_deleg_03f10f91": {
+    "parent_ExecStartPre": "/usr/bin/rm -f -- /run/kestrel-graphics/launch-allowed",
+    "parent_ExecStopPost": "/usr/bin/rm -f -- /run/kestrel-graphics/launch-allowed",
+    "child_BindsTo_parent": true,
+    "child_After_plus_PartOf_retained": true,
+    "core_guard_supervisor_180s_80C_20sensor_unchanged": true
+  },
+  "evidence_oracle": {
+    "prefer": "guest atomic JSON to /run/archiso/bootmnt/Logs/boot-<id>/08 + 09 (mktemp + mv + sync after USB label/marker + qemu + overlay + boot-id validation)",
+    "readback": "mcopy after shutdown; serial echo never counts as fact",
+    "serial_fallback": "anchored records + strict JSON type/required-field validation, missing record FAIL",
+    "capture": "before/after unit identity, PIDs, kill rc, booleans, marker flag, guard reasons; never shadow/keys/secrets",
+    "new_filenames_only": [
+      "08-graphics-test.json",
+      "09-unit-chaos.json"
+    ]
+  },
+  "runner_needs": [
+    "parent-verified dt25b-artifact-audit.json (revision v2-dt25b, passed true) + /home/builder/uki-v2-dt25b/vmlinuz-live.efi + live-initramfs.img + SFS present",
+    "WSL CachyOSBuilder shell, project QEMU FD present, D: free >10GiB, dt25-build.lock free",
+    "run parser test first (already 44/44), then dispatch harness --case a then --case bc (or --case all); do not keep rebooting A for parser bugs — use --case bc recovery only when A exact-hash pass exists",
+    "verify: FAT UKI/SFS readback == audit, A 8-module proof + poweroff, B python exec + missing-sensor refusal + marker absent + SDDM never started, C stale->pre-cleared->fake->SIGKILL->auto-inactive PID0 + marker ABSENT post stop within 15s, no manual stop before measurement"
+  ]
+}

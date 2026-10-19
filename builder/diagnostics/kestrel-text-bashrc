@@ -1,0 +1,22 @@
+# Executed by the actual interactive Bash, not by a pre-exec wrapper.
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/bin
+export HOME=/root
+PS1='KESTREL-TEXT# '
+printf '%s\n' 'KESTREL_BASH_STARTED (systemd text console)' >/dev/kmsg 2>/dev/null || true
+KESTREL_SHELL_PID=$$ /usr/local/sbin/kestrel-text-proof startup || true
+kestrel-proof() {
+    KESTREL_SHELL_PID=$$ /usr/local/sbin/kestrel-text-proof typed || true
+}
+# Mode-aware visible message: exact-token graphics opt-in only. This console
+# never auto-starts a GUI; waiting only persists USB logs, never opens a desktop.
+_kestrel_graphics_requested=0
+_kestrel_cmdline=$(cat "${KESTREL_CMDLINE_FILE:-/proc/cmdline}" 2>/dev/null || printf '')
+case " $_kestrel_cmdline " in *" kestrel_graphics=1 "*) _kestrel_graphics_requested=1 ;; esac
+if [ "$_kestrel_graphics_requested" = 1 ]; then
+    printf '\n%s\n' 'Kestrel local live diagnostic console (text-only here). Graphics diagnostic REQUESTED (kestrel_graphics=1): bounded supervisor runs separately (180s session + 25s cleanup). Type: kestrel-proof'
+    printf '%s\n' 'Waiting only persists USB logs; it does not open a desktop on this console. Use poweroff to shut down normally.'
+else
+    printf '\n%s\n' 'Kestrel local live diagnostic console (text-only). No GUI will start. Type: kestrel-proof'
+    printf '%s\n' 'Waiting only persists USB logs; it does not open a desktop. Use poweroff to shut down normally.'
+fi
+unset _kestrel_graphics_requested _kestrel_cmdline

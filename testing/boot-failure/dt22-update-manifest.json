@@ -1,0 +1,42 @@
+{
+  "revision": "v2-dt22",
+  "uki_sha256": "483078d869c118b78cefbc604d1cd9c7f43c924abf8ed0f859737014f495d59d",
+  "gates": [
+    "dt22-artifact-audit.json",
+    "dt22-logger-v2-v1-result.json",
+    "qemu-dt22-menu8-shell-fw-off-v1-result.json",
+    "qemu-dt22-menu8-systemd-fw-off-v1-result.json"
+  ],
+  "files": [
+    {
+      "path": "EFI/Linux/kestrel-live.efi",
+      "source": "testing/boot-failure/dt22-candidate.efi",
+      "bytes": 244482560,
+      "sha256": "483078d869c118b78cefbc604d1cd9c7f43c924abf8ed0f859737014f495d59d",
+      "old_sha256": "a1ced156e198be71a586aa6283a86edc251ddb147a3564c28ed2b5ddcd92a75c"
+    },
+    {
+      "path": "boot/grub/grub.cfg",
+      "source": "testing/boot-failure/dt22-grub.cfg",
+      "bytes": 6211,
+      "sha256": "6f755b6da131d59e5d366be9457765dc9beb7154d51caef8cef7aa8ae543ec72",
+      "old_sha256": "2dd7a70d6853664c628cab5d00c2444a321cd54254b2b0f8f2fb07e1fc5b7cfb"
+    }
+  ],
+  "unchanged_files": [
+    {
+      "path": "EFI/BOOT/BOOTAA64.EFI",
+      "bytes": 2533256,
+      "sha256": "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab"
+    },
+    {
+      "path": "arch/aarch64/airootfs.sfs",
+      "bytes": 1748525056,
+      "sha256": "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+    }
+  ],
+  "menu_entries": 11,
+  "default_entry": 8,
+  "default_init": "/usr/local/sbin/kestrel-pid1",
+  "firmware_clear_included": false
+}

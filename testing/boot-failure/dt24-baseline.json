@@ -1,0 +1,167 @@
+{
+  "passed": true,
+  "dt23_uki_sha256": "03ad7ddab04c19e7c5551d78f0d93b3eab4ed436cae849b65fa41dd2d793218d",
+  "baseline": "/home/builder/boot-failure-tests/dt24-baseline",
+  "source_sha256": "11829d3595d10e4ca36b67bf1dc0d2fbec2e9ac0224c2abd99527c4f4a637968",
+  "dtb_sha256": "9a4be4a7d716516960e574c16e4a0c9d4d51f78317ec00ffd176f7aef26c32e6",
+  "kernel_sha256": "682273a91f2016b9d5484857639bd043e021b961d7f4cfd385a09566b2df3abc",
+  "modules_available": {
+    "i2c-hid-of": "/lib/modules/7.3.0-rc3/kernel/drivers/hid/i2c-hid/i2c-hid-of.ko.zst",
+    "i2c-hid": "/lib/modules/7.3.0-rc3/kernel/drivers/hid/i2c-hid/i2c-hid.ko.zst",
+    "hid-generic": "/lib/modules/7.3.0-rc3/kernel/drivers/hid/hid-generic.ko.zst",
+    "gpi": "/lib/modules/7.3.0-rc3/kernel/drivers/dma/qcom/gpi.ko.zst"
+  },
+  "compiled_nodes": [
+    {
+      "label": "i2c9",
+      "node": "/soc@0/geniqup@ac0000/i2c@a84000",
+      "properties": {
+        "status": "okay",
+        "phandle": "20a",
+        "dmas": "57 0 1 3 57 1 1 3",
+        "dma-channel-mask": null,
+        "gpios": null,
+        "regulator-min-microvolt": null,
+        "regulator-max-microvolt": null,
+        "vin-supply": null,
+        "interconnects": "33 2 7 33 6 7 34 3 3 35 1a 3 56 1 7 37 1 7"
+      }
+    },
+    {
+      "label": "gpi_dma1",
+      "node": "/soc@0/dma-controller@a00000",
+      "properties": {
+        "status": "disabled",
+        "phandle": "57",
+        "dmas": null,
+        "dma-channel-mask": "3e",
+        "gpios": null,
+        "regulator-min-microvolt": null,
+        "regulator-max-microvolt": null,
+        "vin-supply": null,
+        "interconnects": null
+      }
+    },
+    {
+      "label": "vreg_misc_3p3",
+      "node": "/regulator-misc-3p3",
+      "properties": {
+        "status": "disabled",
+        "phandle": "45",
+        "dmas": null,
+        "dma-channel-mask": null,
+        "gpios": null,
+        "regulator-min-microvolt": "3300000",
+        "regulator-max-microvolt": "3300000",
+        "vin-supply": null,
+        "interconnects": null
+      }
+    },
+    {
+      "label": "vreg_l12b_1p2",
+      "node": "/soc@0/rsc@17500000/regulators-0/ldo12",
+      "properties": {
+        "status": null,
+        "phandle": "46",
+        "dmas": null,
+        "dma-channel-mask": null,
+        "gpios": null,
+        "regulator-min-microvolt": "1150000",
+        "regulator-max-microvolt": "1250000",
+        "vin-supply": null,
+        "interconnects": null
+      }
+    },
+    {
+      "label": "tlmm",
+      "node": "/soc@0/pinctrl@f100000",
+      "properties": {
+        "status": null,
+        "phandle": "5c",
+        "dmas": null,
+        "dma-channel-mask": null,
+        "gpios": null,
+        "regulator-min-microvolt": null,
+        "regulator-max-microvolt": null,
+        "vin-supply": null,
+        "interconnects": null
+      }
+    },
+    {
+      "label": "gem_noc",
+      "node": "/soc@0/interconnect@26400000",
+      "properties": {
+        "status": "disabled",
+        "phandle": "34",
+        "dmas": null,
+        "dma-channel-mask": null,
+        "gpios": null,
+        "regulator-min-microvolt": null,
+        "regulator-max-microvolt": null,
+        "vin-supply": null,
+        "interconnects": null
+      }
+    },
+    {
+      "label": "pcie3",
+      "node": "/soc@0/pcie@1bd0000",
+      "properties": {
+        "status": "disabled",
+        "phandle": "231",
+        "dmas": null,
+        "dma-channel-mask": null,
+        "gpios": null,
+        "regulator-min-microvolt": null,
+        "regulator-max-microvolt": null,
+        "vin-supply": null,
+        "interconnects": "a8 0 7 37 1 7 34 3 3 a9 b 3"
+      }
+    },
+    {
+      "label": "pcie6a",
+      "node": "/soc@0/pcie@1bf8000",
+      "properties": {
+        "status": "disabled",
+        "phandle": "233",
+        "dmas": null,
+        "dma-channel-mask": null,
+        "gpios": null,
+        "regulator-min-microvolt": null,
+        "regulator-max-microvolt": null,
+        "vin-supply": null,
+        "interconnects": "ae 3 7 37 1 7 34 3 3 a9 e 3"
+      }
+    },
+    {
+      "label": "pcie5",
+      "node": "/soc@0/pcie@1c00000",
+      "properties": {
+        "status": "disabled",
+        "phandle": "235",
+        "dmas": null,
+        "dma-channel-mask": null,
+        "gpios": null,
+        "regulator-min-microvolt": null,
+        "regulator-max-microvolt": null,
+        "vin-supply": null,
+        "interconnects": "a8 2 7 37 1 7 34 3 3 a9 d 3"
+      }
+    },
+    {
+      "label": "pcie4",
+      "node": "/soc@0/pcie@1c08000",
+      "properties": {
+        "status": "disabled",
+        "phandle": "237",
+        "dmas": null,
+        "dma-channel-mask": null,
+        "gpios": null,
+        "regulator-min-microvolt": null,
+        "regulator-max-microvolt": null,
+        "vin-supply": null,
+        "interconnects": "a8 1 7 37 1 7 34 3 3 a9 c 3"
+      }
+    }
+  ],
+  "native_hardware_validated": false
+}

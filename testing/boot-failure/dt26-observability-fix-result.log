@@ -1,0 +1,23 @@
+test_cli_refuses_existing_outputs (__main__.Dt26Fix.test_cli_refuses_existing_outputs)
+CLI preflights outputs before any effect; collisions preserve hashes. ... ok
+test_full_logger_exact_cap_boundary (__main__.Dt26Fix.test_full_logger_exact_cap_boundary)
+Genuine full logger runs: exactly-cap valid JSON accepted, cap+1 rejected. ... ok
+test_full_logger_graphics_wall_budget (__main__.Dt26Fix.test_full_logger_graphics_wall_budget)
+Genuine full logger run: short deadline exits on wall clock with valid JSON. ... ok
+test_full_logger_secure_json_rejects (__main__.Dt26Fix.test_full_logger_secure_json_rejects)
+Genuine full logger runs: partial/symlink/oversize keep last-good. ... ok
+test_full_logger_text_short_samples (__main__.Dt26Fix.test_full_logger_text_short_samples)
+Genuine full logger run: text mode honors sample loop, no graphics leaves. ... ok
+test_full_proof_empty_thermal_and_graphics_message (__main__.Dt26Fix.test_full_proof_empty_thermal_and_graphics_message)
+Genuine full proof runs: sentinel on empty sensors; graphics mode stays text-only. ... ok
+test_full_proof_typed_strict_cpu (__main__.Dt26Fix.test_full_proof_typed_strict_cpu)
+Genuine full proof run: 08000 is decimal 8000; bad zones skipped. ... ok
+test_legacy_and_parent_evidence_preserved (__main__.Dt26Fix.test_legacy_and_parent_evidence_preserved) ... ok
+test_no_fixed_tmp_artifact (__main__.Dt26Fix.test_no_fixed_tmp_artifact) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 16.848s
+
+OK
+
+RESULT_JSON /mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-observability-fix-result.json

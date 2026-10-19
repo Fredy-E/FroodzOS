@@ -1,0 +1,39 @@
+{
+    "verified":  true,
+    "revision":  "v2-dt23",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "model":  "Kingston DataTraveler 3.0 USB Device",
+    "volume":  "E:\\",
+    "critical_files":  [
+                           {
+                               "path":  "EFI/Linux/kestrel-live.efi",
+                               "bytes":  244486656,
+                               "sha256":  "03ad7ddab04c19e7c5551d78f0d93b3eab4ed436cae849b65fa41dd2d793218d"
+                           },
+                           {
+                               "path":  "boot/grub/grub.cfg",
+                               "bytes":  6223,
+                               "sha256":  "c9eeef914959069be3f28e4d24e377eb9147ddba75ec32f1cbf609acb1796b0f"
+                           },
+                           {
+                               "path":  "EFI/BOOT/BOOTAA64.EFI",
+                               "bytes":  2533256,
+                               "sha256":  "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab"
+                           },
+                           {
+                               "path":  "arch/aarch64/airootfs.sfs",
+                               "bytes":  1748525056,
+                               "sha256":  "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+                           }
+                       ],
+    "menu_entries":  11,
+    "entry8":  "menuentry \u0027Kestrel dt23 - Post-switch proof live shell (default)\u0027 {",
+    "entry9":  "menuentry \u0027Kestrel dt23 - Post-switch proof live shell + FW LOG v2 (confirm)\u0027 {",
+    "firmware_slots_verified_empty":  true,
+    "firmware_readback":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\dt23-preboot-20261017T135829304Z",
+    "firmware_boot_ids":  [
+
+                          ],
+    "usb_log_files":  26,
+    "hardware_boot_verified":  false
+}

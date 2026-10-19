@@ -1,0 +1,28 @@
+{
+  "passed": false,
+  "checks": {
+    "keyboard_bus_enabled": true,
+    "keyboard_hid_binding_retained": true,
+    "keyboard_irq_retained": true,
+    "keyboard_power_rail_enabled": false,
+    "keyboard_power_supply_resolves": true,
+    "keyboard_power_voltage_unchanged": true,
+    "i2c9_no_dead_gem_icc_reference": false,
+    "i2c9_no_stale_icc_names": false,
+    "keyboard_dma_provider_enabled": false,
+    "keyboard_dma_reference_retained": true,
+    "gpi1_existing_channel1_allowed": true,
+    "gem_remains_disabled": true,
+    "pcie3_stays_disabled": true,
+    "pcie6a_stays_disabled": true,
+    "pcie5_stays_disabled": true,
+    "pcie4_stays_disabled": true,
+    "gpu_stays_disabled": true,
+    "gmu_stays_disabled": true,
+    "mdss_stays_disabled": true,
+    "vreg_pcie3_nvme_stays_disabled": true
+  },
+  "dtb": "/home/builder/src/ksrc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dtb",
+  "skips_i2c9_bus_voting_diagnostic_only": true,
+  "native_hardware_validated": false
+}

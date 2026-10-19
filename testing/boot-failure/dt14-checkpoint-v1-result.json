@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "revision": "v2-dt14",
+  "uki_sha256": "cf5a350c6f4fbb2098884a20e405bf6719cdcb4f8106f408b0528e52d6fa30a1",
+  "results": [
+    {
+      "label": "off",
+      "seconds": 75.89,
+      "forced_process_kill": false,
+      "records": {}
+    },
+    {
+      "label": "on",
+      "seconds": 76.85,
+      "forced_process_kill": true,
+      "records": {
+        "KestrelBoot00-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 0,
+          "boot_id": "ae673f9c-7aad-4e9c-a8b2-567a8812f827",
+          "reason": "earlyhook",
+          "bytes": 1028,
+          "sha256": "b144908e7bca53c63da3c1e4671a1acb4a8ef94705da6d86492e5382ca248ea0"
+        },
+        "KestrelBoot03-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 3,
+          "boot_id": "ae673f9c-7aad-4e9c-a8b2-567a8812f827",
+          "reason": "stop",
+          "bytes": 1028,
+          "sha256": "388addca323e34958f940fc9991ebc420c610b176d0a8f4768ce697f2e0909f1"
+        }
+      }
+    },
+    {
+      "label": "recovery-off",
+      "seconds": 71.05,
+      "forced_process_kill": false,
+      "records": {
+        "KestrelBoot00-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 0,
+          "boot_id": "ae673f9c-7aad-4e9c-a8b2-567a8812f827",
+          "reason": "earlyhook",
+          "bytes": 1028,
+          "sha256": "b144908e7bca53c63da3c1e4671a1acb4a8ef94705da6d86492e5382ca248ea0"
+        },
+        "KestrelBoot03-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 3,
+          "boot_id": "ae673f9c-7aad-4e9c-a8b2-567a8812f827",
+          "reason": "stop",
+          "bytes": 1028,
+          "sha256": "388addca323e34958f940fc9991ebc420c610b176d0a8f4768ce697f2e0909f1"
+        }
+      }
+    },
+    {
+      "label": "existing-evidence",
+      "seconds": 74.64,
+      "forced_process_kill": false,
+      "records": {
+        "KestrelBoot00-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 0,
+          "boot_id": "ae673f9c-7aad-4e9c-a8b2-567a8812f827",
+          "reason": "earlyhook",
+          "bytes": 1028,
+          "sha256": "b144908e7bca53c63da3c1e4671a1acb4a8ef94705da6d86492e5382ca248ea0"
+        },
+        "KestrelBoot03-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 3,
+          "boot_id": "ae673f9c-7aad-4e9c-a8b2-567a8812f827",
+          "reason": "stop",
+          "bytes": 1028,
+          "sha256": "388addca323e34958f940fc9991ebc420c610b176d0a8f4768ce697f2e0909f1"
+        }
+      }
+    }
+  ],
+  "hardware_validated": false,
+  "persistence_verified": true
+}

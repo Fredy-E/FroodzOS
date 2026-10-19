@@ -1,0 +1,63 @@
+{
+  "command": [
+    "qemu-system-aarch64",
+    "-M",
+    "virt,gic-version=3",
+    "-cpu",
+    "cortex-a53",
+    "-accel",
+    "tcg",
+    "-m",
+    "2048",
+    "-smp",
+    "2",
+    "-bios",
+    "/mnt/d/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd",
+    "-device",
+    "qemu-xhci",
+    "-drive",
+    "if=none,id=stick,format=raw,file=/home/builder/boot-failure-tests/qemu-v2-menutest17.fat",
+    "-device",
+    "usb-storage,drive=stick",
+    "-nographic",
+    "-no-reboot",
+    "-monitor",
+    "none"
+  ],
+  "qemu_exit": 0,
+  "seconds": 264.15,
+  "stop_reason": "systemd-multi-user",
+  "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/qemu-v2-menutest17.log",
+  "captured_files": {
+    "boot-8a487d8c-6a67-4f80-9803-ec44d61893e6/00-status.txt": 645,
+    "boot-8a487d8c-6a67-4f80-9803-ec44d61893e6/01-kernel-kmsg.log": 156550,
+    "boot-8a487d8c-6a67-4f80-9803-ec44d61893e6/02-initramfs-console.log": 549,
+    "boot-8a487d8c-6a67-4f80-9803-ec44d61893e6/03-userspace-journal.log": 131072,
+    "boot-8a487d8c-6a67-4f80-9803-ec44d61893e6/04-userspace-status.txt": 1161,
+    "boot-8a487d8c-6a67-4f80-9803-ec44d61893e6/05-dmesg-snapshots.log": 25144
+  },
+  "boot_dirs": [
+    "boot-8a487d8c-6a67-4f80-9803-ec44d61893e6"
+  ],
+  "markers": {
+    "grub_menu": true,
+    "log_uki_loaded": true,
+    "kernel_started": true,
+    "usb_log_active": true,
+    "usb_log_unavailable": false,
+    "status_file_captured": true,
+    "overlay_root_ready": true,
+    "kmsg_captured": true,
+    "kmsg_has_post_kernel_lines": true,
+    "dmesg_snapshots": true,
+    "userspace_journal": true,
+    "userspace_logger_started": true,
+    "panic": false,
+    "wsl_init": false,
+    "poweroff": false
+  },
+  "passed": true,
+  "hardware_validated": false,
+  "kmsg_tail": " fd 122 (socket:[2950])\n31,1481,239911569,-;systemd[1]: Closing set fd 123 (socket:[2946])\n31,1482,239980190,-;systemd[1]: Sent message type=signal sender=n/a destination=n/a path=/org/freedesktop/systemd1/unit/NetworkManager_2ddispatcher_2eservice interface=org.freedesktop.DBus.Properties member=PropertiesChanged cookie=85 reply_cookie=0 signature=sa{sv}as error-name=n/a error-message=n/a\n31,1483,240000268,-;systemd[1]: NetworkManager-dispatcher.service: Changed dead -> start\n31,1484,240038373,-;systemd[1]: Sent message type=signal sender=n/a destination=n/a path=/org/freedesktop/systemd1/unit/NetworkManager_2ddispatcher_2eservice interface=org.freedesktop.DBus.Properties member=PropertiesChanged cookie=86 reply_cookie=0 signature=sa{sv}as error-name=n/a error-message=n/a\n47,1485,240040516,-;systemd-journald[363]: Successfully sent stream file descriptor to service manager.\n31,1486,240092402,-;systemd[1]: systemd-journald.service: Got notification message from PID 363: FDSTORE=1\n31,1487,240106385,-;systemd[1]: systemd-journald.service: Trying to stash fd for dev=0:12/inode=9630\n47,1488,241386206,-;systemd-journald[363]: Successfully sent stream file descriptor to service manager.\n",
+  "status_text": "KESTREL_CAPTURE_STARTED latehook-via-bootmnt\nboot_id=8a487d8c-6a67-4f80-9803-ec44d61893e6\ndevice=/dev/sda1\ncmdline:\nBOOT_IMAGE=/EFI/Linux/kestrel-live.efi kestrel_log=1 rd.log=file debug archisobasedir=arch archisolabel=KESTREL_A64 copytoram=n cow_spacesize=512M clk_ignore_unused pd_ignore_unused console=ttyAMA0,115200 loglevel=7 ignore_loglevel panic=0\nkernel:\nLinux (none) 7.3.0-rc3 #1 SMP PREEMPT_DYNAMIC Thu Oct  8 11:37:49 EEST 2026 aarch64 GNU/Linux\nWrites limited to this USB Logs directory. No EFI/internal writes.\nKESTREL_OVERLAY_ROOT_READY\nKESTREL_SWITCH_ROOT_PENDING\nINITRAMFS_SNAPSHOT_LOOP_STOPPED\nKESTREL_USERSPACE_LOGGER_STARTED\n"
+}

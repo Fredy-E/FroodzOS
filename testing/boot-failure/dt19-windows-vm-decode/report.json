@@ -1,0 +1,20 @@
+{
+    "read_only":  true,
+    "firmware_writes":  0,
+    "input_is_fixture":  true,
+    "boot_ids":  [
+
+                 ],
+    "unchanged_from_previous_export":  null,
+    "all_checkpoint_slots_present":  false,
+    "records":  [
+                    {
+                        "name":  "fixture",
+                        "status":  "Saved",
+                        "bytes":  971,
+                        "sha256":  "3c047626b7a94d9f777f088fd93949de7841ad78eb67b16d329f2b72b74f6e60",
+                        "text":  "boot=48ccbe7a-c555-41be-8771-4a42f7da3e52 slot=3 uptime_ms=81037 reason=timeout\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \ninitramfs_boot_device_timeout=seen\n27088 usb usb2: SerialNumber: 0000:00:02.0\n27089 probe of usb2 with driver usb returned 0 after 4491 usecs\n27089 probe of 0000:00:02.0 with driver xhci_hcd returned 0 after 49836 usecs\n27238 usb 2-1: new SuperSpeed USB device number 2 using xhci_hcd\n27238 usb 2-1: New USB device found, idVendor=46f4, idProduct=0001, bcdDevice= 0.00\n27238 usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3\n27238 usb 2-1: Product: QEMU USB HARDDRIVE\n27239 usb 2-1: Manufacturer: QEMU\n27239 usb 2-1: SerialNumber: 1-0000:00:02.0-1\n27240 probe of 2-1 with driver usb returned 0 after 5536 usecs\n27244 usb 2-1: USB disconnect, device number 2\n"
+                    }
+                ],
+    "valid":  true
+}

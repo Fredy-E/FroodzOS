@@ -1,0 +1,64 @@
+{
+    "read_only":  true,
+    "firmware_writes":  0,
+    "input_is_fixture":  false,
+    "boot_ids":  [
+                     "936771c0-9fce-4257-878c-5d22542d61a7"
+                 ],
+    "unchanged_from_previous_export":  true,
+    "all_checkpoint_slots_present":  false,
+    "records":  [
+                    {
+                        "name":  "KestrelBoot00",
+                        "status":  "Saved",
+                        "bytes":  1024,
+                        "sha256":  "a76b180f5005cc2901c97c9d71dc9586ac0dbb9248c22e149ad3ca194412b887",
+                        "text":  "boot=936771c0-9fce-4257-878c-5d22542d61a7 slot=0 uptime_ms=9073 reason=earlyhook\r\n of_platform_sync_state_init+0x0/0x38 returned 0 after 16 usecs\n6,3874,8901570,-;Freeing unused kernel memory: 4096K\n6,3875,8945475,-;Checked W+X mappings: passed, no W+X pages found\n6,3876,8949624,-;Run /init as init process\n7,3877,8950599,-;  with arguments:\n7,3878,8951567,-;    /init\n7,3879,8954032,-;  with environment:\n7,3880,8955003,-;    HOME=/\n7,3881,8955940,-;    TERM=linux\n7,3882,8956874,-;    kestrel_log=1\n7,3883,8957801,-;    kestrel_efilog=1\n7,3884,8958722,-;    archisobasedir=arch\n7,3885,8959634,-;    archisolabel=KESTREL_A64\n7,3886,8960544,-;    copytoram=n\n7,3887,8961442,-;    cow_spacesize=512M\n7,3888,9068583,-;calling  init_nls_iso8859_1+0x0/0xfd0 [nls_iso8859_1] @ 194\n7,3889,9069507,-;initcall init_nls_iso8859_1+0x0/0xfd0 [nls_iso8859_1] returned 0 after 0 usecs\n7,3890,9071480,-;calling  init_nls_utf8+0x0/0xfc8 [nls_utf8] @ 194\n7,3891,9072406,-;initcall init_nls_utf8+0x0/0xfc8 [nls_utf8] returned 0 after 0 usecs\n"
+                    },
+                    {
+                        "name":  "KestrelBoot01",
+                        "status":  "Saved",
+                        "bytes":  1024,
+                        "sha256":  "6e9cf15085954736c95ba821adebbbfad1e93e8a62014a104e430fc47e70c316",
+                        "text":  "boot=936771c0-9fce-4257-878c-5d22542d61a7 slot=1 uptime_ms=9585 reason=usb-host\r\n68,9578272,-;xhci-hcd xhci-hcd.0.auto: xHCI Host Controller\n SUBSYSTEM=platform\n DEVICE=+platform:xhci-hcd.0.auto\n6,4069,9579657,-;xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 1\n SUBSYSTEM=platform\n DEVICE=+platform:xhci-hcd.0.auto\n6,4070,9586478,-;xhci-hcd xhci-hcd.0.auto: hcc params 0x0110ffc5 hci version 0x110 quirks 0x0000808000000810\n SUBSYSTEM=platform\n DEVICE=+platform:xhci-hcd.0.auto\n6,4071,9588036,-;xhci-hcd xhci-hcd.0.auto: irq 154, io mem 0x0a600000\n SUBSYSTEM=platform\n DEVICE=+platform:xhci-hcd.0.auto\n6,4072,9589482,-;xhci-hcd xhci-hcd.0.auto: xHCI Host Controller\n SUBSYSTEM=platform\n DEVICE=+platform:xhci-hcd.0.auto\n6,4073,9590872,-;xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 2\n SUBSYSTEM=platform\n DEVICE=+platform:xhci-hcd.0.auto\n6,4074,9592254,-;xhci-hcd xhci-hcd.0.auto: Host supports USB 3.1 Enhanced SuperSpeed\n SUBSYSTEM=platform\n DEVICE=+platform:xhci-hcd.0.auto\n"
+                    },
+                    {
+                        "name":  "KestrelBoot02",
+                        "status":  "Saved",
+                        "bytes":  1024,
+                        "sha256":  "8e71f00e95ff010717ba8dab94be52d8d811c7c13d2e233ead5d428957740440",
+                        "text":  "boot=936771c0-9fce-4257-878c-5d22542d61a7 slot=2 uptime_ms=10097 reason=usb-error\r\nEVICE=+usb:usb2\n6,4085,9606996,-;usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1\n SUBSYSTEM=usb\n DEVICE=c189:128\n6,4086,9608242,-;usb usb2: Product: xHCI Host Controller\n SUBSYSTEM=usb\n DEVICE=c189:128\n6,4087,9609475,-;usb usb2: Manufacturer: Linux 7.3.0-rc3 xhci-hcd\n SUBSYSTEM=usb\n DEVICE=c189:128\n6,4088,9610701,-;usb usb2: SerialNumber: xhci-hcd.0.auto\n SUBSYSTEM=usb\n DEVICE=c189:128\n6,4089,9612157,-;hub 2-0:1.0: USB hub found\n SUBSYSTEM=usb\n DEVICE=+usb:2-0:1.0\n6,4090,9613373,-;hub 2-0:1.0: 1 port detected\n SUBSYSTEM=usb\n DEVICE=+usb:2-0:1.0\n7,4091,9614624,-;probe of 2-0:1.0 with driver hub returned 0 after 2468 usecs\n7,4092,9615851,-;probe of usb2 with driver usb returned 0 after 3723 usecs\n7,4093,9617072,-;probe of xhci-hcd.0.auto with driver xhci-hcd returned 0 after 38877 usecs\n3,4094,9618289,-;dwc3-qcom a600000.usb: of_icc_get_by_index: invalid path=-517\n SUBSYSTEM=platform\n DEVICE=+platform:a600000.usb\n"
+                    },
+                    {
+                        "name":  "KestrelBoot03",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelSeq",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog0",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog1",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog2",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog3",
+                        "status":  "Missing",
+                        "error":  203
+                    }
+                ],
+    "valid":  true
+}

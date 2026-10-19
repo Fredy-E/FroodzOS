@@ -1,0 +1,33 @@
+{
+    "description": "UEFI firmware for aarch64, with Secure Boot, SB enabled, MS certs enrolled",
+    "interface-types": [
+        "uefi"
+    ],
+    "mapping": {
+        "device": "flash",
+        "executable": {
+            "filename": "/usr/share/AAVMF/AAVMF_CODE.ms.fd",
+            "format": "raw"
+        },
+        "nvram-template": {
+            "filename": "/usr/share/AAVMF/AAVMF_VARS.ms.fd",
+            "format": "raw"
+        }
+    },
+    "targets": [
+        {
+            "architecture": "aarch64",
+            "machines": [
+                "virt-*"
+            ]
+        }
+    ],
+    "features": [
+        "enrolled-keys",
+        "secure-boot",
+        "verbose-static"
+    ],
+    "tags": [
+
+    ]
+}

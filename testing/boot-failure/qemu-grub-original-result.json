@@ -1,0 +1,43 @@
+{
+  "command": [
+    "qemu-system-aarch64",
+    "-M",
+    "virt,gic-version=3",
+    "-cpu",
+    "cortex-a53",
+    "-accel",
+    "tcg",
+    "-m",
+    "2048",
+    "-smp",
+    "2",
+    "-bios",
+    "/mnt/d/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd",
+    "-device",
+    "qemu-xhci",
+    "-drive",
+    "if=none,id=stick,format=raw,readonly=on,file=/home/builder/boot-failure-tests/grub-original-rootfs.fat",
+    "-device",
+    "usb-storage,drive=stick",
+    "-nographic",
+    "-no-reboot",
+    "-monitor",
+    "none"
+  ],
+  "exit": 0,
+  "seconds": 181.21,
+  "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/qemu-grub-original.log",
+  "markers": {
+    "KESTREL_EFI_MENU_REACHED": true,
+    "KESTREL_GRUB_LOADING_ORIGINAL_UKI": true,
+    "Linux version": true,
+    "Device": true,
+    "mounted successfully": false,
+    "no job control": false,
+    "KESTREL_ROOTFS_OK": false,
+    "Kernel panic": true,
+    "HWID matching failed": true,
+    "Bad kernel image": false,
+    "reboot: Power down": false
+  }
+}

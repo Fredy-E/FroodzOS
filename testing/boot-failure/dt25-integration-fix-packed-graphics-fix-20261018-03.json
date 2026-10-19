@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "tests_run": 10,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "tag": "fix-20261018-03",
+  "result_path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-integration-fix-packed-graphics-fix-20261018-03.json",
+  "candidate": "/home/builder/uki-v2-dt25/live-initramfs.img",
+  "fixture_only": true,
+  "private_namespace": true,
+  "chroot_closure_no_host_fallback": true,
+  "getarg_inside_packed_ash": true,
+  "run_latehook_both_flags": true,
+  "full_graph_man_no": true,
+  "native_hardware_validated": false,
+  "collision_preflight_passed": true,
+  "originals_preserved": {
+    "dt25-artifact-audit.json": true,
+    "dt25-integration-platform-graphics-gate.json": true,
+    "dt25-integration-packed-graphics.json": true,
+    "dt25-integration-summary.json": true,
+    "dt25-integration-board.json": true,
+    "dt25-integration-policy.json": true,
+    "dt25-integration-validation.json": true
+  },
+  "all_originals_preserved": true,
+  "previously_lost_history_note": "prior __main__ unlinked outputs before exclusive creation; overwritten history (if any) is not recoverable and not fabricated; current baseline hashes preserved"
+}

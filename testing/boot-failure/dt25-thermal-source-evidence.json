@@ -1,0 +1,461 @@
+{
+  "frozen_match_baseline": true,
+  "baseline_board_dts_sha256": "d1347d1f8755a492ea8172a54bddd682583351ece15627b81149157721941f10",
+  "current_board_dts_sha256": "d1347d1f8755a492ea8172a54bddd682583351ece15627b81149157721941f10",
+  "baseline_board_dtb_sha256": "c65f5e2a325e32427ba8ca6b84ed6928598fc08efcfd1ed5d0c596dfd5f475a3",
+  "current_board_dtb_sha256": "c65f5e2a325e32427ba8ca6b84ed6928598fc08efcfd1ed5d0c596dfd5f475a3",
+  "source_pin": "3f0d8691afa098ba378d7d5a3968f03219887719",
+  "sensor_nodes": [
+    {
+      "label": "tsens0",
+      "path": "/soc@0/thermal-sensor@c271000",
+      "properties": {
+        "compatible": "qcom,x1e80100-tsens qcom,tsens-v2",
+        "reg": "0 c271000 0 1000 0 c222000 0 1000",
+        "interrupts-extended": "99 1a 4 1 0 281 4",
+        "interrupt-names": "uplow critical",
+        "#qcom,sensors": "10",
+        "#thermal-sensor-cells": "1",
+        "status": "disabled",
+        "phandle": "1a4",
+        "check_absent:interconnects": null,
+        "check_absent:interconnect-names": null,
+        "check_absent:clocks": null,
+        "check_absent:clock-names": null,
+        "check_absent:power-domains": null,
+        "check_absent:required-opps": null,
+        "check_absent:operating-points-v2": null
+      }
+    },
+    {
+      "label": "tsens1",
+      "path": "/soc@0/thermal-sensor@c272000",
+      "properties": {
+        "compatible": "qcom,x1e80100-tsens qcom,tsens-v2",
+        "reg": "0 c272000 0 1000 0 c223000 0 1000",
+        "interrupts-extended": "99 1b 4 1 0 282 4",
+        "interrupt-names": "uplow critical",
+        "#qcom,sensors": "10",
+        "#thermal-sensor-cells": "1",
+        "status": "disabled",
+        "phandle": "1a5",
+        "check_absent:interconnects": null,
+        "check_absent:interconnect-names": null,
+        "check_absent:clocks": null,
+        "check_absent:clock-names": null,
+        "check_absent:power-domains": null,
+        "check_absent:required-opps": null,
+        "check_absent:operating-points-v2": null
+      }
+    },
+    {
+      "label": "tsens2",
+      "path": "/soc@0/thermal-sensor@c273000",
+      "properties": {
+        "compatible": "qcom,x1e80100-tsens qcom,tsens-v2",
+        "reg": "0 c273000 0 1000 0 c224000 0 1000",
+        "interrupts-extended": "99 1c 4 1 0 283 4",
+        "interrupt-names": "uplow critical",
+        "#qcom,sensors": "10",
+        "#thermal-sensor-cells": "1",
+        "status": "disabled",
+        "phandle": "1a6",
+        "check_absent:interconnects": null,
+        "check_absent:interconnect-names": null,
+        "check_absent:clocks": null,
+        "check_absent:clock-names": null,
+        "check_absent:power-domains": null,
+        "check_absent:required-opps": null,
+        "check_absent:operating-points-v2": null
+      }
+    },
+    {
+      "label": "tsens3",
+      "path": "/soc@0/thermal-sensor@c274000",
+      "properties": {
+        "compatible": "qcom,x1e80100-tsens qcom,tsens-v2",
+        "reg": "0 c274000 0 1000 0 c225000 0 1000",
+        "interrupts-extended": "99 1d 4 1 0 302 4",
+        "interrupt-names": "uplow critical",
+        "#qcom,sensors": "10",
+        "#thermal-sensor-cells": "1",
+        "status": "disabled",
+        "phandle": "22b",
+        "check_absent:interconnects": null,
+        "check_absent:interconnect-names": null,
+        "check_absent:clocks": null,
+        "check_absent:clock-names": null,
+        "check_absent:power-domains": null,
+        "check_absent:required-opps": null,
+        "check_absent:operating-points-v2": null
+      }
+    }
+  ],
+  "thermal_zones_cpu_targets": [
+    {
+      "name": "cpu0-0-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "1"
+      ]
+    },
+    {
+      "name": "cpu0-0-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "2"
+      ]
+    },
+    {
+      "name": "cpu0-1-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "3"
+      ]
+    },
+    {
+      "name": "cpu0-1-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "4"
+      ]
+    },
+    {
+      "name": "cpu0-2-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "5"
+      ]
+    },
+    {
+      "name": "cpu0-2-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "6"
+      ]
+    },
+    {
+      "name": "cpu0-3-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "7"
+      ]
+    },
+    {
+      "name": "cpu0-3-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "8"
+      ]
+    },
+    {
+      "name": "cpuss0-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "9"
+      ]
+    },
+    {
+      "name": "cpuss0-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "a"
+      ]
+    },
+    {
+      "name": "cpu1-0-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "1"
+      ]
+    },
+    {
+      "name": "cpu1-0-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "2"
+      ]
+    },
+    {
+      "name": "cpu1-1-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "3"
+      ]
+    },
+    {
+      "name": "cpu1-1-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "4"
+      ]
+    },
+    {
+      "name": "cpu1-2-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "5"
+      ]
+    },
+    {
+      "name": "cpu1-2-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "6"
+      ]
+    },
+    {
+      "name": "cpu1-3-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "7"
+      ]
+    },
+    {
+      "name": "cpu1-3-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "8"
+      ]
+    },
+    {
+      "name": "cpuss1-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "9"
+      ]
+    },
+    {
+      "name": "cpuss1-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "a"
+      ]
+    }
+  ],
+  "cpu_target_names_sorted": [
+    "cpu0-0-btm-thermal",
+    "cpu0-0-top-thermal",
+    "cpu0-1-btm-thermal",
+    "cpu0-1-top-thermal",
+    "cpu0-2-btm-thermal",
+    "cpu0-2-top-thermal",
+    "cpu0-3-btm-thermal",
+    "cpu0-3-top-thermal",
+    "cpu1-0-btm-thermal",
+    "cpu1-0-top-thermal",
+    "cpu1-1-btm-thermal",
+    "cpu1-1-top-thermal",
+    "cpu1-2-btm-thermal",
+    "cpu1-2-top-thermal",
+    "cpu1-3-btm-thermal",
+    "cpu1-3-top-thermal",
+    "cpuss0-btm-thermal",
+    "cpuss0-top-thermal",
+    "cpuss1-btm-thermal",
+    "cpuss1-top-thermal"
+  ],
+  "cpu_target_count": 20,
+  "all_zones_count": 35,
+  "kernel_config_hits": [
+    "CONFIG_HWMON=y",
+    "CONFIG_THERMAL=y",
+    "CONFIG_THERMAL_OF=y",
+    "CONFIG_QCOM_TSENS=y"
+  ],
+  "driver_snippets": {
+    "drivers/thermal/qcom/tsens.c": {
+      "sha256": "088f0e3a1a6a81a44f52203f3e7f47dc3650628937d48d05e06ac4b197b77dcc",
+      "bytes": 37657,
+      "selected": [
+        "354:\t\t\treturn 0;",
+        "355:\t\t}",
+        "356:\t}",
+        "357:",
+        "358:\t/*",
+        "359:\t * As per the HW guidelines, if none of the attempts observe a",
+        "360:\t * valid sample, a stable fallback value must be returned. If the",
+        "361:\t * first and second samples match, the second value is returned;",
+        "362:\t * otherwise, if the second and third samples match, the third",
+        "363:\t * value is returned.",
+        "364:\t */",
+        "365:\tif (temp_val[0] == temp_val[1])",
+        "366:\t\t*temp = temp_val[1];",
+        "1208:\t\t.data = &data_8996,",
+        "1209:\t}, {",
+        "1210:\t\t.compatible = \"qcom,tsens-v1\",",
+        "1211:\t\t.data = &data_tsens_v1,",
+        "1212:\t}, {",
+        "1213:\t\t.compatible = \"qcom,tsens-v2\",",
+        "1214:\t\t.data = &data_tsens_v2,",
+        "1215:\t}, {",
+        "1216:\t\t.compatible = \"qcom,sa8775p-tsens\",",
+        "1217:\t\t.data = &data_automotive_v2,",
+        "1218:\t}, {",
+        "1219:\t\t.compatible = \"qcom,sa8255p-tsens\",",
+        "1220:\t\t.data = &data_automotive_v2,",
+        "1327:{",
+        "1328:\tint i, ret;",
+        "1329:\tstruct thermal_zone_device *tzd;",
+        "1330:",
+        "1331:\tfor (i = 0;  i < priv->num_sensors; i++) {",
+        "1332:\t\tpriv->sensor[i].priv = priv;",
+        "1333:\t\ttzd = devm_thermal_of_zone_register(priv->dev, priv->sensor[i].hw_id,",
+        "1334:\t\t\t\t\t\t    &priv->sensor[i],",
+        "1335:\t\t\t\t\t\t    &tsens_of_ops);",
+        "1336:\t\tif (IS_ERR(tzd))",
+        "1337:\t\t\tcontinue;",
+        "1338:\t\tpriv->sensor[i].tzd = tzd;",
+        "1339:\t\tif (priv->ops->enable)",
+        "1340:\t\t\tpriv->ops->enable(priv, i);",
+        "1341:",
+        "1342:\t\tdevm_thermal_add_hwmon_sysfs(priv->dev, tzd);",
+        "1343:\t}",
+        "1344:",
+        "1345:\t/* VER_0 require to set MIN and MAX THRESH",
+        "1346:\t * These 2 regs are set using the:",
+        "1347:\t * - CRIT_THRESH_0 for MAX THRESH hardcoded to 120\u00b0C",
+        "1348:\t * - CRIT_THRESH_1 for MIN THRESH hardcoded to   0\u00b0C",
+        "1371:\t\t}",
+        "1372:\t}",
+        "1373:",
+        "1374:\treturn ret;",
+        "1375:}",
+        "1376:",
+        "1377:static int tsens_probe(struct platform_device *pdev)",
+        "1378:{",
+        "1379:\tint ret, i;",
+        "1380:\tstruct device *dev;",
+        "1381:\tstruct device_node *np;",
+        "1382:\tstruct tsens_priv *priv;",
+        "1383:\tconst struct tsens_plat_data *data;",
+        "1460:\ttsens_disable_irq(priv);",
+        "1461:\tif (priv->ops->disable)",
+        "1462:\t\tpriv->ops->disable(priv);",
+        "1463:}",
+        "1464:",
+        "1465:static struct platform_driver tsens_driver = {",
+        "1466:\t.probe = tsens_probe,",
+        "1467:\t.remove = tsens_remove,",
+        "1468:\t.driver = {",
+        "1469:\t\t.name = \"qcom-tsens\",",
+        "1470:\t\t.pm\t= &tsens_pm_ops,",
+        "1471:\t\t.of_match_table = tsens_table,",
+        "1472:\t},"
+      ]
+    },
+    "drivers/thermal/qcom/tsens-v2.c": {
+      "sha256": "503de3da1bb24d88d982e0372e6e9d0a4ac434212db19bd599910d1cb743d23b",
+      "bytes": 9453,
+      "selected": [
+        "47:",
+        "48:/* v2.x: 8996, 8998, sdm845 */",
+        "49:",
+        "50:static struct tsens_features tsens_v2_feat = {",
+        "51:\t.ver_major\t= VER_2_X,",
+        "52:\t.crit_int\t= 1,",
+        "53:\t.combo_int\t= 0,",
+        "54:\t.adc\t\t= 0,",
+        "55:\t.srot_split\t= 1,",
+        "56:\t.max_sensors\t= 16,",
+        "57:\t.trip_min_temp\t= -40000,",
+        "58:\t.trip_max_temp\t= 120000,",
+        "59:};",
+        "60:",
+        "61:static struct tsens_features ipq8074_feat = {",
+        "62:\t.ver_major\t= VER_2_X,",
+        "63:\t.crit_int\t= 1,",
+        "64:\t.combo_int\t= 1,",
+        "65:\t.adc\t\t= 0,",
+        "66:\t.srot_split\t= 1,",
+        "67:\t.max_sensors\t= 16,",
+        "68:\t.trip_min_temp\t= 0,",
+        "69:\t.trip_max_temp\t= 204000,",
+        "70:};",
+        "71:",
+        "72:static struct tsens_features ipq5332_feat = {",
+        "73:\t.ver_major\t= VER_2_X_NO_RPM,",
+        "74:\t.crit_int\t= 1,",
+        "75:\t.combo_int\t= 1,",
+        "76:\t.adc\t\t= 0,",
+        "77:\t.srot_split\t= 1,",
+        "78:\t.max_sensors\t= 16,",
+        "79:\t.trip_min_temp\t= 0,",
+        "80:\t.trip_max_temp\t= 204000,",
+        "81:};",
+        "82:",
+        "189:\tstruct device *dev = priv->dev;",
+        "190:\tu32 mode, base0, base1;",
+        "191:\tint i, ret;",
+        "192:",
+        "193:\tif (priv->num_sensors > MAX_SENSORS)",
+        "194:\t\treturn -EINVAL;",
+        "195:",
+        "196:\tret = nvmem_cell_read_variable_le_u32(priv->dev, \"mode\", &mode);",
+        "197:\tif (ret == -ENOENT)",
+        "209:\tif (ret < 0)",
+        "210:\t\treturn ret;",
+        "211:",
+        "212:\t/* Calibrate each sensor */",
+        "213:\tfor (i = 0; i < priv->num_sensors; i++) {",
+        "214:\t\tret = tsens_v2_calibrate_sensor(dev, &priv->sensor[i], priv->srot_map,",
+        "215:\t\t\t\t\t\tmode, base0, base1);",
+        "216:\t\tif (ret < 0)",
+        "217:\t\t\treturn ret;",
+        "219:",
+        "220:\treturn 0;",
+        "221:}",
+        "222:",
+        "223:static int __init init_tsens_v2_no_rpm(struct tsens_priv *priv)",
+        "224:{",
+        "225:\tstruct device *dev = priv->dev;",
+        "226:\tint i, ret;",
+        "227:\tu32 val = 0;",
+        "243:\tregmap_field_write(priv->rf[TSENS_SW_RST], SW_RST_ASSERT);",
+        "244:",
+        "245:\tregmap_field_write(priv->rf[MAIN_MEASURE_PERIOD], MEASURE_PERIOD_2mSEC);",
+        "246:",
+        "247:\t/* Enable available sensors */",
+        "248:\tfor (i = 0; i < priv->num_sensors; i++)",
+        "249:\t\tval |= 1 << priv->sensor[i].hw_id;",
+        "250:",
+        "251:\tregmap_field_write(priv->rf[SENSOR_EN], val);",
+        "252:",
+        "277:\t.fields\t= tsens_v2_regfields,",
+        "278:};",
+        "279:",
+        "280:static const struct tsens_ops ops_ipq5332 = {",
+        "281:\t.init\t\t= init_tsens_v2_no_rpm,",
+        "282:\t.get_temp\t= get_temp_tsens_valid,",
+        "283:\t.calibrate\t= tsens_v2_calibration,",
+        "284:};",
+        "285:",
+        "286:const struct tsens_plat_data data_ipq5332 = {",
+        "287:\t.num_sensors\t= 5,",
+        "288:\t.ops\t\t= &ops_ipq5332,",
+        "289:\t.hw_ids\t\t= (unsigned int []){11, 12, 13, 14, 15},",
+        "290:\t.feat\t\t= &ipq5332_feat,",
+        "291:\t.fields\t\t= tsens_v2_regfields,",
+        "292:};",
+        "293:",
+        "294:const struct tsens_plat_data data_ipq5424 = {",
+        "295:\t.num_sensors\t= 7,",
+        "296:\t.ops\t\t= &ops_ipq5332,",
+        "297:\t.hw_ids\t\t= (unsigned int []){9, 10, 11, 12, 13, 14, 15},",
+        "298:\t.feat\t\t= &ipq5332_feat,",
+        "299:\t.fields\t\t= tsens_v2_regfields,",
+        "300:};",
+        "301:",
+        "302:/* Kept around for backward compatibility with old msm8996.dtsi */",
+        "303:struct tsens_plat_data data_8996 = {",
+        "304:\t.num_sensors\t= 13,",
+        "305:\t.ops\t\t= &ops_generic_v2,",
+        "306:\t.feat\t\t= &tsens_v2_feat,",
+        "307:\t.fields\t= tsens_v2_regfields,",
+        "308:};"
+      ]
+    }
+  },
+  "read_only": true,
+  "native_tsens_validated": false
+}

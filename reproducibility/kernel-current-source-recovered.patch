@@ -1,0 +1,420 @@
+--- a/arch/arm64/boot/dts/qcom/hamoa-pmics.dtsi
++++ b/arch/arm64/boot/dts/qcom/hamoa-pmics.dtsi
+@@ -11,6 +11,7 @@
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ #include <dt-bindings/spmi/spmi.h>
+ #include "qcom-adc5-gen3.h"
++#include <dt-bindings/iio/adc/qcom,spmi-vadc.h>
+ 
+ / {
+ 	thermal-zones {
+@@ -274,23 +275,6 @@
+ 			#interrupt-cells = <2>;
+ 		};
+ 
+-		pmk8550_adc_tm: adc@9000 {
+-			compatible = "qcom,spmi-adc5-gen3";
+-			reg = <0x9000>, <0x9100>;
+-			interrupts = <0x0 0x90 0x1 IRQ_TYPE_EDGE_RISING>,
+-				     <0x0 0x91 0x1 IRQ_TYPE_EDGE_RISING>;
+-			interrupt-names = "sdam0",
+-					  "sdam1";
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			#io-channel-cells = <1>;
+-			#thermal-sensor-cells = <1>;
+-
+-			channel@18e {
+-				reg = <PM8550_ADC5_GEN3_VPH_PWR(1)>;
+-				label = "VPH_PWR";
+-			};
+-		};
+ 
+ 		pmk8550_pwm: pwm {
+ 			compatible = "qcom,pmk8550-pwm";
+@@ -300,7 +284,7 @@
+ 			status = "disabled";
+ 		};
+ 
+-		pmk8550_vadc: adc@9000 {
++		pmk8550_adc_tm: pmk8550_vadc: adc@9000 {
+ 			compatible = "qcom,spmi-adc5-gen3";
+ 			reg = <0x9000>, <0x9100>;
+ 			interrupts-extended = <&spmi_bus0 0x0 0x90 0x1 IRQ_TYPE_EDGE_RISING>,
+@@ -308,6 +292,7 @@
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			#io-channel-cells = <1>;
++			#thermal-sensor-cells = <1>;
+ 			pinctrl-0 = <&sys_therm_0_gpio3>, <&sys_therm_1_gpio4>;
+ 			pinctrl-names = "default";
+ 
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1678,3 +1678,169 @@
+ 
+ 	status = "okay";
+ };
++
++/* DIAGNOSTIC 2026-10-11: disable pcie_south_anoc to test whether its qnoc
++ * probe is the silent-reset site observed right after the 1680000 probe.
++ * Local-only experiment, not for publication. */
++&pcie_south_anoc {
++	status = "disabled";
++};
++
++/* DIAGNOSTIC 2026-10-11 (0007): disable the five tail NoCs (gem, nsp,
++ * lpass ag/lpiaon/lpicx) to test whether a late qnoc probe is the
++ * silent-reset site observed after the 1770000/1780000 probes.
++ * Local-only experiment, not for publication. */
++&gem_noc { status = "disabled"; };
++&nsp_noc { status = "disabled"; };
++&lpass_ag_noc { status = "disabled"; };
++&lpass_lpiaon_noc { status = "disabled"; };
++&lpass_lpicx_noc { status = "disabled"; };
++
++/* DIAGNOSTIC 2026-10-15 (0008): minimal-boot round. Disable PCIe,
++ * WLAN/WWAN/display/NVMe rails, thermal sensors, display and UFS
++ * PHYs. Boot hung-on-reset right after the 9.45s regulator retry
++ * burst; cut every non-essential pending family at once. USB and
++ * core (clocks/pinctrl/SCM/PMIC) stay enabled. Local-only, not for
++ * publication. */
++&pcie3 { status = "disabled"; };
++&pcie6a { status = "disabled"; };
++&pcie5 { status = "disabled"; };
++&pcie4 { status = "disabled"; };
++&pcie3_phy { status = "disabled"; };
++&pcie6a_phy { status = "disabled"; };
++&pcie5_phy { status = "disabled"; };
++&pcie4_phy { status = "disabled"; };
++&vreg_edp_3p3 { status = "disabled"; };
++&vreg_misc_3p3 { status = "disabled"; };
++&vreg_pcie3_nvme { status = "disabled"; };
++&vreg_wcn_0p95 { status = "disabled"; };
++&vreg_wcn_1p9 { status = "disabled"; };
++&vreg_wcn_3p3 { status = "disabled"; };
++&vreg_wwan { status = "disabled"; };
++&tsens0 { status = "disabled"; };
++&tsens1 { status = "disabled"; };
++&tsens2 { status = "disabled"; };
++&tsens3 { status = "disabled"; };
++&mdss_dp2_phy { status = "disabled"; };
++&mdss_dp3_phy { status = "disabled"; };
++&ufs_mem_phy { status = "disabled"; };
++
++/* DIAGNOSTIC 2026-10-15 (0009): delete firmware:scm interconnects.
++ * SCM's icc path (aggre2 + mc_virt) never resolves on this machine,
++ * so SCM defers forever; the X1E PDC quirk hard-requires SCM, and
++ * TLMM (wakeup-parent PDC), GPIO, USB PHYs and USB storage hang
++ * behind it. devm_of_icc_get treats a missing property as no-vote
++ * (NULL path), so SCM probes without bus voting. Local-only, not
++ * for publication. */
++&scm {
++	/delete-property/ interconnects;
++};
++
++/* DIAGNOSTIC 2026-10-16 (0010): re-enable gem_noc. dwc3's apps-usb
++ * icc path runs gem->config_noc, so the 0007 disable stalls USB
++ * forever (no rootfs). If the 0.51s reset returns, gem was the
++ * crasher and USB needs another route. Local-only, not for
++ * publication. */
++&gem_noc { status = "okay"; };
++
++/* DIAGNOSTIC 2026-10-16 (0011): gem back off (its probe resets the
++ * machine in 4s wall); reroute each dwc3 apps-usb path onto the
++ * port's own usb-ddr pair so USB can bind without gem. Votes land
++ * on the same working path twice (harmless for live boot).
++ * Local-only, not for publication. */
++&gem_noc { status = "disabled"; };
++&usb_2 { interconnects = <0xe8 0x00 0x07 0x18 0x01 0x07 0xe8 0x00 0x07 0x18 0x01 0x07>; };
++&usb_mp { interconnects = <0xe8 0x01 0x07 0x18 0x01 0x07 0xe8 0x01 0x07 0x18 0x01 0x07>; };
++&usb_1_ss0 { interconnects = <0xe5 0x00 0x07 0x18 0x01 0x07 0xe5 0x00 0x07 0x18 0x01 0x07>; };
++&usb_1_ss1 { interconnects = <0xe5 0x01 0x07 0x18 0x01 0x07 0xe5 0x01 0x07 0x18 0x01 0x07>; };
++
++/* DIAGNOSTIC 2026-10-16 (0012): disable gpu + gmu. GPU binding to
++ * its IOMMU group at ~9.26s is immediately followed by display
++ * death (without SMMU the same boot lived to 19.4s+). Keep the
++ * console on the firmware framebuffer until GPU/SMMU is properly
++ * brought up. Local-only, not for publication. */
++&gpu { status = "disabled"; };
++&gmu { status = "disabled"; };
++
++/* DIAGNOSTIC 2026-10-16 (0013): disable the display subsystem. The
++ * mdss driver (from initramfs modules) binds the subsystem and takes
++ * over the firmware framebuffer, but the panel never lights, so the
++ * screen goes black-with-backlight and all later text is invisible.
++ * Keep the console on simplefb until panel bring-up is solved.
++ * Local-only, not for publication. */
++&mdss { status = "disabled"; };
++
++/* DIAGNOSTIC 2026-10-16 (0014): label-based USB reroute. Replaces
++ * 0011, which used stale raw phandle numbers (one now resolves to
++ * the cpucp mailbox, breaking path parsing). Each dwc3 apps-usb
++ * path rerouted onto its own usb-ddr pair via &labels, which dtc
++ * resolves at compile time. gem stays off. Local-only, not for
++ * publication. */
++&usb_1_ss2 { interconnects = <&usb_south_anoc MASTER_USB3_2 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_2 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>; };
++&usb_2 { interconnects = <&usb_north_anoc MASTER_USB2 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_north_anoc MASTER_USB2 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>; };
++&usb_mp { interconnects = <&usb_north_anoc MASTER_USB3_MP QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_north_anoc MASTER_USB3_MP QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>; };
++&usb_1_ss0 { interconnects = <&usb_south_anoc MASTER_USB3_0 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_0 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>; };
++&usb_1_ss1 { interconnects = <&usb_south_anoc MASTER_USB3_1 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_1 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>; };
++
++/* DIAGNOSTIC 2026-10-16 (0015): apps-usb via config_noc. The 0014
++ * duplicate-pair is rejected by the icc core (same route twice).
++ * Point apps-usb at config_noc instead (stock shape, gem
++ * replaced). If the graph lacks that link it still defers, and
++ * the fallback is making apps-usb optional in dwc3-qcom.
++ * Local-only, not for publication. */
++&usb_1_ss2 { interconnects = <&usb_south_anoc MASTER_USB3_2 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_2 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_2 QCOM_ICC_TAG_ALWAYS>; };
++&usb_2 { interconnects = <&usb_north_anoc MASTER_USB2 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_north_anoc MASTER_USB2 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB2 QCOM_ICC_TAG_ALWAYS>; };
++&usb_mp { interconnects = <&usb_north_anoc MASTER_USB3_MP QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_north_anoc MASTER_USB3_MP QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_MP QCOM_ICC_TAG_ALWAYS>; };
++&usb_1_ss0 { interconnects = <&usb_south_anoc MASTER_USB3_0 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_0 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_0 QCOM_ICC_TAG_ALWAYS>; };
++&usb_1_ss1 { interconnects = <&usb_south_anoc MASTER_USB3_1 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_1 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_1 QCOM_ICC_TAG_ALWAYS>; };
++
++/* DIAGNOSTIC (0018): bring up the USB repeater's GENI I2C5 dependency
++ * closure without re-enabling the reset-associated GEM NoC. qup-config
++ * directly references disabled gem_noc; qup-memory also crosses it.
++ * Missing ICC properties produce NULL no-vote paths, handled by the GENI
++ * and ICC APIs. Enable only the existing GPI0 provider used by channel 5;
++ * retain its existing IOMMU mapping and channel mask. No PHY voltage,
++ * connector wiring, or unrelated I2C/controller changes. Local-only.
++ */
++&i2c5 {
++	/delete-property/ interconnects;
++	/delete-property/ interconnect-names;
++};
++
++&gpi_dma0 {
++	status = "okay";
++};
++
++/* DIAGNOSTIC (0019): restore only the configured I2C9 keyboard supply
++ * and its existing GPI1 DMA provider. GEM remains disabled after native
++ * resets; use the same narrowly scoped NULL/no-vote ICC path as I2C5.
++ * Keep voltage, GPIO, IRQ, DMA channel/mask and IOMMU definitions intact.
++ * No display, PCIe, NVMe or other controller enablement. Local-only.
++ */
++&vreg_misc_3p3 {
++	status = "okay";
++};
++
++&i2c9 {
++	/delete-property/ interconnects;
++	/delete-property/ interconnect-names;
++};
++
++&gpi_dma1 {
++	status = "okay";
++};
++
++/* DIAGNOSTIC (0020): restore only CPU thermal sensors TSENS0/1.
++ * TSENS0/1 carry the configured CPU0/CPU1 core top/btm and
++ * cpuss0/cpuss1 top/btm zones (20 types). TSENS2 (GPU/camera,
++ * cooling-maps reference disabled GPU) and TSENS3 (physically
++ * present/unconfigured per purwa.dtsi) stay disabled. No ICC,
++ * clock, regulator, trip or cooling-map changes. Local-only.
++ */
++&tsens0 {
++	status = "okay";
++};
++
++&tsens1 {
++	status = "okay";
++};
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -1957,11 +1957,6 @@
+ 		return ret;
+ 	}
+ 
+-	if (rproc->state == RPROC_DELETED) {
+-		ret = -ENODEV;
+-		dev_err(dev, "can't boot deleted rproc %s\n", rproc->name);
+-		goto unlock_mutex;
+-	}
+ 
+ 	/* skip the boot or attach process if rproc is already powered up */
+ 	if (atomic_inc_return(&rproc->power) > 1) {
+--- a/drivers/remoteproc/qcom_q6v5.c
++++ b/drivers/remoteproc/qcom_q6v5.c
+@@ -272,13 +272,8 @@
+ 
+ 	q6v5->running = false;
+ 
+-<<<<<<< HEAD
+ 	/* A watchdog/fatal IRQ clears running; logical crashes still need a stop. */
+ 	if (!was_running || qcom_sysmon_shutdown_acked(sysmon))
+-=======
+-	/* Don't perform SMP2P dance if remote crashed or already stopped */
+-	if (q6v5->rproc->state == RPROC_CRASHED || qcom_sysmon_shutdown_acked(sysmon))
+->>>>>>> 0ca7f0fc41200 (remoteproc: qcom_q6v5: Send SMP2P stop signal in attached/detached state)
+ 		return 0;
+ 
+ 	qcom_smem_state_update_bits(q6v5->state,
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -221,9 +221,9 @@
+ 	 * auth_and_reset() was successful, but in other cases clean it up
+ 	 * here.
+ 	 */
+-	qcom_scm_pas_metadata_release(pas->pas_ctx);
++	qcom_pas_metadata_release(pas->pas_ctx);
+ 	if (pas->dtb_pas_id)
+-		qcom_scm_pas_metadata_release(pas->dtb_pas_ctx);
++		qcom_pas_metadata_release(pas->dtb_pas_ctx);
+ 
+ 	return 0;
+ }
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -131,30 +131,38 @@
+ 
+ static int dwc3_qcom_interconnect_enable(struct dwc3_qcom *qcom)
+ {
+-	int ret;
+-
+-	ret = icc_enable(qcom->icc_path_ddr);
+-	if (ret)
+-		return ret;
+-
+-	ret = icc_enable(qcom->icc_path_apps);
+-	if (ret)
+-		icc_disable(qcom->icc_path_ddr);
++	int ret = 0;
++
++	if (qcom->icc_path_ddr) {
++		ret = icc_enable(qcom->icc_path_ddr);
++		if (ret)
++			return ret;
++	}
++
++	if (qcom->icc_path_apps) {
++		ret = icc_enable(qcom->icc_path_apps);
++		if (ret && qcom->icc_path_ddr)
++			icc_disable(qcom->icc_path_ddr);
++	}
+ 
+ 	return ret;
+ }
+ 
+ static int dwc3_qcom_interconnect_disable(struct dwc3_qcom *qcom)
+ {
+-	int ret;
+-
+-	ret = icc_disable(qcom->icc_path_ddr);
+-	if (ret)
+-		return ret;
+-
+-	ret = icc_disable(qcom->icc_path_apps);
+-	if (ret)
+-		icc_enable(qcom->icc_path_ddr);
++	int ret = 0;
++
++	if (qcom->icc_path_ddr) {
++		ret = icc_disable(qcom->icc_path_ddr);
++		if (ret)
++			return ret;
++	}
++
++	if (qcom->icc_path_apps) {
++		ret = icc_disable(qcom->icc_path_apps);
++		if (ret && qcom->icc_path_ddr)
++			icc_enable(qcom->icc_path_ddr);
++	}
+ 
+ 	return ret;
+ }
+@@ -173,42 +181,57 @@
+ 
+ 	qcom->icc_path_ddr = of_icc_get(dev, "usb-ddr");
+ 	if (IS_ERR(qcom->icc_path_ddr)) {
+-		return dev_err_probe(dev, PTR_ERR(qcom->icc_path_ddr),
+-				     "failed to get usb-ddr path\n");
++		/* DIAGNOSTIC 2026-10-17 (0017): usb-ddr optional for live
++		 * boot. Route usb_south_anoc -> ... -> gem_noc -> mc_virt is
++		 * severed (gem_noc stays off: 0.51s reset site), so path_find
++		 * defers forever _after_ the xHCI child already bound,
++		 * tearing USB down. Local-only, not for publication. */
++		dev_warn(dev, "usb-ddr path unavailable (%ld), continuing without it\n",
++			 PTR_ERR(qcom->icc_path_ddr));
++		qcom->icc_path_ddr = NULL;
+ 	}
+ 
+ 	qcom->icc_path_apps = of_icc_get(dev, "apps-usb");
+ 	if (IS_ERR(qcom->icc_path_apps)) {
+-		ret = dev_err_probe(dev, PTR_ERR(qcom->icc_path_apps),
+-				    "failed to get apps-usb path\n");
+-		goto put_path_ddr;
++		/* DIAGNOSTIC 2026-10-16 (0016): apps-usb optional for live
++		 * boot (gem_noc stays off; its provider never registers).
++		 * Local-only, not for publication. */
++		dev_warn(dev, "apps-usb path unavailable (%ld), continuing without it\n",
++			 PTR_ERR(qcom->icc_path_apps));
++		qcom->icc_path_apps = NULL;
+ 	}
+ 
+ 	max_speed = usb_get_maximum_speed(qcom->dwc.dev);
+-	if (max_speed >= USB_SPEED_SUPER || max_speed == USB_SPEED_UNKNOWN) {
+-		ret = icc_set_bw(qcom->icc_path_ddr,
+-				USB_MEMORY_AVG_SS_BW, USB_MEMORY_PEAK_SS_BW);
+-	} else {
+-		ret = icc_set_bw(qcom->icc_path_ddr,
+-				USB_MEMORY_AVG_HS_BW, USB_MEMORY_PEAK_HS_BW);
+-	}
+-	if (ret) {
+-		dev_err(dev, "failed to set bandwidth for usb-ddr path: %d\n", ret);
+-		goto put_path_apps;
+-	}
+-
+-	ret = icc_set_bw(qcom->icc_path_apps, APPS_USB_AVG_BW, APPS_USB_PEAK_BW);
+-	if (ret) {
+-		dev_err(dev, "failed to set bandwidth for apps-usb path: %d\n", ret);
+-		goto put_path_apps;
++	if (qcom->icc_path_ddr) {
++		if (max_speed >= USB_SPEED_SUPER || max_speed == USB_SPEED_UNKNOWN) {
++			ret = icc_set_bw(qcom->icc_path_ddr,
++					USB_MEMORY_AVG_SS_BW, USB_MEMORY_PEAK_SS_BW);
++		} else {
++			ret = icc_set_bw(qcom->icc_path_ddr,
++					USB_MEMORY_AVG_HS_BW, USB_MEMORY_PEAK_HS_BW);
++		}
++		if (ret) {
++			dev_err(dev, "failed to set bandwidth for usb-ddr path: %d\n", ret);
++			goto put_path_apps;
++		}
++	}
++
++	if (qcom->icc_path_apps) {
++		ret = icc_set_bw(qcom->icc_path_apps, APPS_USB_AVG_BW, APPS_USB_PEAK_BW);
++		if (ret) {
++			dev_err(dev, "failed to set bandwidth for apps-usb path: %d\n", ret);
++			goto put_path_apps;
++		}
+ 	}
+ 
+ 	return 0;
+ 
+ put_path_apps:
+-	icc_put(qcom->icc_path_apps);
++	if (qcom->icc_path_apps)
++		icc_put(qcom->icc_path_apps);
+ put_path_ddr:
+-	icc_put(qcom->icc_path_ddr);
++	if (qcom->icc_path_ddr)
++		icc_put(qcom->icc_path_ddr);
+ 	return ret;
+ }
+ 
+@@ -220,8 +243,10 @@
+  */
+ static void dwc3_qcom_interconnect_exit(struct dwc3_qcom *qcom)
+ {
+-	icc_put(qcom->icc_path_ddr);
+-	icc_put(qcom->icc_path_apps);
++	if (qcom->icc_path_ddr)
++		icc_put(qcom->icc_path_ddr);
++	if (qcom->icc_path_apps)
++		icc_put(qcom->icc_path_apps);
+ }
+ 
+ /* Only usable in contexts where the role can not change. */

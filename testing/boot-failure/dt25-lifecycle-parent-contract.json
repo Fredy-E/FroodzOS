@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "tests_run": 16,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "synthetic_fixtures_only": true,
+  "native_hardware_validated": false,
+  "vm_retest_required_after_rebuild": true,
+  "old_9c_image_rejected_for_native": true,
+  "exit_code": 0,
+  "sources": {
+    "builder/diagnostics/kestrel-graphics.service": {
+      "sha256": "f5a10461a439ba1741d238def08279bebf5c61da03d46b96af11521152be73bd",
+      "bytes": 1217
+    },
+    "builder/diagnostics/kestrel-graphics-sddm.service": {
+      "sha256": "6a8887e7f49757efb8c0594c61cbe1236a42df3816752c9d34878454ee77d4a5",
+      "bytes": 992
+    },
+    "testing/boot-failure/test-dt25-graphics-unit-contract.py": {
+      "sha256": "dd7cb09bc71451f5e313a5535f74fff66247b48b94996bf3d8ac8326e27300a3",
+      "bytes": 26720
+    }
+  },
+  "review_pending": "deleg_03f10f91",
+  "old_candidate_preserved_not_accepted": true
+}

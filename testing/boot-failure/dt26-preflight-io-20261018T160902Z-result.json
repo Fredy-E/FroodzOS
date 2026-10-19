@@ -1,0 +1,96 @@
+{
+  "accepted_for_build": false,
+  "acceptance_note": "pending parent re-review after narrow correction",
+  "budgets_limits_preserved": {
+    "CLEANUP_BUDGET_S": 25,
+    "MAX_SECONDS": 180,
+    "MINIMUM_MC": 5000,
+    "STOP_MC": 80000
+  },
+  "changed_file": "D:/CachyOS-ARM64/builder/diagnostics/kestrel-graphics-supervisor.py",
+  "changed_lines": "_atomic_write_json tmp-file fsync block + post-replace parent-dir fsync block only",
+  "contract_preserved": {
+    "display_empty_wayland_ok": true,
+    "explicit_remote_no_false_required": true,
+    "numeric_user_plus_name_no_uid_prop": true,
+    "oversize_concise_refusal": true,
+    "preflight_cap_64kib": true,
+    "required_sensor_types_20": true
+  },
+  "fix": "_atomic_write_json no longer swallows tmp-file fsync OSError: any file fsync failure skips os.replace, unlinks the tmp file, and returns False; post-replace parent-dir fsync added best-effort only (failures tolerated so unsupported filesystems cannot turn a durable write into a failure)",
+  "green_after_fix": {
+    "command": "wsl.exe -d CachyOSBuilder -- python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt26-preflight-io.py",
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "run": 6,
+    "skipped": 0
+  },
+  "io_regression_suite": "D:/CachyOS-ARM64/testing/boot-failure/test-dt26-preflight-io.py",
+  "io_regression_suite_sha256": "d6d8d4fab8659bb26f01e0d933defc05f29a5ef685c8c39f1c16cf78b8597671",
+  "new_tests": [
+    "actual writer existing-good + injected regular-file fsync EIO returns False, preserves last-good bytes, leaves no .tmp-preflight- litter",
+    "full run_bounded_session pass with snapshot fsync failure returns rc 2, zero private kestrel-graphics-sddm.service starts, no launch-allowed marker, prior preflight.json bytes untouched",
+    "genuine atomic success: 20-sensor policy set + simpledrm snapshot passes, private SDDM starts only after complete structured preflight-pass save (<=64KiB, native_graphics_validated false)",
+    "oversize payload writes concise preflight-snapshot-too-large refusal and returns False (cap path)",
+    "direct oversize _atomic_write_json returns False and writes nothing",
+    "direct small _atomic_write_json still returns True with no litter (success path)"
+  ],
+  "no_builds_vm_usb_fat_rootfs_firmware_provider_secrets_shadow_or_vt_changes": true,
+  "pristine_sha256_pre_fix": "1bbd90cb74f8d31765e88e17c049afe193733e1902eb27d569d9370f955e2584",
+  "red_before_fix": {
+    "command": "wsl.exe -d CachyOSBuilder -- python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt26-preflight-io.py (against pristine source)",
+    "errors": 0,
+    "failed_tests": [
+      "Dt26PreflightIoFsync.test_atomic_writer_file_fsync_eio_returns_false_preserves_last_good (returned True)",
+      "Dt26PreflightIoFsync.test_pass_snapshot_fsync_failure_starts_nothing_preserves_prior (private SDDM started despite fsync EIO)"
+    ],
+    "failures": 2,
+    "passed": false,
+    "raw_output_scratch": "C:/Users/USER/AppData/Local/hermes/cache/scratch/dt26-io/red-before-fix.txt",
+    "run": 6,
+    "skipped": 0
+  },
+  "runner": "CachyOSBuilder WSL distro, python3.14.7, import-based fake runners (FakeClock, no supervisor main() executed, no hardware/QEMU)",
+  "scope": "OWN builder/diagnostics/kestrel-graphics-supervisor.py _atomic_write_json only; NEW test-dt26-preflight-io.py + this evidence; all old suites/evidence read-only",
+  "session_behavior_unchanged": true,
+  "session_cleanup_behavior_unchanged": true,
+  "source_sha256_post_fix": "7ece0b64b70df38402d4858d84ed28274c739ba85b9ec281ff1573036ea31fa9",
+  "suites_existing": [
+    {
+      "discovered": 16,
+      "errors": 0,
+      "failures": 0,
+      "file": "D:/CachyOS-ARM64/testing/boot-failure/test-dt25-graphics-supervisor.py",
+      "passed": true,
+      "run": 16,
+      "skipped": 0
+    },
+    {
+      "discovered": 19,
+      "errors": 0,
+      "failures": 0,
+      "file": "D:/CachyOS-ARM64/testing/boot-failure/test-dt26-session-supervisor.py",
+      "passed": true,
+      "run": 19,
+      "skipped": 0
+    },
+    {
+      "discovered": 14,
+      "errors": 0,
+      "failures": 0,
+      "file": "D:/CachyOS-ARM64/testing/boot-failure/test-dt26-session-fix.py",
+      "passed": true,
+      "run": 14,
+      "skipped": 0
+    }
+  ],
+  "suites_existing_total": {
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "run": 49,
+    "skipped": 0
+  },
+  "timestamp_utc": "2026-10-18T16:09:02Z"
+}

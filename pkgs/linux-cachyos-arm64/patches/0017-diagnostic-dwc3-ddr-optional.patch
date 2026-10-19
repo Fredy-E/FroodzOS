@@ -1,0 +1,63 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] dwc3-qcom: usb-ddr optional
+
+Rationale: native firmware checkpoints proved the dwc3 parent defers
+on the usb-ddr lookup _after_ the xHCI child bound, tearing USB down.
+Static graph walk: usb-ddr = usb_south_anoc -> usb_center_anoc ->
+system_noc -> qnm_snoc_sf -> [gem_noc] -> qns_llcc -> llcc_mc ->
+ebi(mc_virt). gem_noc stays disabled (0.51s reset site), so path_find
+can never complete. Make usb-ddr best-effort with a loud warning and
+NULL guards (mirrors 0016 for apps-usb); enables/validates whether the
+host stays up and enumerates without the DDR vote. NOT for publication
+or general ARM64 support.
+
+---
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ interconnect_enable
+-	ret = icc_enable(qcom->icc_path_ddr);
+-	if (ret)
+-		return ret;
++	if (qcom->icc_path_ddr) {
++		ret = icc_enable(qcom->icc_path_ddr);
++		if (ret)
++			return ret;
++	}
+@@ interconnect_enable apps-rollback
+-		if (ret)
+-			icc_disable(qcom->icc_path_ddr);
++		if (ret && qcom->icc_path_ddr)
++			icc_disable(qcom->icc_path_ddr);
+@@ interconnect_disable
+-	ret = icc_disable(qcom->icc_path_ddr);
+-	if (ret)
+-		return ret;
++	if (qcom->icc_path_ddr) {
++		ret = icc_disable(qcom->icc_path_ddr);
++		if (ret)
++			return ret;
++	}
+@@ interconnect_disable apps-rollback
+-		if (ret)
+-			icc_enable(qcom->icc_path_ddr);
++		if (ret && qcom->icc_path_ddr)
++			icc_enable(qcom->icc_path_ddr);
+@@ interconnect_init get
+-		return dev_err_probe(dev, PTR_ERR(qcom->icc_path_ddr),
+-				     "failed to get usb-ddr path\n");
++		dev_warn(dev, "usb-ddr path unavailable (%ld), continuing without it\n",
++			 PTR_ERR(qcom->icc_path_ddr));
++		qcom->icc_path_ddr = NULL;
+@@ interconnect_init bw
+-	if (max_speed >= USB_SPEED_SUPER || max_speed == USB_SPEED_UNKNOWN) {
++	if (qcom->icc_path_ddr) {
++	if (max_speed >= USB_SPEED_SUPER || max_speed == USB_SPEED_UNKNOWN) {
+@@ interconnect labels
+ put_path_ddr:
+-	icc_put(qcom->icc_path_ddr);
++	if (qcom->icc_path_ddr)
++		icc_put(qcom->icc_path_ddr);
+@@ interconnect_exit
+-	icc_put(qcom->icc_path_ddr);
++	if (qcom->icc_path_ddr)
++		icc_put(qcom->icc_path_ddr);

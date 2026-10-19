@@ -1,0 +1,59 @@
+{
+  "artifacts": {
+    "builder/diagnostics/kestrel-graphics-env.conf (unchanged)": "d16d533a747afdefbc48897123c643df5b9dbccb857df34c04a1c9b21b6f65fa",
+    "builder/diagnostics/kestrel-graphics-policy.json (unchanged)": "b84bf2daa71899670ee8b57a578081db473525af4e857d8ef74b8a5d5c6c5625",
+    "builder/diagnostics/kestrel-graphics-sddm.service (new)": "ea1e811df4887e11da0440342747a4b53d8470c0874640a5989bd751d2d1935a",
+    "builder/diagnostics/kestrel-graphics-supervisor.py": "3071ea004cab913ac121f7f16a19d16479c83ed2b0d4f8adf0e8ea1a37519ff3",
+    "builder/diagnostics/kestrel-graphics-tty2.conf (unchanged)": "d21a778756d25320f2215bbdc90d32d6182782493a1b051146febf899333267d",
+    "builder/diagnostics/kestrel-graphics.service": "228b259ca136e362bb35097cbac7bb636d094af8750b7c0730ab054971dbdab3",
+    "builder/diagnostics/kestrel_graphics_guard.py (other worker, not touched here)": "f19f4e84d26021d0be7d5a9be12e45626b425aff87de7a33f800b6fee0da5319",
+    "builder/initcpio/hooks/kestrel_graphics": "63e1c93b04a1220044ff84228f44db594e431bf137d7a225bfb9c4da09fe2603",
+    "builder/initcpio/install/kestrel_graphics": "e6889c488d62dacaa85a3e9efdeeae89e84fd38832afef6fe6c1c0bea7eafce0",
+    "testing/boot-failure/test-dt25-graphics-staging.py": "ab5cf6265c76216889a44c668c893a2202d491f91cce5133e2ec9c6247c42738",
+    "testing/boot-failure/test-dt25-graphics-supervisor.py": "a60e40b0a950c1654db3d9fdc43b5c1e2a2c592b49839af62075bf97be9d7834"
+  },
+  "evidence": "dt25-software-v2-graphics GREEN after owned-lifecycle fix (executed fixtures, zero required skips)",
+  "fix_brief_closure": {
+    "RestartAlways_fixed": "Private unit Restart=no + display-manager/sddm drop-ins Restart=no; verified in staged files.",
+    "build_gate_fixed": "Install returns 1 when policy missing; runtime missing policy fails closed via hook cp fail + supervisor POLICY_FAIL.",
+    "cleanup_budget_fixed": "CLEANUP_BUDGET_S=25 fits TimeoutStopSec=30; per-cmd <=5s, verify <=3s; status.json bounded_cleanup true only when owned stopped+gone and tty2 active; else INCOMPLETE + return 1.",
+    "comm_mismatch_fixed": "No pkill at all (20-char comm issue eliminated); narrow systemctl kill + loginctl kill-session on owned IDs only.",
+    "global_kills_fixed": "No pkill, no terminate-user, no display-manager start/stop in executable code; cleanup stops/kills ONLY owned unit, terminates ONLY owned session, verifies via is-active/show-session, records per-command results, claims success only when verified.",
+    "overlay_check_fixed": "Hook requires mountpoint + overlay FSTYPE (mockable findmnt) else rollback; persistent/ext4 and mount-fail rejected; partial-copy rollback verified by execution.",
+    "signal_reentrancy_fixed": "Handler sets pending_signal only, never nested cleanup; main loops observe flag and perform single bounded cleanup; idempotence tested + real subprocess TERM.",
+    "startup_bypass_fixed": "Private kestrel-graphics-sddm.service (PartOf, ConditionPathExists launch-allowed, no WantedBy) started via --no-block + ActiveState poll with temp/DRM observation; stock display-manager/sddm masked; supervisor multi-user.target.wants only; no graphical.target.wants.",
+    "text_mask_conflict_fixed": "Both hooks mask stock GUI; graphics never unmasks; verified with/without text-hook fixture; default.target untouched (multi-user runs under both defaults).",
+    "thermal_polling_during_start_wait_fixed": "Absolute monotonic deadline (180s fixed), START_POLL 1s / SESSION_POLL 1s / MONITOR 2s, preflight every sample during start/session/monitor; hot/loss aborts.",
+    "weak_Sessions_gate_fixed": "Enforces live UID 1000, seat0, Type wayland, Class user, State active, Service sddm*, Display non-empty, newly owned (baseline diff); existing GUI refuses without termination."
+  },
+  "native_hardware_validated": false,
+  "not_touched": [
+    "kestrel_graphics_guard.py (other writer owns class-symlink fix)",
+    "kestrel-graphics-policy.json",
+    "kestrel-text* helpers (byte-exact)",
+    "logger helpers",
+    "canonical builder/validator",
+    "Linux DT/kernel/rootfs",
+    "shared docs",
+    "USB/EFI/firmware/Kali/Windows/internaldisks/keys/shadow/credentials"
+  ],
+  "phase": "GREEN",
+  "read_only_preflight": true,
+  "reviewer_SPEC_FAIL_closed_by_execution": true,
+  "staging_command": "python3 test-dt25-graphics-staging.py (WSL CachyOSBuilder, project root derived from __file__)",
+  "staging_exit_code": 0,
+  "staging_result": "OK (14 tests, 0 failures, 0 errors, 0 skipped)",
+  "supervisor_command": "python3 test-dt25-graphics-supervisor.py (WSL CachyOSBuilder, deterministic fake clock/runner + real subprocess TERM/timeout with fake systemctl/loginctl only)",
+  "supervisor_exit_code": 0,
+  "supervisor_result": "OK (16 tests, 0 failures, 0 errors, 0 skipped)",
+  "synthetic_fixtures_only": true,
+  "total": "30 tests, 0 failures, 0 errors, 0 skipped",
+  "unresolved_limits": [
+    "No QEMU yet (synthetic fixtures + fake backends only)",
+    "No native services/hardware (live-rootfs facts from read-only inventory, not runtime proof)",
+    "No pixel/input proof (session-active != pixels, QPainter/nativepixels unverified)",
+    "Guard file changed externally by other worker (f19f... vs 2516...); this worker did not edit guard and uses explicit mock contract"
+  ],
+  "utc": "20261018T080500Z",
+  "verified_env": "LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe LP_NUM_THREADS=2 KWIN_COMPOSE=Q; no KWIN_DRM; 180s/80C; live/plasma UID1000 seat0 Wayland SDDM; tty2 fallback; SSH masked"
+}

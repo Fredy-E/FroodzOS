@@ -1,0 +1,8 @@
+{
+  "phase": "RED before implementation",
+  "command": "wsl.exe -d CachyOSBuilder -u root -- python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt25-graphics-guard.py",
+  "observed_exit_code": 1,
+  "observed_failure": "FileNotFoundError: /mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel_graphics_guard.py",
+  "synthetic_policy_tests_only": true,
+  "note": "Recorded from the preceding real terminal result; no native sensor/graphics claim."
+}

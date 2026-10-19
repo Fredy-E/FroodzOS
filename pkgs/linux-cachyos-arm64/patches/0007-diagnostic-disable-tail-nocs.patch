@@ -1,0 +1,26 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] disable five tail NoCs on Slim 3
+
+Rationale: native boot resets silently right after the 1770000/1780000
+interconnect probes in every config; the only qnoc nodes left untested
+are gem/nsp/lpass-ag/lpiaon/lpicx. Single-variable-group test whether
+a late qnoc probe is the reset site. NOT for publication or general
+ARM64 support.
+
+---
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1682,3 +1682,15 @@
+ &pcie_south_anoc {
+ 	status = "disabled";
+ };
++
++/* DIAGNOSTIC 2026-10-11 (0007): disable the five tail NoCs (gem, nsp,
++ * lpass ag/lpiaon/lpicx) to test whether a late qnoc probe is the
++ * silent-reset site observed after the 1770000/1780000 probes.
++ * Local-only experiment, not for publication. */
++&gem_noc { status = "disabled"; };
++&nsp_noc { status = "disabled"; };
++&lpass_ag_noc { status = "disabled"; };
++&lpass_lpiaon_noc { status = "disabled"; };
++&lpass_lpicx_noc { status = "disabled"; };

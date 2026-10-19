@@ -1,0 +1,9 @@
+{
+    "time_utc":  "20261011T090019Z",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "volume":  "E:\\EFI\\Linux",
+    "new_plain":  "b9730ea275848fcea2cd3e73e2806dc3682c9256a88b8820b9b9a94ee31b8550",
+    "new_log":  "b92eeb3d49ca7a0fbc3f95c4ba774155a5ee2e69e861834ecbcaca69932566d2",
+    "backup":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\usb-before-align-20261011T090019Z",
+    "hardware_boot_verified":  false
+}

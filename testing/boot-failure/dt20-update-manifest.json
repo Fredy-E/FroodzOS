@@ -1,0 +1,42 @@
+{
+  "revision": "v2-dt20",
+  "uki_sha256": "081b399d298addcf8665f4fbe350b7802b816e04957b78b1166d35eeebe7e09d",
+  "gates": [
+    "dt20-artifact-audit.json",
+    "dt20-logger-v2-v1-result.json",
+    "qemu-dt20-menu8-shell-fw-off-v1-result.json",
+    "qemu-dt20-menu8-systemd-fw-off-v1-result.json"
+  ],
+  "files": [
+    {
+      "path": "EFI/Linux/kestrel-live.efi",
+      "source": "testing/boot-failure/dt20-candidate.efi",
+      "bytes": 244442624,
+      "sha256": "081b399d298addcf8665f4fbe350b7802b816e04957b78b1166d35eeebe7e09d",
+      "old_sha256": "fae9defe9b49c2fd45269450da966dfeec1d89bd25b364a2a1c1ce0dcd7f3ec9"
+    },
+    {
+      "path": "boot/grub/grub.cfg",
+      "source": "testing/boot-failure/dt20-grub.cfg",
+      "bytes": 6186,
+      "sha256": "98f701d7345e2b59042a9b8c8ce2e0a5678fab498cd2977efe6e23ed663d2278",
+      "old_sha256": "1e02ed0abf31f27c619d04c830a31f7edfa79d0305373f039390617b473fc73d"
+    }
+  ],
+  "unchanged_files": [
+    {
+      "path": "EFI/BOOT/BOOTAA64.EFI",
+      "bytes": 2533256,
+      "sha256": "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab"
+    },
+    {
+      "path": "arch/aarch64/airootfs.sfs",
+      "bytes": 1748525056,
+      "sha256": "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+    }
+  ],
+  "menu_entries": 11,
+  "default_entry": 8,
+  "default_init": "/usr/bin/bash",
+  "firmware_clear_included": false
+}

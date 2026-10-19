@@ -1,0 +1,96 @@
+{
+  "tag": "dt26-parent-probe-20261018T151812044665Z",
+  "fixtures": "/home/builder/boot-failure-tests/dt26-parent-probe-20261018T151812044665Z",
+  "usb_writes": false,
+  "native_graphics_validated": false,
+  "partial_json_probe": {
+    "exit": 0,
+    "stderr": "",
+    "prior_valid_preserved": false,
+    "observed_bytes": "{\"reason\":"
+  },
+  "source_symlink_probe": {
+    "exit": 0,
+    "prior_valid_preserved": false,
+    "outside_fixture_copied": true
+  },
+  "size_growth_probe": {
+    "exit": 0,
+    "configured_cap": 32,
+    "destination_bytes": 130,
+    "prior_valid_preserved": false
+  },
+  "thermal_parse_probes": [
+    {
+      "input": "42000",
+      "exit": 0,
+      "stdout": "cpu0-0-top-thermal: 42.0 C (42000 mC)\n",
+      "stderr": ""
+    },
+    {
+      "input": "08000",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "bash: line 13: 08000: value too great for base (error token is \"08000\")\n"
+    },
+    {
+      "input": "-",
+      "exit": 0,
+      "stdout": "cpu0-0-top-thermal: -0.0 C (- mC)\n",
+      "stderr": ""
+    },
+    {
+      "input": "--1",
+      "exit": 0,
+      "stdout": "cpu0-0-top-thermal: -0.0 C (--1 mC)\n",
+      "stderr": ""
+    },
+    {
+      "input": "1-2",
+      "exit": 0,
+      "stdout": "cpu0-0-top-thermal: 0.0 C (1-2 mC)\n",
+      "stderr": ""
+    }
+  ],
+  "logger_clock_mechanism_present": false,
+  "logger_samples_not_seconds": true,
+  "systemctl_comma_properties_genuine": {
+    "exit": 0,
+    "stdout": "ActiveState=active\nSubState=running\nResult=success\n",
+    "stderr": ""
+  },
+  "frozen_sfs_presence": {
+    "usr/bin/chvt": "-rwxr-xr-x root/root             67928 2026-06-04 16:51 squashfs-root/usr/bin/chvt",
+    "usr/bin/timeout": "-rwxr-xr-x root/root             68448 2026-09-28 13:57 squashfs-root/usr/bin/timeout",
+    "usr/bin/loginctl": "-rwxr-xr-x root/root             71240 2026-09-25 02:46 squashfs-root/usr/bin/loginctl",
+    "usr/bin/systemctl": "-rwxr-xr-x root/root            408632 2026-09-25 02:46 squashfs-root/usr/bin/systemctl",
+    "usr/bin/sddm": "-rwxr-xr-x root/root            862384 2026-05-24 15:15 squashfs-root/usr/bin/sddm",
+    "usr/bin/kwin_wayland": "-rwxr-xr-x root/root           1721640 2026-09-09 14:44 squashfs-root/usr/bin/kwin_wayland",
+    "usr/bin/startplasma-wayland": "-rwxr-xr-x root/root            134432 2026-09-09 16:19 squashfs-root/usr/bin/startplasma-wayland",
+    "usr/bin/dbus-run-session": "-rwxr-xr-x root/root             67536 2025-03-03 08:24 squashfs-root/usr/bin/dbus-run-session",
+    "etc/pam.d/sddm-autologin": "-rw-r--r-- root/root               529 2026-05-24 15:15 squashfs-root/etc/pam.d/sddm-autologin",
+    "usr/share/wayland-sessions/plasma.desktop": "-rw-r--r-- root/root              3909 2026-09-09 16:19 squashfs-root/usr/share/wayland-sessions/plasma.desktop",
+    "usr/lib/systemd/libsystemd-shared-262.so": null
+  },
+  "frozen_client_comparison": [
+    {
+      "path": "usr/bin/loginctl",
+      "frozen_bytes": 71240,
+      "frozen_sha256": "47af6bb00c918a399260b2e232d07d8e714f1351352e2368e32effce37230c5f",
+      "builder_sha256": "47af6bb00c918a399260b2e232d07d8e714f1351352e2368e32effce37230c5f",
+      "equal": true
+    },
+    {
+      "path": "usr/bin/systemctl",
+      "frozen_bytes": 408632,
+      "frozen_sha256": "ea7640197847a40531dc639f51c85e494eb11254d1f573f581753ba6e0b0633b",
+      "builder_sha256": "ea7640197847a40531dc639f51c85e494eb11254d1f573f581753ba6e0b0633b",
+      "equal": true
+    },
+    {
+      "path": "usr/lib/systemd/libsystemd-shared-262.so",
+      "present": false
+    }
+  ],
+  "frozen_full_runtime_closure_proven": false
+}

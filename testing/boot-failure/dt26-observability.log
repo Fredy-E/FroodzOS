@@ -1,0 +1,16 @@
+test_bashrc_mode_messages_real_bash (__main__.Dt26Observability.test_bashrc_mode_messages_real_bash) ... ok
+test_budget_and_lifecycle (__main__.Dt26Observability.test_budget_and_lifecycle) ... ok
+test_logger_persist_last_good_real_bash (__main__.Dt26Observability.test_logger_persist_last_good_real_bash) ... ok
+test_logger_whitelist_bounded_static (__main__.Dt26Observability.test_logger_whitelist_bounded_static) ... ok
+test_proof_thermal_real_bash_cpu_only (__main__.Dt26Observability.test_proof_thermal_real_bash_cpu_only) ... ok
+test_shell_syntax_real_bash (__main__.Dt26Observability.test_shell_syntax_real_bash) ... ok
+test_supervisor_stays_run_only (__main__.Dt26Observability.test_supervisor_stays_run_only) ... ok
+test_text0_never_launches_gui (__main__.Dt26Observability.test_text0_never_launches_gui) ... ok
+test_typed_marker_header_contract_static (__main__.Dt26Observability.test_typed_marker_header_contract_static) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.118s
+
+OK
+
+RESULT_JSON /mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-observability-result.json

@@ -1,0 +1,10 @@
+{
+  "fixture_only": true,
+  "native_graphics_validated": false,
+  "real_schema_shaped_identity_accepted": true,
+  "empty_success_detail": {},
+  "empty_detail_refuses_gui": false,
+  "partial_detail_refuses_gui": false,
+  "missing_remote_identity_accepted": true,
+  "no_systemd_or_usb_writes": true
+}

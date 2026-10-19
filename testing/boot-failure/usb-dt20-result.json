@@ -1,0 +1,27 @@
+{
+    "verified":  true,
+    "revision":  "v2-dt20",
+    "time_utc":  "20261017T092307100Z",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "model":  "Kingston DataTraveler 3.0 USB Device",
+    "volume":  "E:\\",
+    "backup":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\usb-before-dt20-20261017T092307100Z",
+    "files":  [
+                  {
+                      "path":  "EFI/Linux/kestrel-live.efi",
+                      "source":  "testing/boot-failure/dt20-candidate.efi",
+                      "bytes":  244442624,
+                      "sha256":  "081b399d298addcf8665f4fbe350b7802b816e04957b78b1166d35eeebe7e09d",
+                      "old_sha256":  "fae9defe9b49c2fd45269450da966dfeec1d89bd25b364a2a1c1ce0dcd7f3ec9"
+                  },
+                  {
+                      "path":  "boot/grub/grub.cfg",
+                      "source":  "testing/boot-failure/dt20-grub.cfg",
+                      "bytes":  6186,
+                      "sha256":  "98f701d7345e2b59042a9b8c8ce2e0a5678fab498cd2977efe6e23ed663d2278",
+                      "old_sha256":  "1e02ed0abf31f27c619d04c830a31f7edfa79d0305373f039390617b473fc73d"
+                  }
+              ],
+    "hardware_boot_verified":  false,
+    "firmware_variables_changed":  false
+}

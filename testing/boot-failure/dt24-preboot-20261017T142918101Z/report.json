@@ -1,0 +1,58 @@
+{
+    "read_only":  true,
+    "firmware_writes":  0,
+    "input_is_fixture":  false,
+    "boot_ids":  [
+
+                 ],
+    "unchanged_from_previous_export":  false,
+    "all_checkpoint_slots_present":  false,
+    "records":  [
+                    {
+                        "name":  "KestrelBoot00",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelBoot01",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelBoot02",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelBoot03",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelSeq",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog0",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog1",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog2",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog3",
+                        "status":  "Missing",
+                        "error":  203
+                    }
+                ],
+    "valid":  true
+}

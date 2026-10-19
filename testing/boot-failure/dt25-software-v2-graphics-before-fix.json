@@ -1,0 +1,35 @@
+{
+  "before_hashes": {
+    "builder/diagnostics/kestrel-graphics-env.conf": "d16d533a747afdefbc48897123c643df5b9dbccb857df34c04a1c9b21b6f65fa",
+    "builder/diagnostics/kestrel-graphics-policy.json": "b84bf2daa71899670ee8b57a578081db473525af4e857d8ef74b8a5d5c6c5625",
+    "builder/diagnostics/kestrel-graphics-supervisor.py": "ebf233418cd12e8efbfa50148007425a9b629b88cbb5348b5df298aaf57d0023",
+    "builder/diagnostics/kestrel-graphics-tty2.conf": "d21a778756d25320f2215bbdc90d32d6182782493a1b051146febf899333267d",
+    "builder/diagnostics/kestrel-graphics.service": "9f2a9969139c2bc7252a6673385a61230c49ff614fa1029c73672706ca01d139",
+    "builder/diagnostics/kestrel_graphics_guard.py": "2516d716bdd704fb483fc50221d076b78c2194a908702421f551077207a21047",
+    "builder/initcpio/hooks/kestrel_graphics": "14ec867b260620b69ce9d607597712d483dca332cd5fdb7de77cd691b64e2f7a",
+    "builder/initcpio/install/kestrel_graphics": "43911e1a764098ca1c1113d5823fc39c7a782c72f11489fa056d495ee01e6d6",
+    "testing/boot-failure/test-dt25-graphics-staging.py": "c617c30974b646eb14ce40347fb17b3efd3a5fa3f1bbcb166e716795fdcf73c1",
+    "testing/boot-failure/test-dt25-graphics-supervisor.py": "6e425b3566e8fa7773d4da5df199fcb2359547ceb346152b57554b773ff90f4b"
+  },
+  "evidence": "dt25-software-v2-graphics-before-fix snapshot (pre-edit hashes, historical RED preserved)",
+  "historical_RED_preserved": {
+    "note": "Historical outputs immutable; not overwritten.",
+    "receipt": "testing/boot-failure/dt25-parent-20261018T071355462077Z-receipt.json",
+    "staging": "10run:1fail2errors6skips (D:/ hardcode, WSL FileNotFound)",
+    "supervisor": "8run:ALL8SKIPPED yet passed:true (D:/ hardcode)"
+  },
+  "native_hardware_validated": false,
+  "not_touched_by_this_worker": [
+    "kestrel_graphics_guard.py",
+    "kestrel-graphics-policy.json",
+    "kestrel_text* helpers",
+    "logger helpers",
+    "canonical builder/validator",
+    "Linux DT/kernel/rootfs",
+    "shared docs",
+    "USB/EFI/firmware/Kali/Windows/internaldisks/keys/shadow/credentials"
+  ],
+  "phase": "BEFORE",
+  "synthetic_fixtures_only": true,
+  "utc": "20261018T080500Z"
+}

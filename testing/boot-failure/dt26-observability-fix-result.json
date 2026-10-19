@@ -1,0 +1,44 @@
+{
+  "revision": "v2-dt26-fix1",
+  "tests_run": 9,
+  "passed": 9,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "cases": [
+    "cli_refuses_existing_outputs",
+    "full_logger_exact_cap_boundary",
+    "full_logger_graphics_wall_budget",
+    "full_logger_secure_json_rejects",
+    "full_logger_text_short_samples",
+    "full_proof_empty_thermal_and_graphics_message",
+    "full_proof_typed_strict_cpu",
+    "legacy_and_parent_evidence_preserved",
+    "no_fixed_tmp_artifact",
+    "setup_required_files_present"
+  ],
+  "owned_files": [
+    "builder/diagnostics/kestrel-text-proof.sh",
+    "builder/diagnostics/kestrel-text-bashrc",
+    "builder/diagnostics/kestrel-root-log.sh",
+    "builder/diagnostics/kestrel-graphics.service",
+    "builder/diagnostics/kestrel-graphics-supervisor.py",
+    "testing/boot-failure/test-dt26-observability.py"
+  ],
+  "native_hardware_validated": false,
+  "vm_retest_required": true,
+  "bounded_time": {
+    "production_default_s": 260,
+    "covers_session_s": 180,
+    "covers_cleanup_s": 25,
+    "mechanism": "SECONDS monotonic deadline + remaining check per iteration/call + timeout-bounded externals",
+    "proven_dynamically": "short-deadline full logger runs (graphics wall + text samples)",
+    "honesty_note": "best-effort: kernel-uninterruptible (D-state) I/O or wedged sync can exceed any userspace bound"
+  },
+  "runtime_closure": {
+    "timeout_present_builder": true,
+    "python3_present_builder": true,
+    "pack_need": "integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the secure persist is inline in kestrel-root-log.sh so no hook change is needed",
+    "supervisor_stays_run_only": true
+  }
+}

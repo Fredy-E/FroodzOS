@@ -1,0 +1,31 @@
+{
+  "evidence": "dt25-software-graphics GREEN after implementation",
+  "phase": "GREEN",
+  "staging_command": "python D:/CachyOS-ARM64/testing/boot-failure/test-dt25-graphics-staging.py",
+  "staging_exit_code": 0,
+  "staging_result": "OK (10 tests, 0 failures, 0 errors)",
+  "supervisor_command": "python D:/CachyOS-ARM64/testing/boot-failure/test-dt25-graphics-supervisor.py",
+  "supervisor_exit_code": 0,
+  "supervisor_result": "OK (8 tests, 0 failures, 0 errors)",
+  "synthetic_fixtures_only": true,
+  "native_graphics_validated": false,
+  "read_only_preflight": true,
+  "artifacts": {
+    "hook": "builder/initcpio/hooks/kestrel_graphics 14ec867b260620b69ce9d607597712d483dca332cd5fdb7de77cd691b64e2f7a",
+    "install": "builder/initcpio/install/kestrel_graphics 43911e1a764098ca1c1113d5823fc39c7a782c72f11489fa056d4955ee01e6d6",
+    "supervisor": "builder/diagnostics/kestrel-graphics-supervisor.py ebf233418cd12e8efbfa50148007425a9b629b88cbb5348b5df298aaf57d0023",
+    "env": "builder/diagnostics/kestrel-graphics-env.conf d16d533a747afdefbc48897123c643df5b9dbccb857df34c04a1c9b21b6f65fa",
+    "service": "builder/diagnostics/kestrel-graphics.service 9f2a9969139c2bc7252a6673385a61230c49ff614fa1029c73672706ca01d139",
+    "tty2": "builder/diagnostics/kestrel-graphics-tty2.conf d21a778756d25320f2215bbdc90d32d6182782493a1b051146febf899333267d"
+  },
+  "not_touched": [
+    "kestrel_graphics_guard.py",
+    "kestrel-graphics-policy.json",
+    "build-live-uki.sh",
+    "kestrel_text",
+    "logger",
+    "DT/kernel/rootfs/docs/UKIs"
+  ],
+  "verified_env": "LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe LP_NUM_THREADS=2 KWIN_COMPOSE=Q; no KWIN_DRM; 180s/80C; live/plasma SDDM; tty2 fallback; SSH masked",
+  "unresolved_limits": "No pixel/input proof claimed; software rendering unproven natively; VM not proof; frozen baseline authoritative"
+}

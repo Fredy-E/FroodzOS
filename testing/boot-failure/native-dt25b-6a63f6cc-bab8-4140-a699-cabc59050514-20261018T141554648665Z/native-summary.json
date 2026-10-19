@@ -1,0 +1,200 @@
+{
+  "boot_id": "6a63f6cc-bab8-4140-a699-cabc59050514",
+  "collected_utc": "2026-10-18T14:16:19.118891+00:00",
+  "archive": "D:\\CachyOS-ARM64\\testing\\boot-failure\\native-dt25b-6a63f6cc-bab8-4140-a699-cabc59050514-20261018T141554648665Z",
+  "checks": {
+    "all_usb_critical_hashes_match": true,
+    "boot_id_in_status_matches": true,
+    "typed_boot_id_matches": true,
+    "typed_command_marker": true,
+    "typed_systemd_overlay_bash_tty1": true,
+    "text_optout_graphics_zero": true,
+    "firmware_logging_optin_absent": true,
+    "efi_pstore_disabled_in_cmdline": true,
+    "all_required_cpu_sensor_samples_pass": true
+  },
+  "typed_proof_fields": {
+    "revision": "v2-dt24",
+    "mode": "typed",
+    "boot_id": "6a63f6cc-bab8-4140-a699-cabc59050514",
+    "pid1": "systemd",
+    "fstype": "overlay",
+    "shell_pid": "1393",
+    "shell_comm": "bash",
+    "tty": "/dev/tty1",
+    "multi_user": "active",
+    "usb_logger": "active"
+  },
+  "native_cpu_readings_observed": true,
+  "thermal_policy_sha256": "b84bf2daa71899670ee8b57a578081db473525af4e857d8ef74b8a5d5c6c5625",
+  "required_sensors": 20,
+  "samples": 62,
+  "complete_valid_cpu_samples": 62,
+  "required_cpu_reading_count": 1240,
+  "minimum_cpu_c": 30.2,
+  "maximum_cpu_c": 36.5,
+  "first_sample_uptime_s": 17.8,
+  "last_sample_uptime_s": 115.66,
+  "sample_span_s": 97.86,
+  "system_states": {
+    "initializing": 16,
+    "running": 46
+  },
+  "distinct_reported_thermal_types": [
+    "aoss0-thermal",
+    "aoss1-thermal",
+    "cpu0-0-btm-thermal",
+    "cpu0-0-top-thermal",
+    "cpu0-1-btm-thermal",
+    "cpu0-1-top-thermal",
+    "cpu0-2-btm-thermal",
+    "cpu0-2-top-thermal",
+    "cpu0-3-btm-thermal",
+    "cpu0-3-top-thermal",
+    "cpu1-0-btm-thermal",
+    "cpu1-0-top-thermal",
+    "cpu1-1-btm-thermal",
+    "cpu1-1-top-thermal",
+    "cpu1-2-btm-thermal",
+    "cpu1-2-top-thermal",
+    "cpu1-3-btm-thermal",
+    "cpu1-3-top-thermal",
+    "cpuss0-btm-thermal",
+    "cpuss0-top-thermal",
+    "cpuss1-btm-thermal",
+    "cpuss1-top-thermal",
+    "mem-thermal",
+    "video-thermal"
+  ],
+  "collector_window_finished_marker": false,
+  "checkpoint_status": "KESTREL_RAM_CAPTURE_ACTIVE firmware=0 max_writes=4 deadline=60s capture=v2\nKESTREL_RAM_CAPTURE_STOPPED attempts=0x0\n",
+  "sensors": [
+    {
+      "type": "cpu0-0-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 31800,
+      "maximum_mc": 34900
+    },
+    {
+      "type": "cpu0-0-top-thermal",
+      "readings": 62,
+      "minimum_mc": 30600,
+      "maximum_mc": 32600
+    },
+    {
+      "type": "cpu0-1-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 30600,
+      "maximum_mc": 33000
+    },
+    {
+      "type": "cpu0-1-top-thermal",
+      "readings": 62,
+      "minimum_mc": 31400,
+      "maximum_mc": 33700
+    },
+    {
+      "type": "cpu0-2-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 30200,
+      "maximum_mc": 32200
+    },
+    {
+      "type": "cpu0-2-top-thermal",
+      "readings": 62,
+      "minimum_mc": 30600,
+      "maximum_mc": 33400
+    },
+    {
+      "type": "cpu0-3-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 31400,
+      "maximum_mc": 36500
+    },
+    {
+      "type": "cpu0-3-top-thermal",
+      "readings": 62,
+      "minimum_mc": 31000,
+      "maximum_mc": 35300
+    },
+    {
+      "type": "cpu1-0-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 31700,
+      "maximum_mc": 33700
+    },
+    {
+      "type": "cpu1-0-top-thermal",
+      "readings": 62,
+      "minimum_mc": 31300,
+      "maximum_mc": 34000
+    },
+    {
+      "type": "cpu1-1-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 31300,
+      "maximum_mc": 35200
+    },
+    {
+      "type": "cpu1-1-top-thermal",
+      "readings": 62,
+      "minimum_mc": 30900,
+      "maximum_mc": 32900
+    },
+    {
+      "type": "cpu1-2-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 30900,
+      "maximum_mc": 33300
+    },
+    {
+      "type": "cpu1-2-top-thermal",
+      "readings": 62,
+      "minimum_mc": 31300,
+      "maximum_mc": 33300
+    },
+    {
+      "type": "cpu1-3-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 31300,
+      "maximum_mc": 32900
+    },
+    {
+      "type": "cpu1-3-top-thermal",
+      "readings": 62,
+      "minimum_mc": 31300,
+      "maximum_mc": 33300
+    },
+    {
+      "type": "cpuss0-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 30600,
+      "maximum_mc": 33400
+    },
+    {
+      "type": "cpuss0-top-thermal",
+      "readings": 62,
+      "minimum_mc": 31000,
+      "maximum_mc": 33400
+    },
+    {
+      "type": "cpuss1-btm-thermal",
+      "readings": 62,
+      "minimum_mc": 31300,
+      "maximum_mc": 33300
+    },
+    {
+      "type": "cpuss1-top-thermal",
+      "readings": 62,
+      "minimum_mc": 31700,
+      "maximum_mc": 33300
+    }
+  ],
+  "limitations": [
+    "A saved numeric CPU sample is not cooling/fan/thermal-control validation.",
+    "Graphics was disabled; no native Plasma/PAM/guard acceptance.",
+    "Helper revision=v2-dt24 is inherited helper identity, not an artifact hash.",
+    "FAT/wall-clock timestamps are not used as monotonic boot identity.",
+    "Shutdown acceptance requires separate kernel/journal review."
+  ]
+}

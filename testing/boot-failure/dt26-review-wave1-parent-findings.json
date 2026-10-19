@@ -1,0 +1,30 @@
+{
+  "phase": "dt26 initial implementation independent parent probes; formal spec reviews pending",
+  "accepted_for_build": false,
+  "accepted_for_usb": false,
+  "review_wave": "deleg_f2aba956",
+  "production_probe": "D:/CachyOS-ARM64/testing/boot-failure/dt26-parent-probe-20261018T151812044665Z.json",
+  "session_probe": "D:/CachyOS-ARM64/testing/boot-failure/dt26-parent-session-probe-20261018T152006240116Z.json",
+  "confirmed_session_improvement": "Real numeric User + Name with empty Wayland Display is now accepted by the fixture predicate. Frozen SFS loginctl and systemctl bytes equal the builder clients used for real CLI observations.",
+  "important_session_gaps": [
+    "rc0 empty show-session output becomes {} and existing_gui_present skips it: no refusal.",
+    "rc0 partial session identity/details also permits GUI discovery to proceed.",
+    "Missing Remote is defaulted to local in ownership acceptance rather than rejecting incomplete identity.",
+    "Structured successful native preflight capture must exist before private GUI start; inspect current pass branch, not only failure outcomes."
+  ],
+  "important_observability_gaps": [
+    "Partial nonempty JSON overwrites valid last-good output (reproduced).",
+    "A fixture symlink outside the whitelisted source name is followed/copied (no real secret was read).",
+    "Source growth after size check produces 130-byte destination despite 32-byte cap (reproduced).",
+    "GUI logger uses 260 samples with no monotonic wall-clock mechanism; it is not a 260-second bound.",
+    "CPU string 08000 aborts real Bash readout with octal-base error; malformed -, --1 and 1-2 are rendered as temperatures.",
+    "Focused observability main overwrites fixed result/log files instead of refusing collisions before tests; do not rerun it as-is."
+  ],
+  "cli_grammar_distinction": "Real systemctl show with comma-separated ActiveState,SubState,Result works on builder; loginctl comma-list does not. Do not blindly unify the two parsers.",
+  "frozen_sfs_presence_confirmed": ["usr/bin/chvt", "usr/bin/timeout", "usr/bin/loginctl", "usr/bin/systemctl", "usr/bin/sddm", "usr/bin/kwin_wayland", "usr/bin/startplasma-wayland", "usr/bin/dbus-run-session", "etc/pam.d/sddm-autologin", "usr/share/wayland-sessions/plasma.desktop"],
+  "frozen_full_runtime_closure_proven": false,
+  "shutdown_review_correction": "Scout's absent-final-tail equals clean poweroff statement is rejected. Requested orderly shutdown and filesystem sync are captured; final hardware power-down is not proven.",
+  "old_source_observation_warning": "Scout cited implementation files while its sibling writers were active; those are not hashes or descriptions of what boot 7f actually ran.",
+  "usb_changed": false,
+  "native_graphics_validated": false
+}

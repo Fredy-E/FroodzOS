@@ -1,0 +1,8 @@
+[
+  {"name":"arch-ports-aarch64","url":"https://ports.archlinux.page/aarch64/","title":"Arch Linux Ports AArch64 status and ISA baseline","match":"unofficial|RFC|drzee|armv8|signed|bootstrap|cloud|no cross","excerpt_limit":7500},
+  {"name":"alarm-signing","url":"https://archlinuxarm.org/about/package-signing","title":"Arch Linux ARM package-signing policy","match":"signed|database|keyring|master|build system","excerpt_limit":4500},
+  {"name":"archiso-aarch64-root","url":"https://codeberg.org/api/v1/repos/ironrobin/archiso-aarch64/contents","title":"ironrobin ARM64 live-image builder source files","match":"name|download_url","excerpt_limit":8000},
+  {"name":"lenovo-dts-current","url":"https://raw.githubusercontent.com/jglathe/linux_ms_dev_kit/jg/ubuntu-qcom-x1e-7.3rc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts","title":"Lenovo 83N3 community device tree","match":"SPDX|model =|compatible = \"lenovo|ec@|ec-|firmware-name|status = \"disabled\"|touchpad@|pci17cb|wcn7850","excerpt_limit":6500},
+  {"name":"stubble-readme-current","url":"https://raw.githubusercontent.com/ubuntu/stubble/main/README.md","title":"stubble boot stub documentation","match":"device tree|HWID|UKI|SMBIOS|license|arch|stub","excerpt_limit":5000},
+  {"name":"qfe-source-tree","url":"https://git.launchpad.net/ubuntu/+source/qcom-firmware-extract/tree/?h=ubuntu/stonking","title":"Ubuntu firmware extractor source tree","match":"qcom-firmware|copyright|license|href","excerpt_limit":4000}
+]

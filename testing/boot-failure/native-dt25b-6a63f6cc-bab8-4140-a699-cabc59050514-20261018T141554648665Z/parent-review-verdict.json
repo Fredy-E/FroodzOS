@@ -1,0 +1,37 @@
+{
+  "boot_id": "6a63f6cc-bab8-4140-a699-cabc59050514",
+  "review_wave": "deleg_1364f870",
+  "reviewers": ["sa-0-e2b33b39", "sa-1-d1cde268"],
+  "review_complete": true,
+  "text_retest_blocker_found": false,
+  "native_text_and_typed_evidence_accepted": true,
+  "native_cpu_readout_accepted": true,
+  "required_cpu_types": 20,
+  "complete_samples": 62,
+  "required_cpu_readings": 1240,
+  "minimum_cpu_c": 30.2,
+  "maximum_cpu_c": 36.5,
+  "shutdown_accepted": false,
+  "full_native_graphics_guard_accepted": false,
+  "native_gui_accepted": false,
+  "parent_adjudication": [
+    "The full 07 typed-proof file is execution-and-save evidence, not merely proof of entering a command. Source writes it only after systemd/overlay/Bash checks and body collection. Final console marker/prompt return is not separately recorded in the journal; do not conflate that narrower limit with absence of command execution.",
+    "Independent thermal parsing confirms the exact required type/count/value checks on all recovered samples; passive logger output does not exercise graphics guard ancestry/DRM checks.",
+    "No captured panic/oops/lockup or service startup failure blocks another text-only test. Unresolved device suppliers remain real peripheral-support gaps; their absence from the text critical path is not hardware acceptance.",
+    "Two successful getty exits/restarts are recorded; operator action or spontaneous exit cause is not established. They are not kernel-crash evidence.",
+    "No final poweroff tail was captured; the run ends while thermal status is running. Neither clean shutdown nor a crash is inferred from missing records.",
+    "The reviewed pre-cleanup #8 was not a dt24-image fallback, and kestrel-proof does not print temperatures. Both prior handoff claims were retracted by name. The subsequent authorized menu cleanup restores a separate hash-verified dt24 image as #2."
+  ],
+  "direct_evidence": [
+    "usb-logs/07-typed-command.txt:1-11",
+    "usb-logs/04-userspace-status.txt",
+    "usb-logs/03-userspace-journal.log:1099-1118",
+    "native-summary.json",
+    "thermal-samples.json",
+    "D:/CachyOS-ARM64/builder/diagnostics/kestrel-text-proof.sh:23-44"
+  ],
+  "menu_cleanup_receipt": "D:/CachyOS-ARM64/testing/boot-failure/dt25b-menu-cleanup-20261018T142458148359Z/independent-readback.json",
+  "current_text_entry_number": 1,
+  "current_dt24_recovery_entry_number": 2,
+  "native_boot_remains_user_executed": true
+}

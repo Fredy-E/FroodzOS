@@ -1,0 +1,29 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] apps-usb via config_noc on Slim 3
+
+Rationale: the 0014 duplicate-pair (same route twice for usb-ddr
+and apps-usb) is rejected by the icc core's path_find ("invalid
+path"), tearing down xhci 40ms after it comes up. Point apps-usb
+at config_noc instead (stock shape with gem replaced; all via
+&labels). If the graph lacks that link it still defers, and the
+fallback is making apps-usb optional in dwc3-qcom. NOT for
+publication or general ARM64 support.
+
+---
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1769,3 +1769,15 @@
+ &usb_1_ss0 { interconnects = <0xe5 0x00 0x07 0x18 0x01 0x07 0xe5 0x00 0x07 0x18 0x01 0x07>; };
+ &usb_1_ss1 { interconnects = <0xe5 0x01 0x07 0x18 0x01 0x07 0xe5 0x01 0x07 0x18 0x01 0x07>; };
+ 
++/* DIAGNOSTIC 2026-10-16 (0015): apps-usb via config_noc. The 0014
++ * duplicate-pair is rejected by the icc core (same route twice).
++ * Point apps-usb at config_noc instead (stock shape, gem
++ * replaced). If the graph lacks that link it still defers, and
++ * the fallback is making apps-usb optional in dwc3-qcom.
++ * Local-only, not for publication. */
++&usb_1_ss2 { interconnects = <&usb_south_anoc MASTER_USB3_2 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_2 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_2 QCOM_ICC_TAG_ALWAYS>; };
++&usb_2 { interconnects = <&usb_north_anoc MASTER_USB2 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_north_anoc MASTER_USB2 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB2 QCOM_ICC_TAG_ALWAYS>; };
++&usb_mp { interconnects = <&usb_north_anoc MASTER_USB3_MP QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_north_anoc MASTER_USB3_MP QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_MP QCOM_ICC_TAG_ALWAYS>; };
++&usb_1_ss0 { interconnects = <&usb_south_anoc MASTER_USB3_0 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_0 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_0 QCOM_ICC_TAG_ALWAYS>; };
++&usb_1_ss1 { interconnects = <&usb_south_anoc MASTER_USB3_1 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_1 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_1 QCOM_ICC_TAG_ALWAYS>; };

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
+build() {
+    local project="${KESTREL_PROJECT:?missing project path}"
+    # Build gate: sensor policy is a required input. Missing policy must fail
+    # the build so no image ships without the fail-closed runtime policy.
+    if [ ! -f "$project/builder/diagnostics/kestrel-graphics-policy.json" ]; then
+        echo 'kestrel_graphics: BUILD GATE REFUSAL: missing builder/diagnostics/kestrel-graphics-policy.json' >&2
+        return 1
+    fi
+    add_file "$project/builder/diagnostics/kestrel-graphics-supervisor.py" /etc/kestrel-graphics-supervisor 755
+    add_file "$project/builder/diagnostics/kestrel_graphics_guard.py" /etc/kestrel-graphics-guard 644
+    add_file "$project/builder/diagnostics/kestrel-graphics-env.conf" /etc/kestrel-graphics-env 644
+    add_file "$project/builder/diagnostics/kestrel-graphics.service" /etc/kestrel-graphics-service 644
+    add_file "$project/builder/diagnostics/kestrel-graphics-sddm.service" /etc/kestrel-graphics-sddm 644
+    add_file "$project/builder/diagnostics/kestrel-graphics-policy.json" /etc/kestrel-graphics-policy 644
+    add_file "$project/builder/diagnostics/kestrel-graphics-tty2.conf" /etc/kestrel-graphics-tty2 644
+    # tty2 fallback reuses existing text helper bytes (byte-exact, no account edits)
+    add_file "$project/builder/diagnostics/kestrel-text-login.sh" /etc/kestrel-text-login 755
+    add_file "$project/builder/diagnostics/kestrel-text-proof.sh" /etc/kestrel-text-proof 755
+    add_file "$project/builder/diagnostics/kestrel-text-bashrc" /etc/kestrel-text-bashrc 644
+    add_file "$project/builder/diagnostics/kestrel-text-getty.conf" /etc/kestrel-text-getty.conf 644
+    # Runtime overlay gate helpers (WSL builder: /usr/bin/findmnt, /usr/bin/mountpoint;
+    # /bin symlinks; bare names resolve via PATH and pull util-linux libs for busybox ash).
+    add_binary findmnt
+    add_binary mountpoint
+    add_runscript
+}
+help() {
+    printf '%s\n' 'RAM-overlay-only simpledrm/software-Plasma diagnostic, gated by kestrel_graphics=1.'
+}

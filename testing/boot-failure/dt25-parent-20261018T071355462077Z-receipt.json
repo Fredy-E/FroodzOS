@@ -1,0 +1,54 @@
+{
+  "guard": {
+    "exit_code": 0,
+    "tests_run": 54,
+    "skipped": 0
+  },
+  "staging": {
+    "exit_code": 1,
+    "tests_run": 10,
+    "skipped": 6,
+    "reported_result": {
+      "passed": false,
+      "tests_run": 10,
+      "failures": 1,
+      "errors": 2,
+      "synthetic_fixtures_only": true,
+      "native_hardware_validated": false
+    }
+  },
+  "supervisor": {
+    "exit_code": 0,
+    "tests_run": 8,
+    "skipped": 8,
+    "reported_result": {
+      "passed": true,
+      "tests_run": 8,
+      "failures": 0,
+      "errors": 0,
+      "synthetic_fixtures_only": true,
+      "native_hardware_validated": false
+    }
+  },
+  "sysfs_false_negative": {
+    "exit_code": 0,
+    "tests_run": null,
+    "skipped": 0,
+    "false_negative_reproduced": true
+  },
+  "board": {
+    "exit_code": 0,
+    "passed": true,
+    "checks": 52,
+    "failed": []
+  },
+  "receipt_utc": "20261018T071355462077Z",
+  "not_integration_approved": true,
+  "native_graphics_validated": false,
+  "notes": [
+    "Guard54 pass does not cover valid sysfs class symlinks; independent realistic fixture reproduces false rejection.",
+    "Staging default root is Windows-only D:/ and fails under WSL.",
+    "Supervisor apparent OK is all8 skipped under WSL due same Windows-only default root; not an actual supervisor pass.",
+    "Receipt parser initially failed on read_file numbered JSON. Actual checker stdout parsed instead; no checks rerun or evidence overwritten."
+  ]
+}

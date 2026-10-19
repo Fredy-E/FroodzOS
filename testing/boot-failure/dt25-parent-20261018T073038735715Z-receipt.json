@@ -1,0 +1,45 @@
+{
+  "guard": {
+    "exit_code": 0,
+    "tests_run": 71,
+    "skipped": 0,
+    "command": "wsl.exe -d CachyOSBuilder -u root -- env TMPDIR=/home/builder/boot-failure-tests python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt25-graphics-guard.py"
+  },
+  "staging": {
+    "exit_code": 0,
+    "tests_run": 14,
+    "skipped": 0,
+    "command": "wsl.exe -d CachyOSBuilder -u root -- env TMPDIR=/home/builder/boot-failure-tests python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt25-graphics-staging.py"
+  },
+  "supervisor": {
+    "exit_code": 0,
+    "tests_run": 16,
+    "skipped": 0,
+    "command": "wsl.exe -d CachyOSBuilder -u root -- env TMPDIR=/home/builder/boot-failure-tests python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt25-graphics-supervisor.py"
+  },
+  "sysfs_positive": {
+    "exit_code": 0,
+    "tests_run": null,
+    "skipped": 0,
+    "command": "wsl.exe -d CachyOSBuilder -u root -- env TMPDIR=/home/builder/boot-failure-tests python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-guard-v3-positive-proof.py"
+  },
+  "evidence_integrity": {
+    "exit_code": 0,
+    "tests_run": null,
+    "skipped": 0,
+    "command": "wsl.exe -d CachyOSBuilder -u root -- env TMPDIR=/home/builder/boot-failure-tests python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt25-evidence-integrity.py --tag parent-1018-073038"
+  },
+  "real_guard_policy": {
+    "exit_code": 0,
+    "tests_run": null,
+    "skipped": 0,
+    "command": "wsl.exe -d CachyOSBuilder -u root -- env TMPDIR=/home/builder/boot-failure-tests python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-thermal-check-policy.py --tag parent-1018-073038"
+  },
+  "focused_unit_tests_total": 101,
+  "required_skips_total": 0,
+  "all_commands_exit0": true,
+  "review_pending": true,
+  "native_tsens_graphics_validated": false,
+  "receipt_utc": "20261018T073038735715Z",
+  "integration_not_approved": true
+}

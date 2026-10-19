@@ -1,0 +1,88 @@
+{
+  "provenance_passed": true,
+  "checks_passed": 24,
+  "checks_total": 24,
+  "checks": {
+    "audit_revision": true,
+    "audit_packing_passed": true,
+    "new_uki_sha": true,
+    "host_copy_sha": true,
+    "new_uki_bytes": true,
+    "initrd_sha": true,
+    "accepted_dtb": true,
+    "accepted_kernel": true,
+    "old_dt24_uki_preserved": true,
+    "failed_9c_uki_preserved": true,
+    "sfs_preserved": true,
+    "source_snapshots_match": true,
+    "baseline_.linux": true,
+    "baseline_.text": true,
+    "baseline_.hwids": true,
+    "baseline_.cmdline": true,
+    "baseline_.uname": true,
+    "packed_parent_matches_reviewed_source": true,
+    "packed_child_matches_reviewed_source": true,
+    "packed_lifetime_binding": true,
+    "packed_pre_cleanup": true,
+    "packed_post_cleanup": true,
+    "old_archives_preserved": true,
+    "original_parser_archive_preserved": true
+  },
+  "old_archives_preserved": {
+    "dt25-artifact-audit.json": true,
+    "dt25-integration-platform-graphics-gate.json": true,
+    "dt25-integration-packed-graphics.json": true,
+    "dt25-integration-summary.json": true,
+    "dt25-integration-board.json": true,
+    "dt25-integration-policy.json": true,
+    "dt25-integration-validation.json": true
+  },
+  "uki_sha256": "b535444f8a3560b602d2a8549a35389d3914a8b8b4294c7408ca8e1840a11753",
+  "pe_sections": {
+    ".text": {
+      "bytes": 32676,
+      "sha256": "1ccc4c4c2b3ec7a13f8af499ba616ea836595cb1aa086f0dd4f67b1cb8c6b78c"
+    },
+    ".cmdline": {
+      "bytes": 193,
+      "sha256": "752c7be795a48cd870026916caaf83cd9df43373cdda977aef52bae4045600d3"
+    },
+    ".dtbauto": {
+      "bytes": 207772,
+      "sha256": "f5f67c13bdfe975998b083ac06465c36231c0bae205e8e60fff99832264f5232"
+    },
+    ".hwids": {
+      "bytes": 18085,
+      "sha256": "e8d8fd0f4864b1a8928c882ec45958c642d8058777d7c98edcbc1c06ccf24ad3"
+    },
+    ".uname": {
+      "bytes": 9,
+      "sha256": "92e45141ffd696b50a3abc4ee5134f2db27b3c19b3996e36b8ca88b9f9a0f963"
+    },
+    ".linux": {
+      "bytes": 52492800,
+      "sha256": "682273a91f2016b9d5484857639bd043e021b961d7f4cfd385a09566b2df3abc"
+    },
+    ".initrd": {
+      "bytes": 191570732,
+      "sha256": "67800e7cf916f8c6ee2a577361cfb36523f769b2e707bfe7c3372a780f4d6a34"
+    }
+  },
+  "parser_exit": 0,
+  "parser_report": {
+    "passed": 44,
+    "failed": 0,
+    "skipped": 0,
+    "total": 44,
+    "failures": [],
+    "revision": "v2-dt25b",
+    "no_vm_runs": true,
+    "notes": "actual v2 bytes expect RED; positives are synthetic fixtures only"
+  },
+  "parser_result": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25b-efi-parent-20261018T093014790902Z-parser.json",
+  "parser_log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25b-efi-parent-20261018T093014790902Z-parser.log",
+  "unsafe_default_parser_output_workaround_explicit": true,
+  "harness_preflight_review_pending": "deleg_0d758560",
+  "vm_crash_gate_passed": false,
+  "native_hardware_validated": false
+}

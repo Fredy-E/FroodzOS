@@ -1,0 +1,55 @@
+{
+  "revision": "v2-dt26-watchdog",
+  "tests_run": 6,
+  "testcases": [
+    "cli_preflight_and_counts",
+    "fixture_mount_failure_runs_nothing",
+    "loop_cp_stall_termignore_expires",
+    "loop_sync_stall_termignore_expires",
+    "missing_timeout_skips_with_sentinel",
+    "startup_sync_stall_expires"
+  ],
+  "checks": [
+    "cli_preflight_and_counts",
+    "fixture_mount_failure_runs_nothing",
+    "loop_cp_stall_termignore_expires",
+    "loop_sync_stall_termignore_expires",
+    "missing_timeout_skips_with_sentinel",
+    "setup_required_files_present",
+    "startup_sync_stall_expires"
+  ],
+  "cases": [
+    "cli_preflight_and_counts",
+    "fixture_mount_failure_runs_nothing",
+    "loop_cp_stall_termignore_expires",
+    "loop_sync_stall_termignore_expires",
+    "missing_timeout_skips_with_sentinel",
+    "setup_required_files_present",
+    "startup_sync_stall_expires"
+  ],
+  "passed": 6,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "owned_files": [
+    "builder/diagnostics/kestrel-root-log.sh",
+    "testing/boot-failure/test-dt26-logger-watchdog.py"
+  ],
+  "native_hardware_validated": false,
+  "vm_retest_required": true,
+  "bounded_time": {
+    "production_default_s": 260,
+    "orderly_exit_drain_s": 2,
+    "outer_kill_after_s": 1,
+    "mechanism": "outer timeout -k 1s <remaining+2>s process-group watchdog (own PG, never --foreground) around the unchanged body; fresh remaining per op + timeout -k kill-after inside",
+    "proven_dynamically": "whole-script startup SYNC + loop SYNC/CP stall and TERM-ignore runs expire with EXPIRED/0 and no orphan logger children",
+    "honesty_note": "best-effort, NOT hard realtime: 1s resolution + 2s drain + 1s KILL + ~1s scheduler; D-state/sync may exceed"
+  },
+  "runtime_closure": {
+    "timeout_present_builder": true,
+    "python3_present_builder": true,
+    "testonly": "unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production",
+    "pack_need": "integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the watchdog is inline in kestrel-root-log.sh",
+    "supervisor_stays_run_only": true
+  }
+}

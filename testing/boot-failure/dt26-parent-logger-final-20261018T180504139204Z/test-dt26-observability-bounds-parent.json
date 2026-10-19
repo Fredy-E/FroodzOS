@@ -1,0 +1,65 @@
+{
+  "revision": "v2-dt26-bounds",
+  "tests_run": 9,
+  "testcases": [
+    "cli_preflight_and_counts",
+    "clock_true_monotonic",
+    "logger_monotonic_static",
+    "missing_timeout_skips",
+    "persist_cap_dest_unchanged_ioerror",
+    "persist_rejects_invalid",
+    "seconds_reset_no_extend",
+    "stalling_journal_and_systemctl_bounded",
+    "term_ignoring_killed"
+  ],
+  "checks": [
+    "cli_preflight_and_counts",
+    "clock_true_monotonic",
+    "logger_monotonic_static",
+    "missing_timeout_skips",
+    "persist_cap_dest_unchanged_ioerror",
+    "persist_rejects_invalid",
+    "seconds_reset_no_extend",
+    "setup_required_files_present",
+    "stalling_journal_and_systemctl_bounded",
+    "term_ignoring_killed"
+  ],
+  "cases": [
+    "cli_preflight_and_counts",
+    "clock_true_monotonic",
+    "logger_monotonic_static",
+    "missing_timeout_skips",
+    "persist_cap_dest_unchanged_ioerror",
+    "persist_rejects_invalid",
+    "seconds_reset_no_extend",
+    "setup_required_files_present",
+    "stalling_journal_and_systemctl_bounded",
+    "term_ignoring_killed"
+  ],
+  "passed": 9,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "owned_files": [
+    "builder/diagnostics/kestrel-root-log.sh"
+  ],
+  "native_hardware_validated": false,
+  "vm_retest_required": true,
+  "bounded_time": {
+    "production_default_s": 260,
+    "covers_session_s": 180,
+    "covers_cleanup_s": 25,
+    "mechanism": "BASH_MONOSECONDS else /proc/uptime fixed window + fresh remaining per op + timeout -k kill-after",
+    "kill_after_s_default": 2,
+    "grace_s": 3,
+    "bound_note": "responsive <= budget+2, TERM-ignore <= budget+kill+1, missing-timeout skips (never unbounded); stubs <=5s; parent killpg backstop",
+    "honesty_note": "best-effort, NOT hard realtime: 1s resolution + ~2s KILL grace + ~1s scheduler; D-state/sync may exceed"
+  },
+  "runtime_closure": {
+    "timeout_present_builder": true,
+    "python3_present_builder": true,
+    "testonly": "unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production",
+    "pack_need": "integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the secure persist is inline in kestrel-root-log.sh",
+    "supervisor_stays_run_only": true
+  }
+}

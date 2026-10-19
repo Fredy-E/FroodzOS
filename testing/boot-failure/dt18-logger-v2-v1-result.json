@@ -1,0 +1,16 @@
+{
+  "passed": false,
+  "revision": "v2-dt18",
+  "stage": "late_timeout_observation_assertion",
+  "observed": [
+    "Virtual USB hot-unplug occurred after earlyhook",
+    "Serial output reached boot-device timeout and emergency initramfs prompt",
+    "Recovered final record reported zero external USB devices and missing label",
+    "Final record lacked initramfs_boot_device_timeout=seen",
+    "Serial output rejected rd.log=console,file as an unknown rd.log parameter"
+  ],
+  "superseded_by": "v2-dt19 (repeat rd.log options; final snapshot delayed to 55 seconds)",
+  "evidence_directory": "/home/builder/boot-failure-tests/dt18-logger-v2-v1",
+  "installed_on_physical_usb": false,
+  "note": "Failure retained; this is not a successful firmware timeout-capture test."
+}

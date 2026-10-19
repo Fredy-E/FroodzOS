@@ -1,0 +1,10 @@
+{
+  "passed": 64,
+  "failed": 0,
+  "skipped": 0,
+  "total": 64,
+  "failures": [],
+  "revision": "v2-dt26",
+  "no_vm_runs": true,
+  "notes": "dt26 lock/lifecycle incremental; VM gates unexecuted"
+}

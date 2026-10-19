@@ -1,0 +1,108 @@
+{
+  "passed": true,
+  "revision": "v2-dt19",
+  "uki_sha256": "fae9defe9b49c2fd45269450da966dfeec1d89bd25b364a2a1c1ce0dcd7f3ec9",
+  "results": [
+    {
+      "label": "flag-off",
+      "seconds": 105.27,
+      "emulated_usb_removed": false,
+      "timeout_observed": false,
+      "disarmed": false,
+      "records": {}
+    },
+    {
+      "label": "no-usb",
+      "seconds": 108.92,
+      "emulated_usb_removed": true,
+      "timeout_observed": true,
+      "disarmed": false,
+      "records": {}
+    },
+    {
+      "label": "recovery",
+      "seconds": 113.02,
+      "emulated_usb_removed": false,
+      "timeout_observed": false,
+      "disarmed": false,
+      "records": {
+        "KestrelBoot00-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 0,
+          "boot_id": "48ccbe7a-c555-41be-8771-4a42f7da3e52",
+          "reason": "earlyhook",
+          "uptime_ms": 26026,
+          "text": "capture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=1 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \n",
+          "sha256": "07cf5a5ad809cee606f5c49f989a2a88f8e432b302e7ffefc2b4129ff9e1d7bf"
+        },
+        "KestrelBoot01-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 1,
+          "boot_id": "48ccbe7a-c555-41be-8771-4a42f7da3e52",
+          "reason": "usb-state",
+          "uptime_ms": 32091,
+          "text": "capture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \n27087 usb usb2: Manufacturer: Linux 7.3.0-rc3 xhci-hcd\n27088 usb usb2: SerialNumber: 0000:00:02.0\n27089 probe of usb2 with driver usb returned 0 after 4491 usecs\n27089 probe of 0000:00:02.0 with driver xhci_hcd returned 0 after 49836 usecs\n27238 usb 2-1: new SuperSpeed USB device number 2 using xhci_hcd\n27238 usb 2-1: New USB device found, idVendor=46f4, idProduct=0001, bcdDevice= 0.00\n27238 usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3\n27238 usb 2-1: Product: QEMU USB HARDDRIVE\n27239 usb 2-1: Manufacturer: QEMU\n27239 usb 2-1: SerialNumber: 1-0000:00:02.0-1\n27240 probe of 2-1 with driver usb returned 0 after 5536 usecs\n27244 usb 2-1: USB disconnect, device number 2\n",
+          "sha256": "fa45c6f266f0fbdd960ee847670290470e441c4e5670ff794eeee72a6a1e46de"
+        },
+        "KestrelBoot02-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 2,
+          "boot_id": "48ccbe7a-c555-41be-8771-4a42f7da3e52",
+          "reason": "late-usb",
+          "uptime_ms": 38068,
+          "text": "capture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \n27087 usb usb2: Manufacturer: Linux 7.3.0-rc3 xhci-hcd\n27088 usb usb2: SerialNumber: 0000:00:02.0\n27089 probe of usb2 with driver usb returned 0 after 4491 usecs\n27089 probe of 0000:00:02.0 with driver xhci_hcd returned 0 after 49836 usecs\n27238 usb 2-1: new SuperSpeed USB device number 2 using xhci_hcd\n27238 usb 2-1: New USB device found, idVendor=46f4, idProduct=0001, bcdDevice= 0.00\n27238 usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3\n27238 usb 2-1: Product: QEMU USB HARDDRIVE\n27239 usb 2-1: Manufacturer: QEMU\n27239 usb 2-1: SerialNumber: 1-0000:00:02.0-1\n27240 probe of 2-1 with driver usb returned 0 after 5536 usecs\n27244 usb 2-1: USB disconnect, device number 2\n",
+          "sha256": "c587e2ada1ddd5ff1055450c6f3e2044b11e375f0cfab1f288454521ed1f2607"
+        },
+        "KestrelBoot03-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 3,
+          "boot_id": "48ccbe7a-c555-41be-8771-4a42f7da3e52",
+          "reason": "timeout",
+          "uptime_ms": 81037,
+          "text": "capture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \ninitramfs_boot_device_timeout=seen\n27088 usb usb2: SerialNumber: 0000:00:02.0\n27089 probe of usb2 with driver usb returned 0 after 4491 usecs\n27089 probe of 0000:00:02.0 with driver xhci_hcd returned 0 after 49836 usecs\n27238 usb 2-1: new SuperSpeed USB device number 2 using xhci_hcd\n27238 usb 2-1: New USB device found, idVendor=46f4, idProduct=0001, bcdDevice= 0.00\n27238 usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3\n27238 usb 2-1: Product: QEMU USB HARDDRIVE\n27239 usb 2-1: Manufacturer: QEMU\n27239 usb 2-1: SerialNumber: 1-0000:00:02.0-1\n27240 probe of 2-1 with driver usb returned 0 after 5536 usecs\n27244 usb 2-1: USB disconnect, device number 2\n",
+          "sha256": "1a9ad5a423dbddffb00bb280cecdc49e1c50f4cf1f21d45398aa8a1cca523d59"
+        }
+      }
+    },
+    {
+      "label": "existing-records",
+      "seconds": 101.39,
+      "emulated_usb_removed": false,
+      "timeout_observed": false,
+      "disarmed": true,
+      "records": {
+        "KestrelBoot00-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 0,
+          "boot_id": "48ccbe7a-c555-41be-8771-4a42f7da3e52",
+          "reason": "earlyhook",
+          "uptime_ms": 26026,
+          "text": "capture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=1 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \n",
+          "sha256": "07cf5a5ad809cee606f5c49f989a2a88f8e432b302e7ffefc2b4129ff9e1d7bf"
+        },
+        "KestrelBoot01-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 1,
+          "boot_id": "48ccbe7a-c555-41be-8771-4a42f7da3e52",
+          "reason": "usb-state",
+          "uptime_ms": 32091,
+          "text": "capture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \n27087 usb usb2: Manufacturer: Linux 7.3.0-rc3 xhci-hcd\n27088 usb usb2: SerialNumber: 0000:00:02.0\n27089 probe of usb2 with driver usb returned 0 after 4491 usecs\n27089 probe of 0000:00:02.0 with driver xhci_hcd returned 0 after 49836 usecs\n27238 usb 2-1: new SuperSpeed USB device number 2 using xhci_hcd\n27238 usb 2-1: New USB device found, idVendor=46f4, idProduct=0001, bcdDevice= 0.00\n27238 usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3\n27238 usb 2-1: Product: QEMU USB HARDDRIVE\n27239 usb 2-1: Manufacturer: QEMU\n27239 usb 2-1: SerialNumber: 1-0000:00:02.0-1\n27240 probe of 2-1 with driver usb returned 0 after 5536 usecs\n27244 usb 2-1: USB disconnect, device number 2\n",
+          "sha256": "fa45c6f266f0fbdd960ee847670290470e441c4e5670ff794eeee72a6a1e46de"
+        },
+        "KestrelBoot02-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 2,
+          "boot_id": "48ccbe7a-c555-41be-8771-4a42f7da3e52",
+          "reason": "late-usb",
+          "uptime_ms": 38068,
+          "text": "capture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \n27087 usb usb2: Manufacturer: Linux 7.3.0-rc3 xhci-hcd\n27088 usb usb2: SerialNumber: 0000:00:02.0\n27089 probe of usb2 with driver usb returned 0 after 4491 usecs\n27089 probe of 0000:00:02.0 with driver xhci_hcd returned 0 after 49836 usecs\n27238 usb 2-1: new SuperSpeed USB device number 2 using xhci_hcd\n27238 usb 2-1: New USB device found, idVendor=46f4, idProduct=0001, bcdDevice= 0.00\n27238 usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3\n27238 usb 2-1: Product: QEMU USB HARDDRIVE\n27239 usb 2-1: Manufacturer: QEMU\n27239 usb 2-1: SerialNumber: 1-0000:00:02.0-1\n27240 probe of 2-1 with driver usb returned 0 after 5536 usecs\n27244 usb 2-1: USB disconnect, device number 2\n",
+          "sha256": "c587e2ada1ddd5ff1055450c6f3e2044b11e375f0cfab1f288454521ed1f2607"
+        },
+        "KestrelBoot03-674b8af1-da8e-4c2b-a84c-467e2d36c97c": {
+          "slot": 3,
+          "boot_id": "48ccbe7a-c555-41be-8771-4a42f7da3e52",
+          "reason": "timeout",
+          "uptime_ms": 81037,
+          "text": "capture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \ninitramfs_boot_device_timeout=seen\n27088 usb usb2: SerialNumber: 0000:00:02.0\n27089 probe of usb2 with driver usb returned 0 after 4491 usecs\n27089 probe of 0000:00:02.0 with driver xhci_hcd returned 0 after 49836 usecs\n27238 usb 2-1: new SuperSpeed USB device number 2 using xhci_hcd\n27238 usb 2-1: New USB device found, idVendor=46f4, idProduct=0001, bcdDevice= 0.00\n27238 usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3\n27238 usb 2-1: Product: QEMU USB HARDDRIVE\n27239 usb 2-1: Manufacturer: QEMU\n27239 usb 2-1: SerialNumber: 1-0000:00:02.0-1\n27240 probe of 2-1 with driver usb returned 0 after 5536 usecs\n27244 usb 2-1: USB disconnect, device number 2\n",
+          "sha256": "1a9ad5a423dbddffb00bb280cecdc49e1c50f4cf1f21d45398aa8a1cca523d59"
+        }
+      }
+    }
+  ],
+  "hardware_validated": false,
+  "physical_firmware_writes": 0,
+  "abrupt_stop_persistence": true
+}

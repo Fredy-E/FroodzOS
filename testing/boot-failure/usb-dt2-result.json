@@ -1,0 +1,8 @@
+{
+    "time_utc":  "20261015T174242Z",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "volume":  "E:\\",
+    "new_uki":  "b1adc18b7e0b550b73a1f42dc8573c1b8efc2a1a975f9b0d0b305eca892cf136",
+    "backup":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\usb-before-dt2-20261015T174242Z",
+    "hardware_boot_verified":  false
+}

@@ -1,0 +1,43 @@
+#!/usr/bin/ash
+# Opt-in local diagnostic console. Never change the read-only rootfs or disks.
+kestrel_stage_text() {
+    mountpoint -q /sysroot || return 1
+    [ -d /sysroot/etc/systemd/system ] || return 1
+    console=$(getarg kestrel_console)
+    case "$console" in
+        ''|tty1) unit=getty@tty1.service ;;
+        ttyAMA0) unit=serial-getty@ttyAMA0.service ;;
+        *) return 1 ;;
+    esac
+    units=/sysroot/etc/systemd/system
+    mkdir -p /sysroot/usr/local/sbin /sysroot/usr/local/lib "$units/$unit.d" "$units/getty.target.wants" || return 1
+    cp /etc/kestrel-text-login /sysroot/usr/local/sbin/kestrel-text-login || return 1
+    cp /etc/kestrel-text-proof /sysroot/usr/local/sbin/kestrel-text-proof || return 1
+    cp /etc/kestrel-text-bashrc /sysroot/usr/local/lib/kestrel-text-bashrc || return 1
+    chmod 755 /sysroot/usr/local/sbin/kestrel-text-login /sysroot/usr/local/sbin/kestrel-text-proof || return 1
+    cp /etc/kestrel-text-getty.conf "$units/$unit.d/90-kestrel-live.conf" || return 1
+    case "$unit" in
+        getty@*) template=getty@.service ;;
+        serial-getty@*) template=serial-getty@.service ;;
+    esac
+    ln -sf "/usr/lib/systemd/system/$template" "$units/getty.target.wants/$unit" || return 1
+    ln -sf /usr/lib/systemd/system/multi-user.target "$units/default.target" || return 1
+    # Local diagnostic shell only; do not expose it through SSH or start SDDM.
+    for service in display-manager.service sddm.service sshd.service sshd.socket; do
+        if [ -e "$units/$service" ] || [ -L "$units/$service" ] || [ -e "/sysroot/usr/lib/systemd/system/$service" ]; then
+            ln -sf /dev/null "$units/$service" || return 1
+        fi
+    done
+    return 0
+}
+run_latehook() {
+    [ "$(getarg kestrel_textboot)" = 1 ] || return 0
+    if kestrel_stage_text; then
+        echo 'KESTREL_TEXT_CONSOLE_STAGED' >/dev/console 2>/dev/null || true
+        echo 'KESTREL_TEXT_CONSOLE_STAGED' >/dev/kmsg 2>/dev/null || true
+    else
+        echo 'KESTREL_TEXT_CONSOLE_STAGE_FAILED (boot continues)' >/dev/console 2>/dev/null || true
+        echo 'KESTREL_TEXT_CONSOLE_STAGE_FAILED' >/dev/kmsg 2>/dev/null || true
+    fi
+    return 0
+}

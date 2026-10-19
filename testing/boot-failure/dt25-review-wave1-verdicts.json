@@ -1,0 +1,20 @@
+{
+  "review_wave": "deleg_7e5a0933",
+  "thermal": {
+    "spec_passed": false,
+    "quality_evaluated": false,
+    "verdict": "REQUEST_CHANGES",
+    "reconciled_existing_counts": {"board_checks": 52, "mutation_cases": 22, "policy_checks": 11},
+    "required_changes": ["Preserve historical evidence; no unlink/reuse of fixed output names", "Tagged build/predicate/policy evidence paths, validate all outputs before side effects", "Do not patch source before detecting output collisions; recognize already accepted dt25 source without blind reapplication"]
+  },
+  "graphics": {
+    "spec_passed": false,
+    "quality_evaluated": false,
+    "verdict": "REQUEST_CHANGES",
+    "required_changes": ["Accept constrained genuine sysfs class links", "Prevent display-manager auto-start before guard and reconcile text masks/target selection", "Disable diagnostic SDDM restart loops", "Require live RAM overlay before staging", "Cleanup only owned diagnostic unit/session/cgroups, never foreign GUI on preflight failure", "Observe thermal/DRM state during startup/session wait within one deadline", "Verify newly owned nonroot live seat0 active Wayland SDDM session", "One cleanup budget within service stop timeout; verify success and report failures", "Replace ineffective long comm pkill with owned cgroup cleanup", "Idempotent early signal handling"]
+  },
+  "parent_additional_verified_gaps": ["Windows-only D:/ roots break actual WSL staging", "All eight supervisor cases skipped yet reported passed", "Static source-text/hash-length tests are not runtime staging, source-byte equality or orphan/signal proof"],
+  "fix_wave": "deleg_b4595d51",
+  "acceptance": "Not approved for build integration or media handoff until fixes and renewed staged review pass",
+  "native_tsens_graphics_proof": false
+}

@@ -1,0 +1,10 @@
+[
+  {"name":"cachyos-live-profile","url":"https://raw.githubusercontent.com/CachyOS/CachyOS-Live-ISO/master/archiso/profiledef.sh","title":"CachyOS live ISO profile source","match":"arch=|bootmodes|squashfs|Xbcj","excerpt_limit":3000},
+  {"name":"cachyos-live-packages","url":"https://raw.githubusercontent.com/CachyOS/CachyOS-Live-ISO/master/archiso/packages_desktop.x86_64","title":"CachyOS desktop live package manifest","match":"ucode|syslinux|memtest|plasma|firefox|browser|calamares|cachyos|mesa|firmware|refind","excerpt_limit":5000},
+  {"name":"cachyos-kernel-pkgbuild","url":"https://raw.githubusercontent.com/CachyOS/linux-cachyos/master/linux-cachyos/PKGBUILD","title":"CachyOS kernel package recipe","match":"arch=|_cpusched|_processor_opt|_use_llvm_lto|NVIDIA-Linux|license=|_major=|pkgver=","excerpt_limit":4500},
+  {"name":"cachyos-pacman-pkgbuild","url":"https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDs/master/pacman/PKGBUILD","title":"CachyOS pacman architecture declarations","match":"arch=|aarch64|license=","excerpt_limit":1800},
+  {"name":"cachyos-kernel-manager-pkgbuild","url":"https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDs/master/cachyos-kernel-manager/PKGBUILD","title":"CachyOS kernel-manager package recipe","match":"arch=|license=|source=","excerpt_limit":1800},
+  {"name":"cachyos-chwd-pkgbuild","url":"https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDs/master/chwd/PKGBUILD","title":"CachyOS hardware-manager package recipe","match":"arch=|license=|source=","excerpt_limit":1800},
+  {"name":"cachyos-pkgbuild-license-api","url":"https://api.github.com/repos/CachyOS/CachyOS-PKGBUILDs/license","title":"CachyOS packaging repository license metadata","match":"name|path|spdx|download_url","excerpt_limit":2500},
+  {"name":"cachyos-live-license-api","url":"https://api.github.com/repos/CachyOS/CachyOS-Live-ISO/license","title":"CachyOS live ISO repository license metadata","match":"name|path|spdx|download_url","excerpt_limit":2500}
+]

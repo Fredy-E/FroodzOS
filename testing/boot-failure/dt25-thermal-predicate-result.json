@@ -1,0 +1,186 @@
+{
+  "red": {
+    "exit": 1,
+    "passed": false,
+    "tsens0_enabled": false,
+    "tsens1_enabled": false,
+    "result": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-thermal-board-red.json"
+  },
+  "green": {
+    "exit": 0,
+    "passed": true,
+    "failed": [],
+    "result": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-thermal-predicate-green.json"
+  },
+  "mutations": [
+    {
+      "label": "tsens0_enabled",
+      "expect_failed": "tsens0_enabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "tsens1_enabled",
+      "expect_failed": "tsens1_enabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "tsens2_stays_disabled",
+      "expect_failed": "tsens2_stays_disabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "tsens3_stays_disabled",
+      "expect_failed": "tsens3_stays_disabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "tsens0_compatible",
+      "expect_failed": "tsens0_compatible_retained",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "tsens0_reg",
+      "expect_failed": "tsens0_reg_retained",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "tsens0_irq",
+      "expect_failed": "tsens0_irq_retained",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "cpu0_zone_supplier",
+      "expect_failed": "cpu0_zones_on_tsens0",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "cpuss0_zone_supplier",
+      "expect_failed": "cpuss0_zones_on_tsens0",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "cpu1_zone_supplier",
+      "expect_failed": "cpu1_zones_on_tsens1",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "cpuss1_zone_supplier",
+      "expect_failed": "cpuss1_zones_on_tsens1",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "keyboard_bus",
+      "expect_failed": "keyboard_bus_enabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "keyboard_rail",
+      "expect_failed": "keyboard_power_rail_enabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "keyboard_dma",
+      "expect_failed": "keyboard_dma_provider_enabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "usb_bus",
+      "expect_failed": "usb_repeater_i2c5_enabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "usb_dma",
+      "expect_failed": "i2c5_dma_provider_enabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "gem_disabled",
+      "expect_failed": "gem_noc_stays_disabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "gpu_disabled",
+      "expect_failed": "gpu_stays_disabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "gmu_disabled",
+      "expect_failed": "gmu_stays_disabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "mdss_disabled",
+      "expect_failed": "mdss_stays_disabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "pcie3_disabled",
+      "expect_failed": "pcie3_stays_disabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    },
+    {
+      "label": "nvme_rail_disabled",
+      "expect_failed": "vreg_pcie3_nvme_stays_disabled",
+      "overall_failed": true,
+      "clause_failed": true,
+      "load_bearing": true
+    }
+  ],
+  "retained": {
+    "check-dt24-board.py": {
+      "passed": true,
+      "result": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-thermal-predicate-dt24-green.json"
+    },
+    "check-dt21-board.py": {
+      "passed": true,
+      "result": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-thermal-predicate-dt21-green.json"
+    }
+  },
+  "mutation_tests": 22,
+  "mutation_total": 22,
+  "passed": true,
+  "native_hardware_validated": false,
+  "note": "RED on frozen baseline, GREEN on built dtb, each clause proven by single-property fixture"
+}

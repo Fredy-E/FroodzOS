@@ -1,0 +1,68 @@
+{
+  "revision": "v2-dt26",
+  "tests_run": 9,
+  "testcases": [
+    "bashrc_mode_messages_real_bash",
+    "budget_and_lifecycle",
+    "logger_persist_last_good_unit",
+    "logger_wall_budget_and_bounds_static",
+    "proof_thermal_strict_decimal_unit",
+    "shell_syntax_bash_n",
+    "supervisor_run_only",
+    "text0_never_launches_gui",
+    "typed_marker_header_contract"
+  ],
+  "checks": [
+    "bashrc_mode_messages_real_bash",
+    "budget_and_lifecycle",
+    "logger_persist_last_good_unit",
+    "logger_wall_budget_and_bounds_static",
+    "proof_thermal_strict_decimal_unit",
+    "setup_required_files_present",
+    "shell_syntax_bash_n",
+    "supervisor_run_only",
+    "text0_never_launches_gui",
+    "typed_marker_header_contract"
+  ],
+  "cases": [
+    "bashrc_mode_messages_real_bash",
+    "budget_and_lifecycle",
+    "logger_persist_last_good_unit",
+    "logger_wall_budget_and_bounds_static",
+    "proof_thermal_strict_decimal_unit",
+    "setup_required_files_present",
+    "shell_syntax_bash_n",
+    "supervisor_run_only",
+    "text0_never_launches_gui",
+    "typed_marker_header_contract"
+  ],
+  "passed": 9,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "owned_files": [
+    "builder/diagnostics/kestrel-text-proof.sh",
+    "builder/diagnostics/kestrel-text-bashrc",
+    "builder/diagnostics/kestrel-root-log.sh",
+    "builder/diagnostics/kestrel-graphics.service",
+    "builder/diagnostics/kestrel-graphics-supervisor.py"
+  ],
+  "native_hardware_validated": false,
+  "vm_retest_required": true,
+  "out_prefix_note": "extracted-function/static checks are unit scope only; full-file loop coverage is in test-dt26-observability-fix.py",
+  "bounded_time": {
+    "production_default_s": 260,
+    "covers_session_s": 180,
+    "covers_cleanup_s": 25,
+    "mechanism": "BASH_MONOSECONDS else /proc/uptime fixed window + fresh remaining per op + timeout -k kill-after",
+    "kill_after_s_default": 2,
+    "honesty_note": "best-effort, NOT hard realtime: 1s clock resolution + ~2s KILL grace + ~1s scheduler; D-state/sync may exceed"
+  },
+  "runtime_closure": {
+    "timeout_present_builder": true,
+    "python3_present_builder": true,
+    "testonly": "unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production",
+    "pack_need": "integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the secure persist is inline in kestrel-root-log.sh so no hook change is needed",
+    "supervisor_stays_run_only": true
+  }
+}

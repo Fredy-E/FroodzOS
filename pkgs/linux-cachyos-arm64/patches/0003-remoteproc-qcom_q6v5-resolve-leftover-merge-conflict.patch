@@ -1,0 +1,48 @@
+From: CachyOS-ARM64 port overlay <builder@local>
+Date: Wed, 08 Oct 2026
+Subject: [PATCH] remoteproc: qcom_q6v5: resolve leftover merge conflict in request_stop
+
+The branch head (3f0d8691 "Ubuntu: Update changelog to 7.3-rc3-jg-0")
+contains an unresolved version-control conflict in
+drivers/remoteproc/qcom_q6v5.c: qcom_q6v5_request_stop() carried both
+sides of a merge between local crash-flow changes and upstream commit
+0ca7f0fc41200 ("remoteproc: qcom_q6v5: Send SMP2P stop signal in
+attached/detached state").
+
+Resolution: keep the HEAD side:
+
+  /* A watchdog/fatal IRQ clears running; logical crashes still need a stop. */
+  if (!was_running || qcom_sysmon_shutdown_acked(sysmon))
+          return 0;
+
+Rationale: with running=true the stop is sent in attached/detached states,
+which is exactly the upstream commit's intent, while also honoring the
+local requirement that logical crashes still receive a stop request.
+The upstream variant (skip when state == RPROC_CRASHED) would suppress
+that. The whole tree was scanned for conflict markers; this was the only
+file affected.
+
+Build error fixed:
+  qcom_q6v5.c:275:1: error: version control conflict marker in file
+  qcom_q6v5.c:281:9: error: invalid suffix 'ca7f0fc41200' on integer constant
+---
+ drivers/remoteproc/qcom_q6v5.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
+--- a/drivers/remoteproc/qcom_q6v5.c
++++ b/drivers/remoteproc/qcom_q6v5.c
+@@ -272,13 +272,9 @@ int qcom_q6v5_request_stop(struct qcom_q6v5 *q6v5, struct qcom_sysmon *sysmon)
+ 
+ 	q6v5->running = false;
+ 
+-<<<<<<< HEAD
+ 	/* A watchdog/fatal IRQ clears running; logical crashes still need a stop. */
+ 	if (!was_running || qcom_sysmon_shutdown_acked(sysmon))
+-=======
+-	/* Don't perform SMP2P dance if remote crashed or already stopped */
+-	if (q6v5->rproc->state == RPROC_CRASHED || qcom_sysmon_shutdown_acked(sysmon))
+->>>>>>> 0ca7f0fc41200 (remoteproc: qcom_q6v5: Send SMP2P stop signal in attached/detached state)
+ 		return 0;
+ 
+ 	qcom_smem_state_update_bits(q6v5->state,

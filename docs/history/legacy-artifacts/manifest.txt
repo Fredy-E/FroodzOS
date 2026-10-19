@@ -1,0 +1,33 @@
+# Kestrel OS live image - build manifest (2026-10-08)
+
+Image: Kestrel OS LIVE (unofficial CachyOS-derived ARM64 port), squashfs+overlay live image
+Target hardware: Lenovo IdeaPad Slim 3 15Q8X10 (83N3), Snapdragon X X1-26-100, 16 GB
+Build host: CachyOSBuilder WSL2 (aarch64) on the same Lenovo, 2026-10-08
+
+## Components
+| Component | Version / pin |
+|---|---|
+| Kernel | linux-cachyos-arm64 7.3.0rc3-1 (uname 7.3.0-cachyos-arm64) |
+| Kernel tree | jglathe/linux_ms_dev_kit @ 3f0d8691afa098ba378d7d5a3968f03219887719 (branch jg/ubuntu-qcom-x1e-7.3rc) |
+| Port patches | 0001-0005 (DTS ADC header, remoteproc, qcom_q6v5 merge markers, q6v5_pas API, adc node merge) |
+| stubble | ubuntu/stubble @ 9f11278e080a5c4a77db6acf4c8f75c14412087a |
+| Device tree | x126100-lenovo-idepad-slim3.dtb (207,632 B, built from the above tree) |
+| Base rootfs | ArchLinuxARM aarch64 2026-10-07 (sha256 42a4eeaa038994ffd31fa173256ef2f0ef511358eeb41b9ea1f8626391b9b319) |
+| Desktop | Plasma (plasma-desktop + sddm, autologin live/live) |
+| Repo | [cachyos-arm64] file:///srv/cachyos-arm64/aarch64, DB+packages signed |
+| Signing | Master key 100A8D5D6E712043E283B2F0BF1F79CAB61B722F + builder build key |
+| Firmware | 10 files staged from this machine's Windows DriverStore (local-only, ADR-5) |
+
+## Boot artifacts (FAT32 stick layout)
+- EFI/BOOT/BOOTAA64.EFI (stubble UKI, 228 MB) sha256 61093676c2de8fd7282a87ba4fb2882e169f30f4d1ea4f62494c88f75c83176c
+- arch/aarch64/airootfs.sfs (live rootfs, 1.61 GB) sha256 8ade18708a65fef9ca8221064f92a8d727a5487788d4f68e2b9737b8ee19ef81
+- Volume label: KESTREL_A64; cmdline: archisobasedir=arch archisolabel=KESTREL_A64 cow_spacesize=512M clk_ignore_unused pd_ignore_unused console=tty0 quiet
+
+## Gates
+G0b PASS (ARMv8-A baseline + cortex-a53 runtime), G1 PASS (signed package flow),
+G2 PASS (QEMU smoke boot), G5 PASS (signed repo + fresh-target sync; offline verification used --disable-sandbox for the WSL path only),
+G3/G4 PENDING (real hardware boot - this stick).
+
+## Notes
+- Local-only build: firmware and image are NOT for redistribution without per-artifact approval (ADR-5/G-D).
+- Wi-Fi frontend firmware intentionally not staged (acceptable M1 gap).

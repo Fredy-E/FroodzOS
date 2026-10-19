@@ -1,0 +1,51 @@
+{
+  "source_export_message_count": 6828,
+  "parsed_message_count": 6828,
+  "source_export_sha256": "0915ff3c75611039b0791cf850d8458d8958ef817839d5e8e4c8781f9574ac53",
+  "published_exchange_count": 758,
+  "indexed_tool_call_count": 3621,
+  "omission_category_note": "Categories overlap: omitted code fences and credential-related replacements are subsets of other message/content handling, not additional omitted messages.",
+  "omissions": {
+    "empty_or_tool_only_assistant_messages": 2385,
+    "raw_tool_outputs": 3614,
+    "system_compaction_or_async_records": 71,
+    "code_or_output_fences": 16,
+    "credential_related_user_messages": 1
+  },
+  "exchange_files": [
+    "conversation-2026-10-07.md",
+    "conversation-2026-10-08.md",
+    "conversation-2026-10-09.md",
+    "conversation-2026-10-11.md",
+    "conversation-2026-10-14.md",
+    "conversation-2026-10-15.md",
+    "conversation-2026-10-16.md",
+    "conversation-2026-10-17.md",
+    "conversation-2026-10-18.md",
+    "conversation-2026-10-19.md"
+  ],
+  "tool_counts": {
+    "skill_view": 173,
+    "terminal": 1308,
+    "web_search": 19,
+    "web_extract": 17,
+    "skill_manage": 33,
+    "tool_describe": 16,
+    "tool_call": 107,
+    "delegate_task": 85,
+    "fact_store": 4,
+    "write_file": 535,
+    "execute_code": 114,
+    "clarify": 15,
+    "patch": 476,
+    "read_file": 532,
+    "search_files": 142,
+    "vision_analyze": 41,
+    "tool_search": 2,
+    "browser_exec": 1,
+    "process_manage": 1
+  },
+  "source_export_not_uploaded": true,
+  "public_transport_cleanup": {"file": "conversation-2026-10-16.md", "nul_padding_removed": 218, "original_logical_export_preserved_locally": true},
+  "note": "Counts are exported message/tool-call records, not a claim that each record is a unique engineering experiment or a new test pass."
+}

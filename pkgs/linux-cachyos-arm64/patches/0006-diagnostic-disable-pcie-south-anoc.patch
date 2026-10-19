@@ -1,0 +1,13 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] disable pcie_south_anoc on Slim 3
+
+Rationale: native boot resets silently right after the 1680000
+interconnect probe; 16c0000 (pcie_south_anoc) is next in probe
+order. Single-variable test whether its qnoc probe is the reset
+site. NOT for publication or general ARM64 support.
+
+---
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1678,3 +1678,10 @@
+  	status = "okay"; };++/* DIAGNOSTIC 2026-10-11: disable pcie_south_anoc to test whether its qnoc+ * probe is the silent-reset site observed right after the 1680000 probe.+ * Local-only experiment, not for publication. */+&pcie_south_anoc {+	status = "disabled";+};

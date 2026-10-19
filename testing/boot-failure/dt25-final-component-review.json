@@ -1,0 +1,15 @@
+{
+  "review_wave": "deleg_37cb82f3",
+  "spec_passed": true,
+  "quality_passed": true,
+  "verdict": "PASS",
+  "scope": "Approved component graphics guard, hook/install and owned supervisor code; not final image or native hardware acceptance",
+  "closed_blockers": ["Inherited text/security state survives partial rollback", "Real overlay FSTYPE required; findmnt and mountpoint explicitly packed"],
+  "parent_independent_receipt": "dt25-parent-20261018T074415894485Z-receipt.json",
+  "parent_verified_unit_counts": {"guard": 71, "staging": 19, "supervisor": 16, "total": 106, "skipped": 0},
+  "parent_rollback_losses": {"helpers": [], "masks": []},
+  "remaining_gates": ["New canonical builder/validator integration review", "Exact packed ash and helper dependency execution", "Actual private overlay staging and staged systemd dependency graph", "Exact EFI/GRUB/UKI/SFS text and missing-thermal graphics refusal regression", "Isolated supervisor SIGKILL/private-unit shutdown behavior", "Native CPU thermal readings, software-Plasma pixels/input", "Physical media health and separately scoped update decision"],
+  "minor_findings_accepted_with_rationale": ["Removal of only the owned graphical.target wants name preserves invariant of multi-user-only activation", "File mode closure must be measured in packed staging rather than inferred from copy", "add_binary closure is a required exact-artifact integration gate, not a claim based solely on code review"],
+  "native_graphics_or_tsens_validated": false,
+  "no_media_or_firmware_mutation": true
+}

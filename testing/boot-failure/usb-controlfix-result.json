@@ -1,0 +1,9 @@
+{
+    "time_utc":  "20261014T191343Z",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "volume":  "E:\\",
+    "new_menu":  "f80192128b852283d6461302b5f3aa7308af4e1f57a615ea809d5b05519f2411",
+    "dtb":  "986d7d837a5c4f00c220b02b9ba294b705887b74aa39a72331357e0da0aea111",
+    "backup":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\usb-before-controlfix-20261014T191343Z",
+    "hardware_boot_verified":  false
+}

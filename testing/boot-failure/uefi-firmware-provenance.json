@@ -1,0 +1,5 @@
+{
+  "url": "https://deb.debian.org/debian/pool/main/e/edk2/qemu-efi-aarch64_2026.08+ds-2_all.deb",
+  "sha256": "30467a3593c099ea42bd6ff3c4590e4b205edf9a7b98844f4bed17cd8b05eb58",
+  "verification": "HTTPS transport only; test dependency, not part of live image"
+}

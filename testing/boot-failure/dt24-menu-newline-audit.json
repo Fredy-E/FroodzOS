@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "old_menu_bytes": 6059,
+  "old_menu_sha256": "d4b8b2bb8510c9354b840be0eb69a48397dcf7845de96e35903be862e6981d9a",
+  "lf_menu_bytes": 5955,
+  "lf_menu_sha256": "261ca61194b356dc33307ca5f76ec982b6324c561da775d0c1614e8e6e09d4ba",
+  "only_crlf_to_lf": true,
+  "qemu_tested_source_equivalence_verified": true,
+  "uki_unchanged": true
+}

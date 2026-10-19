@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "fixture": "rail-disabled",
+      "failed_only_expected_predicate": "keyboard_power_rail_enabled",
+      "passed": true
+    },
+    {
+      "fixture": "icc-restored",
+      "failed_only_expected_predicate": "i2c9_no_dead_gem_icc_reference",
+      "passed": true
+    },
+    {
+      "fixture": "icc-names-restored",
+      "failed_only_expected_predicate": "i2c9_no_stale_icc_names",
+      "passed": true
+    },
+    {
+      "fixture": "dma-disabled",
+      "failed_only_expected_predicate": "keyboard_dma_provider_enabled",
+      "passed": true
+    },
+    {
+      "fixture": "channel1-masked",
+      "failed_only_expected_predicate": "gpi1_existing_channel1_allowed",
+      "passed": true
+    },
+    {
+      "fixture": "voltage-changed",
+      "failed_only_expected_predicate": "keyboard_power_voltage_unchanged",
+      "passed": true
+    },
+    {
+      "fixture": "gpu-enabled",
+      "failed_only_expected_predicate": "gpu_stays_disabled",
+      "passed": true
+    },
+    {
+      "fixture": "nvme-rail-enabled",
+      "failed_only_expected_predicate": "vreg_pcie3_nvme_stays_disabled",
+      "passed": true
+    }
+  ],
+  "fixture_only": true,
+  "native_hardware_validated": false
+}

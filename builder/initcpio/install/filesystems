@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-2.0-only
+# Based on mkinitcpio 42.2's filesystems hook.
+# Exclude WSL helpers: mount.drvfs -> /init otherwise overwrites live PID 1.
+
+build() {
+    local mount
+    if (( fs_autodetect_failed )); then
+        add_all_modules -f 'nls' '/kernel/fs'
+    else
+        add_checked_modules -f 'nls' '/kernel/fs'
+    fi
+
+    if (( ! fs_autodetect_failed )) && [[ -n "${rootfstype}${usrfstype}" ]]; then
+        if command -v "mount.${rootfstype}" &>/dev/null; then
+            case "$rootfstype" in
+                drvfs|wslfs) error 'WSL filesystems cannot be used in a native live image'; return 1 ;;
+                *) add_binary "mount.${rootfstype}" ;;
+            esac
+        fi
+        if [[ -n "$usrfstype" && "$usrfstype" != "$rootfstype" ]]; then
+            case "$usrfstype" in
+                drvfs|wslfs) error 'WSL filesystems cannot be used in a native live image'; return 1 ;;
+                *)
+                    if command -v "mount.${usrfstype}" &>/dev/null; then
+                        add_binary "mount.${usrfstype}"
+                    fi
+                    ;;
+            esac
+        fi
+    else
+        for mount in $(compgen -c mount.); do
+            case "${mount#mount.}" in
+                drvfs|wslfs|*fuse*|ecryptfs*|ddi|glusterfs|moosefs|crypt{,{,o}_LUKS}|rclone|sshfs)
+                    continue
+                    ;;
+            esac
+            add_binary "$mount"
+        done
+    fi
+}
+
+help() {
+    printf '%s\n' 'Filesystem modules/helpers for native live images; excludes WSL helpers.'
+}

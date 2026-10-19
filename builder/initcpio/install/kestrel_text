@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
+build() {
+    local project="${KESTREL_PROJECT:?missing project path}"
+    add_file "$project/builder/diagnostics/kestrel-text-login.sh" /etc/kestrel-text-login 755
+    add_file "$project/builder/diagnostics/kestrel-text-proof.sh" /etc/kestrel-text-proof 755
+    add_file "$project/builder/diagnostics/kestrel-text-bashrc" /etc/kestrel-text-bashrc
+    add_file "$project/builder/diagnostics/kestrel-text-getty.conf" /etc/kestrel-text-getty.conf
+    add_runscript
+}
+help() {
+    printf '%s\n' 'RAM-overlay-only local getty repair, gated by kestrel_textboot=1.'
+}

@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "revision": "v2-dt20",
+  "uki_bytes": 244442624,
+  "uki_sha256": "081b399d298addcf8665f4fbe350b7802b816e04957b78b1166d35eeebe7e09d",
+  "old_uki_sha256": "fae9defe9b49c2fd45269450da966dfeec1d89bd25b364a2a1c1ce0dcd7f3ec9",
+  "kernel_dtb_stub_cmdline_unchanged_from_dt19": true,
+  "checkpoint_binary_and_hooks_unchanged_from_dt19": true,
+  "module_dependency_resolution": true,
+  "initramfs_validation": {
+    "image": "/home/builder/uki-v2-dt20/live-initramfs.img",
+    "init_sha256": "62fcc3a904ab68429e90f8caaab4e16c3d34a08230a42dd628739ade0443a953",
+    "checks": {
+      "pid1_matches_mkinitcpio_script": true,
+      "pid1_has_ash_shebang": true,
+      "no_mount_drvfs": true,
+      "no_mount_wslfs": true,
+      "archiso_hook_present": true,
+      "archiso_label_helper_present": true,
+      "fat_default_charset_module_present": true,
+      "utf8_charset_module_present": true,
+      "platform_i2c_qcom_geni_packed": true,
+      "platform_i2c_qcom_geni_early_load": true,
+      "platform_phy_nxp_ptn3222_packed": true,
+      "platform_phy_nxp_ptn3222_early_load": true,
+      "platform_qrtr_packed": true,
+      "platform_qrtr_early_load": true,
+      "platform_qrtr_smd_packed": true,
+      "platform_qrtr_smd_early_load": true,
+      "board_firmware_present": true,
+      "log_runtime_hook_present": true,
+      "log_streamer_present": true,
+      "log_init_script_present": true,
+      "log_root_script_present": true,
+      "log_service_present": true,
+      "early_checkpoint_binary": true,
+      "no_unbounded_firmware_loop": true,
+      "early_capture_lifecycle": true,
+      "checkpoint_owned_namespace": true
+    },
+    "passed": true
+  },
+  "embedded_inputs": {
+    ".linux": {
+      "bytes": 52492800,
+      "sha256": "682273a91f2016b9d5484857639bd043e021b961d7f4cfd385a09566b2df3abc"
+    },
+    ".dtbauto": {
+      "bytes": 208048,
+      "sha256": "fec6490277bd8c0d50919c78ccf17100448f1f5467afabda1a8a86ee56fbee8c"
+    },
+    ".initrd": {
+      "bytes": 191588184,
+      "sha256": "252c89a8b0376ee01ec76d585ac7ca425e10cf813599219e620c0f46b6d2ba1a"
+    }
+  },
+  "native_hardware_validated": false
+}

@@ -1,0 +1,70 @@
+{
+  "required_sensor_types": [
+    "cpu0-0-btm-thermal",
+    "cpu0-0-top-thermal",
+    "cpu0-1-btm-thermal",
+    "cpu0-1-top-thermal",
+    "cpu0-2-btm-thermal",
+    "cpu0-2-top-thermal",
+    "cpu0-3-btm-thermal",
+    "cpu0-3-top-thermal",
+    "cpu1-0-btm-thermal",
+    "cpu1-0-top-thermal",
+    "cpu1-1-btm-thermal",
+    "cpu1-1-top-thermal",
+    "cpu1-2-btm-thermal",
+    "cpu1-2-top-thermal",
+    "cpu1-3-btm-thermal",
+    "cpu1-3-top-thermal",
+    "cpuss0-btm-thermal",
+    "cpuss0-top-thermal",
+    "cpuss1-btm-thermal",
+    "cpuss1-top-thermal"
+  ],
+  "required_sensor_count": 20,
+  "experiment_minimum_mc": 5000,
+  "experiment_stop_mc": 80000,
+  "battery_substitution_allowed": false,
+  "platform_trips_modified": false,
+  "cooling_maps_modified": false,
+  "provenance": {
+    "source_pin": "3f0d8691afa098ba378d7d5a3968f03219887719",
+    "dtb": "/home/builder/src/ksrc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dtb",
+    "dtb_sha256": "f5f67c13bdfe975998b083ac06465c36231c0bae205e8e60fff99832264f5232",
+    "dtb_bytes": 207772,
+    "baseline_board_dtb_sha256": "c65f5e2a325e32427ba8ca6b84ed6928598fc08efcfd1ed5d0c596dfd5f475a3",
+    "derived_from": "compiled /thermal-zones thermal-sensors suppliers on TSENS0/1",
+    "providers": {
+      "tsens0": [
+        "cpu0-0-btm-thermal",
+        "cpu0-0-top-thermal",
+        "cpu0-1-btm-thermal",
+        "cpu0-1-top-thermal",
+        "cpu0-2-btm-thermal",
+        "cpu0-2-top-thermal",
+        "cpu0-3-btm-thermal",
+        "cpu0-3-top-thermal",
+        "cpuss0-btm-thermal",
+        "cpuss0-top-thermal"
+      ],
+      "tsens1": [
+        "cpu1-0-btm-thermal",
+        "cpu1-0-top-thermal",
+        "cpu1-1-btm-thermal",
+        "cpu1-1-top-thermal",
+        "cpu1-2-btm-thermal",
+        "cpu1-2-top-thermal",
+        "cpu1-3-btm-thermal",
+        "cpu1-3-top-thermal",
+        "cpuss1-btm-thermal",
+        "cpuss1-top-thermal"
+      ]
+    },
+    "audit": "dt25-thermal-source-evidence.json + dt25-thermal-audit.json (read-only)",
+    "guard": "builder/diagnostics/kestrel_graphics_guard.py evaluate_temperatures/evaluate_drm"
+  },
+  "scope": "read-only preflight; sets no trips, clocks, voltages, fans, firmware or power state; 80C is a conservative experiment stop, not a platform trip",
+  "native_graphics_validated": false,
+  "read_only_preflight": true,
+  "tag": "fixv2-20261018-01-pol"
+}

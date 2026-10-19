@@ -1,0 +1,30 @@
+{
+  "phase": "GREEN",
+  "utc": "20261018T074500Z",
+  "prefix": "dt25-software-v3-20261018T074500Z",
+  "fix_scope": "OWN ONLY builder/initcpio/hooks/kestrel_graphics, builder/initcpio/install/kestrel_graphics, testing/boot-failure/test-dt25-graphics-staging.py + new dt25-software-v3-* evidence",
+  "not_touched": ["supervisor/guard/units/env/policy/current text/logger", "canonical builder/validator/DT/kernel/rootfs/docs", "USB/EFI/firmware/rootfs/Kali/Windows/internaldisk/credential/privatekey/shadow"],
+  "before_snapshot": "testing/boot-failure/dt25-software-v3-before-fix-20261018T073900Z.json",
+  "before_hashes": {
+    "builder/initcpio/hooks/kestrel_graphics": "63e1c93b04a1220044ff84228f44db594e431bf137d7a225bfb9c4da09fe2603",
+    "builder/initcpio/install/kestrel_graphics": "e6889c488d62dacaa85a3e9efdeeae89e84fd38832afef6fe6c1c0bea7eafce0",
+    "testing/boot-failure/test-dt25-graphics-staging.py": "ab5cf6265c76216889a44c668c893a2202d491f91cce5133eec9c6247c42738"
+  },
+  "after_hashes": {
+    "builder/initcpio/hooks/kestrel_graphics": "30b67ea75c59458f5349b512baead5010452117b85b2891589997fb7870d81ce",
+    "builder/initcpio/install/kestrel_graphics": "4b31907e75275b3d769d85696d2086f47634a281990130b282b7e2a176b73521",
+    "testing/boot-failure/test-dt25-graphics-staging.py": "d40bb7b12a629b18abea4d8690f2f2b76f8da8c2e9d7944c46dbe7cc545b646a"
+  },
+  "blocker1_fix": "ownership-tracked rollback (snapshot had-flags, unset defaults preserve), atomic tmp+mv installs, pre-validation of all inputs, shared text helpers and GUI/SSH masks NEVER deleted, new diagnostic masks left fail-closed, tty1 preserved, no global mask/unmask, flag-off still no-op",
+  "blocker2_fix": "strict gate requires mountpoint helper + mountpoint -q + findmnt helper + FSTYPE non-empty overlay; no cowspace existence fallback; install add_binary findmnt+mountpoint (WSL /usr/bin/findmnt /usr/bin/mountpoint, /bin symlinks, /usr/sbin)",
+  "staging_command": "env TMPDIR=/home/builder/boot-failure-tests python3 /mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt25-graphics-staging.py (WSL CachyOSBuilder)",
+  "staging_result": "OK (19 tests, 0 failures, 0 errors, 0 skipped)",
+  "parent_probe_green": "testing/boot-failure/dt25-software-v3-parent-rollback-green-20261018T074500Z.json: hook_exit 0, lost_helpers [], lost_masks [], ordering checker_exit 0 cycle false",
+  "overlay_strict_retest": "no findmnt in PATH + /run/archiso/cowspace exists + mountpoint true => GATE_FAIL_RC1 (fail closed); before fix was GATE_PASS_RC0",
+  "red_evidence": "testing/boot-failure/dt25-software-v3-red-20261018T073900Z.json (seeded prestate + no-helper RED on current code before fix)",
+  "synthetic_fixtures_only": true,
+  "native_hardware_validated": false,
+  "services_started": false,
+  "no_build_qemu_live": true,
+  "unresolved_limits": ["No QEMU yet (synthetic fixtures only)", "No packed actual ash/overlay full unit graph (later integrator gates; sh fixtures are not packed-ash proof)", "No native services/hardware/pixels (live-rootfs/pixel proof unverified)", "Prior receipts/failures preserved, old dt25-parent ordering-rollback proof not overwritten"]
+}

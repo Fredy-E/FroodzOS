@@ -1,0 +1,50 @@
+{
+  "source": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-graphics-supervisor.py",
+  "sha256": "7ece0b64b70df38402d4858d84ed28274c739ba85b9ec281ff1573036ea31fa9",
+  "source_unchanged": true,
+  "suites": [
+    {
+      "suite": "test-dt25-graphics-supervisor.py",
+      "discovered": 16,
+      "run": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    },
+    {
+      "suite": "test-dt26-session-supervisor.py",
+      "discovered": 19,
+      "run": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    },
+    {
+      "suite": "test-dt26-session-fix.py",
+      "discovered": 14,
+      "run": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    },
+    {
+      "suite": "test-dt26-preflight-io.py",
+      "discovered": 6,
+      "run": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    }
+  ],
+  "total_run": 55,
+  "total_failures": 0,
+  "total_skipped": 0,
+  "passed": true,
+  "fixture_only": true,
+  "native_graphics_validated": false,
+  "supervisor_main_executed": false
+}

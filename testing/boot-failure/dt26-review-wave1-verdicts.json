@@ -1,0 +1,15 @@
+{
+  "review_wave": "deleg_f2aba956",
+  "session": {"spec": "REQUEST_CHANGES", "quality": "NOT_RUN", "required": ["rc0 empty/partial details must become unknown/refuse", "explicit Remote no/false", "structured atomic pass preflight saved before GUI launch"]},
+  "observability": {"spec": "REQUEST_CHANGES", "quality": "NOT_RUN", "required": ["actual elapsed-time GUI logger bound, not260samples", "valid schema/capped non-symlink last-good JSON", "robust base10 numeric CPU values", "exclusive evidence before test effects", "genuine loop/full helper regression coverage"]},
+  "fix_wave": "deleg_3a848860",
+  "fix_workers": {"session": "sa-0-0c288eca", "observability": "sa-1-d7965e22", "frozen_runtime": "sa-2-f854ba69"},
+  "harness_preparation_wave": "deleg_fc45ea1f",
+  "harness_preparer": "sa-0-9f62b91f",
+  "scope": "production fixes and isolated test/harness preparation only; no build/VM/media until reviewed",
+  "resource_policy": {"host_d_free_observed_bytes": 15123726336, "required_reserve_bytes": 10737418240, "estimated_build_and_host_copy_bytes": 733107104, "runtime_subset_cap_mib": 512, "one_sequential_fat_gib": 2.25, "no_two_full_fat_images": true, "no_old_failure_deletion": true, "lock": "/home/builder/boot-failure-tests/dt25-build.lock"},
+  "not_a_blocker": "Real systemctl supports comma-separated property list; only loginctl required repeated property flags.",
+  "corrected_shutdown_claim": "Orderly poweroff request and filesystem sync captured; absent final tail does not prove final hardware power-down.",
+  "accepted_for_build": false,
+  "accepted_for_usb": false
+}

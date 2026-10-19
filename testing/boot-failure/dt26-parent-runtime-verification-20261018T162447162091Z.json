@@ -1,0 +1,382 @@
+{
+  "root": "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+  "readback_receipt_keys": {
+    "dt26-runtime-closure-complete-20261018T160700Z.json": [
+      "cap_bytes",
+      "closure_expanded_count",
+      "est_bytes",
+      "guard_sha256",
+      "lock",
+      "log",
+      "logsh_sha256",
+      "python_nosite_count",
+      "root",
+      "root_bytes",
+      "script",
+      "sfs",
+      "sfs_bytes_actual",
+      "sfs_bytes_expected",
+      "sfs_sha256",
+      "sup_sha256",
+      "tag"
+    ],
+    "dt26-runtime-closure-complete-20261018T160700Z-evidence.json": [
+      "cap_bytes",
+      "counts",
+      "disk",
+      "est_bytes",
+      "evidence",
+      "hermetic_chroot_rc",
+      "limits",
+      "lock",
+      "lock_unlinked",
+      "log",
+      "missing_source_deps",
+      "production",
+      "qt5_in_sfs_index",
+      "qt_flag",
+      "root",
+      "root_bytes",
+      "safety",
+      "script",
+      "script_sha256",
+      "sfs",
+      "sfs_bytes",
+      "sfs_bytes_expected",
+      "sfs_sha256",
+      "sfs_sha_prefix_ok",
+      "sfs_superblock",
+      "staged_hashes",
+      "tag",
+      "unproved_separately",
+      "work"
+    ]
+  },
+  "loader_checks": [
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/chvt"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f4632419c000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f46323f60000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f46324160000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/timeout"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f9214dcba000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f9214da70000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f9214dc70000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/loginctl"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000fb8f96319000)\n\tlibsystemd-shared-262-1.so => /usr/lib/systemd/libsystemd-shared-262-1.so (0x0000fb8f95c10000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000fb8f95bd0000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000fb8f95a00000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000fb8f962d0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/systemctl"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f16f7021f000)\n\tlibsystemd-shared-262-1.so => /usr/lib/systemd/libsystemd-shared-262-1.so (0x0000f16f6fad0000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000f16f6fa90000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f16f6f8c0000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f16f701d0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/dbus-run-session"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f5ffffc9e000)\n\tlibdbus-1.so.3 => /usr/lib/libdbus-1.so.3 (0x0000f5ffffb90000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f5ffff9c0000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f5ffffc50000)\n\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x0000f5ffff810000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000f5ffff7d0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/sddm"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f46075336000)\n\tlibQt6DBus.so.6 => /usr/lib/libQt6DBus.so.6 (0x0000f460750f0000)\n\tlibQt6Qml.so.6 => /usr/lib/libQt6Qml.so.6 (0x0000f460749f0000)\n\tlibXau.so.6 => /usr/lib/libXau.so.6 (0x0000f460749c0000)\n\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x0000f46074810000)\n\tlibQt6Network.so.6 => /usr/lib/libQt6Network.so.6 (0x0000f460745c0000)\n\tlibQt6Core.so.6 => /usr/lib/libQt6Core.so.6 (0x0000f46073e90000)\n\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x0000f46073b90000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000f46073b50000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f46073980000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f460752f0000)\n\tlibdbus-1.so.3 => /usr/lib/libdbus-1.so.3 (0x0000f460738f0000)\n\tlibm.so.6 => /usr/lib/libm.so.6 (0x0000f46073810000)\n\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x0000f46073790000)\n\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x0000f46073760000)\n\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x0000f46073670000)\n\tlibz.so.1 => /usr/lib/libz.so.1 (0x0000f46073630000)\n\tlibproxy.so.1 => /usr/lib/libproxy.so.1 (0x0000f46073600000)\n\tlibcrypto.so.3 => /usr/lib/libcrypto.so.3 (0x0000f46072fa0000)\n\tliburing.so.2 => /usr/lib/liburing.so.2 (0x0000f46072f70000)\n\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x0000f46072b70000)\n\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x0000f46072910000)\n\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x0000f46072770000)\n\tlibdouble-conversion.so.3 => /usr/lib/libdouble-conversion.so.3 (0x0000f46072730000)\n\tlibb2.so.1 => /usr/lib/libb2.so.1 (0x0000f46072700000)\n\tlibpcre2-16.so.0 => /usr/lib/libpcre2-16.so.0 (0x0000f46072650000)\n\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x0000f46072540000)\n\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x0000f460724f0000)\n\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x0000f460724c0000)\n\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x0000f46072490000)\n\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x0000f46072460000)\n\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x0000f46072430000)\n\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x0000f460723e0000)\n\tlibpxbackend-1.0.so => /usr/lib/libproxy/libpxbackend-1.0.so (0x0000f460723b0000)\n\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x0000f46072320000)\n\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x0000f46072230000)\n\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x0000f46070270000)\n\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x0000f460701b0000)\n\tlibgomp.so.1 => /usr/lib/libgomp.so.1 (0x0000f46070130000)\n\tlibcurl.so.4 => /usr/lib/libcurl.so.4 (0x0000f46070000000)\n\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x0000f4606fda0000)\n\tlibduktape.so.207 => /usr/lib/libduktape.so.207 (0x0000f4606fd20000)\n\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x0000f4606fcf0000)\n\tlibnghttp3.so.9 => /usr/lib/libnghttp3.so.9 (0x0000f4606fca0000)\n\tlibngtcp2_crypto_ossl.so.0 => /usr/lib/libngtcp2_crypto_ossl.so.0 (0x0000f4606fc70000)\n\tlibngtcp2.so.16 => /usr/lib/libngtcp2.so.16 (0x0000f4606fbf0000)\n\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x0000f4606fba0000)\n\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x0000f4606fb50000)\n\tlibssh2.so.1 => /usr/lib/libssh2.so.1 (0x0000f4606fae0000)\n\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x0000f4606faa0000)\n\tlibssl.so.3 => /usr/lib/libssl.so.3 (0x0000f4606f970000)\n\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x0000f4606f940000)\n\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x0000f4606f8a0000)\n\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x0000f4606f690000)\n\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x0000f4606f610000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/kwin_wayland"
+      ],
+      "rc": 0,
+      "stdout": "dab0000)\n\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x0000f912cd6b0000)\n\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x0000f912cd450000)\n\tlibdouble-conversion.so.3 => /usr/lib/libdouble-conversion.so.3 (0x0000f912cd410000)\n\tlibb2.so.1 => /usr/lib/libb2.so.1 (0x0000f912cd3e0000)\n\tlibpcre2-16.so.0 => /usr/lib/libpcre2-16.so.0 (0x0000f912cd330000)\n\tlibcrypto.so.3 => /usr/lib/libcrypto.so.3 (0x0000f912cccd0000)\n\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x0000f912ccbe0000)\n\tlibbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x0000f912ccbb0000)\n\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x0000f912ccb60000)\n\tlibQt6WaylandClient.so.6 => /usr/lib/libQt6WaylandClient.so.6 (0x0000f912cca10000)\n\tlibvorbis.so.0 => /usr/lib/libvorbis.so.0 (0x0000f912cc9c0000)\n\tlibogg.so.0 => /usr/lib/libogg.so.0 (0x0000f912cc990000)\n\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x0000f912cc960000)\n\tlibexpat.so.1 => /usr/lib/libexpat.so.1 (0x0000f912cc910000)\n\tlibmtdev.so.1 => /usr/lib/libmtdev.so.1 (0x0000f912cc8e0000)\n\tlibevdev.so.2 => /usr/lib/libevdev.so.2 (0x0000f912cc8a0000)\n\tlibwacom.so.9 => /usr/lib/libwacom.so.9 (0x0000f912cc870000)\n\tliblua5.4.so.5.4 => /usr/lib/liblua5.4.so.5.4 (0x0000f912cc800000)\n\tlibXi.so.6 => /usr/lib/libXi.so.6 (0x0000f912cc7c0000)\n\tlibKF6XmlGui.so.6 => /usr/lib/libKF6XmlGui.so.6 (0x0000f912cc6b0000)\n\tlibQt6Xml.so.6 => /usr/lib/libQt6Xml.so.6 (0x0000f912cc660000)\n\tlibQt6QmlWorkerScript.so.6 => /usr/lib/libQt6QmlWorkerScript.so.6 (0x0000f912cc620000)\n\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x0000f912cc5a0000)\n\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x0000f912cc570000)\n\tlibproxy.so.1 => /usr/lib/libproxy.so.1 (0x0000f912cc540000)\n\tlibKF6Solid.so.6 => /usr/lib/libKF6Solid.so.6 (0x0000f912cc3c0000)\n\tlibQt6Concurrent.so.6 => /usr/lib/libQt6Concurrent.so.6 (0x0000f912cc390000)\n\tlibKF6WidgetsAddons.so.6 => /usr/lib/libKF6WidgetsAddons.so.6 (0x0000f912cc0c0000)\n\tlibacl.so.1 => /usr/lib/libacl.so.1 (0x0000f912cc090000)\n\tlibGLdispatch.so.0 => /usr/lib/libGLdispatch.so.0 (0x0000f912cbf00000)\n\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x0000f912cbe40000)\n\tlibgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x0000f912cbe00000)\n\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x0000f912cbd80000)\n\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x0000f912c9dc0000)\n\tlibgomp.so.1 => /usr/lib/libgomp.so.1 (0x0000f912c9d40000)\n\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x0000f912c9c50000)\n\tlibwayland-cursor.so.0 => /usr/lib/libwayland-cursor.so.0 (0x0000f912c9c20000)\n\tlibgudev-1.0.so.0 => /usr/lib/libgudev-1.0.so.0 (0x0000f912c9bf0000)\n\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x0000f912c9b60000)\n\tlibXext.so.6 => /usr/lib/libXext.so.6 (0x0000f912c9b20000)\n\tlibKF6ConfigWidgets.so.6 => /usr/lib/libKF6ConfigWidgets.so.6 (0x0000f912c9a90000)\n\tlibQt6PrintSupport.so.6 => /usr/lib/libQt6PrintSupport.so.6 (0x0000f912c99f0000)\n\tlibKF6ItemViews.so.6 => /usr/lib/libKF6ItemViews.so.6 (0x0000f912c9980000)\n\tlibKF6IconWidgets.so.6 => /usr/lib/libKF6IconWidgets.so.6 (0x0000f912c9940000)\n\tlibKF6IconThemes.so.6 => /usr/lib/libKF6IconThemes.so.6 (0x0000f912c98e0000)\n\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x0000f912c97d0000)\n\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x0000f912c9780000)\n\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x0000f912c9750000)\n\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x0000f912c9720000)\n\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x0000f912c96f0000)\n\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x0000f912c96c0000)\n\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x0000f912c9670000)\n\tlibpxbackend-1.0.so => /usr/lib/libproxy/libpxbackend-1.0.so (0x0000f912c9640000)\n\tlibimobiledevice-1.0.so.6 => /usr/lib/libimobiledevice-1.0.so.6 (0x0000f912c95d0000)\n\tlibplist-2.0.so.4 => /usr/lib/libplist-2.0.so.4 (0x0000f912c9590000)\n\tlibKF6Codecs.so.6 => /usr/lib/libKF6Codecs.so.6 (0x0000f912c9510000)\n\tlibKF6BreezeIcons.so.6 => /usr/lib/libKF6BreezeIcons.so.6 (0x0000f912c7c00000)\n\tlibcurl.so.4 => /usr/lib/libcurl.so.4 (0x0000f912c7ad0000)\n\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x0000f912c7870000)\n\tlibduktape.so.207 => /usr/lib/libduktape.so.207 (0x0000f912c77f0000)\n\tlibssl.so.3 => /usr/lib/libssl.so.3 (0x0000f912c76c0000)\n\tlibusbmuxd-2.0.so.7 => /usr/lib/libusbmuxd-2.0.so.7 (0x0000f912c7690000)\n\tlibimobiledevice-glue-1.0.so.0 => /usr/lib/libimobiledevice-glue-1.0.so.0 (0x0000f912c7650000)\n\tlibnghttp3.so.9 => /usr/lib/libnghttp3.so.9 (0x0000f912c7600000)\n\tlibngtcp2_crypto_ossl.so.0 => /usr/lib/libngtcp2_crypto_ossl.so.0 (0x0000f912c75d0000)\n\tlibngtcp2.so.16 => /usr/lib/libngtcp2.so.16 (0x0000f912c7550000)\n\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x0000f912c7500000)\n\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x0000f912c74b0000)\n\tlibssh2.so.1 => /usr/lib/libssh2.so.1 (0x0000f912c7440000)\n\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x0000f912c7400000)\n\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x0000f912c73d0000)\n\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x0000f912c71c0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/startplasma-wayland"
+      ],
+      "rc": 0,
+      "stdout": "bxkbcommon.so.0 (0x0000fe0d62c90000)\n\tlibGLX.so.0 => /usr/lib/libGLX.so.0 (0x0000fe0d62c30000)\n\tlibOpenGL.so.0 => /usr/lib/libOpenGL.so.0 (0x0000fe0d62bb0000)\n\tlibpng16.so.16 => /usr/lib/libpng16.so.16 (0x0000fe0d62b50000)\n\tlibharfbuzz.so.0 => /usr/lib/libharfbuzz.so.0 (0x0000fe0d629d0000)\n\tlibmd4c.so.0 => /usr/lib/libmd4c.so.0 (0x0000fe0d62990000)\n\tlibfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x0000fe0d628b0000)\n\tlibudev.so.1 => /usr/lib/libudev.so.1 (0x0000fe0d62820000)\n\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x0000fe0d62780000)\n\tlibQt6Xml.so.6 => /usr/lib/libQt6Xml.so.6 (0x0000fe0d62730000)\n\tlibKF6ConfigQml.so.6 => /usr/lib/libKF6ConfigQml.so.6 (0x0000fe0d62700000)\n\tlibKF6GlobalAccel.so.6 => /usr/lib/libKF6GlobalAccel.so.6 (0x0000fe0d626a0000)\n\tlibKF6Notifications.so.6 => /usr/lib/libKF6Notifications.so.6 (0x0000fe0d62630000)\n\tlibPlasmaActivities.so.7 => /usr/lib/libPlasmaActivities.so.7 (0x0000fe0d625c0000)\n\tlibKF6Svg.so.6 => /usr/lib/libKF6Svg.so.6 (0x0000fe0d62550000)\n\tlibQt6Qml.so.6 => /usr/lib/libQt6Qml.so.6 (0x0000fe0d61e50000)\n\tlibXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x0000fe0d61e20000)\n\tlibxcb-res.so.0 => /usr/lib/libxcb-res.so.0 (0x0000fe0d66c00000)\n\tlibxcb-keysyms.so.1 => /usr/lib/libxcb-keysyms.so.1 (0x0000fe0d61df0000)\n\tlibwayland-cursor.so.0 => /usr/lib/libwayland-cursor.so.0 (0x0000fe0d61dc0000)\n\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x0000fe0d61d90000)\n\tlibbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x0000fe0d61d60000)\n\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x0000fe0d61d10000)\n\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x0000fe0d5fd50000)\n\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x0000fe0d5fc90000)\n\tlibgomp.so.1 => /usr/lib/libgomp.so.1 (0x0000fe0d5fc10000)\n\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x0000fe0d5fb20000)\n\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x0000fe0d5faf0000)\n\tlibxcb-render-util.so.0 => /usr/lib/libxcb-render-util.so.0 (0x0000fe0d5fac0000)\n\tlibxcb-render.so.0 => /usr/lib/libxcb-render.so.0 (0x0000fe0d5faa0000)\n\tlibxcb-image.so.0 => /usr/lib/libxcb-image.so.0 (0x0000fe0d5fa70000)\n\tlibGLdispatch.so.0 => /usr/lib/libGLdispatch.so.0 (0x0000fe0d5f8e0000)\n\tlibexpat.so.1 => /usr/lib/libexpat.so.1 (0x0000fe0d5f890000)\n\tlibgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x0000fe0d5f850000)\n\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x0000fe0d5f7d0000)\n\tlibQt6Quick.so.6 => /usr/lib/libQt6Quick.so.6 (0x0000fe0d5ef70000)\n\tlibcanberra.so.0 => /usr/lib/libcanberra.so.0 (0x0000fe0d5ef30000)\n\tlibQt6Svg.so.6 => /usr/lib/libQt6Svg.so.6 (0x0000fe0d5ee60000)\n\tlibQt6Network.so.6 => /usr/lib/libQt6Network.so.6 (0x0000fe0d5ec10000)\n\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x0000fe0d5ebc0000)\n\tlibxcb-shm.so.0 => /usr/lib/libxcb-shm.so.0 (0x0000fe0d5eba0000)\n\tlibxcb-util.so.1 => /usr/lib/libxcb-util.so.1 (0x0000fe0d5eb70000)\n\tlibQt6QmlMeta.so.6 => /usr/lib/libQt6QmlMeta.so.6 (0x0000fe0d5eb20000)\n\tlibQt6QmlModels.so.6 => /usr/lib/libQt6QmlModels.so.6 (0x0000fe0d5e9d0000)\n\tlibQt6OpenGL.so.6 => /usr/lib/libQt6OpenGL.so.6 (0x0000fe0d5e900000)\n\tlibvorbisfile.so.3 => /usr/lib/libvorbisfile.so.3 (0x0000fe0d5e8d0000)\n\tlibtdb.so.1 => /usr/lib/libtdb.so.1 (0x0000fe0d5e890000)\n\tlibltdl.so.7 => /usr/lib/libltdl.so.7 (0x0000fe0d5e860000)\n\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x0000fe0d5e7e0000)\n\tlibproxy.so.1 => /usr/lib/libproxy.so.1 (0x0000fe0d5e7b0000)\n\tlibQt6QmlWorkerScript.so.6 => /usr/lib/libQt6QmlWorkerScript.so.6 (0x0000fe0d5e770000)\n\tlibvorbis.so.0 => /usr/lib/libvorbis.so.0 (0x0000fe0d5e720000)\n\tlibogg.so.0 => /usr/lib/libogg.so.0 (0x0000fe0d5e6f0000)\n\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x0000fe0d5e5e0000)\n\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x0000fe0d5e590000)\n\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x0000fe0d5e560000)\n\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x0000fe0d5e530000)\n\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x0000fe0d5e500000)\n\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x0000fe0d5e4d0000)\n\tlibpxbackend-1.0.so => /usr/lib/libproxy/libpxbackend-1.0.so (0x0000fe0d5e4a0000)\n\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x0000fe0d5e410000)\n\tlibcurl.so.4 => /usr/lib/libcurl.so.4 (0x0000fe0d5e2e0000)\n\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x0000fe0d5e080000)\n\tlibduktape.so.207 => /usr/lib/libduktape.so.207 (0x0000fe0d5e000000)\n\tlibnghttp3.so.9 => /usr/lib/libnghttp3.so.9 (0x0000fe0d5dfb0000)\n\tlibngtcp2_crypto_ossl.so.0 => /usr/lib/libngtcp2_crypto_ossl.so.0 (0x0000fe0d5df80000)\n\tlibngtcp2.so.16 => /usr/lib/libngtcp2.so.16 (0x0000fe0d5df00000)\n\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x0000fe0d5deb0000)\n\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x0000fe0d5de60000)\n\tlibssh2.so.1 => /usr/lib/libssh2.so.1 (0x0000fe0d5ddf0000)\n\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x0000fe0d5ddb0000)\n\tlibssl.so.3 => /usr/lib/libssl.so.3 (0x0000fe0d5dc80000)\n\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x0000fe0d5dc50000)\n\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x0000fe0d5da40000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/bash"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f6da00a5c000)\n\tlibreadline.so.8 => /usr/lib/libreadline.so.8 (0x0000f6da00860000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f6da00690000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f6da00a20000)\n\tlibncursesw.so.6 => /usr/lib/libncursesw.so.6 (0x0000f6da005f0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/python3.14"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f5ebb9e07000)\n\tlibpython3.14.so.1.0 => /usr/lib/libpython3.14.so.1.0 (0x0000f5ebb9670000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f5ebb94a0000)\n\tlibm.so.6 => /usr/lib/libm.so.6 (0x0000f5ebb93c0000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f5ebb9dc0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/security/pam_env.so"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f1480e29c000)\n\tlibpam.so.0 => /usr/lib/libpam.so.0 (0x0000f1480e200000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f1480e030000)\n\t/usr/lib/ld-linux-aarch64.so.1 (0x0000f1480e260000)\n\tlibaudit.so.1 => /usr/lib/libaudit.so.1 (0x0000f1480dfe0000)\n\tlibcap-ng.so.0 => /usr/lib/libcap-ng.so.0 (0x0000f1480dfb0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/security/pam_faillock.so"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000fd1c9b3cc000)\n\tlibpam.so.0 => /usr/lib/libpam.so.0 (0x0000fd1c9b330000)\n\tlibaudit.so.1 => /usr/lib/libaudit.so.1 (0x0000fd1c9b2e0000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000fd1c9b110000)\n\t/usr/lib/ld-linux-aarch64.so.1 (0x0000fd1c9b390000)\n\tlibcap-ng.so.0 => /usr/lib/libcap-ng.so.0 (0x0000fd1c9b0e0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/security/pam_nologin.so"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000fd733c1a6000)\n\tlibpam.so.0 => /usr/lib/libpam.so.0 (0x0000fd733c100000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000fd733bf30000)\n\t/usr/lib/ld-linux-aarch64.so.1 (0x0000fd733c160000)\n\tlibaudit.so.1 => /usr/lib/libaudit.so.1 (0x0000fd733bee0000)\n\tlibcap-ng.so.0 => /usr/lib/libcap-ng.so.0 (0x0000fd733beb0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/security/pam_permit.so"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f4a1783f7000)\n\tlibpam.so.0 => /usr/lib/libpam.so.0 (0x0000f4a178350000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f4a178180000)\n\t/usr/lib/ld-linux-aarch64.so.1 (0x0000f4a1783b0000)\n\tlibaudit.so.1 => /usr/lib/libaudit.so.1 (0x0000f4a178130000)\n\tlibcap-ng.so.0 => /usr/lib/libcap-ng.so.0 (0x0000f4a178100000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/security/pam_shells.so"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000fecc40bb9000)\n\tlibpam.so.0 => /usr/lib/libpam.so.0 (0x0000fecc40b10000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000fecc40940000)\n\t/usr/lib/ld-linux-aarch64.so.1 (0x0000fecc40b70000)\n\tlibaudit.so.1 => /usr/lib/libaudit.so.1 (0x0000fecc408f0000)\n\tlibcap-ng.so.0 => /usr/lib/libcap-ng.so.0 (0x0000fecc408c0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/security/pam_systemd.so"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f9128ce7a000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000f9128ccd0000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f9128cb00000)\n\t/usr/lib/ld-linux-aarch64.so.1 (0x0000f9128ce30000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/security/pam_systemd_home.so"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000ff884202c000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000ff8841ec0000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000ff8841cf0000)\n\t/usr/lib/ld-linux-aarch64.so.1 (0x0000ff8841ff0000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/security/pam_unix.so"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000fbb2dd24b000)\n\tlibpam.so.0 => /usr/lib/libpam.so.0 (0x0000fbb2dd1a0000)\n\tlibcrypt.so.2 => /usr/lib/libcrypt.so.2 (0x0000fbb2dd150000)\n\tlibtirpc.so.3 => /usr/lib/libtirpc.so.3 (0x0000fbb2dd100000)\n\tlibnsl.so.3 => /usr/lib/libnsl.so.3 (0x0000fbb2dd0d0000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000fbb2dcf00000)\n\t/usr/lib/ld-linux-aarch64.so.1 (0x0000fbb2dd200000)\n\tlibaudit.so.1 => /usr/lib/libaudit.so.1 (0x0000fbb2dceb0000)\n\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x0000fbb2dce30000)\n\tlibcap-ng.so.0 => /usr/lib/libcap-ng.so.0 (0x0000fbb2dce00000)\n\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x0000fbb2dccf0000)\n\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x0000fbb2dcca0000)\n\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x0000fbb2dcc70000)\n\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x0000fbb2dcc40000)\n\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x0000fbb2dcc10000)\n\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x0000fbb2dcbe0000)\n",
+      "stderr": ""
+    }
+  ],
+  "required_loader_count": 18,
+  "required_loader_all_pass": true,
+  "frozen_python_stdlib": {
+    "command": [
+      "/usr/bin/chroot",
+      "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+      "/usr/bin/python3.14",
+      "-I",
+      "-S",
+      "-B",
+      "-c",
+      "import argparse,json,os,signal,subprocess,sys,time,pathlib,re,stat,tempfile,errno,importlib.util; print(json.dumps({\"python\":sys.version,\"os_file\":os.__file__,\"isolated\":sys.flags.isolated,\"no_site\":sys.flags.no_site,\"no_bytecode\":sys.dont_write_bytecode}))"
+    ],
+    "rc": 0,
+    "stdout": "{\"python\": \"3.14.7 (main, Aug 12 2026, 13:41:09) [GCC 16.1.1 20260430]\", \"os_file\": \"/usr/lib/python3.14/os.py\", \"isolated\": 1, \"no_site\": 1, \"no_bytecode\": true}\n",
+    "stderr": ""
+  },
+  "frozen_bash_clock_features": {
+    "command": [
+      "/usr/bin/chroot",
+      "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+      "/usr/bin/bash",
+      "--noprofile",
+      "--norc",
+      "-c",
+      "declare -p BASH_VERSION BASH_MONOSECONDS SECONDS"
+    ],
+    "rc": 0,
+    "stdout": "declare -- BASH_VERSION=\"5.3.20(1)-release\"\ndeclare -- BASH_MONOSECONDS=\"325\"\ndeclare -i SECONDS=\"0\"\n",
+    "stderr": ""
+  },
+  "source_byte_checks": [
+    {
+      "path": "usr/bin/sddm",
+      "bytes": 862384,
+      "source_sha256": "57c260dd7a1f3b616174693d3e2512e39a47ba559887f6175ad05644c8a46dd9",
+      "staged_sha256": "57c260dd7a1f3b616174693d3e2512e39a47ba559887f6175ad05644c8a46dd9",
+      "equal": true
+    },
+    {
+      "path": "usr/bin/kwin_wayland",
+      "bytes": 1721640,
+      "source_sha256": "4d9a7aedcd82c50c907b23394b6a12ecdd3c584f6eed0d194c8ba7aa4921bdd6",
+      "staged_sha256": "4d9a7aedcd82c50c907b23394b6a12ecdd3c584f6eed0d194c8ba7aa4921bdd6",
+      "equal": true
+    },
+    {
+      "path": "usr/lib/ld-linux-aarch64.so.1",
+      "bytes": 201832,
+      "source_sha256": "b1f2738bdb51e6419d7062f96c8a44bd68853698dc5ac624fa6ca9f9b03d456d",
+      "staged_sha256": "b1f2738bdb51e6419d7062f96c8a44bd68853698dc5ac624fa6ca9f9b03d456d",
+      "equal": true
+    }
+  ],
+  "source_bytes_all_equal": true,
+  "generic_greeter_known_failure": {
+    "command": [
+      "/usr/bin/chroot",
+      "/home/builder/boot-failure-tests/dt26-runtime-closure-complete-20261018T160700Z-root",
+      "/usr/lib/ld-linux-aarch64.so.1",
+      "--inhibit-cache",
+      "--list",
+      "/usr/bin/sddm-greeter"
+    ],
+    "rc": 127,
+    "stdout": "",
+    "stderr": "/usr/bin/sddm-greeter: error while loading shared libraries: libQt5Quick.so.5: cannot open shared object file: No such file or directory\n"
+  },
+  "qt6_greeter_presence_only": {
+    "command": [
+      "/usr/bin/unsquashfs",
+      "-ll",
+      "-p",
+      "2",
+      "/home/builder/live-rootfs-v2.squashfs",
+      "usr/bin/sddm-greeter-qt6"
+    ],
+    "rc": 0,
+    "stdout": "dr-xr-xr-x root/root               243 2026-10-08 13:35 squashfs-root\ndrwxr-xr-x root/root               161 2026-10-09 12:30 squashfs-root/usr\ndrwxr-xr-x root/root             31056 2026-10-08 13:36 squashfs-root/usr/bin\n-rwxr-xr-x root/root            725256 2026-05-24 15:15 squashfs-root/usr/bin/sddm-greeter-qt6\n",
+    "stderr": ""
+  },
+  "daemon_embedded_greeter_strings": [],
+  "snapshots_are_previous_source_revision_only": {
+    "private_snapshot/kestrel-graphics-supervisor.py": "1bbd90cb74f8d31765e88e17c049afe193733e1902eb27d569d9370f955e2584",
+    "private_snapshot/kestrel_graphics_guard.py": "f19f4e84d26021d0be7d5a9be12e45626b425aff87de7a33f800b6fee0da5319"
+  },
+  "d_free_bytes": 14862204928,
+  "above_10gib_reserve": true,
+  "native_graphics_validated": false,
+  "no_compositor_launched": true,
+  "no_fixture_mutation": true
+}

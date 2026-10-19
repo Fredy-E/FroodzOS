@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checks": {
+    "count_is_20": true,
+    "names_match_cpu_cpuss": true,
+    "no_battery_in_policy": true,
+    "no_platform_trips": true,
+    "stop_is_80c": true,
+    "provenance_has_pin_and_dtb": true,
+    "guard_accepts_all_20": true,
+    "guard_battery_alone_blocks": true,
+    "guard_missing_one_blocks": true,
+    "guard_80c_inclusive_blocks": true,
+    "guard_duplicate_blocks": true
+  },
+  "required_sensor_count": 20,
+  "policy": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-graphics-policy.json",
+  "guard": "/home/builder/boot-failure-tests/dt25-fix-v2-fixtures/mock-guard-parent-1018-073038.py",
+  "tag": "parent-1018-073038-chk",
+  "synthetic_policy_fixtures_only": true,
+  "native_hardware_validated": false
+}

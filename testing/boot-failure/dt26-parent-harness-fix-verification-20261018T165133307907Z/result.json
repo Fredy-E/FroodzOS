@@ -1,0 +1,92 @@
+{
+  "unit_runs": [
+    {
+      "suite": "dt26-efi-parser-test.py",
+      "returncode": 0,
+      "result": {
+        "passed": 98,
+        "failed": 0,
+        "skipped": 0,
+        "total": 98,
+        "failures": [],
+        "revision": "v2-dt26",
+        "no_vm_runs": true,
+        "notes": "actual retained v2 bytes expect RED; positives are synthetic fixtures only"
+      },
+      "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T165133307907Z/dt26-efi-parser-test.py.log",
+      "path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T165133307907Z/dt26-efi-parser-test.py.json"
+    },
+    {
+      "suite": "dt26-harness-fix-test.py",
+      "returncode": 0,
+      "result": {
+        "passed": 66,
+        "failed": 0,
+        "skipped": 0,
+        "total": 66,
+        "failures": [],
+        "revision": "v2-dt26",
+        "no_vm_runs": true,
+        "notes": "dt26 harness-fix load-bearing regressions; VM gates remain unexecuted"
+      },
+      "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T165133307907Z/dt26-harness-fix-test.py.log",
+      "path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T165133307907Z/dt26-harness-fix-test.py.json"
+    },
+    {
+      "suite": "dt26-harness-lock-lifecycle-test.py",
+      "returncode": 0,
+      "result": {
+        "passed": 64,
+        "failed": 0,
+        "skipped": 0,
+        "total": 64,
+        "failures": [],
+        "revision": "v2-dt26",
+        "no_vm_runs": true,
+        "notes": "dt26 lock/lifecycle incremental; VM gates unexecuted"
+      },
+      "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T165133307907Z/dt26-harness-lock-lifecycle-test.py.log",
+      "path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T165133307907Z/dt26-harness-lock-lifecycle-test.py.json"
+    }
+  ],
+  "unit_passed_total": 228,
+  "unit_failed_total": 0,
+  "unit_skipped_total": 0,
+  "lock_contention": {
+    "refused": true,
+    "error": "lock contended, refusing before allocation (no validated inherited fd): [Errno 11] Resource temporarily unavailable",
+    "scope": "REAL fcntl contention on private fixture lock",
+    "holder_is_separate_child_not_parent_or_inherited_fd": true,
+    "stdout": ""
+  },
+  "bc_incremental_capacity": {
+    "scope": "actual capacity function under BC already-allocated-FAT scenario",
+    "free_d_bytes": 12884901888,
+    "pending_runtime_bytes": 0,
+    "future_fat_allocations": 0,
+    "accepted": true,
+    "actual_free_above_reserve": true,
+    "before_prepare_accepts_same_free": false,
+    "formula_function": [
+      0,
+      12884901888
+    ]
+  },
+  "log_open_failure_control_path": {
+    "scope": "actual run_qemu control path, FAKE process only, injected log ENOSPC",
+    "error": "[Errno 28] injected private log-open failure",
+    "fake_processes_created": 0,
+    "fake_process_cleanup": []
+  },
+  "source_sha256": {
+    "dt26-prepare-efi-fixture.py": "83d51a2f90a84e7acbe23aa9edb04546469c5f0013fa5de594c93a97be838d29",
+    "dt26-efi-harness.py": "9b6a9a695def630f1dd1adca418f6f657f46e08d0daa960a9f9e84e3a116136b",
+    "dt26-efi-parser.py": "55c1a54e4e1ee4eec70253d24a04a957e44ffb7f4d1782a7f832fa78912eedeb",
+    "dt26-efi-parser-test.py": "4bb3d9ad23aed388404cf2aa4279c4b4c2758bc1ee3fddd9245df5fbcfbc3155",
+    "dt26-harness-fix-test.py": "bd475fb3a6118fd304be3a7728376aab003a98b856ccb97db030c4503937e10c",
+    "dt26-harness-lock-lifecycle-test.py": "109e8c8cf6142d46666390bee98ce8c62bd4596f7d8d244e63b9ff87595a3c8c"
+  },
+  "sources_unchanged": true,
+  "no_real_vm_or_fat": true,
+  "accepted_for_vm": false
+}

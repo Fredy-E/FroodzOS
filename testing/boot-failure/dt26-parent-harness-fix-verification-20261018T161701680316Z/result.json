@@ -1,0 +1,80 @@
+{
+  "unit_runs": [
+    {
+      "suite": "dt26-efi-parser-test.py",
+      "returncode": 0,
+      "result": {
+        "passed": 98,
+        "failed": 0,
+        "skipped": 0,
+        "total": 98,
+        "failures": [],
+        "revision": "v2-dt26",
+        "no_vm_runs": true,
+        "notes": "actual retained v2 bytes expect RED; positives are synthetic fixtures only"
+      },
+      "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T161701680316Z/dt26-efi-parser-test.py.log",
+      "path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T161701680316Z/dt26-efi-parser-test.py.json"
+    },
+    {
+      "suite": "dt26-harness-fix-test.py",
+      "returncode": 0,
+      "result": {
+        "passed": 65,
+        "failed": 0,
+        "skipped": 0,
+        "total": 65,
+        "failures": [],
+        "revision": "v2-dt26",
+        "no_vm_runs": true,
+        "notes": "dt26 harness-fix load-bearing regressions; VM gates remain unexecuted"
+      },
+      "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T161701680316Z/dt26-harness-fix-test.py.log",
+      "path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-harness-fix-verification-20261018T161701680316Z/dt26-harness-fix-test.py.json"
+    }
+  ],
+  "unit_passed_total": 163,
+  "unit_failed_total": 0,
+  "unit_skipped_total": 0,
+  "lock_contention": {
+    "refused": false,
+    "returned_none": true,
+    "scope": "REAL fcntl contention on private fixture lock",
+    "holder_is_separate_child_not_parent_or_inherited_fd": true,
+    "stdout": "PARENT FLOCK INHERITED /home/builder/boot-failure-tests/dt26-parent-harness-lock-b_4czwoe/private-test.lock; proceeding under parent hold ...\n"
+  },
+  "bc_incremental_capacity": {
+    "scope": "actual capacity function under BC already-allocated-FAT scenario",
+    "free_d_bytes": 12884901888,
+    "pending_runtime_bytes": 0,
+    "future_fat_allocations": 0,
+    "accepted": false,
+    "actual_free_above_reserve": true,
+    "formula_function": [
+      2415919104,
+      10468982784
+    ]
+  },
+  "log_open_failure_control_path": {
+    "scope": "actual run_qemu control path, FAKE process only, injected log ENOSPC",
+    "error": "[Errno 28] injected private log-open failure",
+    "fake_processes_created": 1,
+    "fake_process_cleanup": [
+      {
+        "terminated": false,
+        "killed": false,
+        "returncode": null
+      }
+    ]
+  },
+  "source_sha256": {
+    "dt26-prepare-efi-fixture.py": "78f25d6d6271513521ccb071db0071b688296bd7611ad26619d10e9f1c7dfc9f",
+    "dt26-efi-harness.py": "32e65236df462cee04d95827832413fa7ee5f22df4202146ecd4cc46c7c9e5a1",
+    "dt26-efi-parser.py": "55c1a54e4e1ee4eec70253d24a04a957e44ffb7f4d1782a7f832fa78912eedeb",
+    "dt26-efi-parser-test.py": "210e2ff5284ef3fae194256025b42a687d84742979d73e33ef9f86e7b0714a32",
+    "dt26-harness-fix-test.py": "a99bf5f04828e1bbc881c8e2c24b0f8c34114a9aeb81b0960035e51a785d5bb2"
+  },
+  "sources_unchanged": true,
+  "no_real_vm_or_fat": true,
+  "accepted_for_vm": false
+}

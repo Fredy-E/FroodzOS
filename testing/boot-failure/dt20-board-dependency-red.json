@@ -1,0 +1,20 @@
+{
+  "passed": false,
+  "dtb": "/home/builder/src/ksrc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dtb",
+  "checks": {
+    "usb_repeater_i2c5_enabled": true,
+    "i2c5_no_dead_gem_icc_reference": false,
+    "i2c5_no_stale_icc_names": false,
+    "i2c5_dma_provider_enabled": false,
+    "gpi0_existing_channel5_allowed": true,
+    "gem_noc_stays_disabled": true,
+    "gpu_stays_disabled": true,
+    "gmu_stays_disabled": true,
+    "mdss_stays_disabled": true,
+    "eusb3_repeater_on_i2c5": true,
+    "eusb5_repeater_on_i2c5": true,
+    "eusb6_repeater_on_i2c5": true,
+    "eusb9_repeater_on_i2c5": true
+  },
+  "native_hardware_validated": false
+}

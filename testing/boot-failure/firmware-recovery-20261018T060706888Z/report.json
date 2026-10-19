@@ -1,0 +1,66 @@
+{
+    "read_only":  true,
+    "firmware_writes":  0,
+    "input_is_fixture":  false,
+    "boot_ids":  [
+                     "9c31cdbb-5aad-4802-9ea7-8101066b591e"
+                 ],
+    "unchanged_from_previous_export":  false,
+    "all_checkpoint_slots_present":  true,
+    "records":  [
+                    {
+                        "name":  "KestrelBoot00",
+                        "status":  "Saved",
+                        "bytes":  297,
+                        "sha256":  "7b882062feb8769655b0b787a72be1d0594ab9729905386b669f6e332136d4bc",
+                        "text":  "boot=9c31cdbb-5aad-4802-9ea7-8101066b591e slot=0 uptime_ms=8892 reason=earlyhook\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=0 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \n"
+                    },
+                    {
+                        "name":  "KestrelBoot01",
+                        "status":  "Saved",
+                        "bytes":  908,
+                        "sha256":  "d1d8bb3119c52fd31681bddb253da244829d48282380ad20ee5b1cc1333d51c4",
+                        "text":  "boot=9c31cdbb-5aad-4802-9ea7-8101066b591e slot=1 uptime_ms=10658 reason=post-error\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=5 external_usb=3 label=missing input_errno=0\na200000.usb=bound a400000.usb=bound a600000.usb=bound a800000.usb=unbound \n9733 usb 3-1: new SuperSpeed USB device number 2 using xhci-hcd\n9744 input: 2.4G Mouse System Control as /devices/platform/soc@0/a400000.usb/xhci-hcd.1.auto/usb2/2-2/2-2:1.1/0003:1EA7:0066.0003/input/input7\n9744 hid-generic 0003:1EA7:0066.0003: input,hiddev0,hidraw2: USB HID v1.10 Mouse [2.4G Mouse] on usb-xhci-hcd.1.auto-2/input1\n9745 usb 3-1: New USB device found, idVendor=0951, idProduct=1666, bcdDevice= 1.10\n9747 usb 3-1: New USB device strings: Mfr=2, Product=3, SerialNumber=4\n9747 usb 3-1: Product: DataTraveler 3.0\n9747 usb 3-1: Manufacturer: Kingston\n9747 usb 3-1: SerialNumber: E0D55EA574D717710875009F\n"
+                    },
+                    {
+                        "name":  "KestrelBoot02",
+                        "status":  "Saved",
+                        "bytes":  908,
+                        "sha256":  "0d28e227717d446e22bc625b025d06e8aa531997c75cc9633f477c61494ab41a",
+                        "text":  "boot=9c31cdbb-5aad-4802-9ea7-8101066b591e slot=2 uptime_ms=13463 reason=late-usb\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=5 external_usb=3 label=present input_errno=0\na200000.usb=bound a400000.usb=bound a600000.usb=bound a800000.usb=unbound \n9733 usb 3-1: new SuperSpeed USB device number 2 using xhci-hcd\n9744 input: 2.4G Mouse System Control as /devices/platform/soc@0/a400000.usb/xhci-hcd.1.auto/usb2/2-2/2-2:1.1/0003:1EA7:0066.0003/input/input7\n9744 hid-generic 0003:1EA7:0066.0003: input,hiddev0,hidraw2: USB HID v1.10 Mouse [2.4G Mouse] on usb-xhci-hcd.1.auto-2/input1\n9745 usb 3-1: New USB device found, idVendor=0951, idProduct=1666, bcdDevice= 1.10\n9747 usb 3-1: New USB device strings: Mfr=2, Product=3, SerialNumber=4\n9747 usb 3-1: Product: DataTraveler 3.0\n9747 usb 3-1: Manufacturer: Kingston\n9747 usb 3-1: SerialNumber: E0D55EA574D717710875009F\n"
+                    },
+                    {
+                        "name":  "KestrelBoot03",
+                        "status":  "Saved",
+                        "bytes":  908,
+                        "sha256":  "ed9a841cd3304f181209d377695c99374dfd01fe9caca0bca35a0abe33bdff37",
+                        "text":  "boot=9c31cdbb-5aad-4802-9ea7-8101066b591e slot=3 uptime_ms=13996 reason=stop\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=5 external_usb=3 label=present input_errno=0\na200000.usb=bound a400000.usb=bound a600000.usb=bound a800000.usb=unbound \n9733 usb 3-1: new SuperSpeed USB device number 2 using xhci-hcd\n9744 input: 2.4G Mouse System Control as /devices/platform/soc@0/a400000.usb/xhci-hcd.1.auto/usb2/2-2/2-2:1.1/0003:1EA7:0066.0003/input/input7\n9744 hid-generic 0003:1EA7:0066.0003: input,hiddev0,hidraw2: USB HID v1.10 Mouse [2.4G Mouse] on usb-xhci-hcd.1.auto-2/input1\n9745 usb 3-1: New USB device found, idVendor=0951, idProduct=1666, bcdDevice= 1.10\n9747 usb 3-1: New USB device strings: Mfr=2, Product=3, SerialNumber=4\n9747 usb 3-1: Product: DataTraveler 3.0\n9747 usb 3-1: Manufacturer: Kingston\n9747 usb 3-1: SerialNumber: E0D55EA574D717710875009F\n"
+                    },
+                    {
+                        "name":  "KestrelSeq",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog0",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog1",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog2",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog3",
+                        "status":  "Missing",
+                        "error":  203
+                    }
+                ],
+    "valid":  true
+}

@@ -1,0 +1,42 @@
+{
+  "created_utc": "2026-10-18T08:48:46.338496+00:00",
+  "native_hardware_validated": false,
+  "original_child": {
+    "bytes": 959,
+    "path": "builder/diagnostics/kestrel-graphics-sddm.service",
+    "sha256": "ea1e811df4887e11da0440342747a4b53d8470c0874640a5989bd751d2d1935a",
+    "text": "[Unit]\nDescription=Owned diagnostic SDDM (guarded, no auto-start)\nDocumentation=file:/etc/kestrel-graphics-env\nConditionKernelCommandLine=kestrel_graphics=1\nConditionPathExists=/run/kestrel-graphics/launch-allowed\nAfter=systemd-logind.service dbus.service systemd-user-sessions.service kestrel-graphics.service\nPartOf=kestrel-graphics.service\nConflicts=display-manager.service sddm.service [REDACTED_EMAIL]\n# No WantedBy: started explicitly by kestrel-graphics-supervisor only after\n# read-only preflight passes. Stock display-manager/sddm stay masked.\n\n[Service]\nType=simple\nExecStart=/usr/bin/sddm\nRestart=no\nNice=10\nEnvironmentFile=/etc/kestrel-graphics-env\nTimeoutStopSec=10\n# No Restart=always inheritance: diagnostic GUI must never loop.\n# Live autologin (live/plasma, UID 1000) via stock SDDM/PAM/logind ACLs;\n# no root compositor, no account/group edits, Wayland-only session.\n\n[Install]\n# No WantedBy: explicit start only, no unguarded activation.\n"
+  },
+  "original_parent": {
+    "bytes": 1081,
+    "path": "builder/diagnostics/kestrel-graphics.service",
+    "sha256": "228b259ca136e362bb35097cbac7bb636d094af8750b7c0730ab054971dbdab3",
+    "text": "[Unit]\nDescription=Bounded simpledrm/software Plasma diagnostic (opt-in)\nDocumentation=file:/etc/kestrel-graphics-env\nConditionKernelCommandLine=kestrel_graphics=1\nAfter=systemd-logind.service dbus.service systemd-user-sessions.service multi-user.target\nWants=systemd-logind.service\n# Multi-user-only activation: graphical.target Requires multi-user, so this\n# runs under both defaults, but never as graphical.target.wants. Stock\n# display-manager/sddm are masked by the hook, so no GUI starts before the\n# guard passes. Private kestrel-graphics-sddm.service is started explicitly by\n# the supervisor only after preflight + launch marker.\n\n[Service]\nType=simple\nExecStart=/usr/local/sbin/kestrel-graphics-supervisor\nRestart=no\nTimeoutStopSec=30\nNice=10\n# No auto-restart loops. No root compositor. SDDM autologin (live/plasma)\n# provides the normal PAM/logind/DBus session; supervisor only gates,\n# monitors (180s/80C fail-closed) and performs bounded owned-GUI-only cleanup.\n# Session-active is not pixel proof; pixels/input are not claimed.\n\n[Install]\nWantedBy=multi-user.target\n"
+  },
+  "purpose": "Freeze full original 2 unit bytes+hashes BEFORE lifecycle fix; exclusive outputs, no archive deletes; no build/QEMU until parent reviews unit fix.",
+  "rm_verification": {
+    "budget": "parent TimeoutStopSec=30 retained; rm -f instant fits stop budget; no global kills",
+    "builder_root": "/usr/bin/rm GNU coreutils 9.12 owned by coreutils 9.12-2 (verified via wsl CachyOSBuilder ls+pacman -Qo)",
+    "live_imgroot": "/home/builder/imgroot/usr/bin/rm exists 133568 bytes same as builder root (verified via wsl ls)",
+    "semantic": "/usr/bin/rm -f -- supports -f and -- end-of-options; bounded owned-path only"
+  },
+  "scope_guard": {
+    "forbidden": "NO edits builder canonical/validator/platform_graphics_gate.py, guard/supervisor/hooks/install/env/policy/text/logger/DT/Image/config/rootfs/SFS, existing tests/evidence/candidate/docs/ledger; another reviewer reviews frozen integration repairs only",
+    "no_build_qemu": "true until parent reviews unit fix",
+    "old_image_rejected": "old 9c image REJECTED for native after unit byte change; needs future fresh rebuild (parent owns plan)",
+    "sole_writer": "builder/diagnostics/kestrel-graphics.service + kestrel-graphics-sddm.service; NEW test-dt25-graphics-unit-contract.py + new dt25-lifecycle-* only"
+  },
+  "tag": "dt25-lifecycle-20261018T084848Z",
+  "verified_failure": {
+    "boot_id": "e1ae3f51-46d7-4abd-8bde-9c6e29a415f2",
+    "candidate_efi": "/home/builder/uki-v2-dt25/vmlinuz-live.efi",
+    "candidate_note": "source/packed unit byte exact per packing preservation",
+    "candidate_sha256": "9c1abc4fdb4bd0aaee5cd83b2427eb094a6d870f62d59aa56b36d2aa413499fb",
+    "claim": "PartOf alone does NOT stop child on parent unexpected failed state",
+    "correction_json": "testing/boot-failure/dt25-efi-graphics-fw-off-v2-correction.json lines 43/44, only false c_child_inactive_gone_after_parent_sigkill",
+    "ordering_cycle": "NO confirmed unit ordering cycle: parent full-target-graph verify --man=no 0 in dt25-parent-20261018T080854313952Z-full-target-graph.json; do not invent cycle or rewrite systemd architecture",
+    "raw_v2_lines": "555-586 window: parent active MainPID 1147, child active MainPID 1169, C_KILL_RC 0 KILL_SENT, parent failed MainPID 0 Result signal, child still active MainPID 1169 after 15s; worker final 1151/1171 was v1; preserve per-run IDs",
+    "raw_v2_log": "testing/boot-failure/dt25-efi-graphics-fw-off-v2.log",
+    "source_private_unit": "line7 PartOf=parent, After parent line6; main Type=simple line14, Restart no, Timeout 30; launch marker may remain when Python killed"
+  }
+}

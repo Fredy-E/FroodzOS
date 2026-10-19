@@ -1,0 +1,10 @@
+{
+  "command_exit": 0,
+  "stdout": "overlay\n",
+  "stderr": "",
+  "man_checks_disabled_to_isolate_dependency_graph": true,
+  "native_hardware_validated": false,
+  "fixture": "/home/builder/boot-failure-tests/dt25-parent-full-target-dmgq6_vd",
+  "source_units_unchanged": true,
+  "multi_user_vendor_unit": "#  SPDX-License-Identifier: LGPL-2.1-or-later\n#\n#  This file is part of systemd.\n#\n#  systemd is free software; you can redistribute it and/or modify it\n#  under the terms of the GNU Lesser General Public License as published by\n#  the Free Software Foundation; either version 2.1 of the License, or\n#  (at your option) any later version.\n\n[Unit]\nDescription=Multi-User System\nDocumentation=man:systemd.special(7)\nRequires=basic.target\nConflicts=rescue.service rescue.target\nAfter=basic.target rescue.service rescue.target\nAllowIsolate=yes\n"
+}

@@ -1,0 +1,25 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] disable gpu+gmu on Slim 3
+
+Rationale: GPU binding to its IOMMU group at ~9.26s is immediately
+followed by display death (without SMMU the same boot lived to
+19.4s+). Keep the console on the firmware framebuffer until
+GPU/SMMU is properly brought up. NOT for publication or general
+ARM64 support.
+
+---
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1767,3 +1767,11 @@
+ &usb_2 { interconnects = <0xe8 0x00 0x07 0x18 0x01 0x07 0xe8 0x00 0x07 0x18 0x01 0x07>; };
+ &usb_mp { interconnects = <0xe8 0x01 0x07 0x18 0x01 0x07 0xe8 0x01 0x07 0x18 0x01 0x07>; };
+ &usb_1_ss0 { interconnects = <0xe5 0x00 0x07 0x18 0x01 0x07 0xe5 0x00 0x07 0x18 0x01 0x07>; };
+ &usb_1_ss1 { interconnects = <0xe5 0x01 0x07 0x18 0x01 0x07 0xe5 0x01 0x07 0x18 0x01 0x07>; };
++
++/* DIAGNOSTIC 2026-10-16 (0012): disable gpu + gmu. GPU binding to
++ * its IOMMU group at ~9.26s is immediately followed by display
++ * death (without SMMU the same boot lived to 19.4s+). Keep the
++ * console on the firmware framebuffer until GPU/SMMU is properly
++ * brought up. Local-only, not for publication. */
++&gpu { status = "disabled"; };
++&gmu { status = "disabled"; };

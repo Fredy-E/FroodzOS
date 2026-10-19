@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "menu-is-not-shell",
+      "passed": true
+    },
+    {
+      "case": "prompt-before-target",
+      "passed": true
+    },
+    {
+      "case": "real-prompt-and-target",
+      "passed": true
+    },
+    {
+      "case": "coloured-real-prompt",
+      "passed": true
+    }
+  ],
+  "fixture_only": true
+}

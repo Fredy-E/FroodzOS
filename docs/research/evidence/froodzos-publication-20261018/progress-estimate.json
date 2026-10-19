@@ -1,0 +1,82 @@
+{
+  "status": "subjective engineering estimate; not measured code/time completion",
+  "native_desktop": {
+    "weights": [
+      {
+        "milestone": "Native boot chain",
+        "weight": 20,
+        "estimated_fraction": 1.0
+      },
+      {
+        "milestone": "USB/live overlay root",
+        "weight": 15,
+        "estimated_fraction": 1.0
+      },
+      {
+        "milestone": "Systemd and interactive console",
+        "weight": 15,
+        "estimated_fraction": 1.0
+      },
+      {
+        "milestone": "Required input acceptance",
+        "weight": 10,
+        "estimated_fraction": 0.8
+      },
+      {
+        "milestone": "Native graphics and Plasma",
+        "weight": 20,
+        "estimated_fraction": 0.0
+      },
+      {
+        "milestone": "Required wired-network acceptance",
+        "weight": 10,
+        "estimated_fraction": 0.0
+      },
+      {
+        "milestone": "Safe native shutdown acceptance",
+        "weight": 10,
+        "estimated_fraction": 0.5
+      }
+    ],
+    "weighted_score": "63.0",
+    "display_rounded_nearest_5_percent": 65
+  },
+  "public_general_arm64_release": {
+    "weights": [
+      {
+        "milestone": "First usable hardware target",
+        "weight": 35,
+        "estimated_fraction": "0.63"
+      },
+      {
+        "milestone": "Clean portable build and image recipes",
+        "weight": 15,
+        "estimated_fraction": "0.5"
+      },
+      {
+        "milestone": "Public package repository and signing/updates",
+        "weight": 15,
+        "estimated_fraction": "0.3"
+      },
+      {
+        "milestone": "Installer/recovery acceptance",
+        "weight": 10,
+        "estimated_fraction": "0"
+      },
+      {
+        "milestone": "License/firmware/publication closure",
+        "weight": 10,
+        "estimated_fraction": "0.1"
+      },
+      {
+        "milestone": "Product QA, additional boards, support/security policy",
+        "weight": 15,
+        "estimated_fraction": "0"
+      }
+    ],
+    "weighted_score": "35.05",
+    "display_rounded_nearest_5_percent": 35
+  },
+  "evidence": "docs/project-progress.md and native dt24 acceptance; weights and fractions are judgments, not measured facts",
+  "warning": "Graphics, thermals, required peripheral acceptance and final shutdown remain open. Release adds licensing, firmware, clean packaging, signed updates, installer/recovery and broader QA/support."
+}

@@ -1,0 +1,60 @@
+{
+  "fixture_probe_only_no_vm_or_fat": true,
+  "source_sha256": {
+    "dt26-prepare-efi-fixture.py": "6d83cb9d82b53ad3c8ae30750c3f4dd1eafab548f2b38f9c8960bf3281a2540d",
+    "dt26-efi-harness.py": "f3705a194a70a4da86662c60472b7f1b3e034ae2b919560b025db88ca7c4e5ad",
+    "dt26-efi-parser.py": "1c2db38d9cab9c1ae2e5e6b0d4668cad3a3b6fd004d78bc2a2baa0a94740fb0a",
+    "dt26-efi-parser-test.py": "47f80b6aabbe7c2d114942ed579348cc6d213157684c7128e9889fb6ed30b86a"
+  },
+  "disk_guard": [
+    {
+      "case": "wrong_filesystem",
+      "fake_fixture_only": true,
+      "called_paths": [
+        "/home/builder/boot-failure-tests"
+      ],
+      "accepted": true,
+      "error": null,
+      "actual_d_free_bytes": 11811160064,
+      "reported_free_bytes": 1073741824000,
+      "remaining_after_fixture_bytes": 9395240960,
+      "reserve_bytes": 10737418240,
+      "stdout": "D free OK 1024000MiB (need fixture+headroom 3515MiB)\n"
+    },
+    {
+      "case": "reserve_not_subtracted",
+      "fake_fixture_only": true,
+      "called_paths": [
+        "/home/builder/boot-failure-tests"
+      ],
+      "accepted": true,
+      "error": null,
+      "actual_d_free_bytes": 11811160064,
+      "reported_free_bytes": 11811160064,
+      "remaining_after_fixture_bytes": 9395240960,
+      "reserve_bytes": 10737418240,
+      "stdout": "D free OK 11264MiB (need fixture+headroom 3515MiB)\n"
+    }
+  ],
+  "test_collision_preflight": {
+    "existing_result": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-efi-parser-test-result.json",
+    "loader_reached": true,
+    "hash_preserved": true,
+    "calls": [
+      "load_parser_called_despite_existing_result"
+    ]
+  },
+  "graphics_patch_0_to_1": {
+    "accepted": false,
+    "error": "missing kestrel_graphics=1",
+    "fat_commands": [],
+    "no_fat_created": true
+  },
+  "marker_and_literal_validation": {
+    "echo_block_returned": "forged\n",
+    "hash_with_newline_accepted": true,
+    "boot_id_with_newline_accepted": true
+  },
+  "source_hashes_unchanged": true,
+  "accepted_for_vm": false
+}

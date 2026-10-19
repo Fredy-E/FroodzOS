@@ -1,0 +1,29 @@
+[Unit]
+Description=Bounded simpledrm/software Plasma diagnostic (opt-in)
+Documentation=file:/etc/kestrel-graphics-env
+ConditionKernelCommandLine=kestrel_graphics=1
+After=systemd-logind.service dbus.service systemd-user-sessions.service multi-user.target
+Wants=systemd-logind.service
+# Multi-user-only activation: graphical.target Requires multi-user, so this
+# runs under both defaults, but never as graphical.target.wants. Stock
+# display-manager/sddm are masked by the hook, so no GUI starts before the
+# guard passes. Private kestrel-graphics-sddm.service is started explicitly by
+# the supervisor only after preflight + launch marker.
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/rm -f -- /run/kestrel-graphics/launch-allowed
+ExecStart=/usr/local/sbin/kestrel-graphics-supervisor
+ExecStopPost=/usr/bin/rm -f -- /run/kestrel-graphics/launch-allowed
+Restart=no
+TimeoutStopSec=30
+StandardOutput=journal+console
+StandardError=journal+console
+Nice=10
+# No auto-restart loops. No root compositor. SDDM autologin (live/plasma)
+# provides the normal PAM/logind/DBus session; supervisor only gates,
+# monitors (180s/80C fail-closed) and performs bounded owned-GUI-only cleanup.
+# Session-active is not pixel proof; pixels/input are not claimed.
+
+[Install]
+WantedBy=multi-user.target

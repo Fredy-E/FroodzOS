@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "review_batch": "deleg_99442bb7",
+  "review_scope": "read-only independent recommendations, reconciled against parent compiled whitelist and packed-hook tests",
+  "accepted": [
+    "Restore only misc fixed rail; it also supplies the configured touchpad, not the separately disabled storage rails",
+    "No-vote I2C9 only; GEM remains off",
+    "Enable existing GPI1 with mask/IOMMU/channel definitions unchanged, while documenting the native FIFO-mode uncertainty",
+    "Add I2C-HID early module closure",
+    "Normal systemd, multi-user target, standard getty TTY ownership; no init= override",
+    "Preserve numbering, logger byte identity, earlier evidence and exact-candidate validation",
+    "Serial QEMU interaction is not native VT or physical-keyboard proof"
+  ],
+  "reconciled_differences": [
+    "Child DT review observed the pre-repair baseline; parent dt24 compiled audit proves only the four approved properties changed",
+    "Parent uses an independent opt-in hook rather than changing logger lifecycle",
+    "Parent intentionally provides a local-only root diagnostic login program with Bash startup proof; no passwords/accounts modified; getty owns the TTY",
+    "SSH is not installed in the reviewed root; existing conditional masks are defense-in-depth, not a claim that it was enabled",
+    "Native target uses tty1 explicitly; QEMU uses the reviewed serial-getty template and must label that divergence"
+  ],
+  "native_hardware_validated": false
+}

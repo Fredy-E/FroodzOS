@@ -1,0 +1,20 @@
+{
+  "phase": "RED",
+  "utc": "20261018T073900Z",
+  "prefix": "dt25-software-v3-red-20261018T073900Z",
+  "blocker1_parent_probe": {
+    "hook_exit": 0,
+    "lost_preexisting_helpers": ["usr/local/sbin/kestrel-text-login", "usr/local/sbin/kestrel-text-proof", "usr/local/lib/kestrel-text-bashrc"],
+    "lost_preexisting_masks": ["display-manager.service", "sddm.service", "sshd.service", "sshd.socket"],
+    "verdict": "RED reproduced on current code before fix"
+  },
+  "blocker2_overlay_fallback": {
+    "test": "no findmnt in PATH + /run/archiso/cowspace exists + mountpoint true",
+    "current_gate": "GATE_PASS_RC0",
+    "expected_gate": "GATE_FAIL_RC1 (fail closed, require FSTYPE overlay)",
+    "verdict": "RED reproduced: existence fallback passes without FSTYPE proof"
+  },
+  "before_snapshot": "testing/boot-failure/dt25-software-v3-before-fix-20261018T073900Z.json",
+  "native_hardware_validated": false,
+  "synthetic_fixtures_only": true
+}

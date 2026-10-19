@@ -1,0 +1,27 @@
+{
+    "verified":  true,
+    "revision":  "v2-dt22",
+    "time_utc":  "20261017T114344783Z",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "model":  "Kingston DataTraveler 3.0 USB Device",
+    "volume":  "E:\\",
+    "backup":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\usb-before-dt22-20261017T114344783Z",
+    "files":  [
+                  {
+                      "path":  "EFI/Linux/kestrel-live.efi",
+                      "source":  "testing/boot-failure/dt22-candidate.efi",
+                      "bytes":  244482560,
+                      "sha256":  "483078d869c118b78cefbc604d1cd9c7f43c924abf8ed0f859737014f495d59d",
+                      "old_sha256":  "a1ced156e198be71a586aa6283a86edc251ddb147a3564c28ed2b5ddcd92a75c"
+                  },
+                  {
+                      "path":  "boot/grub/grub.cfg",
+                      "source":  "testing/boot-failure/dt22-grub.cfg",
+                      "bytes":  6211,
+                      "sha256":  "6f755b6da131d59e5d366be9457765dc9beb7154d51caef8cef7aa8ae543ec72",
+                      "old_sha256":  "2dd7a70d6853664c628cab5d00c2444a321cd54254b2b0f8f2fb07e1fc5b7cfb"
+                  }
+              ],
+    "hardware_boot_verified":  false,
+    "firmware_variables_changed":  false
+}

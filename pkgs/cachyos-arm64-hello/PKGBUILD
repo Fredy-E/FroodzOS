@@ -1,0 +1,17 @@
+pkgname=cachyos-arm64-hello
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="First signed package of the ARM64 overlay (G1 gate artifact)"
+arch=('aarch64')
+url="local"
+license=('MIT')
+depends=()
+source=()
+sha256sums=()
+
+package() {
+  mkdir -p "$pkgdir/usr/bin" "$pkgdir/usr/share/doc/$pkgname"
+  printf '#!/bin/sh\necho "cachyos-arm64-hello: G1 signed-overlay rehearsal"\n' > "$pkgdir/usr/bin/cachyos-arm64-hello"
+  chmod 755 "$pkgdir/usr/bin/cachyos-arm64-hello"
+  printf 'First signed package of the ARM64 overlay. Built on CachyOSBuilder, ARMv8-A baseline.\n' > "$pkgdir/usr/share/doc/$pkgname/README"
+}

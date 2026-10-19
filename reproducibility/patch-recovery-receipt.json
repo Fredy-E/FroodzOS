@@ -1,0 +1,195 @@
+{
+  "read_only_original_sources": true,
+  "build_or_vm_executed": false,
+  "new_cumulative_patches": [
+    {
+      "component": "kernel",
+      "pin": "3f0d8691afa098ba378d7d5a3968f03219887719",
+      "patch": "kernel/current-source-recovered.patch",
+      "patch_sha256": "76cc1ff14d8e1b4d7228100eedaf0bf46553dba7eb59a2b6f6f02872722d585c",
+      "files": [
+        {
+          "path": "arch/arm64/boot/dts/qcom/hamoa-pmics.dtsi",
+          "pristine_sha256": "f33c0fd9112c9cd3a23b50001c5588839f3295f432fd3ca5d618f7858daab707",
+          "snapshot_sha256": "90b2735546fc78d262124f96dd6e2964d3611be1a56367a433dc416b036dfed3",
+          "changed": true
+        },
+        {
+          "path": "arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts",
+          "pristine_sha256": "3a3509639b76f376ee4aaba775cd229a3a94a3d91dd86367a93c3d043468da91",
+          "snapshot_sha256": "62da921d2e30715f39a7ed6e7ce1a48b3eab691568a67b0218086567369a7007",
+          "changed": true
+        },
+        {
+          "path": "drivers/remoteproc/remoteproc_core.c",
+          "pristine_sha256": "d122ce991fd780cf818e37e90c9ae0ca0272c53ca4aa20078d651b9acfc97a69",
+          "snapshot_sha256": "431508a5f08f5cd73b7a0718d2b2ab63759c69e39a84bb909152369d8f45e576",
+          "changed": true
+        },
+        {
+          "path": "drivers/remoteproc/qcom_q6v5.c",
+          "pristine_sha256": "2da04cc95fcef35d6d88bc80857421acc6b24111039f34628bf1d5d7f69c5717",
+          "snapshot_sha256": "2d082978dfece9148c1d5bfd67e633f5df0d8486d4242ec0364dc5862d6464c1",
+          "changed": true
+        },
+        {
+          "path": "drivers/remoteproc/qcom_q6v5_pas.c",
+          "pristine_sha256": "6bc121b8aa404dc3151d00f5c9c19f1f801270e3a08837c93f53c1bf2bb3cf7e",
+          "snapshot_sha256": "136a18eb1cb05f6eb5193ad0587ddc49ded6c9ce909e4c5ed386f603f7af89ee",
+          "changed": true
+        },
+        {
+          "path": "drivers/usb/dwc3/dwc3-qcom.c",
+          "pristine_sha256": "fd92d52d3343c5406b9204b20e6e1e196ac7468d94aa766f0439014abec9bbe7",
+          "snapshot_sha256": "6b8296bfbb4459b0f450fff26e126aac089eea11aae385241e32d3680b9c9e7d",
+          "changed": true
+        }
+      ],
+      "forward_and_reverse_verified": true
+    },
+    {
+      "component": "stubble",
+      "pin": "9f11278e080a5c4a77db6acf4c8f75c14412087a",
+      "patch": "stubble/current-source-recovered.patch",
+      "patch_sha256": "ffacc4eef745c199d802b598f861015af351a8fa320e2a837b502ebe3553020b",
+      "files": [
+        {
+          "path": "linux.c",
+          "pristine_sha256": "cad5c33c8827f6094af9c0b5987741e6190e3a1009fff0e536f0f3e54f8fc050",
+          "snapshot_sha256": "2264f9c494ce6d8f1e86c03b31d02e85a9e73fb299eee03606d844b2aeb798c0",
+          "changed": true
+        }
+      ],
+      "forward_and_reverse_verified": true
+    }
+  ],
+  "historical_patch_parse": [
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0001-hamoa-pmics-add-missing-spmi-vadc-include.patch",
+      "sha256": "33038b32a06045c694823f767650274cdcd204eeef07e2c3d7ddc0cd5feae612",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/linux-cachyos-arm64/patches/0001-hamoa-pmics-add-missing-spmi-vadc-include.patch:29"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0002-remoteproc-drop-unreachable-RPROC_DELETED-check.patch",
+      "sha256": "4a63dd488d0e671a8a783487c914bcf67855ca21f795b305d42bfa15877b9daa",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/linux-cachyos-arm64/patches/0002-remoteproc-drop-unreachable-RPROC_DELETED-check.patch:41"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0003-remoteproc-qcom_q6v5-resolve-leftover-merge-conflict.patch",
+      "sha256": "c00da3d5bbe56d6363de272d309b1738f79af000890d04c831d18aac09f02fbe",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/linux-cachyos-arm64/patches/0003-remoteproc-qcom_q6v5-resolve-leftover-merge-conflict.patch:49"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0004-remoteproc-qcom_q6v5_pas-use-local-PAS-API-in-unprepare.patch",
+      "sha256": "982b4be57c25636770a69d90213cf905f257272f10a391a0d119e4da0dc46389",
+      "git_patch_parse_passed": true,
+      "error": ""
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0005-hamoa-pmics-adc-node-merge-and-vph-macro.patch",
+      "sha256": "0de8417ed5e744e6dba3b3f7623f029e5e5ce764c487f8cb538a685419f55039",
+      "git_patch_parse_passed": true,
+      "error": ""
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0006-diagnostic-disable-pcie-south-anoc.patch",
+      "sha256": "a8ffae92e34ea9a3ae0f263bd3a944239e0c7c4d3db51422dca995acd191c621",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/linux-cachyos-arm64/patches/0006-diagnostic-disable-pcie-south-anoc.patch:14"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0007-diagnostic-disable-tail-nocs.patch",
+      "sha256": "73e9ad5abfd32b233ba56e16872234813132a706dbc1c024dfde7262eb8690e2",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/linux-cachyos-arm64/patches/0007-diagnostic-disable-tail-nocs.patch:27"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0008-diagnostic-minimal-boot.patch",
+      "sha256": "8d3b9e6e2b01ea66f7fc6d46bd56e4b4c5e98a6a6054bf67acfb60819ee46e94",
+      "git_patch_parse_passed": true,
+      "error": ""
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0009-diagnostic-drop-scm-icc.patch",
+      "sha256": "06f2905db79214919abaf88e5e5d6f513744b904e622dde862fb08aab75f9c68",
+      "git_patch_parse_passed": true,
+      "error": ""
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0010-diagnostic-reenable-gem.patch",
+      "sha256": "d95b7f24ac25159ba742520f2b94d568bdd73d75baeea64e7bdc3a9d9de5e79b",
+      "git_patch_parse_passed": true,
+      "error": ""
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0011-diagnostic-gem-off-usb-reroute.patch",
+      "sha256": "be8dda6e7868d7a8cb3ae3de734506af27558ce5173a9c35f81823df0700f2c3",
+      "git_patch_parse_passed": true,
+      "error": ""
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0012-diagnostic-disable-gpu-gmu.patch",
+      "sha256": "b12c7c461adeb5be4e9df8d5fb1821d6cbc962e60989dec17ab0df0d4605c471",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/linux-cachyos-arm64/patches/0012-diagnostic-disable-gpu-gmu.patch:26"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0013-diagnostic-disable-mdss.patch",
+      "sha256": "4bf8b3912fc0665d5a8edd4ed37748213371dab0141876fa003a4aeaf0cdd8d7",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/linux-cachyos-arm64/patches/0013-diagnostic-disable-mdss.patch:24"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0014-diagnostic-usb-reroute-labels.patch",
+      "sha256": "655bf41cc4e0995dae84c809eb2620c1d0d79c854a29c33fb37592580e8994d7",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/linux-cachyos-arm64/patches/0014-diagnostic-usb-reroute-labels.patch:29"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0015-diagnostic-appsusb-confignoc.patch",
+      "sha256": "45e2b190608c6872deb627589e7e3723d050456ff900f65d18f036d73b014fd8",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/linux-cachyos-arm64/patches/0015-diagnostic-appsusb-confignoc.patch:30"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0016-diagnostic-dwc3-apps-usb-optional.patch",
+      "sha256": "ec7e02038e57377a0505f1f73d1e5e1049154f4fc4335ada50448dc71be1d175",
+      "git_patch_parse_passed": false,
+      "error": "error: No valid patches in input (allow with \"--allow-empty\")"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0017-diagnostic-dwc3-ddr-optional.patch",
+      "sha256": "ea7b24f2773ddde4edf69c7a0dad37c61ddef61c132e9157119e55eb3311c338",
+      "git_patch_parse_passed": false,
+      "error": "error: No valid patches in input (allow with \"--allow-empty\")"
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0018-diagnostic-usb-i2c5-dependencies.patch",
+      "sha256": "4e3dfac14d7a7567c22cf998307336585194f36c5459690866937492e6d115d2",
+      "git_patch_parse_passed": true,
+      "error": ""
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0019-diagnostic-keyboard-i2c9-dependencies.patch",
+      "sha256": "9ff1a63de9d9aa2dec3872d8827fc573eede0e7c1e565120247ca329a38328bf",
+      "git_patch_parse_passed": true,
+      "error": ""
+    },
+    {
+      "path": "pkgs/linux-cachyos-arm64/patches/0020-diagnostic-restore-cpu-tsens.patch",
+      "sha256": "6b1cc79364fd0715d7a1f5ab308111b784c48cd191ec3760f936438042c07c7e",
+      "git_patch_parse_passed": true,
+      "error": ""
+    },
+    {
+      "path": "pkgs/stubble-arm64/patches/0001-linux-exec-64k-kernel-alignment.patch",
+      "sha256": "0d822e5ce95c10c30ee74b2e2f569c337019582a48b96cc6fd1bea7e7cb2820e",
+      "git_patch_parse_passed": false,
+      "error": "error: corrupt patch at <project>/pkgs/stubble-arm64/patches/0001-linux-exec-64k-kernel-alignment.patch:16"
+    }
+  ],
+  "note": "Recovered patches replay the publication-day source snapshots against pinned pristine files. Historical patch documents are preserved, including malformed records; none were silently repaired. No full OS reproducibility or hardware support is claimed."
+}

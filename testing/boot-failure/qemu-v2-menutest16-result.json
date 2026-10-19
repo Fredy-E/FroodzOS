@@ -1,0 +1,63 @@
+{
+  "command": [
+    "qemu-system-aarch64",
+    "-M",
+    "virt,gic-version=3",
+    "-cpu",
+    "cortex-a53",
+    "-accel",
+    "tcg",
+    "-m",
+    "2048",
+    "-smp",
+    "2",
+    "-bios",
+    "/mnt/d/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd",
+    "-device",
+    "qemu-xhci",
+    "-drive",
+    "if=none,id=stick,format=raw,file=/home/builder/boot-failure-tests/qemu-v2-menutest16.fat",
+    "-device",
+    "usb-storage,drive=stick",
+    "-nographic",
+    "-no-reboot",
+    "-monitor",
+    "none"
+  ],
+  "qemu_exit": 0,
+  "seconds": 262.32,
+  "stop_reason": "systemd-multi-user",
+  "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/qemu-v2-menutest16.log",
+  "captured_files": {
+    "boot-b610bdd9-5116-490f-b497-7a419a8f9e21/00-status.txt": 645,
+    "boot-b610bdd9-5116-490f-b497-7a419a8f9e21/01-kernel-kmsg.log": 174913,
+    "boot-b610bdd9-5116-490f-b497-7a419a8f9e21/02-initramfs-console.log": 549,
+    "boot-b610bdd9-5116-490f-b497-7a419a8f9e21/03-userspace-journal.log": 294319,
+    "boot-b610bdd9-5116-490f-b497-7a419a8f9e21/04-userspace-status.txt": 1188,
+    "boot-b610bdd9-5116-490f-b497-7a419a8f9e21/05-dmesg-snapshots.log": 25144
+  },
+  "boot_dirs": [
+    "boot-b610bdd9-5116-490f-b497-7a419a8f9e21"
+  ],
+  "markers": {
+    "grub_menu": true,
+    "log_uki_loaded": true,
+    "kernel_started": true,
+    "usb_log_active": true,
+    "usb_log_unavailable": false,
+    "status_file_captured": true,
+    "overlay_root_ready": true,
+    "kmsg_captured": true,
+    "kmsg_has_post_kernel_lines": true,
+    "dmesg_snapshots": true,
+    "userspace_journal": true,
+    "userspace_logger_started": true,
+    "panic": false,
+    "wsl_init": false,
+    "poweroff": false
+  },
+  "passed": true,
+  "hardware_validated": false,
+  "kmsg_tail": "nald[363]: Reserving 11655 entries in data hash table.\n47,1576,235772523,-;systemd-journald[363]: Journal file [REDACTED_EMAIL] is asynchronously transitioning to archived.\n47,1577,235772785,-;systemd-journald[363]: Starting new asynchronous offlining operation for journal file [REDACTED_EMAIL].\n47,1578,235778482,-;systemd-journald[363]: Vacuuming...\n47,1579,235842433,-;systemd-journald[363]: Vacuuming done, freed 0B of archived journals from /var/log/journal/dd9077ca0dd74844bb803999aad9cdd7.\n31,1580,236266421,-;systemd[1]: Received SIGCHLD.\n31,1581,236288538,-;systemd[1]: Child 661 (systemd-vconsol) died (code=exited, status=0/SUCCESS)\n31,1582,236311488,-;systemd[1]: systemd-vconsole-setup.service: Child 661 belongs to systemd-vconsole-setup.service.\n47,1583,240037521,-;systemd-journald[363]: Successfully sent stream file descriptor to service manager.\n47,1584,240870586,-;systemd-journald[363]: Successfully sent stream file descriptor to service manager.\n",
+  "status_text": "KESTREL_CAPTURE_STARTED latehook-via-bootmnt\nboot_id=b610bdd9-5116-490f-b497-7a419a8f9e21\ndevice=/dev/sda1\ncmdline:\nBOOT_IMAGE=/EFI/Linux/kestrel-live.efi kestrel_log=1 rd.log=file debug archisobasedir=arch archisolabel=KESTREL_A64 copytoram=n cow_spacesize=512M clk_ignore_unused pd_ignore_unused console=ttyAMA0,115200 loglevel=7 ignore_loglevel panic=0\nkernel:\nLinux (none) 7.3.0-rc3 #1 SMP PREEMPT_DYNAMIC Thu Oct  8 11:37:49 EEST 2026 aarch64 GNU/Linux\nWrites limited to this USB Logs directory. No EFI/internal writes.\nKESTREL_OVERLAY_ROOT_READY\nKESTREL_SWITCH_ROOT_PENDING\nINITRAMFS_SNAPSHOT_LOOP_STOPPED\nKESTREL_USERSPACE_LOGGER_STARTED\n"
+}

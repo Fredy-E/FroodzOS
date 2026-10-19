@@ -1,0 +1,33 @@
+From: Kestrel local diagnostic build
+Subject: [PATCH 0018] arm64: dts: Slim3: close USB repeater I2C5 dependencies
+
+I2C5 hosts the USB PTN3222 repeaters. Its qup-config and DDR ICC routes
+cannot complete with reset-associated GEM NoC disabled. Use the supported
+NULL/no-vote path for this consumer only, and enable its existing GPI0 DMA
+provider with the existing stream ID/channel mask. Package gpi in initramfs.
+Local diagnostic after the exact dt20 source baseline, not upstream-ready.
+
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1793,3 +1793,21 @@
+ &usb_mp { interconnects = <&usb_north_anoc MASTER_USB3_MP QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_north_anoc MASTER_USB3_MP QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_MP QCOM_ICC_TAG_ALWAYS>; };
+ &usb_1_ss0 { interconnects = <&usb_south_anoc MASTER_USB3_0 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_0 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_0 QCOM_ICC_TAG_ALWAYS>; };
+ &usb_1_ss1 { interconnects = <&usb_south_anoc MASTER_USB3_1 QCOM_ICC_TAG_ALWAYS &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>, <&usb_south_anoc MASTER_USB3_1 QCOM_ICC_TAG_ALWAYS &config_noc SLAVE_USB3_1 QCOM_ICC_TAG_ALWAYS>; };
++
++/* DIAGNOSTIC (0018): bring up the USB repeater's GENI I2C5 dependency
++ * closure without re-enabling the reset-associated GEM NoC. qup-config
++ * directly references disabled gem_noc; qup-memory also crosses it.
++ * Missing ICC properties produce NULL no-vote paths, handled by the GENI
++ * and ICC APIs. Enable only the existing GPI0 provider used by channel 5;
++ * retain its existing IOMMU mapping and channel mask. No PHY voltage,
++ * connector wiring, or unrelated I2C/controller changes. Local-only.
++ */
++&i2c5 {
++	/delete-property/ interconnects;
++	/delete-property/ interconnect-names;
++};
++
++&gpi_dma0 {
++	status = "okay";
++};
++

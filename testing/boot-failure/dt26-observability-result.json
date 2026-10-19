@@ -1,0 +1,29 @@
+{
+  "revision": "v2-dt26",
+  "tests_run": 9,
+  "passed": 9,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "cases": [
+    "bashrc_mode_messages_real_bash",
+    "budget_and_lifecycle",
+    "logger_persist_last_good_real_bash",
+    "logger_whitelist_bounded_static",
+    "proof_thermal_cpu_only_battery_never",
+    "setup_required_files_present",
+    "shell_syntax_bash_n",
+    "supervisor_run_only",
+    "text0_never_launches_gui",
+    "typed_marker_header_contract"
+  ],
+  "owned_files": [
+    "builder/diagnostics/kestrel-text-proof.sh",
+    "builder/diagnostics/kestrel-text-bashrc",
+    "builder/diagnostics/kestrel-root-log.sh",
+    "builder/diagnostics/kestrel-graphics.service",
+    "builder/diagnostics/kestrel-graphics-supervisor.py"
+  ],
+  "native_hardware_validated": false,
+  "vm_retest_required": true
+}

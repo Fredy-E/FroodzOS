@@ -1,0 +1,450 @@
+{
+  "sensor_nodes": [
+    {
+      "label": "tsens0",
+      "path": "/soc@0/thermal-sensor@c271000",
+      "properties": {
+        "compatible": "qcom,x1e80100-tsens qcom,tsens-v2",
+        "reg": "0 c271000 0 1000 0 c222000 0 1000",
+        "interrupts-extended": "99 1a 4 1 0 281 4",
+        "interrupt-names": "uplow critical",
+        "#qcom,sensors": "10",
+        "#thermal-sensor-cells": "1",
+        "status": "disabled",
+        "phandle": "1a4"
+      }
+    },
+    {
+      "label": "tsens1",
+      "path": "/soc@0/thermal-sensor@c272000",
+      "properties": {
+        "compatible": "qcom,x1e80100-tsens qcom,tsens-v2",
+        "reg": "0 c272000 0 1000 0 c223000 0 1000",
+        "interrupts-extended": "99 1b 4 1 0 282 4",
+        "interrupt-names": "uplow critical",
+        "#qcom,sensors": "10",
+        "#thermal-sensor-cells": "1",
+        "status": "disabled",
+        "phandle": "1a5"
+      }
+    },
+    {
+      "label": "tsens2",
+      "path": "/soc@0/thermal-sensor@c273000",
+      "properties": {
+        "compatible": "qcom,x1e80100-tsens qcom,tsens-v2",
+        "reg": "0 c273000 0 1000 0 c224000 0 1000",
+        "interrupts-extended": "99 1c 4 1 0 283 4",
+        "interrupt-names": "uplow critical",
+        "#qcom,sensors": "10",
+        "#thermal-sensor-cells": "1",
+        "status": "disabled",
+        "phandle": "1a6"
+      }
+    },
+    {
+      "label": "tsens3",
+      "path": "/soc@0/thermal-sensor@c274000",
+      "properties": {
+        "compatible": "qcom,x1e80100-tsens qcom,tsens-v2",
+        "reg": "0 c274000 0 1000 0 c225000 0 1000",
+        "interrupts-extended": "99 1d 4 1 0 302 4",
+        "interrupt-names": "uplow critical",
+        "#qcom,sensors": "10",
+        "#thermal-sensor-cells": "1",
+        "status": "disabled",
+        "phandle": "22b"
+      }
+    }
+  ],
+  "thermal_zones": [
+    {
+      "name": "aoss0-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "0"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu0-0-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "1"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu0-0-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "2"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu0-1-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "3"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu0-1-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "4"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu0-2-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "5"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu0-2-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "6"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu0-3-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "7"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu0-3-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "8"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpuss0-top-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "9"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpuss0-btm-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "a"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "mem-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "b"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "video-thermal",
+      "provider": "tsens0",
+      "sensor_id": [
+        "c"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "aoss1-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "0"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu1-0-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "1"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu1-0-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "2"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu1-1-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "3"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu1-1-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "4"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu1-2-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "5"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu1-2-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "6"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu1-3-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "7"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpu1-3-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "8"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpuss1-top-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "9"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "cpuss1-btm-thermal",
+      "provider": "tsens1",
+      "sensor_id": [
+        "a"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "aoss2-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "0"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "nsp0-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "1"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "nsp1-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "2"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "nsp2-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "3"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "nsp3-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "4"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "gpuss-0-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "5"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": "200",
+      "children": "cooling-maps\ntrips"
+    },
+    {
+      "name": "gpuss-1-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "6"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": "200",
+      "children": "cooling-maps\ntrips"
+    },
+    {
+      "name": "gpuss-2-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "7"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": "200",
+      "children": "cooling-maps\ntrips"
+    },
+    {
+      "name": "gpuss-3-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "8"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": "200",
+      "children": "cooling-maps\ntrips"
+    },
+    {
+      "name": "camera0-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "9"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    },
+    {
+      "name": "camera1-thermal",
+      "provider": "tsens2",
+      "sensor_id": [
+        "a"
+      ],
+      "status": null,
+      "polling_delay": null,
+      "polling_delay_passive": null,
+      "children": "trips"
+    }
+  ],
+  "source_pin": "3f0d8691afa098ba378d7d5a3968f03219887719",
+  "read_only_audit": true,
+  "native_tsens_validated": false
+}

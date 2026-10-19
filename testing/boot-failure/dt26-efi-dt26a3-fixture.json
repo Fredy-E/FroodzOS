@@ -1,0 +1,13 @@
+{
+  "revision": "v2-dt26",
+  "prefix": "dt26-efi-dt26a3",
+  "image": "/home/builder/boot-failure-tests/dt26-efi-dt26a3.fat",
+  "bytes": 2415919104,
+  "offset": 1048576,
+  "uki_sha256": "5ff40d9cfe1f4b4435c79532ad4045873344a3a1130cac5eec59fa65f28e8b26",
+  "initramfs_sha256": "1e26d5fcf6be34e32eea8d44b1751ada71b905ae2da6d36b82528568d0a00316",
+  "sfs_sha256": "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c",
+  "sfs_bytes": 1748525056,
+  "menu": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-efi-text-menu.cfg",
+  "grub_copy": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-efi-dt26a3-grub.cfg"
+}

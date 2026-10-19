@@ -1,0 +1,10 @@
+{
+  "passed": 66,
+  "failed": 0,
+  "skipped": 0,
+  "total": 66,
+  "failures": [],
+  "revision": "v2-dt26",
+  "no_vm_runs": true,
+  "notes": "dt26 harness-fix load-bearing regressions; VM gates remain unexecuted"
+}

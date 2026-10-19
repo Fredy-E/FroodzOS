@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "tests_run": 16,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "tag": "fix-dt25b-20261018-03",
+  "result_path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25b-unit-contract-fix-dt25b-20261018-03.json",
+  "revision": "v2-dt25b",
+  "sources": {
+    "builder/diagnostics/kestrel-graphics.service": {
+      "sha256": "f5a10461a439ba1741d238def08279bebf5c61da03d46b96af11521152be73bd",
+      "bytes": 1217
+    },
+    "builder/diagnostics/kestrel-graphics-sddm.service": {
+      "sha256": "6a8887e7f49757efb8c0594c61cbe1236a42df3816752c9d34878454ee77d4a5",
+      "bytes": 992
+    }
+  },
+  "synthetic_fixtures_only": true,
+  "native_hardware_validated": false,
+  "vm_retest_required_after_rebuild": true,
+  "old_9c_image_rejected_for_native": true,
+  "regression": {
+    "guard71": {
+      "tests_run": 71,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    },
+    "staging19": {
+      "tests_run": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    },
+    "supervisor16": {
+      "tests_run": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    }
+  },
+  "static_does_not_claim_live_sigkill": true
+}

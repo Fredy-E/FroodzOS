@@ -1,0 +1,12 @@
+{
+  "mode": "dry-run",
+  "started_utc": "2026-10-18T19:05:03.865377+00:00",
+  "usb_write_scope": [
+    "EFI/Linux/kestrel-live-dt26.efi",
+    "boot/grub/grub.cfg"
+  ],
+  "firmware_writes": 0,
+  "filesystem_repair": false,
+  "success": false,
+  "error": "unsafe dt26 entry flags"
+}

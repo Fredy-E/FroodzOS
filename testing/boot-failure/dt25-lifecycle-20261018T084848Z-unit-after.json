@@ -1,0 +1,25 @@
+{
+  "candidate_old_sha256": "9c1abc4fdb4bd0aaee5cd83b2427eb094a6d870f62d59aa56b36d2aa413499fb",
+  "created_utc": "2026-10-18T08:50:33.735676+00:00",
+  "delta": "parent +ExecStartPre/+ExecStopPost owned rm; child +BindsTo; all else retained",
+  "fixed_child": {
+    "bytes": 992,
+    "path": "builder/diagnostics/kestrel-graphics-sddm.service",
+    "sha256": "6a8887e7f49757efb8c0594c61cbe1236a42df3816752c9d34878454ee77d4a5",
+    "text": "[Unit]\nDescription=Owned diagnostic SDDM (guarded, no auto-start)\nDocumentation=file:/etc/kestrel-graphics-env\nConditionKernelCommandLine=kestrel_graphics=1\nConditionPathExists=/run/kestrel-graphics/launch-allowed\nAfter=systemd-logind.service dbus.service systemd-user-sessions.service kestrel-graphics.service\nPartOf=kestrel-graphics.service\nBindsTo=kestrel-graphics.service\nConflicts=display-manager.service sddm.service [REDACTED_EMAIL]\n# No WantedBy: started explicitly by kestrel-graphics-supervisor only after\n# read-only preflight passes. Stock display-manager/sddm stay masked.\n\n[Service]\nType=simple\nExecStart=/usr/bin/sddm\nRestart=no\nNice=10\nEnvironmentFile=/etc/kestrel-graphics-env\nTimeoutStopSec=10\n# No Restart=always inheritance: diagnostic GUI must never loop.\n# Live autologin (live/plasma, UID 1000) via stock SDDM/PAM/logind ACLs;\n# no root compositor, no account/group edits, Wayland-only session.\n\n[Install]\n# No WantedBy: explicit start only, no unguarded activation.\n"
+  },
+  "fixed_parent": {
+    "bytes": 1217,
+    "path": "builder/diagnostics/kestrel-graphics.service",
+    "sha256": "f5a10461a439ba1741d238def08279bebf5c61da03d46b96af11521152be73bd",
+    "text": "[Unit]\nDescription=Bounded simpledrm/software Plasma diagnostic (opt-in)\nDocumentation=file:/etc/kestrel-graphics-env\nConditionKernelCommandLine=kestrel_graphics=1\nAfter=systemd-logind.service dbus.service systemd-user-sessions.service multi-user.target\nWants=systemd-logind.service\n# Multi-user-only activation: graphical.target Requires multi-user, so this\n# runs under both defaults, but never as graphical.target.wants. Stock\n# display-manager/sddm are masked by the hook, so no GUI starts before the\n# guard passes. Private kestrel-graphics-sddm.service is started explicitly by\n# the supervisor only after preflight + launch marker.\n\n[Service]\nType=simple\nExecStartPre=/usr/bin/rm -f -- /run/kestrel-graphics/launch-allowed\nExecStart=/usr/local/sbin/kestrel-graphics-supervisor\nExecStopPost=/usr/bin/rm -f -- /run/kestrel-graphics/launch-allowed\nRestart=no\nTimeoutStopSec=30\nNice=10\n# No auto-restart loops. No root compositor. SDDM autologin (live/plasma)\n# provides the normal PAM/logind/DBus session; supervisor only gates,\n# monitors (180s/80C fail-closed) and performs bounded owned-GUI-only cleanup.\n# Session-active is not pixel proof; pixels/input are not claimed.\n\n[Install]\nWantedBy=multi-user.target\n"
+  },
+  "native_hardware_validated": false,
+  "old_image_rejected": true,
+  "original_child_bytes": 959,
+  "original_child_sha256": "ea1e811df4887e11da0440342747a4b53d8470c0874640a5989bd751d2d1935a",
+  "original_parent_bytes": 1081,
+  "original_parent_sha256": "228b259ca136e362bb35097cbac7bb636d094af8750b7c0730ab054971dbdab3",
+  "purpose": "Post-fix full 2 unit bytes+hashes; old 9c image REJECTED for native; no build/QEMU until parent reviews.",
+  "tag": "dt25-lifecycle-20261018T084848Z"
+}

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
+build() {
+    local project="${KESTREL_PROJECT:?missing project path}"
+    add_binary "${KESTREL_CHECKPOINT_BINARY:?missing checkpoint binary}" /usr/bin/kestrel-checkpoint
+    add_module efivarfs
+    # Runtime hook is added by add_runscript via MKINITCPIO_HOOKS.
+    add_runscript
+}
+help() {
+    printf '%s\n' 'Bounded early RAM capture; optional four write-once firmware checkpoints.'
+}

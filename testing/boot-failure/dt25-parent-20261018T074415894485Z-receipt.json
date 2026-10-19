@@ -1,0 +1,36 @@
+{
+  "guard": {
+    "exit_code": 0,
+    "tests_run": 71,
+    "skipped": 0
+  },
+  "staging": {
+    "exit_code": 0,
+    "tests_run": 19,
+    "skipped": 0
+  },
+  "supervisor": {
+    "exit_code": 0,
+    "tests_run": 16,
+    "skipped": 0
+  },
+  "rollback": {
+    "exit_code": 0,
+    "tests_run": null,
+    "skipped": 0,
+    "lost_helpers": [],
+    "lost_masks": [],
+    "cycle_reported": false
+  },
+  "project_efi_firmware": {
+    "path": "D:\\CachyOS-ARM64\\testing\\boot-failure\\uefi-package\\usr\\share\\qemu-efi-aarch64\\QEMU_EFI.fd",
+    "exists": true,
+    "bytes": 3145728,
+    "sha256": "a996c72d5258dabf5fcb11a64bd22e0cc6673e3d193031feea02ac643f16dad5"
+  },
+  "unit_tests_total": 106,
+  "skips_total": 0,
+  "review_pending": "deleg_37cb82f3",
+  "native_graphics_tsens_validated": false,
+  "integration_not_yet_approved": true
+}

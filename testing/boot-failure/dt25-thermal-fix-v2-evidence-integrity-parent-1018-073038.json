@@ -1,0 +1,184 @@
+{
+  "tag": "parent-1018-073038",
+  "checks": {
+    "tag_accepts_good": {
+      "ok": true,
+      "detail": "a,fixv2-20261018-01,A0_-x,xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "tag_rejects_bad": {
+      "ok": true,
+      "detail": "10 bad tags rejected"
+    },
+    "no_unlink_build-dt25-board.py": {
+      "ok": true,
+      "detail": "unlink absent"
+    },
+    "exclusive_build-dt25-board.py": {
+      "ok": true,
+      "detail": "open('x') present"
+    },
+    "file_derived_build-dt25-board.py": {
+      "ok": true,
+      "detail": "__file__ present"
+    },
+    "no_unlink_test-dt25-board-predicates.py": {
+      "ok": true,
+      "detail": "unlink absent"
+    },
+    "exclusive_test-dt25-board-predicates.py": {
+      "ok": true,
+      "detail": "open('x') present"
+    },
+    "file_derived_test-dt25-board-predicates.py": {
+      "ok": true,
+      "detail": "__file__ present"
+    },
+    "no_unlink_dt25-thermal-make-policy.py": {
+      "ok": true,
+      "detail": "unlink absent"
+    },
+    "exclusive_dt25-thermal-make-policy.py": {
+      "ok": true,
+      "detail": "open('x') present"
+    },
+    "file_derived_dt25-thermal-make-policy.py": {
+      "ok": true,
+      "detail": "__file__ present"
+    },
+    "no_unlink_dt25-thermal-check-policy.py": {
+      "ok": true,
+      "detail": "unlink absent"
+    },
+    "exclusive_dt25-thermal-check-policy.py": {
+      "ok": true,
+      "detail": "open('x') present"
+    },
+    "file_derived_dt25-thermal-check-policy.py": {
+      "ok": true,
+      "detail": "__file__ present"
+    },
+    "no_hardcoded_mnt": {
+      "ok": true,
+      "detail": "project root from __file__"
+    },
+    "historical_present": {
+      "ok": true,
+      "detail": "7/7 present"
+    },
+    "predicate_green_exit0": {
+      "ok": true,
+      "detail": "exit=0 "
+    },
+    "predicate_green_outputs": {
+      "ok": true,
+      "detail": "5 tagged outputs exist"
+    },
+    "predicate_counts": {
+      "ok": true,
+      "detail": "checks=52 mutations=22"
+    },
+    "predicate_collision_refuses": {
+      "ok": true,
+      "detail": "second exit=2"
+    },
+    "predicate_hashes_stable": {
+      "ok": true,
+      "detail": "first evidence byte-identical"
+    },
+    "predicate_rejects_tag_../evil": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "predicate_rejects_tag_a/b": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "predicate_rejects_tag_-lead": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "predicate_no_traversal_files": {
+      "ok": true,
+      "detail": "evil files=[]"
+    },
+    "predicate_partial_refuses": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "predicate_partial_preserved": {
+      "ok": true,
+      "detail": "sentinel byte-identical"
+    },
+    "predicate_partial_no_siblings": {
+      "ok": true,
+      "detail": "no sibling mutation"
+    },
+    "makepolicy_exit0": {
+      "ok": true,
+      "detail": "exit=0 "
+    },
+    "makepolicy_20": {
+      "ok": true,
+      "detail": "20 sensors"
+    },
+    "makepolicy_collision_refuses": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "makepolicy_hash_stable": {
+      "ok": true,
+      "detail": "policy byte-identical"
+    },
+    "makepolicy_rejects_traversal": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "checkpolicy_mock_exit0": {
+      "ok": true,
+      "detail": "exit=0  \": true,\n    \"guard_battery_alone_blocks\": true,\n    \"guard_missing_one_blocks\": true,\n    \"guard_80c_inclusive_blocks\": true,\n    \"guard_duplicate_blocks\": true\n  },\n  \"required_sensor_count\": 20,\n  \"policy\": \"/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-graphics-policy.json\",\n  \"guard\": \"/home/builder/boot-failure-tests/dt25-fix-v2-fixtures/mock-guard-parent-1018-073038.py\",\n  \"tag\": \"parent-1018-073038-chk\",\n  \"synthetic_policy_fixtures_only\": true,\n  \"native_hardware_validated\": false\n}\n"
+    },
+    "checkpolicy_collision_refuses": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "checkpolicy_hash_stable": {
+      "ok": true,
+      "detail": "result byte-identical"
+    },
+    "checkpolicy_rejects_traversal": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "build_legacy_collision_refuses": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "build_legacy_source_stable": {
+      "ok": true,
+      "detail": "ksrc unchanged after preflight refusal"
+    },
+    "build_accepted_source_refuses": {
+      "ok": true,
+      "detail": "exit=2"
+    },
+    "build_accepted_no_outputs": {
+      "ok": true,
+      "detail": "no fresh build outputs on refusal"
+    },
+    "build_accepted_source_stable": {
+      "ok": true,
+      "detail": "ksrc still accepted hash"
+    },
+    "ordering_preflight_first": {
+      "ok": true,
+      "detail": "disposable source untouched when log collides"
+    },
+    "historical_unchanged": {
+      "ok": true,
+      "detail": "7/7 hashes identical"
+    }
+  },
+  "passed": true,
+  "native_hardware_validated": false,
+  "failed": []
+}

@@ -1,0 +1,39 @@
+{
+    "verified":  true,
+    "revision":  "v2-dt21",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "model":  "Kingston DataTraveler 3.0 USB Device",
+    "volume":  "E:\\",
+    "critical_files":  [
+                           {
+                               "path":  "EFI/Linux/kestrel-live.efi",
+                               "bytes":  244480512,
+                               "sha256":  "a1ced156e198be71a586aa6283a86edc251ddb147a3564c28ed2b5ddcd92a75c"
+                           },
+                           {
+                               "path":  "boot/grub/grub.cfg",
+                               "bytes":  6195,
+                               "sha256":  "2dd7a70d6853664c628cab5d00c2444a321cd54254b2b0f8f2fb07e1fc5b7cfb"
+                           },
+                           {
+                               "path":  "EFI/BOOT/BOOTAA64.EFI",
+                               "bytes":  2533256,
+                               "sha256":  "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab"
+                           },
+                           {
+                               "path":  "arch/aarch64/airootfs.sfs",
+                               "bytes":  1748525056,
+                               "sha256":  "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+                           }
+                       ],
+    "menu_entries":  11,
+    "entry8":  "menuentry \u0027Kestrel dt21 - USB I2C dependency repair + LIVE ROOT SHELL (default)\u0027 {",
+    "entry9":  "menuentry \u0027Kestrel dt21 - LIVE ROOT SHELL + FW LOG v2 (confirm)\u0027 {",
+    "firmware_slots_verified_empty":  true,
+    "firmware_readback":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\dt21-preboot-20261017T111050612Z",
+    "firmware_boot_ids":  [
+
+                          ],
+    "usb_log_files":  6,
+    "hardware_boot_verified":  false
+}

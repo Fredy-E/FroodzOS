@@ -1,0 +1,1 @@
+{"blocked": true, "detail": "placeholder - replaced", "failed_session": "proc_b5ac902b77a0", "preserved": true, "trigger": "bash -n on py", "fix": "py_compile for py, bash -n for sh, sh -n for hooks", "exit_inner": 1, "exit_outer": 0, "wrapper_fix": "capture rc and exit rc"}

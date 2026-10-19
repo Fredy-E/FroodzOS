@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "flag": "0",
+      "console": "tty1",
+      "expected_unit": null,
+      "passed": true
+    },
+    {
+      "flag": "1",
+      "console": "tty1",
+      "expected_unit": "[REDACTED_EMAIL]",
+      "passed": true
+    },
+    {
+      "flag": "1",
+      "console": "ttyAMA0",
+      "expected_unit": "[REDACTED_EMAIL]",
+      "passed": true
+    },
+    {
+      "flag": "1",
+      "console": "../../evil",
+      "expected_unit": null,
+      "passed": true
+    }
+  ],
+  "fixture_only": true,
+  "real_mounts_performed": false,
+  "native_hardware_validated": false
+}

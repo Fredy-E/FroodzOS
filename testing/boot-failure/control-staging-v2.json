@@ -1,0 +1,9 @@
+{
+  "stage": "/mnt/d/CachyOS-ARM64/live-staging-v2",
+  "control_iso_sha256": "0c4888195c693977ad65c74f5b516d1ce69b5e56e8aacfc7f4eacf3af18b145b",
+  "file_count": 436,
+  "bytes": 4638824303,
+  "dropped_symlinks": [],
+  "largest_file": "casper/minimal.squashfs",
+  "usb_modified": false
+}

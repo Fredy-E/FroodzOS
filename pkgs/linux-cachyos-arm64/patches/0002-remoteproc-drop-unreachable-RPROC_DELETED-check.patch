@@ -1,0 +1,40 @@
+From: CachyOS-ARM64 port overlay <builder@local>
+Date: Wed, 08 Oct 2026
+Subject: [PATCH] remoteproc: drop unreachable RPROC_DELETED check
+
+rproc_boot() checked `rproc->state == RPROC_DELETED`, but no such state
+exists anywhere in this tree: enum rproc_state is complete and consecutive
+(OFFLINE=0, SUSPENDED=1, RUNNING=2, CRASHED=3, ATTACHED=4, DETACHED=5,
+LAST=6), and a full-tree grep finds exactly one occurrence of the token --
+this check. No code ever assigns RPROC_DELETED, so the guard is
+unreachable. It looks like a leftover from a partially rebased
+Ubuntu/laptops-kernel patch that also lost its enum addition.
+
+Removing the dead block preserves behavior exactly and fixes the build:
+
+  drivers/remoteproc/remoteproc_core.c:1960:29: error: 'RPROC_DELETED'
+  undeclared (first use in this function)
+
+If the missing deletion path is ever restored upstream, the guard should
+return with it (and the enum + rproc_state_string table must stay
+synchronized as the header documents).
+---
+ drivers/remoteproc/remoteproc_core.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -1957,11 +1957,6 @@ int rproc_boot(struct rproc *rproc)
+ 		return ret;
+ 	}
+ 
+-	if (rproc->state == RPROC_DELETED) {
+-		ret = -ENODEV;
+-		dev_err(dev, "can't boot deleted rproc %s\n", rproc->name);
+-		goto unlock_mutex;
+-	}
+-
+ 	/* skip the boot or attach process if rproc is already powered up */
+ 	if (atomic_inc_return(&rproc->power) > 1) {
+ 		ret = 0;

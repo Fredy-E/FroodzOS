@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "tag": "fix-20261018-04",
+  "preserved_base": "/home/builder/boot-failure-tests/dt25-integration-fix-preserved-fail-fix-20261018-04-a4ejgd9k",
+  "receipt": "/home/builder/boot-failure-tests/dt25-integration-fix-preserved-fail-fix-20261018-04-a4ejgd9k/dt25-integration-fix-packed-receipt-preservation_demo.json",
+  "originals_preserved": true,
+  "native_hardware_validated": false,
+  "demo_failure_intentional": true
+}

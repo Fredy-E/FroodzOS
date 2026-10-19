@@ -1,0 +1,307 @@
+{
+  "tag": "20261018T180504139204Z",
+  "before": {
+    "test-dt26-observability.py": "6f488cc5e9974489572a99fbf863c10878c35b353f6b4a124afba69fa7129f53",
+    "test-dt26-observability-fix.py": "0296ef2e908f7d6dce6097521b4f77af0ffa9055f65ed3774cfa1fcc0e87780b",
+    "test-dt26-observability-bounds.py": "946b5c13f9f1e19e20e606dae593af6d69be2ff4f58a4272c24520f3fc910ae0",
+    "test-dt26-logger-watchdog.py": "a2e0ab6a0c165443ae2cf1022f594659accade9aacf81bbca0930e49125eb386",
+    "kestrel-root-log.sh": "9ebf99222ffe7e6b641e8db8c702bdb99c459d4855c61c33f5d2568a64155027"
+  },
+  "after": {
+    "test-dt26-observability.py": "6f488cc5e9974489572a99fbf863c10878c35b353f6b4a124afba69fa7129f53",
+    "test-dt26-observability-fix.py": "0296ef2e908f7d6dce6097521b4f77af0ffa9055f65ed3774cfa1fcc0e87780b",
+    "test-dt26-observability-bounds.py": "946b5c13f9f1e19e20e606dae593af6d69be2ff4f58a4272c24520f3fc910ae0",
+    "test-dt26-logger-watchdog.py": "a2e0ab6a0c165443ae2cf1022f594659accade9aacf81bbca0930e49125eb386",
+    "kestrel-root-log.sh": "9ebf99222ffe7e6b641e8db8c702bdb99c459d4855c61c33f5d2568a64155027"
+  },
+  "unchanged": true,
+  "runs": [
+    {
+      "suite": "test-dt26-observability.py",
+      "rc": 0,
+      "stdout_tail": "uler; D-state/sync may exceed\"\n  },\n  \"runtime_closure\": {\n    \"timeout_present_builder\": true,\n    \"python3_present_builder\": true,\n    \"testonly\": \"unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production\",\n    \"pack_need\": \"integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the secure persist is inline in kestrel-root-log.sh so no hook change is needed\",\n    \"supervisor_stays_run_only\": true\n  }\n}\n",
+      "stderr_tail": "",
+      "result": {
+        "revision": "v2-dt26",
+        "tests_run": 9,
+        "testcases": [
+          "bashrc_mode_messages_real_bash",
+          "budget_and_lifecycle",
+          "logger_persist_last_good_unit",
+          "logger_wall_budget_and_bounds_static",
+          "proof_thermal_strict_decimal_unit",
+          "shell_syntax_bash_n",
+          "supervisor_run_only",
+          "text0_never_launches_gui",
+          "typed_marker_header_contract"
+        ],
+        "checks": [
+          "bashrc_mode_messages_real_bash",
+          "budget_and_lifecycle",
+          "logger_persist_last_good_unit",
+          "logger_wall_budget_and_bounds_static",
+          "proof_thermal_strict_decimal_unit",
+          "setup_required_files_present",
+          "shell_syntax_bash_n",
+          "supervisor_run_only",
+          "text0_never_launches_gui",
+          "typed_marker_header_contract"
+        ],
+        "cases": [
+          "bashrc_mode_messages_real_bash",
+          "budget_and_lifecycle",
+          "logger_persist_last_good_unit",
+          "logger_wall_budget_and_bounds_static",
+          "proof_thermal_strict_decimal_unit",
+          "setup_required_files_present",
+          "shell_syntax_bash_n",
+          "supervisor_run_only",
+          "text0_never_launches_gui",
+          "typed_marker_header_contract"
+        ],
+        "passed": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "owned_files": [
+          "builder/diagnostics/kestrel-text-proof.sh",
+          "builder/diagnostics/kestrel-text-bashrc",
+          "builder/diagnostics/kestrel-root-log.sh",
+          "builder/diagnostics/kestrel-graphics.service",
+          "builder/diagnostics/kestrel-graphics-supervisor.py"
+        ],
+        "native_hardware_validated": false,
+        "vm_retest_required": true,
+        "out_prefix_note": "extracted-function/static checks are unit scope only; full-file loop coverage is in test-dt26-observability-fix.py",
+        "bounded_time": {
+          "production_default_s": 260,
+          "covers_session_s": 180,
+          "covers_cleanup_s": 25,
+          "mechanism": "BASH_MONOSECONDS else /proc/uptime fixed window + fresh remaining per op + timeout -k kill-after",
+          "kill_after_s_default": 2,
+          "honesty_note": "best-effort, NOT hard realtime: 1s clock resolution + ~2s KILL grace + ~1s scheduler; D-state/sync may exceed"
+        },
+        "runtime_closure": {
+          "timeout_present_builder": true,
+          "python3_present_builder": true,
+          "testonly": "unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production",
+          "pack_need": "integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the secure persist is inline in kestrel-root-log.sh so no hook change is needed",
+          "supervisor_stays_run_only": true
+        }
+      }
+    },
+    {
+      "suite": "test-dt26-observability-fix.py",
+      "rc": 0,
+      "stdout_tail": "uler; D-state/sync may exceed\"\n  },\n  \"runtime_closure\": {\n    \"timeout_present_builder\": true,\n    \"python3_present_builder\": true,\n    \"testonly\": \"unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production\",\n    \"pack_need\": \"integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the secure persist is inline in kestrel-root-log.sh so no hook change is needed\",\n    \"supervisor_stays_run_only\": true\n  }\n}\n",
+      "stderr_tail": "",
+      "result": {
+        "revision": "v2-dt26-fix1",
+        "tests_run": 9,
+        "testcases": [
+          "cli_refuses_existing_outputs",
+          "full_logger_exact_cap_boundary",
+          "full_logger_graphics_wall_budget",
+          "full_logger_secure_json_rejects",
+          "full_logger_text_short_samples",
+          "full_proof_empty_thermal_and_graphics_message",
+          "full_proof_typed_strict_cpu",
+          "legacy_and_parent_evidence_preserved",
+          "no_fixed_tmp_artifact"
+        ],
+        "checks": [
+          "cli_refuses_existing_outputs",
+          "full_logger_exact_cap_boundary",
+          "full_logger_graphics_wall_budget",
+          "full_logger_secure_json_rejects",
+          "full_logger_text_short_samples",
+          "full_proof_empty_thermal_and_graphics_message",
+          "full_proof_typed_strict_cpu",
+          "legacy_and_parent_evidence_preserved",
+          "no_fixed_tmp_artifact",
+          "setup_required_files_present"
+        ],
+        "cases": [
+          "cli_refuses_existing_outputs",
+          "full_logger_exact_cap_boundary",
+          "full_logger_graphics_wall_budget",
+          "full_logger_secure_json_rejects",
+          "full_logger_text_short_samples",
+          "full_proof_empty_thermal_and_graphics_message",
+          "full_proof_typed_strict_cpu",
+          "legacy_and_parent_evidence_preserved",
+          "no_fixed_tmp_artifact",
+          "setup_required_files_present"
+        ],
+        "passed": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "owned_files": [
+          "builder/diagnostics/kestrel-text-proof.sh",
+          "builder/diagnostics/kestrel-text-bashrc",
+          "builder/diagnostics/kestrel-root-log.sh",
+          "builder/diagnostics/kestrel-graphics.service",
+          "builder/diagnostics/kestrel-graphics-supervisor.py",
+          "testing/boot-failure/test-dt26-observability.py"
+        ],
+        "native_hardware_validated": false,
+        "vm_retest_required": true,
+        "bounded_time": {
+          "production_default_s": 260,
+          "covers_session_s": 180,
+          "covers_cleanup_s": 25,
+          "mechanism": "BASH_MONOSECONDS else /proc/uptime fixed window + fresh remaining per op + timeout -k kill-after",
+          "kill_after_s_default": 2,
+          "proven_dynamically": "short-deadline full logger runs (graphics wall + text samples)",
+          "honesty_note": "best-effort, NOT hard realtime: 1s resolution + ~2s KILL grace + ~1s scheduler; D-state/sync may exceed"
+        },
+        "runtime_closure": {
+          "timeout_present_builder": true,
+          "python3_present_builder": true,
+          "testonly": "unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production",
+          "pack_need": "integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the secure persist is inline in kestrel-root-log.sh so no hook change is needed",
+          "supervisor_stays_run_only": true
+        }
+      }
+    },
+    {
+      "suite": "test-dt26-observability-bounds.py",
+      "rc": 0,
+      "stdout_tail": "+ ~2s KILL grace + ~1s scheduler; D-state/sync may exceed\"\n  },\n  \"runtime_closure\": {\n    \"timeout_present_builder\": true,\n    \"python3_present_builder\": true,\n    \"testonly\": \"unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production\",\n    \"pack_need\": \"integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the secure persist is inline in kestrel-root-log.sh\",\n    \"supervisor_stays_run_only\": true\n  }\n}\n",
+      "stderr_tail": "",
+      "result": {
+        "revision": "v2-dt26-bounds",
+        "tests_run": 9,
+        "testcases": [
+          "cli_preflight_and_counts",
+          "clock_true_monotonic",
+          "logger_monotonic_static",
+          "missing_timeout_skips",
+          "persist_cap_dest_unchanged_ioerror",
+          "persist_rejects_invalid",
+          "seconds_reset_no_extend",
+          "stalling_journal_and_systemctl_bounded",
+          "term_ignoring_killed"
+        ],
+        "checks": [
+          "cli_preflight_and_counts",
+          "clock_true_monotonic",
+          "logger_monotonic_static",
+          "missing_timeout_skips",
+          "persist_cap_dest_unchanged_ioerror",
+          "persist_rejects_invalid",
+          "seconds_reset_no_extend",
+          "setup_required_files_present",
+          "stalling_journal_and_systemctl_bounded",
+          "term_ignoring_killed"
+        ],
+        "cases": [
+          "cli_preflight_and_counts",
+          "clock_true_monotonic",
+          "logger_monotonic_static",
+          "missing_timeout_skips",
+          "persist_cap_dest_unchanged_ioerror",
+          "persist_rejects_invalid",
+          "seconds_reset_no_extend",
+          "setup_required_files_present",
+          "stalling_journal_and_systemctl_bounded",
+          "term_ignoring_killed"
+        ],
+        "passed": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "owned_files": [
+          "builder/diagnostics/kestrel-root-log.sh"
+        ],
+        "native_hardware_validated": false,
+        "vm_retest_required": true,
+        "bounded_time": {
+          "production_default_s": 260,
+          "covers_session_s": 180,
+          "covers_cleanup_s": 25,
+          "mechanism": "BASH_MONOSECONDS else /proc/uptime fixed window + fresh remaining per op + timeout -k kill-after",
+          "kill_after_s_default": 2,
+          "grace_s": 3,
+          "bound_note": "responsive <= budget+2, TERM-ignore <= budget+kill+1, missing-timeout skips (never unbounded); stubs <=5s; parent killpg backstop",
+          "honesty_note": "best-effort, NOT hard realtime: 1s resolution + ~2s KILL grace + ~1s scheduler; D-state/sync may exceed"
+        },
+        "runtime_closure": {
+          "timeout_present_builder": true,
+          "python3_present_builder": true,
+          "testonly": "unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production",
+          "pack_need": "integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the secure persist is inline in kestrel-root-log.sh",
+          "supervisor_stays_run_only": true
+        }
+      }
+    },
+    {
+      "suite": "test-dt26-logger-watchdog.py",
+      "rc": 0,
+      "stdout_tail": "n + 2s drain + 1s KILL + ~1s scheduler; D-state/sync may exceed\"\n  },\n  \"runtime_closure\": {\n    \"timeout_present_builder\": true,\n    \"python3_present_builder\": true,\n    \"testonly\": \"unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production\",\n    \"pack_need\": \"integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the watchdog is inline in kestrel-root-log.sh\",\n    \"supervisor_stays_run_only\": true\n  }\n}\n",
+      "stderr_tail": "",
+      "result": {
+        "revision": "v2-dt26-watchdog",
+        "tests_run": 6,
+        "testcases": [
+          "cli_preflight_and_counts",
+          "fixture_mount_failure_runs_nothing",
+          "loop_cp_stall_termignore_expires",
+          "loop_sync_stall_termignore_expires",
+          "missing_timeout_skips_with_sentinel",
+          "startup_sync_stall_expires"
+        ],
+        "checks": [
+          "cli_preflight_and_counts",
+          "fixture_mount_failure_runs_nothing",
+          "loop_cp_stall_termignore_expires",
+          "loop_sync_stall_termignore_expires",
+          "missing_timeout_skips_with_sentinel",
+          "setup_required_files_present",
+          "startup_sync_stall_expires"
+        ],
+        "cases": [
+          "cli_preflight_and_counts",
+          "fixture_mount_failure_runs_nothing",
+          "loop_cp_stall_termignore_expires",
+          "loop_sync_stall_termignore_expires",
+          "missing_timeout_skips_with_sentinel",
+          "setup_required_files_present",
+          "startup_sync_stall_expires"
+        ],
+        "passed": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "owned_files": [
+          "builder/diagnostics/kestrel-root-log.sh",
+          "testing/boot-failure/test-dt26-logger-watchdog.py"
+        ],
+        "native_hardware_validated": false,
+        "vm_retest_required": true,
+        "bounded_time": {
+          "production_default_s": 260,
+          "orderly_exit_drain_s": 2,
+          "outer_kill_after_s": 1,
+          "mechanism": "outer timeout -k 1s <remaining+2>s process-group watchdog (own PG, never --foreground) around the unchanged body; fresh remaining per op + timeout -k kill-after inside",
+          "proven_dynamically": "whole-script startup SYNC + loop SYNC/CP stall and TERM-ignore runs expire with EXPIRED/0 and no orphan logger children",
+          "honesty_note": "best-effort, NOT hard realtime: 1s resolution + 2s drain + 1s KILL + ~1s scheduler; D-state/sync may exceed"
+        },
+        "runtime_closure": {
+          "timeout_present_builder": true,
+          "python3_present_builder": true,
+          "testonly": "unshare+mount are TESTONLY for private-mount/kmsg isolation, NOT production",
+          "pack_need": "integrator must ensure timeout(coreutils)+python3 in the live image (frozen SFS carries both); no new installed helper is used, the watchdog is inline in kestrel-root-log.sh",
+          "supervisor_stays_run_only": true
+        }
+      }
+    }
+  ],
+  "total_passed": 33,
+  "total_failed": 0,
+  "total_skipped": 0,
+  "passed": true,
+  "fixture_only": true,
+  "native_graphics_validated": false
+}

@@ -1,0 +1,212 @@
+#!/usr/bin/ash
+# Opt-in RAM-overlay simpledrm/software-Plasma diagnostic. Inert by default.
+# Gated by kestrel_graphics=1. Stages helpers/config/units into the writable
+# /sysroot RAM overlay only. Never blocks normal boot: all staging failures
+# log STAGE_FAILED and return 0. Text path (kestrel_text tty1) is unchanged;
+# this hook adds a separate getty@tty2 diagnostic fallback. SSH stays masked.
+# Ordering (fail-closed, no GUI before guard):
+# - supervisor is multi-user.target only (runs under both multi-user and
+#   graphical defaults, since graphical Requires multi-user). Never
+#   graphical.target.wants, so stock graphical.target cannot start any GUI
+#   before the guard passes.
+# - stock display-manager.service + sddm.service are masked to /dev/null, so
+#   no unguarded SDDM activation with or without the text hook (text hook also
+#   masks stock GUI and sets default to multi-user; masks here are consistent,
+#   never unmasked).
+# - private kestrel-graphics-sddm.service has NO WantedBy (started explicitly
+#   by supervisor only after preflight + launch marker). ConditionPathExists
+#   on the launch marker prevents any other path from starting it.
+# - SDDM restart loops disabled: private unit Restart=no plus
+#   sddm/display-manager drop-ins Restart=no (defense even though masked).
+# - software env reaches user manager via user@.service.d EnvironmentFile so
+#   systemd-managed KWin/Plasma user units inherit it, not just SDDM daemon.
+# - live overlay gate: /sysroot must be a mountpoint AND findmnt-reported
+#   FSTYPE overlay (archiso live). Installed/persistent roots, missing
+#   helpers, query errors, and non-overlay types are rejected; partial
+#   staging rolls back. No /run/archiso/cowspace existence fallback: marker
+#   presence alone is not FSTYPE proof.
+# - failure ownership: inherited text helpers (kestrel-text-login/proof/
+#   bashrc), tty1 fallback, and pre-existing display-manager/sddm/sshd masks
+#   are NEVER deleted or altered by rollback. New diagnostic GUI/SSH masks
+#   created by this stage are left in place on failure (fail-closed), never
+#   removed in a way that would weaken prior state. Owned graphics files are
+#   removed on failure only when this run created them. All file installs are
+#   atomic (copy to tmp + rename) so a mid-copy error never truncates a
+#   pre-existing helper.
+# Testability: KESTREL_SYSROOT/KESTREL_ETC override fixed paths (defaults are
+# production /sysroot and /etc). Predicates getarg/mountpoint/findmnt are
+# called by name so tests mock them explicitly. Unmodified hook runs in
+# fixtures via these overrides.
+kestrel_graphics_roots() {
+    _kg_sysroot="${KESTREL_SYSROOT:-/sysroot}"
+    _kg_etc="${KESTREL_ETC:-/etc}"
+}
+kestrel_graphics_is_live_overlay() {
+    kestrel_graphics_roots
+    command -v mountpoint >/dev/null 2>&1 || return 1
+    mountpoint -q "$_kg_sysroot" || return 1
+    [ -d "$_kg_sysroot/etc/systemd/system" ] || return 1
+    command -v findmnt >/dev/null 2>&1 || return 1
+    _kg_fstype="$(findmnt -n -o FSTYPE "$_kg_sysroot" 2>/dev/null)" || return 1
+    [ -n "$_kg_fstype" ] || return 1
+    [ "$_kg_fstype" = "overlay" ] || return 1
+    return 0
+}
+_kg_has_path() {
+    [ -e "$1" ] || [ -L "$1" ]
+}
+_kg_snapshot_state() {
+    kestrel_graphics_roots
+    _kg_units="${_kg_sysroot}/etc/systemd/system"
+    _kg_had_supervisor=0; _kg_has_path "$_kg_sysroot/usr/local/sbin/kestrel-graphics-supervisor" && _kg_had_supervisor=1
+    _kg_had_guard=0; _kg_has_path "$_kg_sysroot/usr/local/lib/kestrel_graphics_guard.py" && _kg_had_guard=1
+    _kg_had_env=0; _kg_has_path "$_kg_sysroot/etc/kestrel-graphics-env" && _kg_had_env=1
+    _kg_had_policy=0; _kg_has_path "$_kg_sysroot/etc/kestrel-graphics-policy.json" && _kg_had_policy=1
+    _kg_had_svc=0; _kg_has_path "$_kg_units/kestrel-graphics.service" && _kg_had_svc=1
+    _kg_had_sddm_priv=0; _kg_has_path "$_kg_units/kestrel-graphics-sddm.service" && _kg_had_sddm_priv=1
+    _kg_had_wants=0; _kg_has_path "$_kg_units/multi-user.target.wants/kestrel-graphics.service" && _kg_had_wants=1
+    _kg_had_priv_drop=0; _kg_has_path "$_kg_units/kestrel-graphics-sddm.service.d/90-kestrel-graphics-env.conf" && _kg_had_priv_drop=1
+    _kg_had_dm_drop=0; _kg_has_path "$_kg_units/display-manager.service.d/90-kestrel-graphics-env.conf" && _kg_had_dm_drop=1
+    _kg_had_sddm_drop=0; _kg_has_path "$_kg_units/sddm.service.d/90-kestrel-graphics-env.conf" && _kg_had_sddm_drop=1
+    _kg_had_user_drop=0; _kg_has_path "$_kg_units/user@.service.d/90-kestrel-graphics-env.conf" && _kg_had_user_drop=1
+    _kg_had_tty2_conf=0; _kg_has_path "$_kg_units/getty@tty2.service.d/90-kestrel-live.conf" && _kg_had_tty2_conf=1
+    _kg_had_tty2_wants=0; _kg_has_path "$_kg_units/getty.target.wants/getty@tty2.service" && _kg_had_tty2_wants=1
+    return 0
+}
+_kg_install_file() {
+    _kg_if_src="$1"; _kg_if_dst="$2"; _kg_if_mode="$3"
+    [ -n "$_kg_if_src" ] || return 1
+    [ -n "$_kg_if_dst" ] || return 1
+    [ -f "$_kg_if_src" ] || return 1
+    _kg_if_tmp="${_kg_if_dst}.tmp"
+    rm -f "$_kg_if_tmp" 2>/dev/null || true
+    cp "$_kg_if_src" "$_kg_if_tmp" || { rm -f "$_kg_if_tmp" 2>/dev/null || true; return 1; }
+    if [ -n "$_kg_if_mode" ]; then
+        chmod "$_kg_if_mode" "$_kg_if_tmp" || { rm -f "$_kg_if_tmp" 2>/dev/null || true; return 1; }
+    fi
+    mv -f "$_kg_if_tmp" "$_kg_if_dst" || { rm -f "$_kg_if_tmp" 2>/dev/null || true; return 1; }
+    return 0
+}
+_kg_install_text() {
+    _kg_it_text="$1"; _kg_it_dst="$2"
+    [ -n "$_kg_it_dst" ] || return 1
+    _kg_it_tmp="${_kg_it_dst}.tmp"
+    rm -f "$_kg_it_tmp" 2>/dev/null || true
+    printf '%s' "$_kg_it_text" >"$_kg_it_tmp" || { rm -f "$_kg_it_tmp" 2>/dev/null || true; return 1; }
+    mv -f "$_kg_it_tmp" "$_kg_it_dst" || { rm -f "$_kg_it_tmp" 2>/dev/null || true; return 1; }
+    return 0
+}
+kestrel_graphics_rollback() {
+    kestrel_graphics_roots
+    _kg_units="$_kg_sysroot/etc/systemd/system"
+    # Owned graphics files: remove only when this run created them.
+    # Unset flags default to preserve (1) so a bare rollback never deletes.
+    if [ "${_kg_had_supervisor:-1}" = "0" ]; then
+        rm -f "$_kg_sysroot/usr/local/sbin/kestrel-graphics-supervisor" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_guard:-1}" = "0" ]; then
+        rm -f "$_kg_sysroot/usr/local/lib/kestrel_graphics_guard.py" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_env:-1}" = "0" ]; then
+        rm -f "$_kg_sysroot/etc/kestrel-graphics-env" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_policy:-1}" = "0" ]; then
+        rm -f "$_kg_sysroot/etc/kestrel-graphics-policy.json" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_svc:-1}" = "0" ]; then
+        rm -f "$_kg_units/kestrel-graphics.service" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_sddm_priv:-1}" = "0" ]; then
+        rm -f "$_kg_units/kestrel-graphics-sddm.service" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_wants:-1}" = "0" ]; then
+        rm -f "$_kg_units/multi-user.target.wants/kestrel-graphics.service" 2>/dev/null || true
+    fi
+    rm -f "$_kg_units/graphical.target.wants/kestrel-graphics.service" 2>/dev/null || true
+    # Shared text helpers: NEVER deleted (inherited from text hook / live).
+    # Stock GUI/SSH masks: NEVER deleted. New diagnostic masks created by a
+    # failed stage are intentionally left (fail-closed); removing a
+    # pre-existing /dev/null mask would weaken prior state.
+    if [ "${_kg_had_priv_drop:-1}" = "0" ]; then
+        rm -f "$_kg_units/kestrel-graphics-sddm.service.d/90-kestrel-graphics-env.conf" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_dm_drop:-1}" = "0" ]; then
+        rm -f "$_kg_units/display-manager.service.d/90-kestrel-graphics-env.conf" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_sddm_drop:-1}" = "0" ]; then
+        rm -f "$_kg_units/sddm.service.d/90-kestrel-graphics-env.conf" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_user_drop:-1}" = "0" ]; then
+        rm -f "$_kg_units/user@.service.d/90-kestrel-graphics-env.conf" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_tty2_conf:-1}" = "0" ]; then
+        rm -f "$_kg_units/getty@tty2.service.d/90-kestrel-live.conf" 2>/dev/null || true
+    fi
+    if [ "${_kg_had_tty2_wants:-1}" = "0" ]; then
+        if [ -L "$_kg_units/getty.target.wants/getty@tty2.service" ]; then
+            _kg_t="$(readlink "$_kg_units/getty.target.wants/getty@tty2.service" 2>/dev/null)" || _kg_t=""
+            case "$_kg_t" in
+                *getty@.service) rm -f "$_kg_units/getty.target.wants/getty@tty2.service" 2>/dev/null || true ;;
+            esac
+        fi
+    fi
+    return 0
+}
+kestrel_stage_graphics() {
+    kestrel_graphics_roots
+    kestrel_graphics_is_live_overlay || return 1
+    units="$_kg_sysroot/etc/systemd/system"
+    _kg_snapshot_state
+    # Fail-closed input validation before any mutation: all staged inputs
+    # must exist as regular files. Missing policy/inputs fail without side
+    # effects (rollback then only removes files this run created: none yet).
+    for _kg_in in kestrel-graphics-supervisor kestrel-graphics-guard kestrel-graphics-env kestrel-graphics-policy kestrel-graphics-service kestrel-graphics-sddm kestrel-graphics-tty2 kestrel-text-login kestrel-text-proof kestrel-text-bashrc; do
+        [ -f "$_kg_etc/$_kg_in" ] || { kestrel_graphics_rollback; return 1; }
+    done
+    rm -f "$units/graphical.target.wants/kestrel-graphics.service" 2>/dev/null || true
+    mkdir -p "$_kg_sysroot/usr/local/sbin" "$_kg_sysroot/usr/local/lib" "$units/multi-user.target.wants" "$units/getty.target.wants" "$units/display-manager.service.d" "$units/sddm.service.d" "$units/kestrel-graphics-sddm.service.d" "$units/user@.service.d" "$units/getty@tty2.service.d" "$_kg_sysroot/etc" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-graphics-supervisor" "$_kg_sysroot/usr/local/sbin/kestrel-graphics-supervisor" "755" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-graphics-guard" "$_kg_sysroot/usr/local/lib/kestrel_graphics_guard.py" "644" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-graphics-env" "$_kg_sysroot/etc/kestrel-graphics-env" "" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-graphics-policy" "$_kg_sysroot/etc/kestrel-graphics-policy.json" "" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-graphics-service" "$units/kestrel-graphics.service" "" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-graphics-sddm" "$units/kestrel-graphics-sddm.service" "" || { kestrel_graphics_rollback; return 1; }
+    ln -sf ../kestrel-graphics.service "$units/multi-user.target.wants/kestrel-graphics.service" || { kestrel_graphics_rollback; return 1; }
+    ln -sf /dev/null "$units/display-manager.service" || { kestrel_graphics_rollback; return 1; }
+    ln -sf /dev/null "$units/sddm.service" || { kestrel_graphics_rollback; return 1; }
+    _kg_drop_priv='[Service]
+EnvironmentFile=/etc/kestrel-graphics-env
+Nice=10
+Restart=no
+'
+    _kg_install_text "$_kg_drop_priv" "$units/kestrel-graphics-sddm.service.d/90-kestrel-graphics-env.conf" || { kestrel_graphics_rollback; return 1; }
+    _kg_drop_no='[Service]
+Restart=no
+'
+    _kg_install_text "$_kg_drop_no" "$units/display-manager.service.d/90-kestrel-graphics-env.conf" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_text "$_kg_drop_no" "$units/sddm.service.d/90-kestrel-graphics-env.conf" || { kestrel_graphics_rollback; return 1; }
+    _kg_drop_user='[Service]
+EnvironmentFile=/etc/kestrel-graphics-env
+'
+    _kg_install_text "$_kg_drop_user" "$units/user@.service.d/90-kestrel-graphics-env.conf" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-text-login" "$_kg_sysroot/usr/local/sbin/kestrel-text-login" "755" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-text-proof" "$_kg_sysroot/usr/local/sbin/kestrel-text-proof" "755" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-text-bashrc" "$_kg_sysroot/usr/local/lib/kestrel-text-bashrc" "" || { kestrel_graphics_rollback; return 1; }
+    _kg_install_file "$_kg_etc/kestrel-graphics-tty2" "$units/getty@tty2.service.d/90-kestrel-live.conf" "" || { kestrel_graphics_rollback; return 1; }
+    ln -sf /usr/lib/systemd/system/getty@.service "$units/getty.target.wants/getty@tty2.service" || { kestrel_graphics_rollback; return 1; }
+    for service in sshd.service sshd.socket ssh.service; do
+        ln -sf /dev/null "$units/$service" || { kestrel_graphics_rollback; return 1; }
+    done
+    return 0
+}
+run_latehook() {
+    [ "$(getarg kestrel_graphics)" = 1 ] || return 0
+    if kestrel_stage_graphics; then
+        echo 'KESTREL_GRAPHICS_STAGED' >/dev/console 2>/dev/null || true
+        echo 'KESTREL_GRAPHICS_STAGED' >/dev/kmsg 2>/dev/null || true
+    else
+        echo 'KESTREL_GRAPHICS_STAGE_FAILED (boot continues)' >/dev/console 2>/dev/null || true
+        echo 'KESTREL_GRAPHICS_STAGE_FAILED' >/dev/kmsg 2>/dev/null || true
+    fi
+    return 0
+}

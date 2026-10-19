@@ -1,0 +1,34 @@
+From: Kestrel local diagnostic build
+Subject: [PATCH 0019] arm64: dts: Slim3: close I2C9 keyboard dependencies
+
+Restore the configured keyboard fixed rail and GPI1 supplier without
+re-enabling reset-associated GEM NoC. Delete only I2C9 ICC properties to
+use the already-tested diagnostic no-vote mechanism. Existing hardware
+voltages, IRQ, GPIO, DMA mask and IOMMU mapping remain unchanged.
+Applies after diagnostic series 0018 (dt21/dt23 hardware baseline).
+Local-only bring-up patch, not upstream-ready or production bus voting.
+
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1811,3 +1811,21 @@
+ 	status = "okay";
+ };
+ 
++/* DIAGNOSTIC (0019): restore only the configured I2C9 keyboard supply
++ * and its existing GPI1 DMA provider. GEM remains disabled after native
++ * resets; use the same narrowly scoped NULL/no-vote ICC path as I2C5.
++ * Keep voltage, GPIO, IRQ, DMA channel/mask and IOMMU definitions intact.
++ * No display, PCIe, NVMe or other controller enablement. Local-only.
++ */
++&vreg_misc_3p3 {
++	status = "okay";
++};
++
++&i2c9 {
++	/delete-property/ interconnects;
++	/delete-property/ interconnect-names;
++};
++
++&gpi_dma1 {
++	status = "okay";
++};

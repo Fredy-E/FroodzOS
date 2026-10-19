@@ -1,0 +1,12 @@
+{
+    "verified_empty":  true,
+    "expected_boot_id":  "9b11354b-d055-4cf7-969c-f05562e20adf",
+    "deleted":  [
+                    "KestrelBoot00",
+                    "KestrelBoot01",
+                    "KestrelBoot02",
+                    "KestrelBoot03"
+                ],
+    "backup":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\firmware-clear-20261017T114416612Z",
+    "scope_guid":  "{674b8af1-da8e-4c2b-a84c-467e2d36c97c}"
+}

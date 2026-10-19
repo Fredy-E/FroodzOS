@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-2.0-only
+# Local board firmware is NEVER a distributable payload.
+build() {
+    local root="${KESTREL_ROOTFS:?Set KESTREL_ROOTFS to the audited live rootfs}"
+    local source relative real count=0
+    local firmware_root="$root/usr/lib/firmware"
+    [[ -d "$firmware_root" ]] || { error 'Firmware root is missing'; return 1; }
+    while IFS= read -r -d '' source; do
+        relative="${source#"$firmware_root/"}"
+        real="$(readlink -f -- "$source")" || return 1
+        add_file "$real" "/usr/lib/firmware/$relative" || return 1
+        ((count+=1))
+    done < <(find \
+        "$firmware_root/updates/qcom/x1p42100/LENOVO/83N3" \
+        "$firmware_root/qcom" \
+        "$firmware_root/ath12k/WCN7850" \
+        -maxdepth 1 '(' -type f -o -type l ')' -print0)
+    ((count>0)) || { error 'No board/GPU firmware collected'; return 1; }
+    msg2 "Added $count local board/GPU/Wi-Fi firmware files (never publish)"
+}
+help() {
+    printf '%s\n' 'Stage local board and generic GPU firmware before early KMS loads.'
+}

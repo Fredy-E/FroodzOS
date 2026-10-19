@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "firmware_calls": 0,
+  "checks": [
+    "delayed follow-up warnings",
+    "noise filtering",
+    "silent late checkpoint",
+    "maximum four writes",
+    "CRC cross-check"
+  ]
+}

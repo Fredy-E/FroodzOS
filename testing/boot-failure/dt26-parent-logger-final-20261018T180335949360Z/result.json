@@ -1,0 +1,62 @@
+{
+  "tag": "20261018T180335949360Z",
+  "before": {
+    "test-dt26-observability.py": "6f488cc5e9974489572a99fbf863c10878c35b353f6b4a124afba69fa7129f53",
+    "test-dt26-observability-fix.py": "0296ef2e908f7d6dce6097521b4f77af0ffa9055f65ed3774cfa1fcc0e87780b",
+    "test-dt26-observability-bounds.py": "946b5c13f9f1e19e20e606dae593af6d69be2ff4f58a4272c24520f3fc910ae0",
+    "test-dt26-logger-watchdog.py": "a2e0ab6a0c165443ae2cf1022f594659accade9aacf81bbca0930e49125eb386",
+    "kestrel-root-log.sh": "9ebf99222ffe7e6b641e8db8c702bdb99c459d4855c61c33f5d2568a64155027"
+  },
+  "after": {
+    "test-dt26-observability.py": "6f488cc5e9974489572a99fbf863c10878c35b353f6b4a124afba69fa7129f53",
+    "test-dt26-observability-fix.py": "0296ef2e908f7d6dce6097521b4f77af0ffa9055f65ed3774cfa1fcc0e87780b",
+    "test-dt26-observability-bounds.py": "946b5c13f9f1e19e20e606dae593af6d69be2ff4f58a4272c24520f3fc910ae0",
+    "test-dt26-logger-watchdog.py": "a2e0ab6a0c165443ae2cf1022f594659accade9aacf81bbca0930e49125eb386",
+    "kestrel-root-log.sh": "9ebf99222ffe7e6b641e8db8c702bdb99c459d4855c61c33f5d2568a64155027"
+  },
+  "unchanged": true,
+  "runs": [
+    {
+      "suite": "test-dt26-observability.py",
+      "rc": 1,
+      "stdout_tail": "",
+      "stderr_tail": "     ~~~~^^^^^^^^^^^^^^\n  File \"/mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt26-observability.py\", line 542, in main\n    assert result.testsRun == len(testcases), \\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: tests_run 9 != testcases 8 (['budget_and_lifecycle', 'logger_persist_last_good_unit', 'logger_wall_budget_and_bounds_static', 'proof_thermal_strict_decimal_unit', 'shell_syntax_bash_n', 'supervisor_run_only', 'text0_never_launches_gui', 'typed_marker_header_contract'])\n",
+      "result": {
+        "read_error": "[Errno 2] No such file or directory: '/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-logger-final-20261018T180335949360Z/test-dt26-observability-parent.json'"
+      }
+    },
+    {
+      "suite": "test-dt26-observability-fix.py",
+      "rc": 1,
+      "stdout_tail": "",
+      "stderr_tail": "ARM64/testing/boot-failure/test-dt26-observability-fix.py\", line 758, in <module>\n    raise SystemExit(main(sys.argv[1:]))\n                     ~~~~^^^^^^^^^^^^^^\n  File \"/mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt26-observability-fix.py\", line 714, in main\n    assert result.testsRun == len(testcases), \\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: tests_run 9 != testcases 3 (['cli_refuses_existing_outputs', 'legacy_and_parent_evidence_preserved', 'no_fixed_tmp_artifact'])\n",
+      "result": {
+        "read_error": "[Errno 2] No such file or directory: '/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-logger-final-20261018T180335949360Z/test-dt26-observability-fix-parent.json'"
+      }
+    },
+    {
+      "suite": "test-dt26-observability-bounds.py",
+      "rc": 1,
+      "stdout_tail": "",
+      "stderr_tail": "22, in <module>\n    raise SystemExit(main(sys.argv[1:]))\n                     ~~~~^^^^^^^^^^^^^^\n  File \"/mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt26-observability-bounds.py\", line 679, in main\n    assert result.testsRun == len(testcases), \"tests_run %d != testcases %d (%s)\" % (result.testsRun, len(testcases), testcases)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: tests_run 9 != testcases 3 (['cli_preflight_and_counts', 'clock_true_monotonic', 'logger_monotonic_static'])\n",
+      "result": {
+        "read_error": "[Errno 2] No such file or directory: '/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-logger-final-20261018T180335949360Z/test-dt26-observability-bounds-parent.json'"
+      }
+    },
+    {
+      "suite": "test-dt26-logger-watchdog.py",
+      "rc": 1,
+      "stdout_tail": "",
+      "stderr_tail": "sting/boot-failure/test-dt26-logger-watchdog.py\", line 678, in <module>\n    raise SystemExit(main(sys.argv[1:]))\n                     ~~~~^^^^^^^^^^^^^^\n  File \"/mnt/d/CachyOS-ARM64/testing/boot-failure/test-dt26-logger-watchdog.py\", line 636, in main\n    assert result.testsRun == len(testcases), \"tests_run %d != testcases %d (%s)\" % (result.testsRun, len(testcases), testcases)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: tests_run 6 != testcases 1 (['cli_preflight_and_counts'])\n",
+      "result": {
+        "read_error": "[Errno 2] No such file or directory: '/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-logger-final-20261018T180335949360Z/test-dt26-logger-watchdog-parent.json'"
+      }
+    }
+  ],
+  "total_passed": 0,
+  "total_failed": 0,
+  "total_skipped": 0,
+  "passed": false,
+  "fixture_only": true,
+  "native_graphics_validated": false
+}

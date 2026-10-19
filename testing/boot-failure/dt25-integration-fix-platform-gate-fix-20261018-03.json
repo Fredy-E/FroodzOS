@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "tests_run": 24,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "clause_total": 32,
+  "clause_covered": 32,
+  "tag": "fix-20261018-03",
+  "result_path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-integration-fix-platform-gate-fix-20261018-03.json",
+  "fixture_only": false,
+  "dt24_red_expected": true,
+  "dt25_green_expected": true,
+  "native_hardware_validated": false,
+  "collision_preflight_passed": true,
+  "originals_preserved": {
+    "dt25-artifact-audit.json": true,
+    "dt25-integration-platform-graphics-gate.json": true,
+    "dt25-integration-packed-graphics.json": true,
+    "dt25-integration-summary.json": true,
+    "dt25-integration-board.json": true,
+    "dt25-integration-policy.json": true,
+    "dt25-integration-validation.json": true
+  },
+  "all_originals_preserved": true,
+  "previously_lost_history_note": "prior __main__ unlinked outputs before exclusive creation; overwritten history (if any) is not recoverable and not fabricated; current baseline hashes preserved"
+}

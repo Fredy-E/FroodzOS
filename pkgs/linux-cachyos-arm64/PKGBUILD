@@ -1,0 +1,21 @@
+pkgname=linux-cachyos-arm64
+pkgver=7.3.0rc3
+pkgrel=1
+pkgdesc="CachyOS-derived hardware-enablement kernel for ARM64 (unofficial port)"
+arch=('aarch64')
+url="local"
+license=('GPL-2.0-only')
+options=('!strip' '!debug' '!buildflags')
+source=()
+sha256sums=()
+
+# Packages the already-validated build tree (Image + modules + Slim 3 DTB)
+# and the stubble UKI. Full from-source makepkg rebuild is the G5 gate.
+package() {
+  KSRC=/home/builder/src/ksrc
+  install -Dm644 "$KSRC/arch/arm64/boot/Image" "$pkgdir/boot/vmlinuz-linux-cachyos-arm64"
+  install -Dm644 "$KSRC/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dtb" \
+    "$pkgdir/boot/dtbs/linux-cachyos-arm64/x126100-lenovo-ideapad-slim3.dtb"
+  install -Dm644 /home/builder/uki/vmlinuz.efi "$pkgdir/boot/vmlinuz-cachyos-arm64.efi"
+  make -C "$KSRC" ARCH=arm64 modules_install INSTALL_MOD_PATH="$pkgdir/usr" >/dev/null
+}

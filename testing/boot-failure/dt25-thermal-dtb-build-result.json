@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "kernel_unchanged": true,
+  "config_unchanged": true,
+  "allowed_changed_properties": [
+    [
+      "/soc@0/thermal-sensor@c271000",
+      "status"
+    ],
+    [
+      "/soc@0/thermal-sensor@c272000",
+      "status"
+    ]
+  ],
+  "only_allowed_compiled_properties_changed": true,
+  "patch_forward_and_reverse_verified": true,
+  "dtb_sha256": "f5f67c13bdfe975998b083ac06465c36231c0bae205e8e60fff99832264f5232",
+  "dtb_bytes": 207772,
+  "kernel_sha256": "682273a91f2016b9d5484857639bd043e021b961d7f4cfd385a09566b2df3abc",
+  "config_sha256": "dc6d89b53feecbc55f2af55496955b67bdd1284f31c67e1d7161162a1a0962a5",
+  "old_dtb": "/home/builder/boot-failure-tests/dt25-baseline/board.dtb",
+  "native_hardware_validated": false
+}

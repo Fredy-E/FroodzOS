@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "revision": "v2-dt23",
+  "uki_bytes": 244486656,
+  "uki_sha256": "03ad7ddab04c19e7c5551d78f0d93b3eab4ed436cae849b65fa41dd2d793218d",
+  "old_uki_sha256": "483078d869c118b78cefbc604d1cd9c7f43c924abf8ed0f859737014f495d59d",
+  "kernel_dtb_stub_cmdline_unchanged_from_dt22": true,
+  "board_dependencies": {
+    "passed": true,
+    "dtb": "/home/builder/src/ksrc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dtb",
+    "checks": {
+      "usb_repeater_i2c5_enabled": true,
+      "i2c5_no_dead_gem_icc_reference": true,
+      "i2c5_no_stale_icc_names": true,
+      "i2c5_dma_provider_enabled": true,
+      "gpi0_existing_channel5_allowed": true,
+      "gem_noc_stays_disabled": true,
+      "gpu_stays_disabled": true,
+      "gmu_stays_disabled": true,
+      "mdss_stays_disabled": true,
+      "eusb3_repeater_on_i2c5": true,
+      "eusb5_repeater_on_i2c5": true,
+      "eusb6_repeater_on_i2c5": true,
+      "eusb9_repeater_on_i2c5": true
+    },
+    "native_hardware_validated": false
+  },
+  "pid1_wrapper_present_executable": true,
+  "preswitch_log_present_in_hook": true,
+  "checkpoint_and_efilog_unchanged_from_dt21": true,
+  "module_dependency_resolution": true,
+  "initramfs_validation": {
+    "image": "/home/builder/uki-v2-dt23/live-initramfs.img",
+    "init_sha256": "62fcc3a904ab68429e90f8caaab4e16c3d34a08230a42dd628739ade0443a953",
+    "checks": {
+      "pid1_matches_mkinitcpio_script": true,
+      "pid1_has_ash_shebang": true,
+      "no_mount_drvfs": true,
+      "no_mount_wslfs": true,
+      "archiso_hook_present": true,
+      "archiso_label_helper_present": true,
+      "fat_default_charset_module_present": true,
+      "utf8_charset_module_present": true,
+      "platform_gpi_packed": true,
+      "platform_gpi_early_load": true,
+      "platform_i2c_qcom_geni_packed": true,
+      "platform_i2c_qcom_geni_early_load": true,
+      "platform_phy_nxp_ptn3222_packed": true,
+      "platform_phy_nxp_ptn3222_early_load": true,
+      "platform_qrtr_packed": true,
+      "platform_qrtr_early_load": true,
+      "platform_qrtr_smd_packed": true,
+      "platform_qrtr_smd_early_load": true,
+      "board_firmware_present": true,
+      "log_runtime_hook_present": true,
+      "log_streamer_present": true,
+      "log_init_script_present": true,
+      "log_root_script_present": true,
+      "log_service_present": true,
+      "early_checkpoint_binary": true,
+      "no_unbounded_firmware_loop": true,
+      "early_capture_lifecycle": true,
+      "checkpoint_owned_namespace": true
+    },
+    "passed": true
+  },
+  "embedded_inputs": {
+    ".linux": {
+      "bytes": 52492800,
+      "sha256": "682273a91f2016b9d5484857639bd043e021b961d7f4cfd385a09566b2df3abc"
+    },
+    ".dtbauto": {
+      "bytes": 207916,
+      "sha256": "9a4be4a7d716516960e574c16e4a0c9d4d51f78317ec00ffd176f7aef26c32e6"
+    },
+    ".initrd": {
+      "bytes": 191631992,
+      "sha256": "bfd77e86749ed1b81345c389e5f4b2d23f39f700efab37a257dc92ff2d1c914f"
+    }
+  },
+  "native_hardware_validated": false
+}

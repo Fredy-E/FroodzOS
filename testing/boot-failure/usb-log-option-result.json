@@ -1,0 +1,10 @@
+{
+    "time_utc":  "20261009T131603Z",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "volume":  "E:\\",
+    "file_count":  3,
+    "verified_count":  3,
+    "log":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\usb-log-option-20261009T131603Z.log",
+    "backup":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\usb-before-log-option-20261009T131603Z",
+    "hardware_boot_verified":  false
+}

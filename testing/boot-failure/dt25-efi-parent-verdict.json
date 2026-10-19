@@ -1,0 +1,37 @@
+{
+  "candidate_sha256": "9c1abc4fdb4bd0aaee5cd83b2427eb094a6d870f62d59aa56b36d2aa413499fb",
+  "candidate_accepted_for_native_or_media": false,
+  "text_efi_case_a": "PASS; actual systemd overlay typed input and observed normal VM poweroff",
+  "missing_cpu_sensor_graphics_refusal_case_b": "PASS; actual Python imports execute, zero thermal rows, missing_sensor reasons, no private SDDM launch, text/masks retained",
+  "sigkill_case_c": {
+    "passed": false,
+    "scope": "Actual production unit dependency graph with BOTH payloads explicitly replaced by harmless sleep inside the disposable VM only; not native SDDM/pixel proof",
+    "boot_id": "e1ae3f51-46d7-4abd-8bde-9c6e29a415f2",
+    "raw_log": "dt25-efi-graphics-fw-off-v2.log",
+    "raw_lines": "555-586",
+    "parent_pid_before": 1147,
+    "child_pid_before": 1169,
+    "kill_rc": 0,
+    "parent_state_after": "failed",
+    "parent_pid_after": 0,
+    "parent_result_after": "signal",
+    "child_state_after": "active/running",
+    "child_pid_after": 1169,
+    "cleanup": "Only owned fake units explicitly stopped AFTER the failure measurement; VM then powered off",
+    "note": "Do not mix these v2 PIDs with the worker's 1151/1171 v1 example"
+  },
+  "recovery_json": "dt25-efi-graphics-fw-off-v2-correction.json",
+  "new_harness_parent_rerun": {
+    "receipt": "dt25-fix-parent-20261018-084409-packing-preservation.json",
+    "platform_tests": 24,
+    "packed_tests": 10,
+    "total": 34,
+    "skips": 0,
+    "archives_preserved": "7/7 hashes unchanged",
+    "candidate_unchanged": true
+  },
+  "active_focused_fix_wave": "deleg_87a89a3f",
+  "next_gate": "Review minimal unit lifecycle/permission fix, build fresh candidate without overwriting this failed one, repeat exact EFI/crash validation",
+  "native_hardware_validated": false,
+  "physical_usb_or_firmware_written": false
+}

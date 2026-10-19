@@ -1,0 +1,24 @@
+{
+  "native_hardware_validated": false,
+  "services_started": false,
+  "ordering": {
+    "checker_exit": 0,
+    "cycle_reported": false,
+    "output": ""
+  },
+  "rollback": {
+    "hook_exit": 0,
+    "lost_preexisting_helpers": [
+      "usr/local/sbin/kestrel-text-login",
+      "usr/local/sbin/kestrel-text-proof",
+      "usr/local/lib/kestrel-text-bashrc"
+    ],
+    "lost_preexisting_masks": [
+      "display-manager.service",
+      "sddm.service",
+      "sshd.service",
+      "sshd.socket"
+    ],
+    "output": ""
+  }
+}

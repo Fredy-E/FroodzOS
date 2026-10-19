@@ -1,0 +1,30 @@
+{
+  "review_wave": "deleg_33e1ed91",
+  "thermal": {
+    "spec_passed": true,
+    "quality_passed": true,
+    "verdict": "PASS",
+    "verified_counts": {"board": 52, "mutations": 22, "policy": 11, "integrity": 44},
+    "native_tsens_validated": false,
+    "nonblocking_deferrals": [
+      {"issue": "One-shot dt25-thermal-make-patch.py uses a dedicated WSL absolute path", "decision": "Retain as historical local-only helper; no public portability claim or release use"},
+      {"issue": "make/check-policy --tag takes precedence over explicit out/result whereas other helpers prefer explicit paths", "decision": "Safe and covered by recorded commands; normalize/document in a later scoped tooling cleanup, not a reason to change accepted DT/policy"}
+    ]
+  },
+  "graphics": {
+    "spec_passed": false,
+    "quality_evaluated": false,
+    "verdict": "REQUEST_CHANGES",
+    "blocking": [
+      {"id": "G-ROLLBACK", "path": "builder/initcpio/hooks/kestrel_graphics:45-84", "issue": "Partial staging rollback removes inherited text helpers and GUI/SSH masks", "proof": "dt25-parent-20261018T073250139286Z-ordering-rollback.json", "required": "Prestate-preserving failure behavior, no weakening of text/SSH/GUI state, seeded multi-failure regressions"},
+      {"id": "G-OVERLAY", "path": "builder/initcpio/hooks/kestrel_graphics:33-44", "issue": "No-findmnt branch trusts cowspace existence rather than real overlay FSTYPE", "required": "Fail closed without actual FSTYPE proof and explicitly pack required findmnt/mountpoint binaries/dependencies"}
+    ],
+    "previous_failures_closed": ["real sysfs class links", "software supervisor auto-start gating and stock masks", "bounded owned cleanup and sampling", "actual WSL tests with zero required skips"],
+    "not_confirmed": ["multi-user ordering cycle"],
+    "downstream_gates": ["exact packed ash and real overlay helper behavior", "staged systemd unit graph", "guard SIGKILL/private-unit propagation chaos check", "native TSENS and software-Plasma pixels/input"]
+  },
+  "active_wave": "deleg_277a9e45",
+  "active_roles": {"sa-0-547dea82": "focused staging rollback/overlay repair", "sa-1-39675ca1": "read-only exact image/regression integration scout"},
+  "build_or_media_accepted": false,
+  "physical_usb_or_firmware_modified": false
+}

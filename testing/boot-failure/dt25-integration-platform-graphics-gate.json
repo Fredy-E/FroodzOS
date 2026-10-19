@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "tests_run": 12,
+  "failures": 0,
+  "errors": 0,
+  "fixture_only": false,
+  "dt24_red_expected": true,
+  "dt25_green_expected": true,
+  "native_hardware_validated": false
+}

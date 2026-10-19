@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://discussion.fedoraproject.org/t/fedora-44-on-snapdragon-x-end-to-end-installation-hardware-enablement-for-lenovo-ideapad-slim-3x-83n3/204767",
+      "title": "",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "I now have Fedora KDE 44 running properly on a Lenovo IdeaPad Slim 3x 15Q8X10 / machine type 83N3",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "url": "https://github.com/ubuntu/stubble/pull/69",
+      "title": "",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "The varying WiFi cards will be an issue I guess, will need a dtb for ath11k (WCN6855) and ath12k (WCN785x).",
+          "added": "2026-10-17"
+        },
+        {
+          "text": "I think I'll merge this even though it isn't supported upstream yet",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "url": "https://bugs.launchpad.net/bugs/2114876",
+      "title": "",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "Add support for Lenovo Ideapad Slim 3",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "url": "https://raw.githubusercontent.com/jglathe/linux_ms_dev_kit/jg/ubuntu-qcom-x1e-7.3rc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts",
+      "title": "",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "keyboard@3a {\n\t\tcompatible = \"hid-over-i2c\";\n\t\treg = <0x3a>;",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "url": "https://docs.kernel.org/admin-guide/serial-console.html",
+      "title": "",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "tty0 for the foreground virtual console",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "url": "https://raw.githubusercontent.com/systemd/systemd/main/man/systemd.special.xml",
+      "title": "",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "A special target unit for setting up a multi-user\n            system (non-graphical).",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "url": "https://raw.githubusercontent.com/systemd/systemd/main/units/getty@.service.in",
+      "title": "",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "StandardInput=tty\nStandardOutput=tty\nTTYPath=/dev/%I",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "url": "https://raw.githubusercontent.com/systemd/systemd/main/man/systemd-debug-generator.xml",
+      "title": "",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "a debug shell will be\n        spawned during early boot.",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "url": "https://raw.githubusercontent.com/jglathe/linux_ms_dev_kit/jg/ubuntu-qcom-x1e-6.19.y/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts",
+      "title": "",
+      "accessed": "2026-10-17"
+    },
+    {
+      "id": 10,
+      "url": "https://fedoraproject.org/wiki/Snapdragon_WoA_Laptop_Install",
+      "title": "Fedora Snapdragon installation guidance",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "When booting from an USB-A port",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "url": "https://discourse.ubuntu.com/t/faq-ubuntu-25-04-25-10-on-snapdragon-x-elite/61016",
+      "title": "Ubuntu Snapdragon FAQ and Concept kernel differences",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "our WIP kernel with more Qualcomm",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "url": "https://packages.debian.org/sid/misc/qcom-firmware-extract",
+      "title": "Debian Qualcomm firmware extraction package",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "It serves as a temporary solution until the firmware is redistributable",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "url": "https://raw.githubusercontent.com/jglathe/linux_ms_dev_kit/3f0d8691afa098ba378d7d5a3968f03219887719/arch/arm64/boot/dts/qcom/hamoa.dtsi",
+      "title": "Pinned Hamoa inherited I2C9 suppliers",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY",
+          "added": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "url": "https://raw.githubusercontent.com/jglathe/linux_ms_dev_kit/3f0d8691afa098ba378d7d5a3968f03219887719/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts",
+      "title": "Pinned exact Lenovo 15Q8X10 board DTS",
+      "accessed": "2026-10-17",
+      "quotes": [
+        {
+          "text": "model = \"Lenovo IdeaPad Slim 3 15Q8X10\";",
+          "added": "2026-10-17"
+        },
+        {
+          "text": "vdd-supply = <&vreg_misc_3p3>;\n\t\tvddl-supply = <&vreg_l12b_1p2>;",
+          "added": "2026-10-17"
+        },
+        {
+          "text": "compatible = \"pwm-backlight\";",
+          "added": "2026-10-17"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+--- a/linux.c
++++ b/linux.c
+@@ -65,10 +65,16 @@
+                 return log_error_status(err, "Cannot read sections: %m");
+ 
+         /* Do we need to ensure under 4gb address on x86? */
++        /* The ARM64 kernel requires 64K (TEXT_OFFSET) load alignment, but AllocateAnyPages only
++         * guarantees 4K. Without this, boot nondeterministically fails in the kernel EFI stub with
++         * "FIRMWARE BUG: kernel image not aligned on 64k boundary" (photographed on Lenovo 83N3,
++         * 2026-10-11). Over-allocate 15 pages and align the base up inside the allocation; the
++         * section bounds check below still holds because the shift is at most 60K. */
+         _cleanup_pages_ Pages loaded_kernel_pages = xmalloc_pages(
+-                        AllocateAnyPages, EfiLoaderCode, EFI_SIZE_TO_PAGES(kernel_size_in_memory), 0);
++                        AllocateAnyPages, EfiLoaderCode, EFI_SIZE_TO_PAGES(kernel_size_in_memory) + 15, 0);
+ 
+-        uint8_t* loaded_kernel = PHYSICAL_ADDRESS_TO_POINTER(loaded_kernel_pages.addr);
++        uint8_t* loaded_kernel = (uint8_t*) ALIGN_TO(
++                        (uintptr_t) PHYSICAL_ADDRESS_TO_POINTER(loaded_kernel_pages.addr), 65536);
+         FOREACH_ARRAY(h, headers, n_headers) {
+                 if (h->PointerToRelocations != 0)
+                         return log_error_status(EFI_LOAD_ERROR, "Inner kernel image contains sections with relocations, which we do not support.");

@@ -1,0 +1,46 @@
+{
+    "verification_time_utc":  "2026-10-09T10:59:04.7023444Z",
+    "update_time_utc":  "20261009T104545Z",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "model":  "Kingston DataTraveler 3.0 USB Device",
+    "volume":  "E:\\",
+    "manifest_file_count":  442,
+    "size_matched_count":  442,
+    "updater_hash_matched_count":  442,
+    "manifest_bytes":  6631784896,
+    "manifest_sha256":  "e12d6e9aac5319504df13a4522778f1c1b18aed4dc4a4aafb9c81a748cdfc4bc",
+    "independent_critical_hashes":  [
+                                        {
+                                            "path":  "EFI/boot/bootaa64.efi",
+                                            "bytes":  2533256,
+                                            "sha256":  "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab",
+                                            "matched":  true
+                                        },
+                                        {
+                                            "path":  "EFI/Linux/kestrel-live.efi",
+                                            "bytes":  244385792,
+                                            "sha256":  "948589b827ac23f64551ace06b877853f92a536a845fc04b63baa16b77d4625e",
+                                            "matched":  true
+                                        },
+                                        {
+                                            "path":  "arch/aarch64/airootfs.sfs",
+                                            "bytes":  1748525056,
+                                            "sha256":  "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c",
+                                            "matched":  true
+                                        },
+                                        {
+                                            "path":  "boot/grub/grub.cfg",
+                                            "bytes":  1873,
+                                            "sha256":  "54c8a775ee601bcc2268a05140ab2d2463b2088778ed042c2ef737ce699e3dfe",
+                                            "matched":  true
+                                        }
+                                    ],
+    "extra_file_paths":  [
+                             "System Volume Information/WPSettings.dat",
+                             "System Volume Information/IndexerVolumeGuid"
+                         ],
+    "updater_log":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\usb-v2-20261009T104545Z.log",
+    "backup":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\usb-before-v2-20261009T104545Z",
+    "hardware_boot_verified":  false,
+    "verified":  true
+}

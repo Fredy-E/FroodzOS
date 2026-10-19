@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": {
+    "compile_werror": true,
+    "unit_harness": true,
+    "four_bounded_valid_crc_records": true,
+    "synthetic_fixture_notice": true
+  },
+  "note": "Synthetic unit inputs, not native boot logs. No firmware touched."
+}

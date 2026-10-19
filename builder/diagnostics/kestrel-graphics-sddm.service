@@ -1,0 +1,25 @@
+[Unit]
+Description=Owned diagnostic SDDM (guarded, no auto-start)
+Documentation=file:/etc/kestrel-graphics-env
+ConditionKernelCommandLine=kestrel_graphics=1
+ConditionPathExists=/run/kestrel-graphics/launch-allowed
+After=systemd-logind.service dbus.service systemd-user-sessions.service kestrel-graphics.service
+PartOf=kestrel-graphics.service
+BindsTo=kestrel-graphics.service
+Conflicts=display-manager.service sddm.service getty@tty1.service
+# No WantedBy: started explicitly by kestrel-graphics-supervisor only after
+# read-only preflight passes. Stock display-manager/sddm stay masked.
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/sddm
+Restart=no
+Nice=10
+EnvironmentFile=/etc/kestrel-graphics-env
+TimeoutStopSec=10
+# No Restart=always inheritance: diagnostic GUI must never loop.
+# Live autologin (live/plasma, UID 1000) via stock SDDM/PAM/logind ACLs;
+# no root compositor, no account/group edits, Wayland-only session.
+
+[Install]
+# No WantedBy: explicit start only, no unguarded activation.

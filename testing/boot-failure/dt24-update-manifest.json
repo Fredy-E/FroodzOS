@@ -1,0 +1,45 @@
+{
+    "revision":  "v2-dt24",
+    "uki_sha256":  "4fca331543a347da2d431631ae002f90046507e485765ef24f383257902edc02",
+    "gates":  [
+                  "dt24-artifact-audit.json",
+                  "qemu-dt24-menu8-text-fw-off-v2-result.json",
+                  "dt24-logger-v2-v1-result.json"
+              ],
+    "files":  [
+                  {
+                      "path":  "EFI/Linux/kestrel-live.efi",
+                      "source":  "testing/boot-failure/dt24-candidate.efi",
+                      "bytes":  244503552,
+                      "sha256":  "4fca331543a347da2d431631ae002f90046507e485765ef24f383257902edc02",
+                      "old_sha256":  "03ad7ddab04c19e7c5551d78f0d93b3eab4ed436cae849b65fa41dd2d793218d"
+                  },
+                  {
+                      "path":  "boot/grub/grub.cfg",
+                      "source":  "testing/boot-failure/dt24-grub.cfg",
+                      "bytes":  5955,
+                      "sha256":  "261ca61194b356dc33307ca5f76ec982b6324c561da775d0c1614e8e6e09d4ba",
+                      "old_sha256":  "c9eeef914959069be3f28e4d24e377eb9147ddba75ec32f1cbf609acb1796b0f"
+                  }
+              ],
+    "unchanged_files":  [
+                            {
+                                "path":  "EFI/BOOT/BOOTAA64.EFI",
+                                "bytes":  2533256,
+                                "sha256":  "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab"
+                            },
+                            {
+                                "path":  "arch/aarch64/airootfs.sfs",
+                                "bytes":  1748525056,
+                                "sha256":  "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+                            }
+                        ],
+    "menu_entries":  11,
+    "default_entry":  8,
+    "default_init":  "/sbin/init",
+    "default_init_override_removed":  true,
+    "local_live_console_only":  true,
+    "default_target":  "multi-user.target",
+    "firmware_clear_included":  false,
+    "native_hardware_validated":  false
+}

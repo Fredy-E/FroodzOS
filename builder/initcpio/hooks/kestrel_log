@@ -1,0 +1,87 @@
+#!/usr/bin/ash
+# Capture runs in run_latehook (after archiso mounted the USB) so the live
+# mount is never contested. run_cleanuphook stops snapshots; the static kmsg
+# streamer survives switch_root and the overlay service resumes logging.
+run_latehook() {
+    [ "$(getarg kestrel_log)" = 1 ] || return 0
+    mkdir -p /run/kestrel-capture
+    /usr/bin/ash /usr/bin/kestrel-init-log >/dev/console 2>&1 &
+    printf '%s\n' "$!" >/run/kestrel-capture/observer.pid
+    # These writes affect only the writable live root overlay, not any disk.
+    if [ -d /sysroot/etc/systemd/system ]; then
+        mkdir -p /sysroot/usr/local/sbin /sysroot/etc/systemd/system/sysinit.target.wants
+        cp /usr/bin/kestrel-root-log /sysroot/usr/local/sbin/kestrel-root-log
+        chmod 755 /sysroot/usr/local/sbin/kestrel-root-log
+        cp /etc/kestrel-usb-log.service /sysroot/etc/systemd/system/kestrel-usb-log.service
+        ln -s ../kestrel-usb-log.service /sysroot/etc/systemd/system/sysinit.target.wants/kestrel-usb-log.service
+    fi
+    # Stage the PID1 wrapper into the overlay upperdir so switch_root can
+    # exec it. Independent of the systemd service above: this path runs even
+    # when init= bypasses systemd entirely.
+    if [ -f /usr/bin/kestrel-pid1 ] && mountpoint -q /sysroot 2>/dev/null; then
+        mkdir -p /sysroot/usr/local/sbin
+        cp /usr/bin/kestrel-pid1 /sysroot/usr/local/sbin/kestrel-pid1
+        chmod 755 /sysroot/usr/local/sbin/kestrel-pid1
+        echo 'KESTREL_PID1_STAGED' >/dev/console 2>/dev/null || true
+    else
+        echo 'KESTREL_PID1_STAGE_FAILED' >/dev/console 2>/dev/null || true
+    fi
+}
+
+run_cleanuphook() {
+    [ "$(getarg kestrel_log)" = 1 ] || return 0
+    i=0
+    while [ ! -r /run/kestrel-capture/destination ] && [ "$i" -lt 15 ]; do
+        sleep 1
+        i=$((i + 1))
+    done
+    sync 2>/dev/null || true
+    : >/run/kestrel-capture/stop-init
+    # Stop the early checkpoint first so its STOPPED marker is on disk for
+    # the final sync below (the efilog hook repeats this harmlessly).
+    if [ -r /run/kestrel-capture/checkpoint.pid ]; then
+        : >/run/kestrel-capture/stop-early 2>/dev/null
+        kill -TERM "$(cat /run/kestrel-capture/checkpoint.pid)" 2>/dev/null || true
+        sleep 2
+    fi
+    # The backgrounded observer lives in the initramfs mount namespace; after
+    # switch_root its view of the USB mount goes stale, so it must not
+    # outlive cleanup. Bounded wait, then terminate.
+    i=0
+    while [ -r /run/kestrel-capture/observer.pid ] && kill -0 "$(cat /run/kestrel-capture/observer.pid)" 2>/dev/null && [ "$i" -lt 8 ]; do
+        sleep 1
+        i=$((i + 1))
+    done
+    if [ -r /run/kestrel-capture/observer.pid ] && kill -0 "$(cat /run/kestrel-capture/observer.pid)" 2>/dev/null; then
+        kill -KILL "$(cat /run/kestrel-capture/observer.pid)" 2>/dev/null || true
+    fi
+    # Final sync while this hook still has a valid view of the USB mount.
+    # The static kmsg streamer survives switch_root; the overlay service
+    # resumes logging there.
+    if [ -r /run/kestrel-capture/destination ]; then
+        dest=$(cat /run/kestrel-capture/destination)
+        case "$dest" in /run/archiso/bootmnt/Logs/boot-*)
+            # Pre-switch proof: what switch_root is about to exec, and where.
+            # Written here because post-switch output cannot be trusted yet.
+            {
+                echo '=== preswitch ==='
+                cat /proc/cmdline 2>/dev/null
+                echo "root_dev_mounted=$([ "$(stat -c %D / 2>/dev/null)" != "$(stat -c %D /sysroot 2>/dev/null)" ] && echo yes || echo no)"
+                ls -l /sysroot/usr/bin/bash /sysroot/usr/local/sbin/kestrel-pid1 2>&1
+                mount 2>/dev/null | grep -E 'sysroot|archiso|cowspace|airootfs' || true
+                echo 'KESTREL_PRESWITCH_RECORDED'
+            } >"$dest/03-preswitch.log" 2>/dev/null || true
+            echo 'KESTREL_PRESWITCH_RECORDED' >/dev/console 2>/dev/null || true
+            for early in early-kmsg.log checkpoint-status.log; do
+                [ ! -f "/run/kestrel-capture/$early" ] || cp "/run/kestrel-capture/$early" "$dest/$early" 2>/dev/null || true
+            done
+            if [ -r /run/initramfs/init.log ]; then
+                cp /run/initramfs/init.log "$dest/02-initramfs-console.log" 2>/dev/null || true
+            fi
+            printf '%s\n' 'KESTREL_SWITCH_ROOT_PENDING' >>"$dest/00-status.txt" 2>/dev/null || true
+            printf '%s\n' 'INITRAMFS_SNAPSHOT_LOOP_STOPPED' >>"$dest/00-status.txt" 2>/dev/null || true
+            ;;
+        esac
+    fi
+    sync 2>/dev/null || true
+}

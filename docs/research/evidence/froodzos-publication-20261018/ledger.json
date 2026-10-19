@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://www.kernel.org/doc/html/latest/process/license-rules.html",
+      "title": "",
+      "accessed": "2026-10-18",
+      "quotes": [
+        {
+          "text": "The Linux Kernel is provided under the terms of the GNU General Public License version 2 only (GPL-2.0)",
+          "added": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "url": "https://www.gnu.org/licenses/gpl-faq.html",
+      "title": "",
+      "accessed": "2026-10-18",
+      "quotes": [
+        {
+          "text": "The general rule is, if you distribute binaries, you must distribute the complete corresponding source code too.",
+          "added": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "url": "https://wiki.cachyos.org/policy/repository_policy",
+      "title": "",
+      "accessed": "2026-10-18",
+      "quotes": [
+        {
+          "text": "Redistribution of CachyOS repository is exclusively authorized to the CachyOS team only.",
+          "added": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "url": "https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases",
+      "title": "",
+      "accessed": "2026-10-18",
+      "quotes": [
+        {
+          "text": "You can create a release to package software, along with release notes and links to binary files, for other people to use.",
+          "added": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "url": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+      "title": "",
+      "accessed": "2026-10-18",
+      "quotes": [
+        {
+          "text": "Whenever you add Content to a repository containing notice of a license, you license that Content under the same terms",
+          "added": "2026-10-18"
+        }
+      ]
+    }
+  ]
+}

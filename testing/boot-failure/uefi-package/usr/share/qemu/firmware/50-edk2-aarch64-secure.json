@@ -1,0 +1,32 @@
+{
+    "description": "UEFI firmware for aarch64, with Secure Boot, SB enabled, empty varstore",
+    "interface-types": [
+        "uefi"
+    ],
+    "mapping": {
+        "device": "flash",
+        "executable": {
+            "filename": "/usr/share/AAVMF/AAVMF_CODE.secboot.fd",
+            "format": "raw"
+        },
+        "nvram-template": {
+            "filename": "/usr/share/AAVMF/AAVMF_VARS.fd",
+            "format": "raw"
+        }
+    },
+    "targets": [
+        {
+            "architecture": "aarch64",
+            "machines": [
+                "virt-*"
+            ]
+        }
+    ],
+    "features": [
+        "secure-boot",
+        "verbose-static"
+    ],
+    "tags": [
+
+    ]
+}

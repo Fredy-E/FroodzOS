@@ -1,0 +1,22 @@
+#!/usr/bin/ash
+# Early RAM capture. Firmware is separately opt-in, write-once and bounded.
+run_earlyhook() {
+    [ "$(getarg kestrel_log)" = 1 ] || [ "$(getarg kestrel_efilog)" = 1 ] || return 0
+    mkdir -p /run/kestrel-capture
+    if [ "$(getarg kestrel_efilog)" = 1 ]; then
+        # Never remount or modify other firmware data. Binary checks fs + space.
+        if ! mountpoint -q /sys/firmware/efi/efivars; then
+            mkdir -p /sys/firmware/efi/efivars
+            mount -t efivarfs efivarfs /sys/firmware/efi/efivars 2>/dev/null || true
+        fi
+    fi
+    /usr/bin/kestrel-checkpoint >/run/kestrel-capture/checkpoint-status.log 2>&1 &
+    printf '%s\n' "$!" >/run/kestrel-capture/checkpoint.pid
+}
+
+run_cleanuphook() {
+    [ -r /run/kestrel-capture/checkpoint.pid ] || return 0
+    : >/run/kestrel-capture/stop-early
+    # No wait: logging must never hold up switch_root.
+    kill -TERM "$(cat /run/kestrel-capture/checkpoint.pid)" 2>/dev/null || true
+}

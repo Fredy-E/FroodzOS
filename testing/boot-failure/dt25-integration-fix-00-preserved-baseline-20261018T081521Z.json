@@ -1,0 +1,48 @@
+{
+  "stamp": "20261018T081521Z",
+  "files": {
+    "dt25-artifact-audit.json": {
+      "sha256": "7133b357371fea37ae72b40b5fcbf4b341dc63e2d67b09e08c83d143446a4308",
+      "bytes": 10415
+    },
+    "dt25-integration-platform-graphics-gate.json": {
+      "sha256": "6f2bfe4a3fda28ec5a456f3f31f52afe360494db8144a38dbec5e8a69192f3e5",
+      "bytes": 194
+    },
+    "dt25-integration-packed-graphics.json": {
+      "sha256": "a29a983b0aced0f8a4779f6ce5bb42ce491a8b5ea5427374412e2da86b06256e",
+      "bytes": 224
+    },
+    "dt25-integration-summary.json": {
+      "sha256": "00aa46083fd91f836a7c96fcaf7ab98b13116e25f8a3e90e5bd29035a547c646",
+      "bytes": 1331
+    },
+    "dt25-integration-board.json": {
+      "sha256": "652254ec51f37d7eb97df8bcb218dbb1a2e289707f7c59fe2b90375481ec423b",
+      "bytes": 2138
+    },
+    "dt25-integration-policy.json": {
+      "sha256": "df1143bdf4690a7e582e5135957db14e42acfac03961dab962995fd81c68f51a",
+      "bytes": 708
+    },
+    "dt25-integration-validation.json": {
+      "sha256": "b6d8fefff812965cf32e68d409482bf1ebe930b43ebf8e78264c5495028da1e2",
+      "bytes": 3010
+    }
+  },
+  "owned_scripts": {
+    "test-platform-graphics-gate.py": {
+      "sha256": "a7d050fdd1a4022f9136f6706dc0d27380a798633813f02572f36c278098aa8d",
+      "bytes": 9852
+    },
+    "test-dt25-packed-graphics.py": {
+      "sha256": "fc79d6500749038304e86554e2dbb93d49f25666bdbf5f2740c7f83177103796",
+      "bytes": 17214
+    },
+    "audit-dt25-artifacts.py": {
+      "sha256": "07025b89ac55c3ed1468e901193dfa7877b79b28e793f643e6c659dad3d12516",
+      "bytes": 11110
+    }
+  },
+  "note": "pre-edit immutable baseline; originals must remain unchanged; prior history: test __main__ unlinked outputs (destructive), preserved here honestly"
+}

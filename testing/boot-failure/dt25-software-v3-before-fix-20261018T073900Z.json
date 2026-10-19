@@ -1,0 +1,11 @@
+{
+  "phase": "BEFORE",
+  "utc": "20261018T073900Z",
+  "prefix": "dt25-software-v3-before-fix-20261018T073900Z",
+  "before_hashes": {
+    "builder/initcpio/hooks/kestrel_graphics": "63e1c93b04a1220044ff84228f44db594e431bf137d7a225bfb9c4da09fe2603",
+    "builder/initcpio/install/kestrel_graphics": "e6889c488d62dacaa85a3e9efdeeae89e84fd38832afef6fe6c1c0bea7eafce0",
+    "testing/boot-failure/test-dt25-graphics-staging.py": "ab5cf6265c76216889a44c668c893a2202d491f91cce5133e2ec9c6247c42738"
+  },
+  "note": "Pre-fix snapshot, current code RED expected for blockers 1+2. Prior receipts preserved, no overwrite."
+}

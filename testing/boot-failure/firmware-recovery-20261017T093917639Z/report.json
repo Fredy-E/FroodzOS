@@ -1,0 +1,66 @@
+{
+    "read_only":  true,
+    "firmware_writes":  0,
+    "input_is_fixture":  false,
+    "boot_ids":  [
+                     "2e6c8caa-5649-4be1-a007-2cb1268df794"
+                 ],
+    "unchanged_from_previous_export":  false,
+    "all_checkpoint_slots_present":  true,
+    "records":  [
+                    {
+                        "name":  "KestrelBoot00",
+                        "status":  "Saved",
+                        "bytes":  297,
+                        "sha256":  "a4f79869ba907617baa2df29ffc267a9fee7edf6b6fa0e08b1725d13f28a7411",
+                        "text":  "boot=2e6c8caa-5649-4be1-a007-2cb1268df794 slot=0 uptime_ms=8985 reason=earlyhook\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=0 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \n"
+                    },
+                    {
+                        "name":  "KestrelBoot01",
+                        "status":  "Saved",
+                        "bytes":  958,
+                        "sha256":  "7ba70b7bf71f4fbc541d90d48c8ba2bf4e1e5ec0b8daf64336308b9d8792dc28",
+                        "text":  "boot=2e6c8caa-5649-4be1-a007-2cb1268df794 slot=1 uptime_ms=10772 reason=post-error\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=bound a800000.usb=unbound \n9541 dwc3-qcom a600000.usb: usb-ddr path unavailable (-517), continuing without it\n9541 dwc3-qcom a600000.usb: of_icc_get_by_index: invalid path=-517\n9541 dwc3-qcom a600000.usb: apps-usb path unavailable (-517), continuing without it\n9541 qcom_pmic_glink pmic-glink: Failed to create device link (0x180) with supplier a600000.usb for /pmic-glink/connector@0\n9541 probe of a600000.usb with driver dwc3-qcom returned 0 after 67346 usecs\n9541 probe of a800000.usb with driver dwc3-qcom returned -517 after 0 usecs\n9560 probe of a200000.usb with driver dwc3-qcom returned -517 after 0 usecs\n9561 probe of a400000.usb with driver dwc3-qcom returned -517 after 0 usecs\n"
+                    },
+                    {
+                        "name":  "KestrelBoot02",
+                        "status":  "Saved",
+                        "bytes":  943,
+                        "sha256":  "d5a88a973835c534d81e97a70d87049372100ddfe1d9c5695fa67c4761bee54c",
+                        "text":  "boot=2e6c8caa-5649-4be1-a007-2cb1268df794 slot=2 uptime_ms=20997 reason=late-usb\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=bound a800000.usb=unbound \ninitramfs_boot_device_timeout=seen\n9541 probe of a600000.usb with driver dwc3-qcom returned 0 after 67346 usecs\n9541 probe of a800000.usb with driver dwc3-qcom returned -517 after 0 usecs\n9560 probe of a200000.usb with driver dwc3-qcom returned -517 after 0 usecs\n9561 probe of a400000.usb with driver dwc3-qcom returned -517 after 0 usecs\n19427 probe of a800000.usb with driver dwc3-qcom returned -517 after 5 usecs\n19448 probe of a200000.usb with driver dwc3-qcom returned -517 after 0 usecs\n19451 probe of a400000.usb with driver dwc3-qcom returned -517 after 2 usecs\n19453 probe of a800000.usb with driver dwc3-qcom returned -517 after 0 usecs\n"
+                    },
+                    {
+                        "name":  "KestrelBoot03",
+                        "status":  "Saved",
+                        "bytes":  943,
+                        "sha256":  "1b4750b99ce7c1d155b6d52d8af7d1aed85eb98c433134b29b02eade55944798",
+                        "text":  "boot=2e6c8caa-5649-4be1-a007-2cb1268df794 slot=3 uptime_ms=64010 reason=timeout\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=2 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=bound a800000.usb=unbound \ninitramfs_boot_device_timeout=seen\n9541 probe of a600000.usb with driver dwc3-qcom returned 0 after 67346 usecs\n9541 probe of a800000.usb with driver dwc3-qcom returned -517 after 0 usecs\n9560 probe of a200000.usb with driver dwc3-qcom returned -517 after 0 usecs\n9561 probe of a400000.usb with driver dwc3-qcom returned -517 after 0 usecs\n19427 probe of a800000.usb with driver dwc3-qcom returned -517 after 5 usecs\n19448 probe of a200000.usb with driver dwc3-qcom returned -517 after 0 usecs\n19451 probe of a400000.usb with driver dwc3-qcom returned -517 after 2 usecs\n19453 probe of a800000.usb with driver dwc3-qcom returned -517 after 0 usecs\n"
+                    },
+                    {
+                        "name":  "KestrelSeq",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog0",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog1",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog2",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog3",
+                        "status":  "Missing",
+                        "error":  203
+                    }
+                ],
+    "valid":  true
+}

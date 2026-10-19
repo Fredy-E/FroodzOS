@@ -1,0 +1,66 @@
+{
+    "read_only":  true,
+    "firmware_writes":  0,
+    "input_is_fixture":  false,
+    "boot_ids":  [
+                     "9b11354b-d055-4cf7-969c-f05562e20adf"
+                 ],
+    "unchanged_from_previous_export":  true,
+    "all_checkpoint_slots_present":  true,
+    "records":  [
+                    {
+                        "name":  "KestrelBoot00",
+                        "status":  "Saved",
+                        "bytes":  297,
+                        "sha256":  "0c4639896fd484808b2f8b5f3bd7d43ce333583064a232f276cced133740e81f",
+                        "text":  "boot=9b11354b-d055-4cf7-969c-f05562e20adf slot=0 uptime_ms=9044 reason=earlyhook\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=0 external_usb=0 label=missing input_errno=0\na200000.usb=unbound a400000.usb=unbound a600000.usb=unbound a800000.usb=unbound \n"
+                    },
+                    {
+                        "name":  "KestrelBoot01",
+                        "status":  "Saved",
+                        "bytes":  993,
+                        "sha256":  "643332227dfd745b3237011925e1f187bb6023651d9bf70756481904e7a00759",
+                        "text":  "boot=9b11354b-d055-4cf7-969c-f05562e20adf slot=1 uptime_ms=10856 reason=post-error\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=5 external_usb=3 label=missing input_errno=0\na200000.usb=bound a400000.usb=bound a600000.usb=bound a800000.usb=unbound \n10182 usb 3-1: Product: DataTraveler 3.0\n10182 usb 3-1: Manufacturer: Kingston\n10185 usb 3-1: SerialNumber: E0D55EA574D717710875009F\n10186 probe of 3-1 with driver usb returned 0 after 330 usecs\n10200 probe of a800000.usb with driver dwc3-qcom returned 517 after 1301 usecs\n10225 probe of a800000.usb with driver dwc3-qcom returned 517 after 974 usecs\n10225 input: 2.4G Mouse System Control as /devices/platform/soc@0/a400000.usb/xhci-hcd.1.auto/usb2/2-2/2-2:1.1/0003:1EA7:0066.0002/input/input5\n10228 hid-generic 0003:1EA7:0066.0002: input,hiddev0,hidraw1: USB HID v1.10 Mouse [2.4G Mouse] on usb-xhci-hcd.1.auto-2/input1\n10253 probe of a800000.usb with driver dwc3-qcom returned 517 after 1820 usecs\n"
+                    },
+                    {
+                        "name":  "KestrelBoot02",
+                        "status":  "Saved",
+                        "bytes":  992,
+                        "sha256":  "c94847700cfb5703a83539386208d8f82de6f91828df8aa9b4f7eaf25ff4987a",
+                        "text":  "boot=9b11354b-d055-4cf7-969c-f05562e20adf slot=2 uptime_ms=13286 reason=late-usb\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=5 external_usb=3 label=present input_errno=0\na200000.usb=bound a400000.usb=bound a600000.usb=bound a800000.usb=unbound \n10185 usb 3-1: SerialNumber: E0D55EA574D717710875009F\n10186 probe of 3-1 with driver usb returned 0 after 330 usecs\n10200 probe of a800000.usb with driver dwc3-qcom returned 517 after 1301 usecs\n10225 probe of a800000.usb with driver dwc3-qcom returned 517 after 974 usecs\n10225 input: 2.4G Mouse System Control as /devices/platform/soc@0/a400000.usb/xhci-hcd.1.auto/usb2/2-2/2-2:1.1/0003:1EA7:0066.0002/input/input5\n10228 hid-generic 0003:1EA7:0066.0002: input,hiddev0,hidraw1: USB HID v1.10 Mouse [2.4G Mouse] on usb-xhci-hcd.1.auto-2/input1\n10253 probe of a800000.usb with driver dwc3-qcom returned 517 after 1820 usecs\n11375 probe of a800000.usb with driver dwc3-qcom returned 517 after 975 usecs\n"
+                    },
+                    {
+                        "name":  "KestrelBoot03",
+                        "status":  "Saved",
+                        "bytes":  992,
+                        "sha256":  "3a299cfd7aeac9b7b6faf6b7606918de2f1a2c1f1881729597f4d84e592f4e14",
+                        "text":  "boot=9b11354b-d055-4cf7-969c-f05562e20adf slot=3 uptime_ms=13796 reason=stop\r\ncapture=v2 kernel=7.3.0-rc3 #3 SMP PREEMPT_DYNAMIC Sat Oct 17 09:55:48 EEST 2026\nusb_roots=5 external_usb=3 label=present input_errno=0\na200000.usb=bound a400000.usb=bound a600000.usb=bound a800000.usb=unbound \n10185 usb 3-1: SerialNumber: E0D55EA574D717710875009F\n10186 probe of 3-1 with driver usb returned 0 after 330 usecs\n10200 probe of a800000.usb with driver dwc3-qcom returned 517 after 1301 usecs\n10225 probe of a800000.usb with driver dwc3-qcom returned 517 after 974 usecs\n10225 input: 2.4G Mouse System Control as /devices/platform/soc@0/a400000.usb/xhci-hcd.1.auto/usb2/2-2/2-2:1.1/0003:1EA7:0066.0002/input/input5\n10228 hid-generic 0003:1EA7:0066.0002: input,hiddev0,hidraw1: USB HID v1.10 Mouse [2.4G Mouse] on usb-xhci-hcd.1.auto-2/input1\n10253 probe of a800000.usb with driver dwc3-qcom returned 517 after 1820 usecs\n11375 probe of a800000.usb with driver dwc3-qcom returned 517 after 975 usecs\n"
+                    },
+                    {
+                        "name":  "KestrelSeq",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog0",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog1",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog2",
+                        "status":  "Missing",
+                        "error":  203
+                    },
+                    {
+                        "name":  "KestrelLog3",
+                        "status":  "Missing",
+                        "error":  203
+                    }
+                ],
+    "valid":  true
+}

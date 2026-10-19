@@ -1,0 +1,36 @@
+{
+    "verified":  true,
+    "revision":  "v2-dt19",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "model":  "Kingston DataTraveler 3.0 USB Device",
+    "volume":  "E:\\",
+    "critical_files":  [
+                           {
+                               "path":  "EFI/Linux/kestrel-live.efi",
+                               "bytes":  244392448,
+                               "sha256":  "fae9defe9b49c2fd45269450da966dfeec1d89bd25b364a2a1c1ce0dcd7f3ec9"
+                           },
+                           {
+                               "path":  "boot/grub/grub.cfg",
+                               "bytes":  5789,
+                               "sha256":  "1e02ed0abf31f27c619d04c830a31f7edfa79d0305373f039390617b473fc73d"
+                           },
+                           {
+                               "path":  "EFI\\BOOT\\BOOTAA64.EFI",
+                               "bytes":  2533256,
+                               "sha256":  "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab"
+                           },
+                           {
+                               "path":  "arch\\aarch64\\airootfs.sfs",
+                               "bytes":  1748525056,
+                               "sha256":  "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+                           }
+                       ],
+    "menu_entries":  11,
+    "entry8":  "menuentry \u0027Kestrel dt19 - NO dispcc + FW LOG v2 (default)\u0027 {",
+    "entry9":  "menuentry \u0027Kestrel dt19 - NO dispcc + FW LOG v2 (confirm)\u0027 {",
+    "firmware_slots_verified_empty":  true,
+    "firmware_readback":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\dt19-preboot-empty-20261017T080527554Z",
+    "usb_log_files":  0,
+    "hardware_boot_verified":  false
+}

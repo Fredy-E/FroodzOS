@@ -1,0 +1,537 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+      "title": "",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 2,
+      "url": "https://docs.github.com/en/site-policy/acceptable-use-policies/github-acceptable-use-policies",
+      "title": "",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 3,
+      "url": "https://wiki.cachyos.org/policy/repository_policy",
+      "title": "Repository Usage Policy",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "End users and third-party mirrors are not subject to the redistribution policy.",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "Redistribution of the CachyOS repository (and its mirrors) in any unauthorized Linux distribution, including other Arch-based distributions, is STRICTLY PROHIBITED .",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "url": "https://github.com/CachyOS/wiki/blob/next/src/content/docs/policy/repository_policy.md",
+      "title": "src/content/docs/policy/repository_policy.md",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 5,
+      "url": "https://discuss.cachyos.org/t/i-want-to-fork-cachyos-to-make-my-own-distro/9176",
+      "title": "I want to fork CachyOS to make my own distro - General - CachyOS Forum",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 6,
+      "url": "https://discuss.cachyos.org/t/how-can-i-my-own-cachy-os-based-os/36044",
+      "title": "How can I my own cachy os based os? - General - CachyOS Forum",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 7,
+      "url": "https://wiki.cachyos.org/policy/terms_of_service",
+      "title": "Terms of Service",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 8,
+      "url": "https://discuss.cachyos.org/tos",
+      "title": "Terms of Service",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 9,
+      "url": "https://wiki.cachyos.org/policy/community-rules",
+      "title": "Official CachyOS Community Rules | CachyOS",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 10,
+      "url": "https://learn.microsoft.com/en-us/windows/wsl/filesystems",
+      "title": "Working across Windows and Linux file systems",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 11,
+      "url": "https://learn.microsoft.com/en-us/windows/wsl/compare-versions",
+      "title": "Comparing WSL Versions",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 12,
+      "url": "https://learn.microsoft.com/en-us/windows/dev-environment/wsl-interop",
+      "title": "N/A",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 13,
+      "url": "https://learn.microsoft.com/en-us/archive/blogs/wsl/wsl-file-system-support",
+      "title": "WSL File System Support | Microsoft Learn",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 14,
+      "url": "https://docs.oracle.com/en/virtualization/virtualbox/7.2/user/installation.html",
+      "title": "Installing VirtualBox",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "Virtual machines must use an Arm-based guest operating system. Running an x86-based guest operating system on an Arm host platform is not supported.",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "Only VMSVGA is supported as a graphics controller.",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "Windows 11 with Arm processors (Experimental Feature",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "url": "https://docs.oracle.com/en/virtualization/virtualbox/7.2/relnotes/relnotes-rn-features.html",
+      "title": "New Features for Release 7.2",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 16,
+      "url": "https://docs.oracle.com/en/virtualization/virtualbox/7.2/relnotes/EN-VBOX-7-2-RELNOTES.pdf",
+      "title": "Release Notes for Release 7.2",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 17,
+      "url": "https://download.virtualbox.org/virtualbox/7.2.4/UserManual.pdf",
+      "title": "User Guide for Release 7.2",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 18,
+      "url": "https://www.virtualbox.org/manual/topics/ChangeLog.html",
+      "title": "Change Log",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 19,
+      "url": "https://docs.oracle.com/en/virtualization/virtualbox/7.2/user/EN-VBOX-7-2-USER.pdf",
+      "title": "User Guide for Release 7.2",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 20,
+      "url": "https://docs.oracle.com/en/virtualization/virtualbox/7.2/user/reference.html",
+      "title": "Reference",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 21,
+      "url": "https://raw.githubusercontent.com/CachyOS/CachyOS-Live-ISO/master/archiso/packages_desktop.x86_64",
+      "title": "CachyOS desktop live package manifest",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "alsa-utils amd-ucode arch-install-scripts",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "memtest86+ memtest86+-efi mesa micro mkinitcpio",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "sudo syslinux systemd-resolvconf tcpdump",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "intel-ucode inxi irssi",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "url": "https://raw.githubusercontent.com/CachyOS/CachyOS-Live-ISO/master/archiso/profiledef.sh",
+      "title": "CachyOS live ISO profile source",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "bootmodes=('bios.syslinux' 'uefi.grub') ## systemd-boot #bootmodes=('bios.syslinux' 'uefi.systemd-boot') arch=\"x86_64\" pacman_conf=\"pacman.conf\"",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "url": "https://raw.githubusercontent.com/CachyOS/linux-cachyos/master/linux-cachyos/PKGBUILD",
+      "title": "CachyOS kernel package recipe",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "arch=('x86_64') url=\"https://github.com/CachyOS/linux-cachyos\" license=('GPL-2.0-only')",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "url": "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDs/master/pacman/PKGBUILD",
+      "title": "CachyOS pacman architecture declarations",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "arch=('x86_64' 'aarch64') url=\"https://www.archlinux.org/pacman/\" license=('GPL-2.0-or-later')",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "url": "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDs/master/cachyos-kernel-manager/PKGBUILD",
+      "title": "CachyOS kernel-manager package recipe",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "arch=(aarch64 x86_64) url=\"https://github.com/cachyos/kernel-manager\" license=(GPL-3.0-or-later)",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "url": "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDs/master/chwd/PKGBUILD",
+      "title": "CachyOS hardware-manager package recipe",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "arch=(x86_64) url=\"https://github.com/cachyos/chwd\" license=(GPL-3.0-or-later)",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "url": "https://api.github.com/repos/CachyOS/CachyOS-Live-ISO/license",
+      "title": "CachyOS live ISO repository license metadata",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "\"name\":\"GNU General Public License v3.0\"",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "url": "https://ports.archlinux.page/aarch64",
+      "title": "Arch Linux Ports AArch64 status and ISA baseline",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "There is no official Port for this architecture.",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "Packages are built for devices supporting the ARMv8.2 (and later) instruction sets only.",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "url": "https://archlinuxarm.org/about/package-signing",
+      "title": "Arch Linux ARM package-signing policy",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "the repository database files are not signed in order to limit the exposure of private keys and because it is technically unnecessary.",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "url": "https://raw.githubusercontent.com/jglathe/linux_ms_dev_kit/jg/ubuntu-qcom-x1e-7.3rc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts",
+      "title": "Lenovo 83N3 community device tree",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "model = \"Lenovo IdeaPad Slim 3 15Q8X10\";",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "url": "https://codeberg.org/api/v1/repos/ironrobin/archiso-aarch64/contents",
+      "title": "ironrobin ARM64 live-image builder source files",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 32,
+      "url": "https://raw.githubusercontent.com/ubuntu/stubble/main/README.md",
+      "title": "stubble boot stub documentation",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "Loading machine specific device trees embedded within a kernel image.",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "If no device-tree has been installed by the firmware, hardware ID values (HWIDs) in the SMBIOS table are used to select one of the appended device-trees.",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "url": "https://git.launchpad.net/ubuntu/+source/qcom-firmware-extract/tree/?h=ubuntu/stonking",
+      "title": "Ubuntu firmware extractor source tree",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "error: Device is currently not supported",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "url": "https://github.com/CachyOS/linux-cachyos/issues/646",
+      "title": "CachyOS issue #646: Arm support (closed not_planned)",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "There are no plans for this as of yet.",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "url": "https://discuss.cachyos.org/t/arm-future-for-cachyos/727",
+      "title": "CachyOS forum: ARM future for CachyOS",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "Generally, we would like to have an ARM(64) variant, but we would also like to base on archlinux.",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "url": "https://discourse.ubuntu.com/t/ubuntu-concept-26-10-snapdragon-edition/88518",
+      "title": "Ubuntu Concept 26.10 Snapdragon announcement",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "New X1 machines Lenovo IdeaPad Slim 3",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "Some features require additional firmware files that we can not distribute in Ubuntu until they are available under a suitable license.",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "url": "https://bugs.launchpad.net/bugs/2114876",
+      "title": "Launchpad #2114876: Add support for Lenovo Ideapad Slim 3",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "The touchpad wont work without a GPIO IRQ MUX driver which I have written but have not published yet.",
+          "added": "2026-10-07"
+        },
+        {
+          "text": "IdeaPad Slim 3 15Q8X10",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "url": "https://bugs.launchpad.net/bugs/2162975",
+      "title": "Launchpad #2162975: IdeaPad Slim 3 15Q8X10 enablement",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 39,
+      "url": "https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2167217",
+      "title": "Launchpad #2167217: Snapdragon concept kernel sync",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 40,
+      "url": "https://github.com/ubuntu/stubble/pull/69",
+      "title": "stubble PR #69: HWIDs for IdeaPad Slim 3",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "hwids: Add Lenovo IdeaPad Slim 3 15Q8X10",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "url": "https://archlinuxarm.org/packages/aarch64",
+      "title": "Arch Linux ARM aarch64 package index",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 42,
+      "url": "https://archlinuxarm.org/platforms",
+      "title": "Arch Linux ARM platforms and CPU baselines",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 43,
+      "url": "https://rfc.archlinux.page/0032-arch-linux-ports",
+      "title": "Arch Linux RFC 0032: Arch Linux Ports",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "strong commitment towards reproducible builds",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "url": "https://archlinuxarm.org/wiki/Distcc_Cross-Compiling",
+      "title": "ALARM distcc cross-compiling guide",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "the official cross-compiling method used at Arch Linux ARM",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "url": "https://manpages.debian.org/unstable/qcom-firmware-extract/qcom-firmware-extract.8",
+      "title": "qcom-firmware-extract manpage",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 46,
+      "url": "https://codeberg.org/ironrobin/archiso-aarch64",
+      "title": "archiso-aarch64 image builder",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "builds on Arch Linux's upstream releng profile with a thin compatibility layer powered by stubble, allowing a single image to boot across supported AArch64 laptops",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "url": "https://github.blog/changelog/2025-08-07-arm64-hosted-runners-for-public-repositories-are-now-generally-available",
+      "title": "GitHub arm64 hosted runners for public repos",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "Starting today, Linux and Windows arm64 standard hosted runners in public repositories are generally available.",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "url": "https://partner.steamgames.com/doc/steamhardware/proton",
+      "title": "Steam partner docs: Proton and anti-cheat",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "not currently supported",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "url": "https://fex-emu.com",
+      "title": "FEX-Emu x86-on-ARM64",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "run x86 applications on ARM64",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "url": "https://github.com/ptitSeb/box64",
+      "title": "Box64 x86_64 emulation on ARM",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "Box64 enables running x86_64 Linux programs, including games, on non-x86_64 Linux systems such as Arm (64-bit little-endian host system required).",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "url": "https://www.collabora.com/news-and-blog/news-and-events/building-an-arch-linux-aarch64-port-for-holo-core.html",
+      "title": "Collabora: Arch Linux aarch64 port for Holo Core",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "a pure aarch64 port of Arch Linux to be used as the basis for the OS running on the Steam Frame",
+          "added": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "url": "https://people.canonical.com/~platform/images/ubuntu-concept",
+      "title": "Ubuntu Concept image directory",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 53,
+      "url": "https://archboot.com",
+      "title": "Archboot aarch64 install/recovery media",
+      "accessed": "2026-10-07"
+    },
+    {
+      "id": 54,
+      "url": "https://discourse.ubuntu.com/t/48800/1998.json",
+      "title": "Discourse 48800/1998: Slim 3 EC driver / fan behavior",
+      "accessed": "2026-10-07",
+      "quotes": [
+        {
+          "text": "after firmware update fan would cease to function",
+          "added": "2026-10-07"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "snapshot_root": "/home/builder/boot-failure-tests/dt26-sddm-runtime-20261018T163100Z-root",
+  "source_receipt_keys": [
+    "cap_bytes",
+    "compiled_paths_static_vs_runtime",
+    "disk",
+    "exact_configuration_paths",
+    "exact_session_paths",
+    "example_config",
+    "generic_qt5_residue",
+    "hermetic_loader_new_root",
+    "hermetic_loader_new_root_all_required_pass",
+    "incr_bytes_detail",
+    "incr_bytes_new_blocks",
+    "incr_bytes_total_new_blocks",
+    "incr_cap_bytes",
+    "limits",
+    "lock",
+    "lock_unlinked",
+    "logical_sum_parent_new",
+    "logs",
+    "logs_scripts_bytes",
+    "packaged_docs",
+    "parent_root",
+    "parent_root_bytes",
+    "produced_at",
+    "qt_counts",
+    "root",
+    "root_bytes",
+    "safety",
+    "script_fix2_sha256",
+    "script_fix_sha256",
+    "script_probe",
+    "script_probe_sha256",
+    "sfs",
+    "sfs_bytes",
+    "sfs_bytes_expected",
+    "sfs_sha256",
+    "sfs_sha_prefix_ok",
+    "sfs_superblock",
+    "source_byte_all_equal",
+    "source_byte_hashes",
+    "startplasma_subset_vs_parent",
+    "tag",
+    "work",
+    "work_bytes"
+  ],
+  "elf_checks": [
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-sddm-runtime-20261018T163100Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/sddm"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f01ada5ba000)\n\tlibQt6DBus.so.6 => /usr/lib/libQt6DBus.so.6 (0x0000f01ada370000)\n\tlibQt6Qml.so.6 => /usr/lib/libQt6Qml.so.6 (0x0000f01ad9c70000)\n\tlibXau.so.6 => /usr/lib/libXau.so.6 (0x0000f01ad9c40000)\n\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x0000f01ad9a90000)\n\tlibQt6Network.so.6 => /usr/lib/libQt6Network.so.6 (0x0000f01ad9840000)\n\tlibQt6Core.so.6 => /usr/lib/libQt6Core.so.6 (0x0000f01ad9110000)\n\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x0000f01ad8e10000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000f01ad8dd0000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f01ad8c00000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f01ada570000)\n\tlibdbus-1.so.3 => /usr/lib/libdbus-1.so.3 (0x0000f01ad8b70000)\n\tlibm.so.6 => /usr/lib/libm.so.6 (0x0000f01ad8a90000)\n\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x0000f01ad8a10000)\n\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x0000f01ad89e0000)\n\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x0000f01ad88f0000)\n\tlibz.so.1 => /usr/lib/libz.so.1 (0x0000f01ad88b0000)\n\tlibproxy.so.1 => /usr/lib/libproxy.so.1 (0x0000f01ad8880000)\n\tlibcrypto.so.3 => /usr/lib/libcrypto.so.3 (0x0000f01ad8220000)\n\tliburing.so.2 => /usr/lib/liburing.so.2 (0x0000f01ad81f0000)\n\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x0000f01ad7df0000)\n\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x0000f01ad7b90000)\n\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x0000f01ad79f0000)\n\tlibdouble-conversion.so.3 => /usr/lib/libdouble-conversion.so.3 (0x0000f01ad79b0000)\n\tlibb2.so.1 => /usr/lib/libb2.so.1 (0x0000f01ad7980000)\n\tlibpcre2-16.so.0 => /usr/lib/libpcre2-16.so.0 (0x0000f01ad78d0000)\n\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x0000f01ad77c0000)\n\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x0000f01ad7770000)\n\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x0000f01ad7740000)\n\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x0000f01ad7710000)\n\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x0000f01ad76e0000)\n\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x0000f01ad76b0000)\n\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x0000f01ad7660000)\n\tlibpxbackend-1.0.so => /usr/lib/libproxy/libpxbackend-1.0.so (0x0000f01ad7630000)\n\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x0000f01ad75a0000)\n\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x0000f01ad74b0000)\n\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x0000f01ad54f0000)\n\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x0000f01ad5430000)\n\tlibgomp.so.1 => /usr/lib/libgomp.so.1 (0x0000f01ad53b0000)\n\tlibcurl.so.4 => /usr/lib/libcurl.so.4 (0x0000f01ad5280000)\n\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x0000f01ad5020000)\n\tlibduktape.so.207 => /usr/lib/libduktape.so.207 (0x0000f01ad4fa0000)\n\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x0000f01ad4f70000)\n\tlibnghttp3.so.9 => /usr/lib/libnghttp3.so.9 (0x0000f01ad4f20000)\n\tlibngtcp2_crypto_ossl.so.0 => /usr/lib/libngtcp2_crypto_ossl.so.0 (0x0000f01ad4ef0000)\n\tlibngtcp2.so.16 => /usr/lib/libngtcp2.so.16 (0x0000f01ad4e70000)\n\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x0000f01ad4e20000)\n\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x0000f01ad4dd0000)\n\tlibssh2.so.1 => /usr/lib/libssh2.so.1 (0x0000f01ad4d60000)\n\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x0000f01ad4d20000)\n\tlibssl.so.3 => /usr/lib/libssl.so.3 (0x0000f01ad4bf0000)\n\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x0000f01ad4bc0000)\n\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x0000f01ad4b20000)\n\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x0000f01ad4910000)\n\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x0000f01ad4890000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-sddm-runtime-20261018T163100Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/bin/sddm-greeter-qt6"
+      ],
+      "rc": 0,
+      "stdout": "0f85565600000)\n\tlibXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x0000f855632f0000)\n\tlibEGL.so.1 => /usr/lib/libEGL.so.1 (0x0000f855632b0000)\n\tlibfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0x0000f85563220000)\n\tlibX11.so.6 => /usr/lib/libX11.so.6 (0x0000f855630b0000)\n\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x0000f85562f10000)\n\tlibQt6DBus.so.6 => /usr/lib/libQt6DBus.so.6 (0x0000f85562e00000)\n\tlibxkbcommon.so.0 => /usr/lib/libxkbcommon.so.0 (0x0000f85562d80000)\n\tlibGLX.so.0 => /usr/lib/libGLX.so.0 (0x0000f85562d20000)\n\tlibOpenGL.so.0 => /usr/lib/libOpenGL.so.0 (0x0000f85562ca0000)\n\tlibpng16.so.16 => /usr/lib/libpng16.so.16 (0x0000f85562c40000)\n\tlibharfbuzz.so.0 => /usr/lib/libharfbuzz.so.0 (0x0000f85562ac0000)\n\tlibmd4c.so.0 => /usr/lib/libmd4c.so.0 (0x0000f85562a80000)\n\tlibfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x0000f855629a0000)\n\tlibz.so.1 => /usr/lib/libz.so.1 (0x0000f85562960000)\n\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x0000f855628e0000)\n\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x0000f855628b0000)\n\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x0000f855627c0000)\n\tlibproxy.so.1 => /usr/lib/libproxy.so.1 (0x0000f85562790000)\n\tlibcrypto.so.3 => /usr/lib/libcrypto.so.3 (0x0000f85562130000)\n\tliburing.so.2 => /usr/lib/liburing.so.2 (0x0000f85562100000)\n\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x0000f85561d00000)\n\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x0000f85561aa0000)\n\tlibdouble-conversion.so.3 => /usr/lib/libdouble-conversion.so.3 (0x0000f85561a60000)\n\tlibb2.so.1 => /usr/lib/libb2.so.1 (0x0000f85561a30000)\n\tlibpcre2-16.so.0 => /usr/lib/libpcre2-16.so.0 (0x0000f85561980000)\n\tlibQt6QmlWorkerScript.so.6 => /usr/lib/libQt6QmlWorkerScript.so.6 (0x0000f85561940000)\n\tlibGLdispatch.so.0 => /usr/lib/libGLdispatch.so.0 (0x0000f855617b0000)\n\tlibexpat.so.1 => /usr/lib/libexpat.so.1 (0x0000f85561760000)\n\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x0000f855616a0000)\n\tlibdbus-1.so.3 => /usr/lib/libdbus-1.so.3 (0x0000f85561610000)\n\tlibgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x0000f855615d0000)\n\tlibbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x0000f855615a0000)\n\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x0000f85561490000)\n\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x0000f85561440000)\n\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x0000f85561410000)\n\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x0000f855613e0000)\n\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x0000f855613b0000)\n\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x0000f85561380000)\n\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x0000f85561330000)\n\tlibpxbackend-1.0.so => /usr/lib/libproxy/libpxbackend-1.0.so (0x0000f85561300000)\n\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x0000f85561270000)\n\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x0000f85561180000)\n\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x0000f8555f1c0000)\n\tlibgomp.so.1 => /usr/lib/libgomp.so.1 (0x0000f8555f140000)\n\tlibcurl.so.4 => /usr/lib/libcurl.so.4 (0x0000f8555f010000)\n\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x0000f8555edb0000)\n\tlibduktape.so.207 => /usr/lib/libduktape.so.207 (0x0000f8555ed30000)\n\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x0000f8555ed00000)\n\tlibnghttp3.so.9 => /usr/lib/libnghttp3.so.9 (0x0000f8555ecb0000)\n\tlibngtcp2_crypto_ossl.so.0 => /usr/lib/libngtcp2_crypto_ossl.so.0 (0x0000f8555ec80000)\n\tlibngtcp2.so.16 => /usr/lib/libngtcp2.so.16 (0x0000f8555ec00000)\n\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x0000f8555ebb0000)\n\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x0000f8555eb60000)\n\tlibssh2.so.1 => /usr/lib/libssh2.so.1 (0x0000f8555eaf0000)\n\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x0000f8555eab0000)\n\tlibssl.so.3 => /usr/lib/libssl.so.3 (0x0000f8555e980000)\n\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x0000f8555e950000)\n\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x0000f8555e8b0000)\n\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x0000f8555e6a0000)\n\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x0000f8555e620000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-sddm-runtime-20261018T163100Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/sddm/sddm-helper"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000fa0ae94cc000)\n\tlibQt6Qml.so.6 => /usr/lib/libQt6Qml.so.6 (0x0000fa0ae8d10000)\n\tlibXau.so.6 => /usr/lib/libXau.so.6 (0x0000fa0ae8ce0000)\n\tlibpam.so.0 => /usr/lib/libpam.so.0 (0x0000fa0ae8cb0000)\n\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x0000fa0ae8b00000)\n\tlibQt6Network.so.6 => /usr/lib/libQt6Network.so.6 (0x0000fa0ae88b0000)\n\tlibQt6Core.so.6 => /usr/lib/libQt6Core.so.6 (0x0000fa0ae8180000)\n\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x0000fa0ae7e80000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000fa0ae7e40000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000fa0ae7c70000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000fa0ae9490000)\n\tlibm.so.6 => /usr/lib/libm.so.6 (0x0000fa0ae7b90000)\n\tlibaudit.so.1 => /usr/lib/libaudit.so.1 (0x0000fa0ae7b40000)\n\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x0000fa0ae7ac0000)\n\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x0000fa0ae7a90000)\n\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x0000fa0ae79a0000)\n\tlibz.so.1 => /usr/lib/libz.so.1 (0x0000fa0ae7960000)\n\tlibproxy.so.1 => /usr/lib/libproxy.so.1 (0x0000fa0ae7930000)\n\tlibcrypto.so.3 => /usr/lib/libcrypto.so.3 (0x0000fa0ae72d0000)\n\tliburing.so.2 => /usr/lib/liburing.so.2 (0x0000fa0ae72a0000)\n\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x0000fa0ae6ea0000)\n\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x0000fa0ae6c40000)\n\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x0000fa0ae6aa0000)\n\tlibdouble-conversion.so.3 => /usr/lib/libdouble-conversion.so.3 (0x0000fa0ae6a60000)\n\tlibb2.so.1 => /usr/lib/libb2.so.1 (0x0000fa0ae6a30000)\n\tlibpcre2-16.so.0 => /usr/lib/libpcre2-16.so.0 (0x0000fa0ae6980000)\n\tlibcap-ng.so.0 => /usr/lib/libcap-ng.so.0 (0x0000fa0ae6950000)\n\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x0000fa0ae6840000)\n\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x0000fa0ae67f0000)\n\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x0000fa0ae67c0000)\n\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x0000fa0ae6790000)\n\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x0000fa0ae6760000)\n\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x0000fa0ae6730000)\n\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x0000fa0ae66e0000)\n\tlibpxbackend-1.0.so => /usr/lib/libproxy/libpxbackend-1.0.so (0x0000fa0ae66b0000)\n\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x0000fa0ae6620000)\n\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x0000fa0ae6530000)\n\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x0000fa0ae4570000)\n\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x0000fa0ae44b0000)\n\tlibgomp.so.1 => /usr/lib/libgomp.so.1 (0x0000fa0ae4430000)\n\tlibcurl.so.4 => /usr/lib/libcurl.so.4 (0x0000fa0ae4300000)\n\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x0000fa0ae40a0000)\n\tlibduktape.so.207 => /usr/lib/libduktape.so.207 (0x0000fa0ae4020000)\n\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x0000fa0ae3ff0000)\n\tlibnghttp3.so.9 => /usr/lib/libnghttp3.so.9 (0x0000fa0ae3fa0000)\n\tlibngtcp2_crypto_ossl.so.0 => /usr/lib/libngtcp2_crypto_ossl.so.0 (0x0000fa0ae3f70000)\n\tlibngtcp2.so.16 => /usr/lib/libngtcp2.so.16 (0x0000fa0ae3ef0000)\n\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x0000fa0ae3ea0000)\n\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x0000fa0ae3e50000)\n\tlibssh2.so.1 => /usr/lib/libssh2.so.1 (0x0000fa0ae3de0000)\n\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x0000fa0ae3da0000)\n\tlibssl.so.3 => /usr/lib/libssl.so.3 (0x0000fa0ae3c70000)\n\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x0000fa0ae3c40000)\n\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x0000fa0ae3ba0000)\n\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x0000fa0ae3990000)\n\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x0000fa0ae3910000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-sddm-runtime-20261018T163100Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/sddm/sddm-helper-start-wayland"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f2dd1b60d000)\n\tlibQt6Core.so.6 => /usr/lib/libQt6Core.so.6 (0x0000f2dd1ae60000)\n\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x0000f2dd1acb0000)\n\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x0000f2dd1a9b0000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000f2dd1a970000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f2dd1a7a0000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f2dd1b5c0000)\n\tliburing.so.2 => /usr/lib/liburing.so.2 (0x0000f2dd1a770000)\n\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x0000f2dd1a370000)\n\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x0000f2dd1a110000)\n\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x0000f2dd19f70000)\n\tlibz.so.1 => /usr/lib/libz.so.1 (0x0000f2dd19f30000)\n\tlibdouble-conversion.so.3 => /usr/lib/libdouble-conversion.so.3 (0x0000f2dd19ef0000)\n\tlibb2.so.1 => /usr/lib/libb2.so.1 (0x0000f2dd19ec0000)\n\tlibpcre2-16.so.0 => /usr/lib/libpcre2-16.so.0 (0x0000f2dd19e10000)\n\tlibcrypto.so.3 => /usr/lib/libcrypto.so.3 (0x0000f2dd197b0000)\n\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x0000f2dd196c0000)\n\tlibm.so.6 => /usr/lib/libm.so.6 (0x0000f2dd195e0000)\n\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x0000f2dd17620000)\n\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x0000f2dd17560000)\n\tlibgomp.so.1 => /usr/lib/libgomp.so.1 (0x0000f2dd174e0000)\n\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x0000f2dd173f0000)\n\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x0000f2dd173c0000)\n\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x0000f2dd17370000)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/chroot",
+        "/home/builder/boot-failure-tests/dt26-sddm-runtime-20261018T163100Z-root",
+        "/usr/lib/ld-linux-aarch64.so.1",
+        "--inhibit-cache",
+        "--list",
+        "/usr/lib/sddm/sddm-helper-start-x11user"
+      ],
+      "rc": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000f5558f05d000)\n\tlibQt6Core.so.6 => /usr/lib/libQt6Core.so.6 (0x0000f5558e890000)\n\tlibXau.so.6 => /usr/lib/libXau.so.6 (0x0000f5558e860000)\n\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x0000f5558e6b0000)\n\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x0000f5558e3b0000)\n\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x0000f5558e370000)\n\tlibc.so.6 => /usr/lib/libc.so.6 (0x0000f5558e1a0000)\n\t/lib/ld-linux-aarch64.so.1 => /usr/lib/ld-linux-aarch64.so.1 (0x0000f5558f010000)\n\tliburing.so.2 => /usr/lib/liburing.so.2 (0x0000f5558e170000)\n\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x0000f5558dd70000)\n\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x0000f5558db10000)\n\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x0000f5558d970000)\n\tlibz.so.1 => /usr/lib/libz.so.1 (0x0000f5558d930000)\n\tlibdouble-conversion.so.3 => /usr/lib/libdouble-conversion.so.3 (0x0000f5558d8f0000)\n\tlibb2.so.1 => /usr/lib/libb2.so.1 (0x0000f5558d8c0000)\n\tlibpcre2-16.so.0 => /usr/lib/libpcre2-16.so.0 (0x0000f5558d810000)\n\tlibcrypto.so.3 => /usr/lib/libcrypto.so.3 (0x0000f5558d1b0000)\n\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x0000f5558d0c0000)\n\tlibm.so.6 => /usr/lib/libm.so.6 (0x0000f5558cfe0000)\n\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x0000f5558b020000)\n\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x0000f5558af60000)\n\tlibgomp.so.1 => /usr/lib/libgomp.so.1 (0x0000f5558aee0000)\n\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x0000f5558adf0000)\n\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x0000f5558adc0000)\n\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x0000f5558ad70000)\n",
+      "stderr": ""
+    }
+  ],
+  "elf_check_count": 5,
+  "elf_all_pass": true,
+  "compiled_defaults_example_only": {
+    "rc": 0,
+    "display_server": "x11",
+    "theme_current": ""
+  },
+  "configured_snapshots": {
+    "usr/lib/sddm/sddm.conf.d/default.conf": {
+      "bytes": 3404,
+      "sha256": "33f8cedbcaa4f1843714c8c4c7b7499d9c427abc39dcc848aac3d8c5da4588d8",
+      "text": "[Autologin]\n# Whether sddm should automatically log back into sessions when they exit\nRelogin=false\n\n# Name of session file for autologin session (if empty try last logged in)\nSession=\n\n# Username for autologin session\nUser=\n\n\n[General]\n# Which display server should be used.\n# Valid values are: x11, x11-user, wayland. Wayland support is experimental\nDisplayServer=x11\n\n# Comma-separated list of environment variables to be set\nGreeterEnvironment=\n\n# Halt command\nHaltCommand=/usr/bin/systemctl poweroff\n\n# Input method module\nInputMethod=\n\n# Comma-separated list of Linux namespaces for user session to enter\nNamespaces=\n\n# Initial NumLock state. Can be on, off or none.\n# If property is set to none, numlock won't be changed\n# NOTE: Currently ignored if autologin is enabled.\nNumlock=none\n\n# Reboot command\nRebootCommand=/usr/bin/systemctl reboot\n\n\n[Theme]\n# Current theme name\nCurrent=\n\n# Cursor size used in the greeter\nCursorSize=\n\n# Cursor theme used in the greeter\nCursorTheme=\n\n# Number of users to use as threshold\n# above which avatars are disabled\n# unless explicitly enabled with EnableAvatars\nDisableAvatarsThreshold=7\n\n# Enable display of custom user avatars\nEnableAvatars=true\n\n# Global directory for user avatars\n# The files should be named <username>.face.icon\nFacesDir=/usr/share/sddm/faces\n\n# Font used in the greeter\nFont=\n\n# Theme directory path\nThemeDir=/usr/share/sddm/themes\n\n\n[Users]\n# Default $PATH for logged in users\nDefaultPath=/usr/local/sbin:/usr/local/bin:/usr/bin\n\n# Comma-separated list of shells.\n# Users with these shells as their default won't be listed\nHideShells=\n\n# Comma-separated list of users that should not be listed\nHideUsers=\n\n# Maximum user id for displayed users\nMaximumUid=60513\n\n# Minimum user id for displayed users\nMinimumUid=1000\n\n# Remember the session of the last successfully logged in user\nRememberLastSession=true\n\n# Remember the last successfully logged in user\nRememberLastUser=true\n\n# When logging in as the same user twice, restore the original session, rather than create a new one\nReuseSession=true\n\n\n[Wayland]\n# Path of the Wayland compositor to execute when starting the greeter\nCompositorCommand=weston --shell=kiosk\n\n# Enable Qt's automatic high-DPI scaling\nEnableHiDPI=true\n\n# Path to a script to execute when starting the desktop session\nSessionCommand=/usr/share/sddm/scripts/wayland-session\n\n# Comma-separated list of directories containing available Wayland sessions\nSessionDir=/usr/local/share/wayland-sessions,/usr/share/wayland-sessions\n\n# Path to the user session log file\nSessionLogFile=.local/share/sddm/wayland-session.log\n\n\n[X11]\n# Path to a script to execute when starting the display server\nDisplayCommand=/usr/share/sddm/scripts/Xsetup\n\n# Path to a script to execute when stopping the display server\nDisplayStopCommand=/usr/share/sddm/scripts/Xstop\n\n# Enable Qt's automatic high-DPI scaling\nEnableHiDPI=true\n\n# Arguments passed to the X server invocation\nServerArguments=-nolisten tcp\n\n# Path to X server binary\nServerPath=/usr/bin/X\n\n# Path to a script to execute when starting the desktop session\nSessionCommand=/usr/share/sddm/scripts/Xsession\n\n# Comma-separated list of directories containing available X sessions\nSessionDir=/usr/local/share/xsessions,/usr/share/xsessions\n\n# Path to the user session log file\nSessionLogFile=.local/share/sddm/xorg-session.log\n\n# Path to Xephyr binary\nXephyrPath=/usr/bin/Xephyr\n\n\n"
+    },
+    "etc/sddm.conf.d/autologin.conf": {
+      "bytes": 37,
+      "sha256": "b8316bb582a6c130fe4f6e3229a543a3166b382f3cde39d5ec5119ab4a6e08d3",
+      "text": "[Autologin]\nUser=live\nSession=plasma\n"
+    },
+    "usr/share/wayland-sessions/plasma.desktop": {
+      "bytes": 3909,
+      "sha256": "64404dc611df7f75361fa257aad7f00dfe8a2f75e189e8f716544041e23af569",
+      "text": "[Desktop Entry]\nExec=/usr/lib/plasma-dbus-run-session-if-needed /usr/bin/startplasma-wayland\nTryExec=/usr/bin/startplasma-wayland\nDesktopNames=KDE\nName=Plasma (Wayland)\nName[ar]=\u0628\u0644\u0627\u0632\u0645\u0627 (\u0648\u064a\u0644\u0627\u0646\u062f)\nName[ast]=Plasma (Wayland)\nName[az]=Plasma (Wayland)\nName[be]=Plasma (Wayland)\nName[bg]=Plasma (Wayland)\nName[ca]=Plasma (Wayland)\nName[ca@valencia]=Plasma (Wayland)\nName[cs]=Plasma (Wayland)\nName[da]=Plasma (Wayland)\nName[de]=Plasma (Wayland)\nName[el]=Plasma (Wayland)\nName[en_GB]=Plasma (Wayland)\nName[eo]=Plasma (Wayland)\nName[es]=Plasma (Wayland)\nName[et]=Plasma (Wayland)\nName[eu]=Plasma (Wayland)\nName[fi]=Plasma (Wayland)\nName[fr]=Plasma (Wayland)\nName[ga]=Plasma (Wayland)\nName[gl]=Plasma (Wayland)\nName[he]=\u05e4\u05dc\u05d6\u05de\u05d4 (Wayland)\nName[hi]=\u092a\u094d\u0932\u093e\u091c\u093c\u094d\u092e\u093e (\u0935\u0947\u0932\u0948\u0902\u0921)\nName[hsb]=Plasma (Wayland)\nName[hu]=Plasma (Wayland)\nName[ia]=Plasma (Wayland)\nName[id]=Plasma (Wayland)\nName[is]=Plasma (Wayland)\nName[it]=Plasma (Wayland)\nName[ja]=Plasma (Wayland)\nName[ka]=Plasma (Wayland)\nName[ko]=Plasma(Wayland)\nName[lt]=Plasma (Wayland)\nName[lv]=Plasma (Wayland)\nName[ml]=\u0d2a\u0d4d\u0d32\u0d3e\u0d38\u0d4d\u0d2e (\u0d35\u0d47\u0d32\u0d3e\u0d7b\u0d21\u0d4d)\nName[nb]=Plasma (Wayland)\nName[nl]=Plasma (Wayland)\nName[nn]=Plasma (Wayland)\nName[pa]=\u0a2a\u0a32\u0a3e\u0a1c\u0a3c\u0a2e\u0a3e (\u0a35\u0a47\u0a05\u0a32\u0a48\u0a02\u0a21)\nName[pl]=Plazma (Wayland)\nName[pt]=Plasma (Wayland)\nName[pt_BR]=Plasma (Wayland)\nName[ro]=Plasma (Wayland)\nName[ru]=Plasma (Wayland)\nName[sa]=\u092a\u094d\u0932\u093e\u091c\u094d\u092e\u093e (\u0935\u0947\u0932\u0948\u0923\u094d\u0921\u094d)\nName[sk]=Plasma (Wayland)\nName[sl]=Plasma (Wayland)\nName[sv]=Plasma (Wayland)\nName[ta]=\u0baa\u0bbf\u0bb3\u0bbe\u0bb8\u0bcd\u0bae\u0bbe (Wayland)\nName[tg]=\u041f\u043b\u0430\u0437\u043c\u0430 (\u0412\u044d\u0439\u043b\u0435\u043d\u0434)\nName[th]=Plasma (Wayland)\nName[tr]=Plasma (Wayland)\nName[ug]=Plasma (Wayland)\nName[uk]=\u041f\u043b\u0430\u0437\u043c\u0430 (Wayland)\nName[vi]=Plasma (Wayland)\nName[zh_CN]=Plasma (Wayland)\nName[zh_TW]=Plasma (Wayland)\nComment=Plasma by KDE\nComment[ar]=\u0628\u0644\u0627\u0632\u0645\u0627 \u0643\u0650\u064a\u062f\u0650\u064a\nComment[az]=KDE Plasma\nComment[be]=Plasma KDE\nComment[bg]=Plasma \u043e\u0442 KDE\nComment[bs]=Plazma od strane KDe\nComment[ca]=Plasma, creat per la comunitat KDE\nComment[ca@valencia]=Plasma, creat per la comunitat KDE\nComment[cs]=Plasma z KDE\nComment[da]=Plasma fra KDE\nComment[de]=Plasma von KDE\nComment[el]=Plasma \u03b1\u03c0\u03cc \u03c4\u03bf KDE\nComment[en_GB]=Plasma by KDE\nComment[eo]=Plasma de KDE\nComment[es]=Plasma, por KDE\nComment[et]=KDE Plasma\nComment[eu]=KDEren Plasma\nComment[fi]=Plasma KDE:lt\u00e4\nComment[fr]=Plasma, par KDE\nComment[ga]=Plasma le KDE\nComment[gl]=Plasma, de KDE.\nComment[he]=\u05e4\u05dc\u05d6\u05de\u05d4 \u05de\u05d1\u05d9\u05ea KDE\nComment[hi]=\u0915\u0947\u0921\u0940\u0907 \u0926\u094d\u0935\u093e\u0930\u093e \u092a\u094d\u0932\u093e\u091c\u093c\u094d\u092e\u093e\nComment[hsb]=Plasma wot KDE\nComment[hu]=Plasma a KDE-t\u0151l\nComment[ia]=Plasma per KDE\nComment[id]=Plasma oleh KDE\nComment[is]=Plasma fr\u00e1 KDE\nComment[it]=Plasma di KDE\nComment[ja]=Plasma by KDE\nComment[ka]=Plasma, KDE-\u10e1\u10d2\u10d0\u10dc\nComment[ko]=KDE Plasma\nComment[lt]=Plasma pagal KDE\nComment[lv]=\u201ePlasma\u201c no KDE\nComment[ml]=\u0d15\u0d46\u0d21\u0d3f\u0d07\u0d2f\u0d41\u0d1f\u0d46 \u0d2a\u0d4d\u0d32\u0d3e\u0d38\u0d4d\u0d2e\nComment[nb]=Plasma fra KDE\nComment[nds]=Plasma vun KDE\nComment[nl]=Plasma door KDE\nComment[nn]=Plasma fr\u00e5 KDE\nComment[pa]=KDE \u0a35\u0a32\u0a4b\u0a02 \u0a2a\u0a32\u0a3e\u0a5b\u0a2e\u0a3e\nComment[pl]=Plazma dzi\u0119ki KDE\nComment[pt]=Plasma do KDE\nComment[pt_BR]=Plasma pela KDE\nComment[ro]=Plasma, de c\u0103tre KDE\nComment[ru]=KDE Plasma\nComment[sa]=KDE \u0907\u0924\u094d\u092f\u0938\u094d\u092e\u093e\u0924\u094d \u092a\u094d\u0932\u093e\u091c\u094d\u092e\u093e\nComment[sk]=Plasma od KDE\nComment[sl]=KDE Plasma\nComment[sr]=\u041f\u043b\u0430\u0437\u043c\u0430 \u043e\u0434 \u041a\u0414\u0415\u2011\u0430\nComment[sr@ijekavian]=\u041f\u043b\u0430\u0437\u043c\u0430 \u043e\u0434 \u041a\u0414\u0415\u2011\u0430\nComment[sr@ijekavianlatin]=Plasma od KDE\u2011a\nComment[sr@latin]=Plasma od KDE\u2011a\nComment[sv]=Plasma av KDE\nComment[ta]=\u0b95\u0bc7.\u0b9f\u0bc0.\u0baf\u0bc0. \u0bb5\u0bb4\u0b99\u0bcd\u0b95\u0bc1\u0bae\u0bcd \u0baa\u0bbf\u0bb3\u0bbe\u0bb8\u0bcd\u0bae\u0bbe\nComment[tg]=Plasma \u0430\u0437 \u04b7\u043e\u043d\u0438\u0431\u0438 KDE\nComment[th]=Plasma \u0e42\u0e14\u0e22 KDE\nComment[tr]=KDE Plasma\nComment[ug]=KDE Plasma\nComment[uk]=\u041f\u043b\u0430\u0437\u043c\u0430 KDE\nComment[vi]=Plasma, do KDE\nComment[zh_CN]=KDE Plasma\nComment[zh_TW]=Plasma by KDE\nX-KDE-PluginInfo-Version=6.7.5\n"
+    },
+    "usr/lib/plasma-dbus-run-session-if-needed": {
+      "bytes": 292,
+      "sha256": "c33da292878ee4b7f28aae7bdaed96e6a6277440a97b65fabaa31bccbed905ae",
+      "text": "#!/bin/sh\n# Usage: plasma-dbus-run-session-if-needed PROGRAM [ARGUMENTS]\n# If the session bus is not available it is spawned and wrapper round our program\n# Otherwise we spawn our program directly\ndrs=\nif [ -z \"${DBUS_SESSION_BUS_ADDRESS}\" ]\nthen\n    drs=dbus-run-session\nfi\nexec ${drs} \"$@\"\n"
+    }
+  },
+  "qt6_greeter_source_sha256": "95664832f25e6703dfea2f56617c442c4139e84dd91883c8cb58b9e7ae767b74",
+  "qt6_greeter_staged_sha256": "95664832f25e6703dfea2f56617c442c4139e84dd91883c8cb58b9e7ae767b74",
+  "qt6_greeter_source_bytes_equal": true,
+  "generic_qt5_binary_is_not_the_only_available_candidate": true,
+  "runtime_greeter_suffix_selection_proven": false,
+  "plasma_session_is_wayland_but_manager_default_is_not_wayland": true,
+  "display_daemon_or_compositor_launched": false,
+  "native_graphics_validated": false,
+  "fixture_mutated": false
+}

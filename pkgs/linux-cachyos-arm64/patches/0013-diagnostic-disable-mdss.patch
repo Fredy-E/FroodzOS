@@ -1,0 +1,23 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] disable display subsystem on Slim 3
+
+Rationale: the mdss driver (initramfs module) binds ae00000 and
+takes over the firmware framebuffer, but the panel never lights:
+screen goes black-with-backlight and all later boot text is
+invisible. Keep the console on simplefb until panel bring-up is
+solved. NOT for publication or general ARM64 support.
+
+---
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1778,3 +1778,12 @@
+ &gpu { status = "disabled"; };
+ &gmu { status = "disabled"; };
++
++/* DIAGNOSTIC 2026-10-16 (0013): disable the display subsystem. The
++ * mdss driver (from initramfs modules) binds the subsystem and takes
++ * over the firmware framebuffer, but the panel never lights, so the
++ * screen goes black-with-backlight and all later text is invisible.
++ * Keep the console on simplefb until panel bring-up is solved.
++ * Local-only, not for publication. */
++&mdss { status = "disabled"; };

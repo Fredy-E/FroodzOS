@@ -1,0 +1,28 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] gem off, dwc3 rerouted on Slim 3
+
+Rationale: gem_noc's probe resets the machine ~4s wall after the
+1780000 probe (only delta vs a 19s-booting tree). But dwc3's
+apps-usb path runs gem->config_noc, stalling USB forever without
+it. Keep gem off; reroute each dwc3 apps-usb pair onto the port's
+own usb-ddr pair (votes land twice on a working path, harmless for
+live boot). NOT for publication or general ARM64 support.
+
+---
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1753,3 +1753,14 @@
+  * crasher and USB needs another route. Local-only, not for
+  * publication. */
+ &gem_noc { status = "okay"; };
++
++/* DIAGNOSTIC 2026-10-16 (0011): gem back off (its probe resets the
++ * machine in 4s wall); reroute each dwc3 apps-usb path onto the
++ * port's own usb-ddr pair so USB can bind without gem. Votes land
++ * on the same working path twice (harmless for live boot).
++ * Local-only, not for publication. */
++&gem_noc { status = "disabled"; };
++&usb_2 { interconnects = <0xe8 0x00 0x07 0x18 0x01 0x07 0xe8 0x00 0x07 0x18 0x01 0x07>; };
++&usb_mp { interconnects = <0xe8 0x01 0x07 0x18 0x01 0x07 0xe8 0x01 0x07 0x18 0x01 0x07>; };
++&usb_1_ss0 { interconnects = <0xe5 0x00 0x07 0x18 0x01 0x07 0xe5 0x00 0x07 0x18 0x01 0x07>; };
++&usb_1_ss1 { interconnects = <0xe5 0x01 0x07 0x18 0x01 0x07 0xe5 0x01 0x07 0x18 0x01 0x07>; };

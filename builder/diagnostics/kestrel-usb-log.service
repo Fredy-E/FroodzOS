@@ -1,0 +1,17 @@
+[Unit]
+Description=Kestrel diagnostic USB log capture (live overlay only)
+DefaultDependencies=no
+After=systemd-journald.service
+Before=basic.target
+ConditionKernelCommandLine=kestrel_log=1
+ConditionPathExists=/run/kestrel-capture/destination
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/kestrel-root-log
+StandardOutput=journal
+StandardError=journal
+TimeoutStopSec=3
+
+[Install]
+WantedBy=sysinit.target

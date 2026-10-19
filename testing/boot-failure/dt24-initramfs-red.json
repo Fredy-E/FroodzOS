@@ -1,0 +1,21 @@
+{
+  "image": "/home/builder/uki-v2-dt23/live-initramfs.img",
+  "init_sha256": "62fcc3a904ab68429e90f8caaab4e16c3d34a08230a42dd628739ade0443a953",
+  "checks": {
+    "pid1_matches_mkinitcpio_script": true,
+    "pid1_has_ash_shebang": true,
+    "no_mount_drvfs": true,
+    "no_mount_wslfs": true,
+    "archiso_hook_present": true,
+    "archiso_label_helper_present": true,
+    "fat_default_charset_module_present": true,
+    "utf8_charset_module_present": true,
+    "input_i2c_hid_packed": false,
+    "input_i2c_hid_early_load": false,
+    "input_i2c_hid_of_packed": false,
+    "input_i2c_hid_of_early_load": false,
+    "input_hid_generic_packed": true,
+    "input_hid_generic_early_load": false
+  },
+  "passed": false
+}

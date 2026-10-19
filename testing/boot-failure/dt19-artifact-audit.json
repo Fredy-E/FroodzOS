@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "revision": "v2-dt19",
+  "uki_bytes": 244392448,
+  "uki_sha256": "fae9defe9b49c2fd45269450da966dfeec1d89bd25b364a2a1c1ce0dcd7f3ec9",
+  "embedded_inputs": {
+    ".linux": {
+      "bytes": 52492800,
+      "sha256": "682273a91f2016b9d5484857639bd043e021b961d7f4cfd385a09566b2df3abc"
+    },
+    ".dtbauto": {
+      "bytes": 208048,
+      "sha256": "fec6490277bd8c0d50919c78ccf17100448f1f5467afabda1a8a86ee56fbee8c"
+    },
+    ".initrd": {
+      "bytes": 191538052,
+      "sha256": "a7006c2e05cb68601329175bb52489f25b7ae9f891ff9414cd4577543d73bb23"
+    }
+  },
+  "logger_source_sha256": "e5641e70f32e65b67b6182110d39641c516e995a209b747ad388f7eddc842bc7",
+  "pstore_nvram_disabled_in_default_cmdline": true,
+  "native_boot_verified": false
+}

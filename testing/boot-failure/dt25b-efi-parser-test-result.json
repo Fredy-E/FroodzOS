@@ -1,0 +1,10 @@
+{
+  "passed": 44,
+  "failed": 0,
+  "skipped": 0,
+  "total": 44,
+  "failures": [],
+  "revision": "v2-dt25b",
+  "no_vm_runs": true,
+  "notes": "actual v2 bytes expect RED; positives are synthetic fixtures only"
+}

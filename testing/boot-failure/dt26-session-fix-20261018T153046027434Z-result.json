@@ -1,0 +1,74 @@
+{
+  "fixture_only": true,
+  "gaps_closed": {
+    "cap_64kib_atomic_last_good_preserved": true,
+    "explicit_no_false_accepted_genuine_still_passes": true,
+    "fail_branches_structured_not_str_truncation": true,
+    "id_mismatch_returns_none": true,
+    "missing_empty_remote_rejected_in_is_owned_and_discovery": true,
+    "pass_persistence_failure_fails_closed_no_start": true,
+    "pass_snapshot_atomic_structured_before_sddm_start": true,
+    "rc0_empty_detail_returns_none_and_refuses": true,
+    "rc0_partial_detail_returns_none_and_refuses": true,
+    "valid_empty_listing_still_valid": true
+  },
+  "native_graphics_validated": false,
+  "native_hardware_validated": false,
+  "parent_probe_rerun_fixture_only": {
+    "empty_detail_refuses_gui": true,
+    "empty_success_detail": null,
+    "missing_remote_identity_accepted": false,
+    "partial_detail_refuses_gui": true,
+    "real_shape_accepted": true
+  },
+  "parent_receipts_consulted": [
+    "testing/boot-failure/dt26-review-wave1-parent-findings.json",
+    "testing/boot-failure/dt26-parent-session-probe-20261018T152006240116Z.json"
+  ],
+  "preserved": {
+    "CLEANUP_BUDGET_S": 25,
+    "MAX_SECONDS": 180,
+    "MINIMUM_MC": 5000,
+    "STOP_MC": 80000,
+    "cleanup_status_run_only": true,
+    "loginctl_repeated_dash_p": true,
+    "no_unrelated_kills": true,
+    "no_vt_changes": true,
+    "systemctl_comma_properties": "ActiveState,SubState,Result unchanged"
+  },
+  "prior_evidence_preserved": true,
+  "source_changes": "builder/diagnostics/kestrel-graphics-supervisor.py",
+  "tag": "20261018T153046027434Z",
+  "task": "dt26 supervisor Stage1 blockers fix",
+  "tests": [
+    {
+      "errors": 0,
+      "failures": 0,
+      "log": "dt26-session-fix-20261018T153046027434Z.log",
+      "skipped": 0,
+      "suite": "test-dt26-session-fix.py (NEW)",
+      "tests_run": 14
+    },
+    {
+      "errors": 0,
+      "failures": 0,
+      "log": "dt26-session-fix-20261018T153046027434Z-dt26-session-supervisor.log",
+      "skipped": 0,
+      "suite": "test-dt26-session-supervisor.py",
+      "tests_run": 19
+    },
+    {
+      "errors": 0,
+      "failures": 0,
+      "log": "dt26-session-fix-20261018T153046027434Z-dt25-graphics-supervisor.log",
+      "skipped": 0,
+      "suite": "test-dt25-graphics-supervisor.py (WSL real-subprocess)",
+      "tests_run": 16
+    }
+  ],
+  "total_tests": 49,
+  "unresolved": [
+    "No native graphics validation (fixture-only; no QEMU/USB/kernel/DTB/SFS/firmware changes per scope).",
+    "Observability gaps (logger/symlink/cap/bash readout) owned by sibling writer; not touched."
+  ]
+}

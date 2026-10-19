@@ -1,0 +1,39 @@
+{
+    "verified":  true,
+    "revision":  "v2-dt22",
+    "disk":  "\\\\.\\PHYSICALDRIVE2",
+    "model":  "Kingston DataTraveler 3.0 USB Device",
+    "volume":  "E:\\",
+    "critical_files":  [
+                           {
+                               "path":  "EFI/Linux/kestrel-live.efi",
+                               "bytes":  244482560,
+                               "sha256":  "483078d869c118b78cefbc604d1cd9c7f43c924abf8ed0f859737014f495d59d"
+                           },
+                           {
+                               "path":  "boot/grub/grub.cfg",
+                               "bytes":  6211,
+                               "sha256":  "6f755b6da131d59e5d366be9457765dc9beb7154d51caef8cef7aa8ae543ec72"
+                           },
+                           {
+                               "path":  "EFI/BOOT/BOOTAA64.EFI",
+                               "bytes":  2533256,
+                               "sha256":  "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab"
+                           },
+                           {
+                               "path":  "arch/aarch64/airootfs.sfs",
+                               "bytes":  1748525056,
+                               "sha256":  "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+                           }
+                       ],
+    "menu_entries":  11,
+    "entry8":  "menuentry \u0027Kestrel dt22 - PID1-marked live shell (default)\u0027 {",
+    "entry9":  "menuentry \u0027Kestrel dt22 - PID1-marked live shell + FW LOG v2 (confirm)\u0027 {",
+    "firmware_slots_verified_empty":  true,
+    "firmware_readback":  "D:\\CachyOS-ARM64\\testing\\boot-failure\\dt22-preboot-20261017T114428699Z",
+    "firmware_boot_ids":  [
+
+                          ],
+    "usb_log_files":  12,
+    "hardware_boot_verified":  false
+}

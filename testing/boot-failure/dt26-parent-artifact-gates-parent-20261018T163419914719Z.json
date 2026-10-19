@@ -1,0 +1,83 @@
+{
+  "suite_rc": 0,
+  "suite_result": {
+    "revision": "v2-dt26",
+    "scope": "artifact-gate preflight only; no build, no extraction, no VM",
+    "synthetic_fixtures_only": true,
+    "run": 28,
+    "passed": 28,
+    "failed": 0,
+    "failures": [],
+    "skipped": 0,
+    "tests": [
+      "import-safe-no-top-level-effects",
+      "help-no-effects",
+      "malformed-json-refused",
+      "wrong-revision-refused",
+      "audit-wrong-revision-refused",
+      "malformed-manifest",
+      "approved-false-refused",
+      "spec-not-pass-refused",
+      "quality-not-pass-refused",
+      "approved-truthy-int-refused",
+      "audit-approved-false-refused",
+      "missing-review",
+      "changed-source-hash-refused",
+      "changed-source-hash",
+      "missing-entry-refused",
+      "audit-missing-entry-refused",
+      "missing-required-entry",
+      "reserved-tag-dt25b-refused",
+      "reserved-tag-dt24-refused",
+      "reserved-tag-../escape-refused",
+      "reserved-tag-bad tag!-refused",
+      "output-collision-no-unlink",
+      "d-postreserve",
+      "cli-deny-tag-no-builder",
+      "cli-bad-revision-no-builder",
+      "audit-cli-bad-revision-no-builder",
+      "builder-never-invoked",
+      "syntax-gates"
+    ],
+    "canonical_builder_invoked": false,
+    "real_sources_hashed": false,
+    "real_artifacts_verified": false,
+    "native_hardware_validated": false,
+    "unresolved_actual_build_gates": [
+      "reviewed source manifest absent (need revision v2-dt26, approved_for_build true, spec PASS, quality PASS from parent)",
+      "writer repairs active: supervisor IO, observability logger/bounds, EFI harness/parser, frozen-runtime subset",
+      "actual fresh build OUT /home/builder/uki-v2-dt26-<tag> not attempted",
+      "actual extraction + PE/initrd/module/SFS provenance audit not run",
+      "QEMU/FAT disposable + native graphics attempt pending parent sequencing"
+    ]
+  },
+  "suite_log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-parent-artifact-gates-parent-20261018T163419914719Z.log",
+  "literal_probes": {
+    "sha_with_lf_accepted": true,
+    "nonmatching_source_identifier_accepted": true,
+    "tag_lf_reaches_manifest_loader": true
+  },
+  "build_lock": "/home/builder/boot-failure-tests/dt26-build.lock",
+  "audit_lock": "/home/builder/boot-failure-tests/dt26-build.lock",
+  "required_shared_lock": "/home/builder/boot-failure-tests/dt25-build.lock",
+  "sfs_path_integration": {
+    "auditor_path": "/mnt/d/CachyOS-ARM64/live-staging-v2/arch/aarch64/airootfs.sfs",
+    "synthetic_schema_fixture_only": true,
+    "parser_accepted": false,
+    "errors": [
+      "audit-sfs_path-must-be-in-private-build-root",
+      "audit-guard_policy-requires-20-sensors"
+    ]
+  },
+  "premature_pass_receipt": {
+    "scope": "actual final commit AST, synthetic non-EFI bytes, injected copy error",
+    "error": "injected private host-copy write failure",
+    "receipt_exists": true,
+    "receipt": {
+      "passed": true,
+      "uki_sha256": "f9f4d6a35b213ff0652378b7c73fa083a2ee955e94a75c81bff99b73178d7913"
+    }
+  },
+  "no_actual_build_extraction_or_vm": true,
+  "accepted_for_build": false
+}

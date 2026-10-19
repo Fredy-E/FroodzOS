@@ -1,0 +1,118 @@
+{
+  "passed": true,
+  "revision": "dt25-preparation",
+  "accepted_native_fallback": "v2-dt24",
+  "native_boot_id": "9c31cdbb-5aad-4802-9ea7-8101066b591e",
+  "dt24_uki_sha256": "4fca331543a347da2d431631ae002f90046507e485765ef24f383257902edc02",
+  "kernel_sha256": "682273a91f2016b9d5484857639bd043e021b961d7f4cfd385a09566b2df3abc",
+  "dtb_sha256": "c65f5e2a325e32427ba8ca6b84ed6928598fc08efcfd1ed5d0c596dfd5f475a3",
+  "baseline_dir": "/home/builder/boot-failure-tests/dt25-baseline",
+  "files": {
+    "board.dts": {
+      "source": "/home/builder/src/ksrc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts",
+      "sha256": "d1347d1f8755a492ea8172a54bddd682583351ece15627b81149157721941f10",
+      "bytes": 41503
+    },
+    "board.dtb": {
+      "source": "/home/builder/src/ksrc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dtb",
+      "sha256": "c65f5e2a325e32427ba8ca6b84ed6928598fc08efcfd1ed5d0c596dfd5f475a3",
+      "bytes": 207780
+    },
+    "kernel.config": {
+      "source": "/home/builder/src/ksrc/.config",
+      "sha256": "dc6d89b53feecbc55f2af55496955b67bdd1284f31c67e1d7161162a1a0962a5",
+      "bytes": 375329
+    },
+    "builder/initcpio/hooks/kestrel_log": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/initcpio/hooks/kestrel_log",
+      "sha256": "f7e9a9e658717485cedceb80a8bc86a4837d6dbd1186ac4b3a77271200e0bb5d",
+      "bytes": 4603
+    },
+    "builder/initcpio/hooks/kestrel_efilog": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/initcpio/hooks/kestrel_efilog",
+      "sha256": "9165c2ee542bf1d50dbe3a1983678372872f3cfeceebde5f9692ae16dce9670c",
+      "bytes": 968
+    },
+    "builder/initcpio/hooks/kestrel_text": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/initcpio/hooks/kestrel_text",
+      "sha256": "6ca6de054671dbf316a0153a18eecad711c39be895ea5e743b94971e4d9edefa",
+      "bytes": 2168
+    },
+    "builder/diagnostics/kestrel-init-log.sh": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-init-log.sh",
+      "sha256": "cd19d27b55596dc7717bf9a03fe6109810909c9c0ffbb574ede90dd2baa20f4b",
+      "bytes": 4629
+    },
+    "builder/diagnostics/kestrel-root-log.sh": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-root-log.sh",
+      "sha256": "06d717877620a9a3096abfb4fef12cfa3d55a3fa71f50e33868e89b077a46f61",
+      "bytes": 2119
+    },
+    "builder/diagnostics/kestrel-pid1.sh": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-pid1.sh",
+      "sha256": "e5c1e7697af4e53aa9a33d34442a6dec959b5ad75d2f90027739aeecde59a7ce",
+      "bytes": 3167
+    },
+    "builder/diagnostics/kestrel-text-login.sh": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-text-login.sh",
+      "sha256": "0a6bea0a97f5c75a21e8040b07b5a68e10267996b1058298bb704998810c1e85",
+      "bytes": 305
+    },
+    "builder/diagnostics/kestrel-text-proof.sh": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-text-proof.sh",
+      "sha256": "bcb8423f825a326f976b261f868586ad869a7ab1ec8766f173abe0c1993ab71a",
+      "bytes": 2010
+    },
+    "builder/diagnostics/kestrel-text-bashrc": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-text-bashrc",
+      "sha256": "e49f61e8f84fe2fb2e5fd7d1c97ef8d32fe1692775d7cb629c1db75d9abb915d",
+      "bytes": 566
+    },
+    "builder/diagnostics/kestrel-text-getty.conf": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-text-getty.conf",
+      "sha256": "02bbe357ed42c95538917c4f4c7f3e4cf8c7131a1e02c342d6365c2c7a231e37",
+      "bytes": 213
+    },
+    "builder/build-live-uki.sh": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/build-live-uki.sh",
+      "sha256": "c625c21231082dfb7b3fd817964165f0d8b93987176f13b8f72e6c10a2e91ee4",
+      "bytes": 4311
+    },
+    "builder/validate-live-initramfs.py": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/validate-live-initramfs.py",
+      "sha256": "40dfe7e2e1ccea44f9356a006e5c3396903b18275ea50c535fe309e3328897e6",
+      "bytes": 3549
+    },
+    "builder/platform_usb_gate.py": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/platform_usb_gate.py",
+      "sha256": "dad735665d6e94bfdb5a7da0e6300c7a85c0be4e0fea0862703bfe003de24b2a",
+      "bytes": 1141
+    },
+    "builder/platform_input_gate.py": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/platform_input_gate.py",
+      "sha256": "c1b20deb31570c9a06084225723cab38fa6fe2aa8794a79836ba0f0a3caa4002",
+      "bytes": 846
+    },
+    "builder/diagnostics/kestrel-checkpoint.c": {
+      "source": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-checkpoint.c",
+      "sha256": "e5641e70f32e65b67b6182110d39641c516e995a209b747ad388f7eddc842bc7",
+      "bytes": 13059
+    }
+  },
+  "packed_dt24_hashes": {
+    "hooks/kestrel_log": "f7e9a9e658717485cedceb80a8bc86a4837d6dbd1186ac4b3a77271200e0bb5d",
+    "hooks/kestrel_efilog": "9165c2ee542bf1d50dbe3a1983678372872f3cfeceebde5f9692ae16dce9670c",
+    "hooks/kestrel_text": "6ca6de054671dbf316a0153a18eecad711c39be895ea5e743b94971e4d9edefa",
+    "usr/bin/kestrel-init-log": "cd19d27b55596dc7717bf9a03fe6109810909c9c0ffbb574ede90dd2baa20f4b",
+    "usr/bin/kestrel-root-log": "06d717877620a9a3096abfb4fef12cfa3d55a3fa71f50e33868e89b077a46f61",
+    "usr/bin/kestrel-pid1": "e5c1e7697af4e53aa9a33d34442a6dec959b5ad75d2f90027739aeecde59a7ce",
+    "etc/kestrel-text-login": "0a6bea0a97f5c75a21e8040b07b5a68e10267996b1058298bb704998810c1e85",
+    "etc/kestrel-text-proof": "bcb8423f825a326f976b261f868586ad869a7ab1ec8766f173abe0c1993ab71a",
+    "etc/kestrel-text-bashrc": "e49f61e8f84fe2fb2e5fd7d1c97ef8d32fe1692775d7cb629c1db75d9abb915d",
+    "etc/kestrel-text-getty.conf": "02bbe357ed42c95538917c4f4c7f3e4cf8c7131a1e02c342d6365c2c7a231e37",
+    "usr/bin/kestrel-checkpoint": "10d85829dca2a287a3eb3f7384156e88f4266aaee747b4bb5044b0688b58f76f"
+  },
+  "usb_modified": false,
+  "firmware_modified": false,
+  "native_graphics_validated": false
+}

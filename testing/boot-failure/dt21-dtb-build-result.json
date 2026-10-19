@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "kernel_unchanged": true,
+  "allowed_changed_properties": [
+    [
+      "/soc@0/dma-controller@b00000",
+      "status"
+    ],
+    [
+      "/soc@0/geniqup@bc0000/i2c@b94000",
+      "interconnect-names"
+    ],
+    [
+      "/soc@0/geniqup@bc0000/i2c@b94000",
+      "interconnects"
+    ]
+  ],
+  "only_allowed_compiled_properties_changed": true,
+  "patch_forward_and_reverse_verified": true,
+  "source_sha256": "11829d3595d10e4ca36b67bf1dc0d2fbec2e9ac0224c2abd99527c4f4a637968",
+  "dtb_sha256": "9a4be4a7d716516960e574c16e4a0c9d4d51f78317ec00ffd176f7aef26c32e6",
+  "dtb_bytes": 207916,
+  "old_dtb": "/home/builder/boot-failure-tests/dt21-board-build-v2/dt20.dtb",
+  "native_hardware_validated": false
+}

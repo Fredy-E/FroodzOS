@@ -1,0 +1,82 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] dwc3-qcom: apps-usb optional
+
+Rationale: with gem_noc disabled (its probe resets this machine),
+dwc3's apps-usb path can never resolve and the whole USB host is
+torn down 40ms after coming up. Make apps-usb best-effort with a
+loud warning; usb-ddr still carries the votes needed for live
+boot. NOT for publication or general ARM64 support.
+
+---
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ interconnect_enable
+ 	ret = icc_enable(qcom->icc_path_ddr);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = icc_enable(qcom->icc_path_apps);
+-	if (ret)
+-		icc_disable(qcom->icc_path_ddr);
++	if (qcom->icc_path_apps) {
++		ret = icc_enable(qcom->icc_path_apps);
++		if (ret)
++			icc_disable(qcom->icc_path_ddr);
++	}
+ 
+ 	return ret;
+ }
+@@ interconnect_disable
+ 	ret = icc_disable(qcom->icc_path_ddr);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = icc_disable(qcom->icc_path_apps);
+-	if (ret)
+-		icc_enable(qcom->icc_path_ddr);
++	if (qcom->icc_path_apps) {
++		ret = icc_disable(qcom->icc_path_apps);
++		if (ret)
++			icc_enable(qcom->icc_path_ddr);
++	}
+ 
+ 	return ret;
+ }
+@@ interconnect_init get
+ 	qcom->icc_path_apps = of_icc_get(dev, "apps-usb");
+ 	if (IS_ERR(qcom->icc_path_apps)) {
+-		ret = dev_err_probe(dev, PTR_ERR(qcom->icc_path_apps),
+-				    "failed to get apps-usb path\n");
+-		goto put_path_ddr;
++		/* DIAGNOSTIC 2026-10-16 (0016): apps-usb optional. */
++		dev_warn(dev, "apps-usb path unavailable (%ld), continuing without it\n",
++			 PTR_ERR(qcom->icc_path_apps));
++		qcom->icc_path_apps = NULL;
+ 	}
+@@ interconnect_init bw
+-	ret = icc_set_bw(qcom->icc_path_apps, APPS_USB_AVG_BW, APPS_USB_PEAK_BW);
+-	if (ret) {
+-		dev_err(dev, "failed to set bandwidth for apps-usb path: %d\n", ret);
+-		goto put_path_apps;
++	if (qcom->icc_path_apps) {
++		ret = icc_set_bw(qcom->icc_path_apps, APPS_USB_AVG_BW, APPS_USB_PEAK_BW);
++		if (ret) {
++			dev_err(dev, "failed to set bandwidth for apps-usb path: %d\n", ret);
++			goto put_path_apps;
++		}
+ 	}
+ 
+ 	return 0;
+@@ interconnect labels
+ put_path_apps:
+-	icc_put(qcom->icc_path_apps);
++	if (qcom->icc_path_apps)
++		icc_put(qcom->icc_path_apps);
+@@ interconnect_exit
+ static void dwc3_qcom_interconnect_exit(struct dwc3_qcom *qcom)
+ {
+ 	icc_put(qcom->icc_path_ddr);
+-	icc_put(qcom->icc_path_apps);
++	if (qcom->icc_path_apps)
++		icc_put(qcom->icc_path_apps);
+ }

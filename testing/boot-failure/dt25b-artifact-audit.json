@@ -1,0 +1,276 @@
+{
+  "passed": true,
+  "revision": "v2-dt25b",
+  "uki_bytes": 244424704,
+  "uki_sha256": "b535444f8a3560b602d2a8549a35389d3914a8b8b4294c7408ca8e1840a11753",
+  "initramfs_sha256": "67800e7cf916f8c6ee2a577361cfb36523f769b2e707bfe7c3372a780f4d6a34",
+  "uki_path": "/home/builder/uki-v2-dt25b/vmlinuz-live.efi",
+  "initramfs_path": "/home/builder/uki-v2-dt25b/live-initramfs.img",
+  "kernel_stub_hwids_base_cmdline_unchanged": true,
+  "dtb_sha256": "f5f67c13bdfe975998b083ac06465c36231c0bae205e8e60fff99832264f5232",
+  "dtb_bytes": 207772,
+  "dtb_scope": {
+    "passed": true,
+    "checks": {
+      "tsens0_enabled": true,
+      "tsens1_enabled": true,
+      "tsens2_stays_disabled": true,
+      "tsens3_stays_disabled": true,
+      "tsens0_compatible_retained": true,
+      "tsens1_compatible_retained": true,
+      "tsens0_reg_retained": true,
+      "tsens1_reg_retained": true,
+      "tsens0_irq_retained": true,
+      "tsens1_irq_retained": true,
+      "tsens0_cells_retained": true,
+      "tsens1_cells_retained": true,
+      "tsens0_no_icc_ref": true,
+      "tsens1_no_icc_ref": true,
+      "tsens0_no_clock_power_ref": true,
+      "tsens1_no_clock_power_ref": true,
+      "cpu0_zones_on_tsens0": true,
+      "cpuss0_zones_on_tsens0": true,
+      "cpu1_zones_on_tsens1": true,
+      "cpuss1_zones_on_tsens1": true,
+      "cpu_zone_count_is_20": true,
+      "keyboard_bus_enabled": true,
+      "keyboard_hid_binding_retained": true,
+      "keyboard_irq_retained": true,
+      "keyboard_power_rail_enabled": true,
+      "keyboard_power_supply_resolves": true,
+      "keyboard_power_voltage_unchanged": true,
+      "i2c9_no_dead_gem_icc_reference": true,
+      "i2c9_no_stale_icc_names": true,
+      "keyboard_dma_provider_enabled": true,
+      "keyboard_dma_reference_retained": true,
+      "gpi1_existing_channel1_allowed": true,
+      "usb_repeater_i2c5_enabled": true,
+      "i2c5_no_dead_gem_icc_reference": true,
+      "i2c5_no_stale_icc_names": true,
+      "i2c5_dma_provider_enabled": true,
+      "gpi0_existing_channel5_allowed": true,
+      "gem_noc_stays_disabled": true,
+      "eusb3_repeater_on_i2c5": true,
+      "eusb5_repeater_on_i2c5": true,
+      "eusb6_repeater_on_i2c5": true,
+      "eusb9_repeater_on_i2c5": true,
+      "pcie3_stays_disabled": true,
+      "pcie6a_stays_disabled": true,
+      "pcie5_stays_disabled": true,
+      "pcie4_stays_disabled": true,
+      "gpu_stays_disabled": true,
+      "gmu_stays_disabled": true,
+      "mdss_stays_disabled": true,
+      "vreg_pcie3_nvme_stays_disabled": true,
+      "tsens2_gpu_zones_not_required": true,
+      "tsens3_stays_unconfigured": true
+    },
+    "dtb": "/home/builder/src/ksrc/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dtb",
+    "skips_i2c_bus_voting_diagnostic_only": true,
+    "native_hardware_validated": false
+  },
+  "initramfs_validation": {
+    "image": "/home/builder/uki-v2-dt25b/live-initramfs.img",
+    "init_sha256": "62fcc3a904ab68429e90f8caaab4e16c3d34a08230a42dd628739ade0443a953",
+    "checks": {
+      "pid1_matches_mkinitcpio_script": true,
+      "pid1_has_ash_shebang": true,
+      "no_mount_drvfs": true,
+      "no_mount_wslfs": true,
+      "archiso_hook_present": true,
+      "archiso_label_helper_present": true,
+      "fat_default_charset_module_present": true,
+      "utf8_charset_module_present": true,
+      "platform_gpi_packed": true,
+      "platform_gpi_early_load": true,
+      "platform_i2c_qcom_geni_packed": true,
+      "platform_i2c_qcom_geni_early_load": true,
+      "platform_phy_nxp_ptn3222_packed": true,
+      "platform_phy_nxp_ptn3222_early_load": true,
+      "platform_qrtr_packed": true,
+      "platform_qrtr_early_load": true,
+      "platform_qrtr_smd_packed": true,
+      "platform_qrtr_smd_early_load": true,
+      "input_i2c_hid_packed": true,
+      "input_i2c_hid_early_load": true,
+      "input_i2c_hid_of_packed": true,
+      "input_i2c_hid_of_early_load": true,
+      "input_hid_generic_packed": true,
+      "input_hid_generic_early_load": true,
+      "graphics_hook_present": true,
+      "graphics_hook_gated": true,
+      "graphics_hook_requires_mountpoint": true,
+      "graphics_hook_requires_findmnt": true,
+      "graphics_hook_requires_overlay": true,
+      "graphics_no_cowspace_fallback": true,
+      "graphics_no_global_efi_writer": true,
+      "graphics_no_python_packed": true,
+      "graphics_kestrel_graphics_supervisor_present": true,
+      "graphics_kestrel_graphics_guard_present": true,
+      "graphics_kestrel_graphics_env_present": true,
+      "graphics_kestrel_graphics_service_present": true,
+      "graphics_kestrel_graphics_sddm_present": true,
+      "graphics_kestrel_graphics_policy_present": true,
+      "graphics_kestrel_graphics_tty2_present": true,
+      "graphics_text_kestrel_text_login_preserved": true,
+      "graphics_text_kestrel_text_proof_preserved": true,
+      "graphics_text_kestrel_text_bashrc_preserved": true,
+      "graphics_text_kestrel_text_getty_conf_preserved": true,
+      "graphics_text_hook_preserved": true,
+      "graphics_logger_service_preserved": true,
+      "graphics_findmnt_elf_present": true,
+      "graphics_mountpoint_elf_present": true,
+      "graphics_lib_libmount_so_1_present": true,
+      "graphics_lib_libblkid_so_1_present": true,
+      "graphics_lib_libsmartcols_so_1_present": true,
+      "graphics_lib_libudev_so_1_present": true,
+      "graphics_lib_libsystemd_so_0_present": true,
+      "graphics_lib_libc_so_6_present": true,
+      "graphics_config_ordered_after_text": true,
+      "graphics_config_contains_hook": true,
+      "graphics_policy_valid": true,
+      "board_firmware_present": true,
+      "log_runtime_hook_present": true,
+      "log_streamer_present": true,
+      "log_init_script_present": true,
+      "log_root_script_present": true,
+      "log_service_present": true,
+      "early_checkpoint_binary": true,
+      "no_unbounded_firmware_loop": true,
+      "early_capture_lifecycle": true,
+      "checkpoint_owned_namespace": true
+    },
+    "passed": true
+  },
+  "guard_policy": {
+    "passed": true,
+    "checks": {
+      "count_is_20": true,
+      "names_match_cpu_cpuss": true,
+      "no_battery_in_policy": true,
+      "no_platform_trips": true,
+      "stop_is_80c": true,
+      "provenance_has_pin_and_dtb": true,
+      "guard_accepts_all_20": true,
+      "guard_battery_alone_blocks": true,
+      "guard_missing_one_blocks": true,
+      "guard_80c_inclusive_blocks": true,
+      "guard_duplicate_blocks": true
+    },
+    "required_sensor_count": 20,
+    "policy": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-graphics-policy.json",
+    "guard": "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel_graphics_guard.py",
+    "tag": null,
+    "synthetic_policy_fixtures_only": true,
+    "native_hardware_validated": false
+  },
+  "logger_preserved": true,
+  "text_byte_exact": true,
+  "graphics_byte_exact": true,
+  "lifetime_fix_packed": {
+    "parent_pre_post_exact": true,
+    "child_binds_after_partof": true,
+    "parent_sha256": "f5a10461a439ba1741d238def08279bebf5c61da03d46b96af11521152be73bd",
+    "child_sha256": "6a8887e7f49757efb8c0594c61cbe1236a42df3816752c9d34878454ee77d4a5"
+  },
+  "module_dependencies_resolve": true,
+  "old_uki_sha256": "4fca331543a347da2d431631ae002f90046507e485765ef24f383257902edc02",
+  "old_uki_preserved": true,
+  "failed_9c_uki_sha256": "9c1abc4fdb4bd0aaee5cd83b2427eb094a6d870f62d59aa56b36d2aa413499fb",
+  "failed_9c_preserved_rejected_native": true,
+  "old_candidates_preserved": true,
+  "sfs_sha256": "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c",
+  "sfs_bytes": 1748525056,
+  "sfs_preserved": true,
+  "sfs_required_paths_present": true,
+  "sfs_runtime_closure_proven": false,
+  "sfs_runtime_proof_pending_vm": true,
+  "imgroot_versions": {
+    "mesa": "mesa 1:26.2.4-1",
+    "sddm": "sddm 0.21.0-7",
+    "plasma-desktop": "plasma-desktop 6.7.5-1",
+    "kwin": "kwin 6.7.5-1",
+    "python": "python 3.14.7-1"
+  },
+  "qemu_firmware": {
+    "path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd",
+    "sha256": "a996c72d5258dabf5fcb11a64bd22e0cc6673e3d193031feea02ac643f16dad5",
+    "bytes": 3145728
+  },
+  "sources": {
+    "builder/build-live-uki.sh": {
+      "sha256": "0c388c2a42cda91e50fb2431bf610759cf80eb951684487f7a95c7dcd16adba2",
+      "bytes": 4888
+    },
+    "builder/validate-live-initramfs.py": {
+      "sha256": "0c3af7b47fab555cb83c0690b89ec515a117df6914f4ab15dbd3fbe104d5f20e",
+      "bytes": 3753
+    },
+    "builder/platform_graphics_gate.py": {
+      "sha256": "65995d374b78d39865fd9a31735a3ca53b38ce5afbacaef9a39ab01154662274",
+      "bytes": 5207
+    },
+    "builder/platform_usb_gate.py": {
+      "sha256": "dad735665d6e94bfdb5a7da0e6300c7a85c0be4e0fea0862703bfe003de24b2a",
+      "bytes": 1141
+    },
+    "builder/platform_input_gate.py": {
+      "sha256": "c1b20deb31570c9a06084225723cab38fa6fe2aa8794a79836ba0f0a3caa4002",
+      "bytes": 846
+    },
+    "builder/initcpio/hooks/kestrel_graphics": {
+      "sha256": "30b67ea75c59458f5349b512baead5010452117b85b2891589997fb7870d81ce",
+      "bytes": 13063
+    },
+    "builder/initcpio/hooks/kestrel_text": {
+      "sha256": "6ca6de054671dbf316a0153a18eecad711c39be895ea5e743b94971e4d9edefa",
+      "bytes": 2168
+    },
+    "builder/initcpio/hooks/kestrel_log": {
+      "sha256": "f7e9a9e658717485cedceb80a8bc86a4837d6dbd1186ac4b3a77271200e0bb5d",
+      "bytes": 4603
+    },
+    "builder/initcpio/hooks/kestrel_efilog": {
+      "sha256": "9165c2ee542bf1d50dbe3a1983678372872f3cfeceebde5f9692ae16dce9670c",
+      "bytes": 968
+    },
+    "builder/initcpio/install/kestrel_graphics": {
+      "sha256": "4b31907e75275b3d769d85696d2086f47634a281990130b282b7e2a176b73521",
+      "bytes": 2055
+    },
+    "builder/diagnostics/kestrel-graphics-supervisor.py": {
+      "sha256": "3071ea004cab913ac121f7f16a19d16479c83ed2b0d4f8adf0e8ea1a37519ff3",
+      "bytes": 30873
+    },
+    "builder/diagnostics/kestrel_graphics_guard.py": {
+      "sha256": "f19f4e84d26021d0be7d5a9be12e45626b425aff87de7a33f800b6fee0da5319",
+      "bytes": 14295
+    },
+    "builder/diagnostics/kestrel-graphics-env.conf": {
+      "sha256": "d16d533a747afdefbc48897123c643df5b9dbccb857df34c04a1c9b21b6f65fa",
+      "bytes": 1502
+    },
+    "builder/diagnostics/kestrel-graphics-policy.json": {
+      "sha256": "b84bf2daa71899670ee8b57a578081db473525af4e857d8ef74b8a5d5c6c5625",
+      "bytes": 2326
+    },
+    "builder/diagnostics/kestrel-graphics.service": {
+      "sha256": "f5a10461a439ba1741d238def08279bebf5c61da03d46b96af11521152be73bd",
+      "bytes": 1217
+    },
+    "builder/diagnostics/kestrel-graphics-sddm.service": {
+      "sha256": "6a8887e7f49757efb8c0594c61cbe1236a42df3816752c9d34878454ee77d4a5",
+      "bytes": 992
+    },
+    "builder/diagnostics/kestrel-graphics-tty2.conf": {
+      "sha256": "d21a778756d25320f2215bbdc90d32d6182782493a1b051146febf899333267d",
+      "bytes": 213
+    }
+  },
+  "old_archives_preserved": true,
+  "packing_provenance": "passed",
+  "vm_crash_retest_pending": true,
+  "native_hardware_validated": false,
+  "native_graphics_validated": false,
+  "native": false
+}

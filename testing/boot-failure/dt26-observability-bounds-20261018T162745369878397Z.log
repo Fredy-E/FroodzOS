@@ -1,0 +1,16 @@
+test_cli_preflight_and_counts (__main__.Dt26Bounds.test_cli_preflight_and_counts) ... ok
+test_clock_true_monotonic (__main__.Dt26Bounds.test_clock_true_monotonic) ... ok
+test_logger_monotonic_static (__main__.Dt26Bounds.test_logger_monotonic_static) ... ok
+test_missing_timeout_skips (__main__.Dt26Bounds.test_missing_timeout_skips) ... ok
+test_persist_cap_dest_unchanged_ioerror (__main__.Dt26Bounds.test_persist_cap_dest_unchanged_ioerror) ... ok
+test_persist_rejects_invalid (__main__.Dt26Bounds.test_persist_rejects_invalid) ... ok
+test_seconds_reset_no_extend (__main__.Dt26Bounds.test_seconds_reset_no_extend) ... ok
+test_stalling_journal_and_systemctl_bounded (__main__.Dt26Bounds.test_stalling_journal_and_systemctl_bounded) ... ok
+test_term_ignoring_killed (__main__.Dt26Bounds.test_term_ignoring_killed) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 41.847s
+
+OK
+
+RESULT_JSON /mnt/d/CachyOS-ARM64/testing/boot-failure/dt26-observability-bounds-20261018T162745369878397Z.json

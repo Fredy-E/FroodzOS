@@ -1,0 +1,26 @@
+{
+  "batch": "deleg_e70b62e2",
+  "kind": "late_read_only_predecessor_report",
+  "used_as": "corroborating leads relayed to active implementers, not new native proof or accepted code",
+  "delivered_tasks": 2,
+  "software_leads": [
+    "Installed Wayland session uses normal SDDM/PAM/logind and nonroot live account.",
+    "Mesa kms_swrast and swrast reportedly present; no Vulkan ICD or selectable Plasma X11 fallback.",
+    "QPainter KWIN_COMPOSE=Q with software GL environment is a candidate; exact package/library/session semantics must still be verified by implementer.",
+    "An active live seat session is a post-launch gate, not a circular pre-SDDM condition."
+  ],
+  "thermal_leads": [
+    "purwa removes third CPU-cluster thermal zones and intentionally leaves TSENS3 disabled/unconfigured.",
+    "TSENS0/1 supply CPU/cpuss zones without GPU cooling-map references; TSENS2 has GPU cooling consumers and stays disabled.",
+    "Generic tsens-v2 uses built-in CONFIG_QCOM_TSENS=y and no calibration callback; no module is needed."
+  ],
+  "explicit_corrections_and_limits": [
+    "Predecessor used stale /home/builder/slim3-keep.dts for some statuses. It incorrectly describes misc3p3 as disabled for the accepted dt24 baseline; dt24 enables this keyboard/touchpad rail. Only frozen dt25-baseline/board.dtb and current compiled audit may define scope.",
+    "Its 90C/few-zone suggestion does not replace the active conservative 80C/derived CPU-cpuss whitelist contract.",
+    "No native TSENS, software compositor or real frame/input proof was supplied.",
+    "No main-chat provider, API keys or fallback routing was changed."
+  ],
+  "active_wave": "deleg_495499a9",
+  "steers_queued": ["sa-0-730c4469", "sa-1-1ea66996", "sa-2-2201dc95"],
+  "extra_guard_requirement": "Actual DRM character-node major/minor must match kernel/sysfs card identity, not merely be any character file."
+}

@@ -1,0 +1,76 @@
+{
+  "created_utc": "2026-10-18T08:50:45.649964+00:00",
+  "errors": 0,
+  "failures": 0,
+  "flock_note": "no private chroot/overlay extract, no host mounts/systemd; SAME flock /home/builder/boot-failure-tests/dt25-build.lock not needed and not taken",
+  "flock_used": false,
+  "forbidden_touched": false,
+  "green": "fixed on-disk pair PASS all load-bearing clauses (test_current_pair_passes_contract)",
+  "limitation": "static/unit parsing + rebased fixture rm semantics do NOT prove real SIGKILL stops child; actual VM retest after fresh rebuild required (parent owns plan); SDDM/PAM/session death beyond unit graph remains native gate",
+  "load_bearing_verified": [
+    "BindsTo present and removal fails",
+    "After parent present and removal fails",
+    "PartOf retained",
+    "ExecStartPre present and removal fails separately",
+    "ExecStopPost present and removal fails separately",
+    "cmdline/marker/Restart/Type/Timeout/owned exec paths retained",
+    "no global kills/graphical wiring",
+    "rebased rm semantics: stale clears, missing idempotent, stop clears, symlink removes link not foreign target"
+  ],
+  "native_hardware_validated": false,
+  "no_build_qemu": true,
+  "old_9c_image_rejected_for_native": true,
+  "old_candidate_sha256": "9c1abc4fdb4bd0aaee5cd83b2427eb094a6d870f62d59aa56b36d2aa413499fb",
+  "original_hashes": {
+    "child": {
+      "bytes": 959,
+      "sha256": "ea1e811df4887e11da0440342747a4b53d8470c0874640a5989bd751d2d1935a"
+    },
+    "parent": {
+      "bytes": 1081,
+      "sha256": "228b259ca136e362bb35097cbac7bb636d094af8750b7c0730ab054971dbdab3"
+    }
+  },
+  "purpose": "Focused dt25 graphics unit lifecycle contract: RED old pair FAIL, GREEN new pair PASS; no build/QEMU until parent reviews.",
+  "real_host_run_writes": 0,
+  "real_host_services_touched": 0,
+  "red": "frozen pre-fix bytes FAIL contract: missing BindsTo, missing ExecStartPre, missing ExecStopPost (test_original_pair_fails_contract)",
+  "rm_verification": "/usr/bin/rm GNU coreutils 9.12 both builder and /home/builder/imgroot (133568 bytes, sha256 6abb3b213d5a039917ae4492b7735f7d80717232070f9f4813105a6fb681b33f); exact /usr/bin/rm -f -- owned marker; TimeoutStopSec 30 retained",
+  "scope": "sole-writer files only; no edits to canonical/validator/guard/supervisor/hooks/install/env/policy/text/logger/DT/Image/config/rootfs/SFS, existing tests/evidence/candidate/docs/ledger",
+  "skipped": 0,
+  "source_hashes": {
+    "builder/diagnostics/kestrel-graphics-sddm.service": {
+      "bytes": 992,
+      "sha256": "6a8887e7f49757efb8c0594c61cbe1236a42df3816752c9d34878454ee77d4a5"
+    },
+    "builder/diagnostics/kestrel-graphics.service": {
+      "bytes": 1217,
+      "sha256": "f5a10461a439ba1741d238def08279bebf5c61da03d46b96af11521152be73bd"
+    },
+    "testing/boot-failure/test-dt25-graphics-unit-contract.py": {
+      "bytes": 26720,
+      "sha256": "dd7cb09bc71451f5e313a5535f74fff66247b48b94996bf3d8ac8326e27300a3"
+    }
+  },
+  "tag": "dt25-lifecycle-20261018T084848Z",
+  "tests": {
+    "windows_python": {
+      "errors": 0,
+      "failures": 0,
+      "passed": true,
+      "returncode": 0,
+      "skipped": 0,
+      "tests_run": 16
+    },
+    "wsl_CachyOSBuilder_python3": {
+      "errors": 0,
+      "failures": 0,
+      "passed": true,
+      "returncode": 0,
+      "skipped": 0,
+      "tests_run": 16
+    }
+  },
+  "tests_run": 16,
+  "vm_retest_required_after_rebuild": true
+}

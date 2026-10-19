@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
+build() {
+    local project="${KESTREL_PROJECT:?missing project path}"
+    local compiled="${KESTREL_LOG_BINARY:?missing compiled streamer path}"
+    add_binary "$compiled" /usr/bin/kestrel-kmsg
+    add_file "$project/builder/diagnostics/kestrel-init-log.sh" /usr/bin/kestrel-init-log 755
+    add_file "$project/builder/diagnostics/kestrel-root-log.sh" /usr/bin/kestrel-root-log 755
+    add_file "$project/builder/diagnostics/kestrel-pid1.sh" /usr/bin/kestrel-pid1 755
+    add_file "$project/builder/diagnostics/kestrel-usb-log.service" /etc/kestrel-usb-log.service
+    # Runtime hook is added by add_runscript via MKINITCPIO_HOOKS.
+    add_runscript
+}
+help() {
+    printf '%s\n' 'Opt-in early USB kernel capture, active only with kestrel_log=1.'
+}

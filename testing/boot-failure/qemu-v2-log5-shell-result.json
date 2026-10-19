@@ -1,0 +1,60 @@
+{
+  "command": [
+    "qemu-system-aarch64",
+    "-M",
+    "virt,gic-version=3",
+    "-cpu",
+    "cortex-a53",
+    "-accel",
+    "tcg",
+    "-m",
+    "2048",
+    "-smp",
+    "2",
+    "-bios",
+    "/mnt/d/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd",
+    "-device",
+    "qemu-xhci",
+    "-drive",
+    "if=none,id=stick,format=raw,file=/home/builder/boot-failure-tests/qemu-v2-log5-shell.fat",
+    "-device",
+    "usb-storage,drive=stick",
+    "-nographic",
+    "-no-reboot",
+    "-monitor",
+    "none"
+  ],
+  "qemu_exit": 0,
+  "seconds": 80.03,
+  "stop_reason": "poweroff",
+  "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/qemu-v2-log5-shell.log",
+  "captured_files": {
+    "boot-00be303a-45f1-4d07-8e3f-68c4061898f8/00-status.txt": 580,
+    "boot-00be303a-45f1-4d07-8e3f-68c4061898f8/01-kernel-kmsg.log": 26274,
+    "boot-00be303a-45f1-4d07-8e3f-68c4061898f8/02-initramfs-console.log": 518
+  },
+  "boot_dirs": [
+    "boot-00be303a-45f1-4d07-8e3f-68c4061898f8"
+  ],
+  "markers": {
+    "grub_menu": true,
+    "log_uki_loaded": true,
+    "kernel_started": true,
+    "usb_log_active": true,
+    "usb_log_unavailable": false,
+    "status_file_captured": true,
+    "overlay_root_ready": false,
+    "kmsg_captured": true,
+    "kmsg_has_post_kernel_lines": true,
+    "dmesg_snapshots": false,
+    "userspace_journal": false,
+    "userspace_logger_started": false,
+    "panic": false,
+    "wsl_init": false,
+    "poweroff": true
+  },
+  "passed": false,
+  "hardware_validated": false,
+  "kmsg_tail": "torage\n6,353,47506677,-;usbcore: registered new interface driver uas\n5,354,48517403,-;scsi 0:0:0:0: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5\n SUBSYSTEM=scsi\n DEVICE=+scsi:0:0:0:0\n5,355,48542104,-;sd 0:0:0:0: Attached scsi generic sg0 type 0\n SUBSYSTEM=scsi\n DEVICE=+scsi:0:0:0:0\n5,356,48545519,-;sd 0:0:0:0: [sda] 5324800 512-byte logical blocks: (2.73 GB/2.54 GiB)\n SUBSYSTEM=scsi\n DEVICE=+scsi:0:0:0:0\n5,357,48547686,-;sd 0:0:0:0: [sda] Write Protect is off\n SUBSYSTEM=scsi\n DEVICE=+scsi:0:0:0:0\n7,358,48547785,-;sd 0:0:0:0: [sda] Mode Sense: 63 00 10 08\n SUBSYSTEM=scsi\n DEVICE=+scsi:0:0:0:0\n5,359,48551918,-;sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, supports DPO and FUA\n SUBSYSTEM=scsi\n DEVICE=+scsi:0:0:0:0\n6,360,48615165,-; sda: sda1\n5,361,48617496,-;sd 0:0:0:0: [sda] Attached SCSI disk\n SUBSYSTEM=scsi\n DEVICE=+scsi:0:0:0:0\n6,362,52091452,-;loop0: detected capacity change from 0 to 3415088\n4,363,52785247,-;overlayfs: null uuid in non-single lower fs '/', falling back to xino=off,index=off,nfs_export=off.\n6,364,53082810,-;evm: overlay not supported\n5,365,58011005,-;sd 0:0:0:0: [sda] Synchronizing SCSI cache\n SUBSYSTEM=scsi\n DEVICE=+scsi:0:0:0:0\n",
+  "status_text": "KESTREL_CAPTURE_STARTED latehook-via-bootmnt\nboot_id=00be303a-45f1-4d07-8e3f-68c4061898f8\ndevice=/dev/sda1\ncmdline:\nBOOT_IMAGE=/EFI/Linux/kestrel-live-log.efi kestrel_log=1 rd.log=file init=/usr/bin/bash debug archisobasedir=arch archisolabel=KESTREL_A64 copytoram=n cow_spacesize=512M clk_ignore_unused pd_ignore_unused console=ttyAMA0,115200 loglevel=7 ignore_loglevel panic=0\nkernel:\nLinux (none) 7.3.0-rc3 #1 SMP PREEMPT_DYNAMIC Thu Oct  8 11:37:49 EEST 2026 aarch64 GNU/Linux\nWrites limited to this USB Logs directory. No EFI/internal writes.\nINITRAMFS_SNAPSHOT_LOOP_STOPPED\n"
+}

@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "tests_run": 17,
+  "failures": 0,
+  "errors": 0,
+  "synthetic_policy_fixtures_only": true,
+  "native_hardware_validated": false
+}

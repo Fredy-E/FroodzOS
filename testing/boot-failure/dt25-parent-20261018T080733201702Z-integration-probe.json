@@ -1,0 +1,73 @@
+{
+  "native_hardware_validated": false,
+  "candidate_accepted": false,
+  "provenance_checks": {
+    "new_uki_hash": true,
+    "host_candidate_copy_hash": true,
+    "old_uki_unchanged": true,
+    "old_sfs_unchanged": true,
+    "source_hashes_match_audit": true,
+    "pe_dtb_matches_accepted_dt25": true,
+    "pe_initrd_matches_file": true,
+    "pe_kernel_expected": true,
+    "unchanged_.linux": true,
+    "unchanged_.text": true,
+    "unchanged_.hwids": true,
+    "unchanged_.cmdline": true,
+    "unchanged_.uname": true
+  },
+  "provenance_passed": true,
+  "new_uki_sha256": "9c1abc4fdb4bd0aaee5cd83b2427eb094a6d870f62d59aa56b36d2aa413499fb",
+  "pe_sections": {
+    ".text": {
+      "bytes": 32676,
+      "sha256": "1ccc4c4c2b3ec7a13f8af499ba616ea836595cb1aa086f0dd4f67b1cb8c6b78c"
+    },
+    ".cmdline": {
+      "bytes": 193,
+      "sha256": "752c7be795a48cd870026916caaf83cd9df43373cdda977aef52bae4045600d3"
+    },
+    ".dtbauto": {
+      "bytes": 207772,
+      "sha256": "f5f67c13bdfe975998b083ac06465c36231c0bae205e8e60fff99832264f5232"
+    },
+    ".hwids": {
+      "bytes": 18085,
+      "sha256": "e8d8fd0f4864b1a8928c882ec45958c642d8058777d7c98edcbc1c06ccf24ad3"
+    },
+    ".uname": {
+      "bytes": 9,
+      "sha256": "92e45141ffd696b50a3abc4ee5134f2db27b3c19b3996e36b8ca88b9f9a0f963"
+    },
+    ".linux": {
+      "bytes": 52492800,
+      "sha256": "682273a91f2016b9d5484857639bd043e021b961d7f4cfd385a09566b2df3abc"
+    },
+    ".initrd": {
+      "bytes": 191567020,
+      "sha256": "6c4a527f0c67e73cb679eeaf242b9c1fefab9898579ded5432e532bf94571fb5"
+    }
+  },
+  "fixture": "/home/builder/boot-failure-tests/dt25-parent-probe-0dc5txz1",
+  "chroot_binary_versions": {
+    "exit_code": 0,
+    "stdout": "findmnt from util-linux 2.42.4\nmountpoint from util-linux 2.42.4\n",
+    "stderr": ""
+  },
+  "bash_function_to_packed_ash": {
+    "exit_code": 23,
+    "stdout": "GETARG_NOT_INHERITED\n",
+    "stderr": ""
+  },
+  "full_target_graph": {
+    "exit_code": 1,
+    "stdout": "overlay\n",
+    "stderr": "'(man)' failed with exit status 1.\nmulti-user.target: Can't show systemd.special(7): Protocol error\n'(man)' failed with exit status 1.\ngraphical.target: Can't show systemd.special(7): Protocol error\n"
+  },
+  "new_harness_existing_output_unlink": {
+    "test-platform-graphics-gate.py": true,
+    "test-dt25-packed-graphics.py": true
+  },
+  "packed_harness_failed_case_preservation_stub": true,
+  "requires_changes": true
+}

@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "uki_sha256": "4fca331543a347da2d431631ae002f90046507e485765ef24f383257902edc02",
+  "files": [
+    {
+      "name": "06-text-startup.txt",
+      "sha256": "e509fd51d8b49b68129dd4aa9e0c48d7141a56573e2bda7fc42c80ce321ba4bf",
+      "bytes": 1959
+    },
+    {
+      "name": "07-typed-command.txt",
+      "sha256": "1d045100d1a5040396b572b853aec1884e00404df63850cf37564bc87b947325",
+      "bytes": 1961
+    },
+    {
+      "name": "00-status.txt",
+      "sha256": "d2591901805d2a945e229219f7e9c64dc21c10b600f76694826ae1f564e4e27a",
+      "bytes": 795
+    }
+  ],
+  "virtual_serial_input_only": true,
+  "physical_keyboard_input_validated": false
+}

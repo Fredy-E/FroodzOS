@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "kernel_unchanged": true,
+  "allowed_changed_properties": [
+    [
+      "/regulator-misc-3p3",
+      "status"
+    ],
+    [
+      "/soc@0/dma-controller@a00000",
+      "status"
+    ],
+    [
+      "/soc@0/geniqup@ac0000/i2c@a84000",
+      "interconnect-names"
+    ],
+    [
+      "/soc@0/geniqup@ac0000/i2c@a84000",
+      "interconnects"
+    ]
+  ],
+  "only_allowed_compiled_properties_changed": true,
+  "patch_forward_and_reverse_verified": true,
+  "dtb_sha256": "c65f5e2a325e32427ba8ca6b84ed6928598fc08efcfd1ed5d0c596dfd5f475a3",
+  "dtb_bytes": 207780,
+  "kernel_sha256": "682273a91f2016b9d5484857639bd043e021b961d7f4cfd385a09566b2df3abc",
+  "native_hardware_validated": false
+}

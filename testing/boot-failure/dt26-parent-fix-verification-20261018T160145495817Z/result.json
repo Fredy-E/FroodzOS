@@ -1,0 +1,124 @@
+{
+  "session_suites": [
+    {
+      "suite": "test-dt25-graphics-supervisor.py",
+      "discovered": 16,
+      "run": 16,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "passed": true
+    },
+    {
+      "suite": "test-dt26-session-supervisor.py",
+      "discovered": 19,
+      "run": 19,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "passed": true
+    },
+    {
+      "suite": "test-dt26-session-fix.py",
+      "discovered": 14,
+      "run": 14,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "passed": true
+    }
+  ],
+  "session_total_run": 49,
+  "session_all_pass_no_skips": true,
+  "detail_null_snapshot": {
+    "scope": "actual persist function isolated, not whole logger",
+    "process": {
+      "rc": 0,
+      "elapsed_s": 0.0368,
+      "stdout": "",
+      "stderr": "",
+      "outer_killed": false
+    },
+    "last_good_preserved": false,
+    "result": {
+      "passed": true,
+      "detail": null
+    }
+  },
+  "old_destination_read": {
+    "process": {
+      "rc": 0,
+      "elapsed_s": 0.0342,
+      "stdout": "",
+      "stderr": "",
+      "outer_killed": false
+    },
+    "observed_reads": [
+      {
+        "args": [],
+        "kwargs": {}
+      }
+    ]
+  },
+  "supervisor_fsync_eio": {
+    "scope": "actual atomic writer, injected EIO only in this process",
+    "returned_success": true,
+    "last_good_preserved": false,
+    "result": {
+      "detail": {
+        "new": true
+      },
+      "passed": true
+    }
+  },
+  "isolated_loop_cases": [
+    {
+      "rc": 0,
+      "elapsed_s": 4.1009,
+      "stdout": "",
+      "stderr": "",
+      "outer_killed": false,
+      "case": "stale_timeout",
+      "budget_s": 2,
+      "scope": "exact shipped post-validation logger loop, private command stubs, no /run fixture",
+      "finished_marker": "KESTREL_USERSPACE_CAPTURE_WINDOW_FINISHED (graphics_requested=1 budget_s=2 text_samples=120 iterations=1)\n"
+    },
+    {
+      "rc": 0,
+      "elapsed_s": 4.1049,
+      "stdout": "",
+      "stderr": "",
+      "outer_killed": false,
+      "case": "term_resistant",
+      "budget_s": 2,
+      "scope": "exact shipped post-validation logger loop, private command stubs, no /run fixture",
+      "finished_marker": "KESTREL_USERSPACE_CAPTURE_WINDOW_FINISHED (graphics_requested=1 budget_s=2 text_samples=120 iterations=1)\n"
+    },
+    {
+      "rc": 0,
+      "elapsed_s": 3.1119,
+      "stdout": "",
+      "stderr": "",
+      "outer_killed": false,
+      "case": "missing_timeout",
+      "budget_s": 2,
+      "scope": "exact shipped post-validation logger loop, private command stubs, no /run fixture",
+      "finished_marker": "KESTREL_LOGGER_NO_TIMEOUT_FAIL_OPEN\nKESTREL_USERSPACE_CAPTURE_WINDOW_FINISHED (graphics_requested=1 budget_s=2 text_samples=120 iterations=1)\n"
+    }
+  ],
+  "builder_bash_features_only": {
+    "rc": 0,
+    "elapsed_s": 0.0016,
+    "stdout": "declare -- BASH_VERSION=\"5.3.20(1)-release\"\ndeclare -- BASH_MONOSECONDS=\"312\"\ndeclare -i SECONDS=\"0\"\n",
+    "stderr": "",
+    "outer_killed": false
+  },
+  "source_sha256": {
+    "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-graphics-supervisor.py": "1bbd90cb74f8d31765e88e17c049afe193733e1902eb27d569d9370f955e2584",
+    "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-root-log.sh": "a9d303c1b8b014ae56f4da0be5ecad5e35860353518e7e9db7c601136301b114",
+    "/mnt/d/CachyOS-ARM64/builder/diagnostics/kestrel-text-proof.sh": "29fa79ad18352a549b8f5855b03e0484a7e717fd659368c671ac6239287faf01"
+  },
+  "sources_unchanged": true,
+  "no_vm_fat_usb_or_run_fixture": true,
+  "accepted_for_build": false
+}

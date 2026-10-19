@@ -1,0 +1,48 @@
+{
+  "revision": "v2-dt25",
+  "passed": true,
+  "build": {
+    "out": "/home/builder/uki-v2-dt25",
+    "log": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-integration-build-dt25-live.log",
+    "exit": 0
+  },
+  "gate": {
+    "tests_run": 12,
+    "passed": true
+  },
+  "packed": {
+    "tests_run": 6,
+    "passed": true
+  },
+  "board": {
+    "checks": 52,
+    "passed": true
+  },
+  "policy": {
+    "checks": 11,
+    "passed": true
+  },
+  "validation": {
+    "checks": 66,
+    "passed": true
+  },
+  "audit": {
+    "uki_sha256": "9c1abc4fdb4bd0aaee5cd83b2427eb094a6d870f62d59aa56b36d2aa413499fb",
+    "uki_bytes": 244421120,
+    "initramfs_sha256": "6c4a527f0c67e73cb679eeaf242b9c1fefab9898579ded5432e532bf94571fb5",
+    "uki_path": "/home/builder/uki-v2-dt25/vmlinuz-live.efi",
+    "passed": true
+  },
+  "candidate": "/mnt/d/CachyOS-ARM64/testing/boot-failure/dt25-candidate.efi",
+  "old_uki_preserved": true,
+  "sfs_preserved": true,
+  "native_hardware_validated": false,
+  "native_graphics_validated": false,
+  "remaining": [
+    "QEMU EFI regression (QEMU_EFI.fd exists, no install needed)",
+    "native CPU thermal readings + software-Plasma pixels/input",
+    "physical USB health + occupied slot prerequisites",
+    "isolated VM SIGKILL chaos gate (not normal stop)",
+    "media/file-only update decision (parent-owned)"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "native_hardware_validated": false,
+  "services_started": false,
+  "ordering": {
+    "checker_exit": 0,
+    "cycle_reported": false,
+    "output": ""
+  },
+  "rollback": {
+    "hook_exit": 0,
+    "lost_preexisting_helpers": [],
+    "lost_preexisting_masks": [],
+    "output": "/mnt/d/CachyOS-ARM64/builder/initcpio/hooks/kestrel_graphics: line 208: /dev/console: Permission denied\n/mnt/d/CachyOS-ARM64/builder/initcpio/hooks/kestrel_graphics: line 209: /dev/kmsg: Permission denied\n"
+  }
+}

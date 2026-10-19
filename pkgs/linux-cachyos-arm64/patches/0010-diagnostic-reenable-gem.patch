@@ -1,0 +1,23 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] re-enable gem_noc on Slim 3
+
+Rationale: dwc3's apps-usb icc path runs gem->config_noc, so the
+0007 disable stalls USB forever (no rootfs, black hang after mount
+timeout). Re-enable gem alone; if the 0.51s reset returns, gem was
+the crasher and USB needs another route. NOT for publication or
+general ARM64 support.
+
+---
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1746,3 +1746,10 @@
+ &scm {
+ 	/delete-property/ interconnects;
+ };
++
++/* DIAGNOSTIC 2026-10-16 (0010): re-enable gem_noc. dwc3's apps-usb
++ * icc path runs gem->config_noc, so the 0007 disable stalls USB
++ * forever (no rootfs). If the 0.51s reset returns, gem was the
++ * crasher and USB needs another route. Local-only, not for
++ * publication. */
++&gem_noc { status = "okay"; };

@@ -1,0 +1,29 @@
+From: Kestrel OS port <local>
+Subject: [PATCH, DIAGNOSTIC, LOCAL-ONLY] drop SCM interconnects on Slim 3
+
+Rationale: firmware:scm's icc path (aggre2 + mc_virt) never resolves,
+so SCM defers forever; the X1E PDC quirk hard-requires SCM
+(qcom-pdc.c: `if (!qcom_scm_is_available()) return -EPROBE_DEFER`),
+and TLMM (wakeup-parent = PDC), GPIO, USB PHYs and USB storage hang
+behind it to a black Hang at ~19s. devm_of_icc_get treats a missing
+property as no-vote, so SCM probes without bus voting. NOT for
+publication or general ARM64 support.
+
+---
+--- a/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
++++ b/arch/arm64/boot/dts/qcom/x126100-lenovo-ideapad-slim3.dts
+@@ -1720,3 +1720,14 @@
+ &mdss_dp2_phy { status = "disabled"; };
+ &mdss_dp3_phy { status = "disabled"; };
+ &ufs_mem_phy { status = "disabled"; };
++
++/* DIAGNOSTIC 2026-10-15 (0009): delete firmware:scm interconnects.
++ * SCM's icc path (aggre2 + mc_virt) never resolves on this machine,
++ * so SCM defers forever; the X1E PDC quirk hard-requires SCM, and
++ * TLMM (wakeup-parent PDC), GPIO, USB PHYs and USB storage hang
++ * behind it. devm_of_icc_get treats a missing property as no-vote
++ * (NULL path), so SCM probes without bus voting. Local-only, not
++ * for publication. */
++&scm {
++	/delete-property/ interconnects;
++};

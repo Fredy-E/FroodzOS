@@ -1,0 +1,25 @@
+{
+  "scope": "Corrections to read-only integration scout, based on parent tool output",
+  "parent_receipt": "dt25-parent-20261018T074415894485Z-receipt.json",
+  "efi_firmware": {
+    "scout_missing_claim_retracted": true,
+    "path": "D:/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd",
+    "linux_path": "/mnt/d/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd",
+    "exists": true,
+    "bytes": 3145728,
+    "sha256": "a996c72d5258dabf5fcb11a64bd22e0cc6673e3d193031feea02ac643f16dad5",
+    "action": "Use the existing project firmware after fresh hash check; no package install required"
+  },
+  "other_integration_rules": [
+    "Do not modify dt25-baseline.json or frozen sources to extend them: create a separate candidate audit/manifest.",
+    "Canonical new output is /home/builder/uki-v2-dt25, consistent with existing revision-aware harnesses; dt24 fallback remains untouched.",
+    "No new squashfs is needed if actual existing squashfs provides required runtime dependencies and remains byte-exact. RAM-overlay staging is the design; audit SFS contents, not only mutable imgroot.",
+    "Verify systemd graph on the real staged overlay fixture; bare imgroot lacks new overlay units and cannot prove their graph.",
+    "Packed ash validation must exercise real mountpoint/findmnt and a fixture-only actual overlay in a private mount namespace. Cowspace existence/stat device ID is not an FSTYPE substitute.",
+    "QEMU ramfb device availability is only feasibility. Actual simpledrm registration must be measured. VM lacks target TSENS: correct graph flag behavior is safe refusal, never fake native temperatures.",
+    "A supervisor SIGKILL chaos gate cannot be replaced by a normal systemctl stop: those are different behaviors. Use an isolated VM with clearly labeled fake private payload if needed; never kill host/native services.",
+    "Serialize build/validation/QEMU via a held flock, preserve fresh tags and real exit codes, and independently verify all artifact provenance before media discussion.",
+    "No physical USB filesystem repair/write or firmware clear/rearm is authorized in local candidate integration."
+  ],
+  "native_graphics_or_tsens_validated": false
+}

@@ -1,0 +1,42 @@
+{
+  "revision": "v2-dt21",
+  "uki_sha256": "a1ced156e198be71a586aa6283a86edc251ddb147a3564c28ed2b5ddcd92a75c",
+  "gates": [
+    "dt21-artifact-audit.json",
+    "dt21-logger-v2-v1-result.json",
+    "qemu-dt21-menu8-shell-fw-off-v1-result.json",
+    "qemu-dt21-menu8-systemd-fw-off-v1-result.json"
+  ],
+  "files": [
+    {
+      "path": "EFI/Linux/kestrel-live.efi",
+      "source": "testing/boot-failure/dt21-candidate.efi",
+      "bytes": 244480512,
+      "sha256": "a1ced156e198be71a586aa6283a86edc251ddb147a3564c28ed2b5ddcd92a75c",
+      "old_sha256": "081b399d298addcf8665f4fbe350b7802b816e04957b78b1166d35eeebe7e09d"
+    },
+    {
+      "path": "boot/grub/grub.cfg",
+      "source": "testing/boot-failure/dt21-grub.cfg",
+      "bytes": 6195,
+      "sha256": "2dd7a70d6853664c628cab5d00c2444a321cd54254b2b0f8f2fb07e1fc5b7cfb",
+      "old_sha256": "98f701d7345e2b59042a9b8c8ce2e0a5678fab498cd2977efe6e23ed663d2278"
+    }
+  ],
+  "unchanged_files": [
+    {
+      "path": "EFI/BOOT/BOOTAA64.EFI",
+      "bytes": 2533256,
+      "sha256": "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab"
+    },
+    {
+      "path": "arch/aarch64/airootfs.sfs",
+      "bytes": 1748525056,
+      "sha256": "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+    }
+  ],
+  "menu_entries": 11,
+  "default_entry": 8,
+  "default_init": "/usr/bin/bash",
+  "firmware_clear_included": false
+}

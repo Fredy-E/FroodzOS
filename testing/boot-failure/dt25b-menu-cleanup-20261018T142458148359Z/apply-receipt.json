@@ -1,0 +1,117 @@
+{
+  "mode": "apply",
+  "started_utc": "2026-10-18T14:28:51.500561+00:00",
+  "source": "D:\\CachyOS-ARM64\\builder\\live-grub.cfg",
+  "run_dir": "D:\\CachyOS-ARM64\\testing\\boot-failure\\dt25b-menu-cleanup-20261018T142458148359Z",
+  "success": true,
+  "usb_write_scope": [
+    "EFI/Linux/kestrel-live-dt24.efi",
+    "boot/grub/grub.cfg"
+  ],
+  "firmware_writes": 0,
+  "filesystem_repair": false,
+  "entries": [
+    {
+      "number": 1,
+      "title": "FroodzOS dt25b - Text + CPU temperature logging (default)",
+      "linux": [
+        "/EFI/Linux/kestrel-live.efi kestrel_log=1 rd.log=console rd.log=file archisobasedir=arch archisolabel=KESTREL_A64 copytoram=n cow_spacesize=512M $platform_cmdline console=tty1 loglevel=4 panic=0 module_blacklist=dispcc_x1e80100 kestrel_textboot=1 kestrel_console=tty1 kestrel_graphics=0 systemd.unit=multi-user.target systemd.show_status=1"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "FroodzOS dt24 - Text recovery (previous image)",
+      "linux": [
+        "/EFI/Linux/kestrel-live-dt24.efi kestrel_log=1 rd.log=console rd.log=file archisobasedir=arch archisolabel=KESTREL_A64 copytoram=n cow_spacesize=512M $platform_cmdline console=tty1 loglevel=4 panic=0 module_blacklist=dispcc_x1e80100 kestrel_textboot=1 kestrel_console=tty1 kestrel_graphics=0 systemd.unit=multi-user.target systemd.show_status=1"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Ubuntu Concept - control boot (Try Ubuntu only)",
+      "linux": [
+        "/casper/vmlinuz $platform_cmdline --- console=tty0 loglevel=7 panic=0"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Return to firmware boot menu",
+      "linux": []
+    }
+  ],
+  "menu_sha256": "9c99836e41896defc99b3104eb3a65bf9c9d5d886c73a84cb7d58615078b4406",
+  "menu_bytes": 2682,
+  "contract_tests": {
+    "valid_candidate": true,
+    "negative_rejections": [
+      "crlf",
+      "extra_entry",
+      "firmware_optin",
+      "graphics_optin",
+      "missing_control_dtb",
+      "missing_memory_workaround",
+      "missing_pstore_disable",
+      "shared_recovery_image",
+      "wrong_default",
+      "wrong_native_console"
+    ],
+    "tests_passed": 11
+  },
+  "grub_script_check": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "identity_before": {
+    "Disk": "\\\\.\\PHYSICALDRIVE2",
+    "Model": "Kingston DataTraveler 3.0 USB Device",
+    "DiskSize": 61985710080,
+    "Interface": "USB",
+    "Partition": "Disk #2, Partition #0",
+    "PartitionSize": 17179869184,
+    "Offset": 1048576,
+    "Drive": "E:",
+    "Label": "KESTREL_A64",
+    "Filesystem": "FAT32",
+    "VolumeSerial": "USB_VOLUME_SERIAL"
+  },
+  "protected_before": {
+    "EFI/Linux/kestrel-live.efi": {
+      "bytes": 244424704,
+      "sha256": "b535444f8a3560b602d2a8549a35389d3914a8b8b4294c7408ca8e1840a11753"
+    },
+    "arch/aarch64/airootfs.sfs": {
+      "bytes": 1748525056,
+      "sha256": "5041e7d0e9c6af0a5c754f083ca9d77197bf226854f4db3a781b544725d94d4c"
+    },
+    "EFI/BOOT/BOOTAA64.EFI": {
+      "bytes": 2533256,
+      "sha256": "cfc15dd8e3794369215790c3e8438a0a5fc16d9aa7c7dcba8cccafd6dac054ab"
+    },
+    "boot/slim3-x126100.dtb": {
+      "bytes": 207656,
+      "sha256": "986d7d837a5c4f00c220b02b9ba294b705887b74aa39a72331357e0da0aea111"
+    },
+    "casper/vmlinuz": {
+      "bytes": 26390528,
+      "sha256": "bcf38459ec2cb034b273f1540dffe88b93c04bb2ff7d8e2ea07c7b8f676905b3"
+    },
+    "casper/initrd": {
+      "bytes": 146877583,
+      "sha256": "3c32bdff32f854b4078b5acd4b02781191c647bde7334c8ad76e0dcae94d92ff"
+    }
+  },
+  "logs_preserved_count": 48,
+  "dt24_source_sha256": "4fca331543a347da2d431631ae002f90046507e485765ef24f383257902edc02",
+  "volume_cache_flush": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "usb_files_written": [
+    "EFI/Linux/kestrel-live-dt24.efi",
+    "boot/grub/grub.cfg"
+  ],
+  "protected_after_equal": true,
+  "prior_logs_unchanged": true,
+  "finished_utc": "2026-10-18T14:29:38.157263+00:00"
+}

@@ -1,0 +1,410 @@
+{
+  "scope": "source/history publication; no OS rebuild, hardware boot or binary release",
+  "linux_fixture_rerun": {
+    "scope": "publication-copy fixture suites; no native hardware, VM or supervisor main",
+    "source_before": {
+      "builder/diagnostics/kestrel-graphics-supervisor.py": "2ea4ae312dde6ee316a526fc7e6c08f276f0aa70884f056966cc20209a9ebf05",
+      "builder/diagnostics/kestrel-graphics-policy.json": "b84bf2daa71899670ee8b57a578081db473525af4e857d8ef74b8a5d5c6c5625",
+      "builder/diagnostics/kestrel-root-log.sh": "9ebf99222ffe7e6b641e8db8c702bdb99c459d4855c61c33f5d2568a64155027",
+      "builder/diagnostics/kestrel-text-proof.sh": "29fa79ad18352a549b8f5855b03e0484a7e717fd659368c671ac6239287faf01",
+      "builder/diagnostics/kestrel-text-bashrc": "b69ef9cc3dd6540ddb16fac64d3757a3185a70606f98fec34f9220c3c9c1a107",
+      "builder/diagnostics/kestrel-graphics.service": "348f3c7b96f917893ce85b796884635eabb3684beb4255e4fcd22fc312699c45"
+    },
+    "source_after": {
+      "builder/diagnostics/kestrel-graphics-supervisor.py": "2ea4ae312dde6ee316a526fc7e6c08f276f0aa70884f056966cc20209a9ebf05",
+      "builder/diagnostics/kestrel-graphics-policy.json": "b84bf2daa71899670ee8b57a578081db473525af4e857d8ef74b8a5d5c6c5625",
+      "builder/diagnostics/kestrel-root-log.sh": "9ebf99222ffe7e6b641e8db8c702bdb99c459d4855c61c33f5d2568a64155027",
+      "builder/diagnostics/kestrel-text-proof.sh": "29fa79ad18352a549b8f5855b03e0484a7e717fd659368c671ac6239287faf01",
+      "builder/diagnostics/kestrel-text-bashrc": "b69ef9cc3dd6540ddb16fac64d3757a3185a70606f98fec34f9220c3c9c1a107",
+      "builder/diagnostics/kestrel-graphics.service": "348f3c7b96f917893ce85b796884635eabb3684beb4255e4fcd22fc312699c45"
+    },
+    "source_unchanged": true,
+    "suites": [
+      {
+        "suite": "test-dt25-graphics-supervisor.py",
+        "run": 16,
+        "expected": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "suite": "test-dt26-session-supervisor.py",
+        "run": 19,
+        "expected": 19,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "suite": "test-dt26-session-fix.py",
+        "run": 14,
+        "expected": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "suite": "test-dt26-preflight-io.py",
+        "run": 6,
+        "expected": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "suite": "test-dt26-observability.py",
+        "returncode": 0,
+        "run": 9,
+        "passed_count": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "suite": "test-dt26-observability-fix.py",
+        "returncode": 0,
+        "run": 9,
+        "passed_count": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "suite": "test-dt26-observability-bounds.py",
+        "returncode": 0,
+        "run": 9,
+        "passed_count": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      {
+        "suite": "test-dt26-logger-watchdog.py",
+        "returncode": 0,
+        "run": 6,
+        "passed_count": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      }
+    ],
+    "total_run": 88,
+    "total_failures": 0,
+    "total_skipped": 0,
+    "passed": true,
+    "result_directory": "retained locally; publication-copy fixture rerun 20261019T062529904565Z"
+  },
+  "portable_publication_tests": {
+    "run": 12,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true
+  },
+  "public_recipe_guard_checks": {
+    "scope": "syntax and isolated guard preludes only; no build, network, account or media effects",
+    "checks": [
+      {
+        "check": "bash syntax: builder/build-live-rootfs.sh",
+        "passed": true
+      },
+      {
+        "check": "bash syntax: builder/net-diag.sh",
+        "passed": true
+      },
+      {
+        "check": "bash syntax: builder/net-diag2.sh",
+        "passed": true
+      },
+      {
+        "check": "bash syntax: builder/net-fix.sh",
+        "passed": true
+      },
+      {
+        "check": "bash syntax: builder/net-static.sh",
+        "passed": true
+      },
+      {
+        "check": "bash syntax: builder/setup-1.3b.sh",
+        "passed": true
+      },
+      {
+        "check": "live-password prelude: missing",
+        "passed": true,
+        "returncode": 1,
+        "only_prelude_executed": true
+      },
+      {
+        "check": "live-password prelude: old-default",
+        "passed": true,
+        "returncode": 2,
+        "only_prelude_executed": true
+      },
+      {
+        "check": "live-password prelude: multiline",
+        "passed": true,
+        "returncode": 2,
+        "only_prelude_executed": true
+      },
+      {
+        "check": "live-password prelude: nondefault-synthetic",
+        "passed": true,
+        "returncode": 0,
+        "only_prelude_executed": true
+      },
+      {
+        "check": "retired-network default refusal: builder/net-diag.sh",
+        "passed": true,
+        "returncode": 2,
+        "only_prelude_executed": true
+      },
+      {
+        "check": "retired-network default refusal: builder/net-diag2.sh",
+        "passed": true,
+        "returncode": 2,
+        "only_prelude_executed": true
+      },
+      {
+        "check": "retired-network default refusal: builder/net-fix.sh",
+        "passed": true,
+        "returncode": 2,
+        "only_prelude_executed": true
+      },
+      {
+        "check": "retired-network default refusal: builder/net-static.sh",
+        "passed": true,
+        "returncode": 2,
+        "only_prelude_executed": true
+      },
+      {
+        "check": "retired-network default refusal: builder/setup-1.3b.sh",
+        "passed": true,
+        "returncode": 2,
+        "only_prelude_executed": true
+      }
+    ],
+    "total_checks": 15,
+    "passed": true
+  },
+  "accepted_build_source_closure": {
+    "passed": true,
+    "checked": 31,
+    "all_accepted_source_hashes_match": true,
+    "files": [
+      {
+        "path": "builder/build-live-uki.sh",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-checkpoint.c",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-graphics-env.conf",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-graphics-policy.json",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-graphics-sddm.service",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-graphics-supervisor.py",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-graphics-tty2.conf",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-graphics.service",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-init-log.sh",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-pid1.sh",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-root-log.sh",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-text-bashrc",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-text-getty.conf",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-text-login.sh",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-text-proof.sh",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel-usb-log.service",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/diagnostics/kestrel_graphics_guard.py",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/hooks/kestrel_efilog",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/hooks/kestrel_graphics",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/hooks/kestrel_log",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/hooks/kestrel_text",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/install/filesystems",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/install/kestrel_efilog",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/install/kestrel_firmware",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/install/kestrel_graphics",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/install/kestrel_log",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/initcpio/install/kestrel_text",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/platform_graphics_gate.py",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/platform_input_gate.py",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/platform_usb_gate.py",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      },
+      {
+        "path": "builder/validate-live-initramfs.py",
+        "present": true,
+        "bytes_match": true,
+        "sha256_matches_accepted": true
+      }
+    ]
+  },
+  "secret_scan": {
+    "tool": "gitleaks",
+    "version": "8.30.1",
+    "findings": 0,
+    "official_scanner_archive_sha256": "b95f5e4f5c425cedca7ee203d9afd29597e692c4924a12ed42f970537c72cc0f",
+    "scope": "pre-freeze source tree; scanner log and full report retained locally"
+  },
+  "preserved_failed_publication_attempts": [
+    {
+      "run": "20261019T060246541350Z",
+      "reason": "graphics policy JSON excluded by overly narrow builder extension allowlist; preservation test also lacked excluded golden unit logs"
+    },
+    {
+      "run": "20261019T062306774814Z",
+      "reason": "all 55 session/IO tests passed after policy restore, but logger preservation test required real synthetic golden logs; run preserved, not called a complete pass"
+    }
+  ],
+  "original_project_source_or_media_modified": false,
+  "native_hardware_validated_by_this_rerun": false
+}
