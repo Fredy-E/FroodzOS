@@ -8,6 +8,8 @@ backdating commits or inventing successes.
 
 ## Read in order
 
+0. [Project timeline, 7–25 October 2026](../TIMELINE.md) — one dated view from
+   first research to the current state.
 1. [Bootstrap, image defects and dt1–dt20](bootstrap-through-dt20.md)
 2. [dt21 USB breakthrough through dt26 desktop](dt21-through-dt26.md)
 3. [Current accepted state and remaining limits](../STATUS.md)

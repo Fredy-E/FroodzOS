@@ -4,7 +4,7 @@
 
 This repository preserves the source, development history, diagnostic revisions,
 failed experiments, tests and evidence from the first research on **7 October
-2026** through the **native Plasma desktop milestone on 19 October 2026**.
+2026** through the **current 25 October 2026 state**: native desktop, owner-confirmed built-in Wi-Fi, and a fully written and read-back 32 GiB USB persistence partition.
 
 > **Source and engineering archive, not an installable OS release.** No ISO,
 > firmware-bearing image, package repository, private signing key or installer is
@@ -20,7 +20,8 @@ failed experiments, tests and evidence from the first research on **7 October
 | Display | Firmware framebuffer / simpledrm, connected 1920 × 1200 output; software rendering. **No accelerated GPU claim.** |
 | Input | Keyboard and external mouse work per owner; **built-in touchpad does not**. |
 | Thermal observation | All 20 required CPU/cpuss types recorded. Readout and bounded monitoring are not cooling/fan-control validation. |
-| Networking | Wi-Fi not working. USB Ethernet / Android tethering drivers are present, but native connectivity is **not yet tested**. |
+| Networking | **Built-in Wi-Fi works** (owner-confirmed; WCN7850/ath12k activation and DHCP on `wlP4p1s0`). USB Ethernet drivers are present but unexercised. |
+| Persistence | 32 GiB ext4 USB partition written in full and independently read back; native reboot persistence is **not yet proved**. |
 | Cleanup / power | One native run captured owned graphical-session cleanup; final physical poweroff remains unproven. |
 | Hermes Agent | Not installed natively. Internet, persistent workspace and a suitable safe work session are prerequisites. |
 | Other boards / general ARM64 | Project goal, not established support. |
@@ -31,6 +32,7 @@ persistent workstation or a daily-driver recommendation.
 
 ## Start here
 
+- [Project timeline, 7–25 October 2026](docs/TIMELINE.md)
 - [Current status and safety boundaries](docs/STATUS.md)
 - [Complete development-history index](docs/history/README.md)
 - [Current task list](docs/TASKS.md)
