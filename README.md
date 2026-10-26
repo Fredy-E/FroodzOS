@@ -4,11 +4,20 @@
 
 This repository preserves the source, development history, diagnostic revisions,
 failed experiments, tests and evidence from the first research on **7 October
-2026** through the **current 25 October 2026 state**: native desktop, owner-confirmed built-in Wi-Fi, and a fully written and read-back 32 GiB USB persistence partition.
+2026** through the **current 26 October 2026 state**: native desktop,
+owner-confirmed built-in Wi-Fi, a fully written and read-back 32 GiB USB
+persistence partition, and a separate guarded CLI image validated through EFI
+in QEMU and applied to the USB. Its first native boot and reboot persistence
+remain open.
 
 > **Source and engineering archive, not an installable OS release.** No ISO,
 > firmware-bearing image, package repository, private signing key or installer is
 > distributed here. A desktop on one laptop is not general ARM64 compatibility.
+
+The implementation snapshot in this archive remains the 19 October source
+publication. Later timeline/status entries describe newer local engineering
+work; this documentation update does not publish the workstation or native
+validator implementation, its private logs or boot images.
 
 ## What works, and what does not
 
@@ -22,17 +31,20 @@ failed experiments, tests and evidence from the first research on **7 October
 | Thermal observation | All 20 required CPU/cpuss types recorded. Readout and bounded monitoring are not cooling/fan-control validation. |
 | Networking | **Built-in Wi-Fi works** (owner-confirmed; WCN7850/ath12k activation and DHCP on `wlP4p1s0`). USB Ethernet drivers are present but unexercised. |
 | Persistence | 32 GiB ext4 USB partition written in full and independently read back; native reboot persistence is **not yet proved**. |
+| Guarded CLI workstation | Separate image reviewed and applied; one uninterrupted real EFI/QEMU A/B/C run passes all 50 checks. **Native boot/login still open.** |
 | Cleanup / power | One native run captured owned graphical-session cleanup; final physical poweroff remains unproven. |
 | Hermes Agent | Not installed natively. Internet, persistent workspace and a suitable safe work session are prerequisites. |
 | Other boards / general ARM64 | Project goal, not established support. |
 
-**Current diagnostic limits:** 180-second graphical session, guarded CPU readings,
-owned-only GUI cleanup, and a volatile 512 MiB live overlay. This is not a
-persistent workstation or a daily-driver recommendation.
+**Existing graphical diagnostic limits remain:** 180-second graphical session,
+guarded CPU readings, owned-only GUI cleanup and a volatile 512 MiB overlay.
+The separate opt-in text workstation uses the USB ext4 overlay and a continuous
+thermal/space guard; its native acceptance is not established. Neither mode is
+a daily-driver recommendation.
 
 ## Start here
 
-- [Project timeline, 7–25 October 2026](docs/TIMELINE.md)
+- [Project timeline, 7–26 October 2026](docs/TIMELINE.md)
 - [Current status and safety boundaries](docs/STATUS.md)
 - [Complete development-history index](docs/history/README.md)
 - [Current task list](docs/TASKS.md)

@@ -5,6 +5,10 @@ current state. Dates come from the archived conversations and the dated reports
 in `docs/`; where a later finding corrected an earlier claim, the later record
 wins. This page summarizes and links; the linked documents carry the evidence.
 
+The source snapshot here dates to 19 October; later entries document local
+work beyond that snapshot. The current update publishes documentation only,
+not newer workstation/validator code, private raw logs or boot images.
+
 Status labels used below: **verified** (observed on the real machine or by a
 real readback), **component** (tested in isolation), **open** (not yet proved).
 
@@ -77,22 +81,59 @@ desktop yet.
   only the `.initrd` section differs, the DTB/kernel/stub are byte-identical,
   and the packed payload carries the 10 seed files, 2 hooks and the 78-member
   Hermes bundle with exact hashes, modes and root ownership.
-- **EFI/QEMU validation** of that image: case A (opt-out text boot) passes
-  repeatedly on real firmware emulation; case B (bad persistence) fails closed
-  into the archiso emergency shell, collects its evidence and powers off, and
-  its remaining oracle checks are being aligned with measured reality; case C
-  (sensor refusal) has not run yet.
+- **EFI/QEMU validation completed.** The exact workstation candidate passed
+  one uninterrupted `--case all` invocation (`dt27ws-ws1-a12`, exit 0):
+
+  | Case | Measured outcome | Seconds | Checks |
+  |---|---|---:|---:|
+  | A | Opt-out text boot, saved proof, poweroff | 244.89 | 17/17 |
+  | B | Bad persistence UUID, initramfs refusal, forced poweroff | 116.71 | 18/18 |
+  | C | Missing CPU sensors, guard refusal in journal, poweroff | 212.42 | 15/15 |
+
+  All 50 checks pass with distinct boot IDs. Earlier failures were harness
+  defects, not retroactively declared successes: echo could forge literal
+  acknowledgments, long serial sends were unreliable, chunks lost shell
+  state, and C had no interactive shell because the guard powers off.
+  C now sends nothing, attributes its fresh log directory using a pre/post
+  snapshot, and verifies the measured refusal chain in the extracted journal.
+  Original failures remain retained locally. The final harness has 196 tests
+  and independent spec/quality approval; virtual proof is not hardware proof.
 - **GRUB menu v2** written to the USB: `gfxterm` at 1024×768 with a console
-  fallback, six entries, 10 s timeout — aimed at the reported slowdown after
-  the first keypress, which matches the firmware text console repainting a
-  ~240-column menu on every key. The v1 menu is backed up byte-for-byte and the
-  device readback passes a real `grub-script-check`.
+  fallback, initially six entries and a 10 s timeout — aimed at the reported
+  slowdown after the first keypress. Firmware text-console repaint cost is
+  the suspected cause, not a confirmed diagnosis. The v1 menu is backed up
+  byte-for-byte and the readback passes a real `grub-script-check`; owner
+  feedback on responsiveness remains open.
+- **Reviewed workstation handoff applied.** The separate UKI
+  (244,478,976 bytes, `4cbe283e…`) and a seven-entry menu were read back from
+  the USB. The new workstation is the sixth displayed entry; the first
+  remains the default and independent dt24 recovery remains available.
+  Nine other protected files and all 108 prior logs stayed unchanged.
+  This file-only update made no firmware writes or filesystem repair.
 - **Touchpad IRQ investigation.** The live DSDT places the FTCS touchpad at
   I²C address `0x38` on the controller that maps to Linux `i2c19`
   (`0x88c000`), and an independent byte-level decode of the `GpioInt`
   descriptors retracted an earlier “unmappable” inference: ACPI pin numbers
   are not Linux TLMM numbers. The actual TLMM line for pin 960 is still
   unknown, so no touchpad IRQ is wired and no function is claimed.
+
+## 26 October — continuation checks and native-validation handoff
+
+- Fresh read-only verification matched the exact USB identity, all 11 current
+  protected files and all 108 pinned log files. The seven-entry menu is
+  4,285 bytes, SHA-256
+  `74dc6cbf25727aec42f21fdd40e808f1eded3019fc85e9d3cd53f56b9f726bee`.
+- Parent-run suites: native validator 52 tests on Windows (one POSIX-only
+  skip) and Linux (zero skips); EFI harness 196 tests on each platform (one
+  platform-specific lock skip each). Guest suites use a clean PATH rather
+  than altering WSL or accepting a broken Windows-side shell as a Linux tool.
+- Twenty historical worker transcripts were reconciled: 19 completed and one
+  interrupted B-oracle task, superseded by the reviewed, passing harness.
+  Its failure was retained; it was not blindly restarted.
+- The small offline native-readiness/persistence-challenge handoff is being
+  packaged. The owner still has to boot the workstation, set the password
+  locally, create the canary and verify it on another boot. No native
+  persistence or new hardware acceptance is claimed.
 
 ## Current state
 
@@ -102,7 +143,8 @@ desktop yet.
 | Built-in Wi-Fi | verified |
 | Desktop (Plasma) | observed by the owner (dt26); full input/session acceptance open |
 | 32 GiB persistence | media written and fully read back; native reboot persistence **open** |
-| Workstation image | built and structurally verified; EFI cases A/B in progress, C open |
+| Workstation image | reviewed, uninterrupted EFI A/B/C pass, applied to USB; native boot **open** |
+| GRUB responsiveness | gfxterm mitigation applied; owner confirmation **open** |
 | Touchpad | I²C address known; IRQ line unknown |
 | Audio, camera, USB-C, power management | open |
 | Signed packages, updates, installer, extra boards | open |
