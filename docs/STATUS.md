@@ -1,4 +1,4 @@
-# Current status — 26 October 2026
+# Current status — 28 October 2026
 
 This page, the [timeline](TIMELINE.md) and [current task list](TASKS.md)
 supersede older top-level status descriptions. Historical reports and failed
@@ -17,13 +17,24 @@ experiments remain history, not retroactively successful runs.
   fan-control, thermal-throttling or sustained-load validation.
 - One native graphical diagnostic captured owned-session cleanup. The other
   lacks the final cleanup snapshot; final physical poweroff remains open.
+- **HOME file canary accepted across two different native boots** (creation
+  `c62c897a...`, verification
+  `f30b3a73...`): challenge checksum valid with
+  private permissions, owner UID 1000, the same USB ext4 filesystem and the
+  same versioned overlay generation. This accepts the canary file only, not
+  installed settings, tools, peripherals or full workstation readiness.
+- Ordinary native CLI/login observed as normal user UID 1000 in the 28 October
+  canary captures (create `c62c897a...`, verify `f30b3a73...`); hardened
+  account policy/password security, installed settings/tools and full
+  readiness remain open. Sourced from accepted private receipts and owner
+  transcript reflected in native-home-persistence-accepted.json and workspace
+  parent assessment; no private metadata reproduced.
 
 ## USB persistence and guarded workstation
 
-The approved 32 GiB ext4 USB tail was written in full and independently
+The approved 32 GiB USB tail was written in full and independently
 read back (34,359,738,368 bytes), with identity, partition boundaries,
-superblock and neighboring-data preservation checked. It is not proof that
-HOME data survives a native reboot.
+superblock and neighboring-data preservation checked.
 
 A separate opt-in persistent text workstation image has been built, reviewed
 and applied as the sixth displayed menu item. It retains password-based local
@@ -40,10 +51,30 @@ path. Parent-run harness suites contain 196 tests per platform with one
 platform-specific lock skip each. The native validator passes 52 tests on
 Windows (one POSIX-permission skip) and Linux (zero skips).
 
-Fresh read-only USB verification on 26 October matches all 11 current
+Fresh read-only USB verification on 26 October matched all 11 current
 protected files and all 108 pinned log files. The handoff changed only the new
 EFI and menu; it did not change firmware, format/repair filesystems or alter
 other images.
+
+On 27 October a small one-command readiness exporter (launcher, exporter and
+start note) was deployed with a cache flush and independently read back: all
+destinations verified and all previously protected files, the original
+validation kit, prior logs and the menu unchanged. The owner later ran it
+natively from the workstation entry: non-root capture and privileged USB
+export succeeded, and recovery confirmed the protected files, kit, exporter
+and prior logs unchanged with new logs archived and zero recovery writes.
+Native export is proven; it did not by itself close battery, touchpad or
+reboot acceptance. The same 27 October capture showed the battery collector
+TypeError without a safe location; the safe location at `_safe_read_text:696`
+was identified only by the later 28 October v2 readiness diagnostic (cause
+and fix open). The same capture also showed no touchpad, audio/camera
+presence-only, and all 20 sensor types as an instantaneous sample only.
+
+On 28 October a versioned workspace validator/proof package (four files) was
+reviewed, applied with a cache flush, and independently read back: all
+destinations verified and all previously protected files, the kit, the
+exporter and all prior logs unchanged. No boot, menu, partition, firmware or
+settings change was made by the deployment itself.
 
 ## Local-only artifacts, not release downloads
 
@@ -65,16 +96,27 @@ reported post-keypress lag is still awaiting owner confirmation.
 
 ## Not accepted / remaining
 
-- First native workstation boot, firstboot account hardening and real login.
-- Native readiness capture and canary create → reboot → verify with another
-  boot ID but the same ext4-backed HOME generation; independent recovery and
-  observed final physical poweroff.
-- Native Hermes installation/configuration after persistence proof. A small
-  curated skills/bootstrap bundle is prepared; no runtime/profile/secret clone.
+- Hardened firstboot account policy, password security and password-required
+  sudo remain open. Ordinary native CLI/login observed as UID 1000 in the 28
+  October canary captures; the HOME canary does not prove installed settings,
+  tools, peripherals or full workstation readiness.
+- Independent text recovery and observed final physical poweroff.
+- GRUB responsiveness. gfxterm, short titles, 10-second timeout and
+  console fallback are applied. Firmware text-repaint cost remains a
+  hypothesis; owner feedback must confirm whether keypress lag is fixed.
+- Native Hermes installation/configuration. The HOME-canary prerequisite is
+  now passed; lean bootstrap preparation and separately reviewed
+  handoff/install/configuration remain owner-executed next steps. Actual
+  application settings and tool persistence still need their own evidence.
+  No local model weights, Windows profile/runtime or secret transfer; no WSL
+  installation as a substitute.
 - Touchpad function: I2C address is grounded, physical Linux interrupt line is
   unknown. ACPI pin 960 is not a Linux TLMM GPIO number; no guessed IRQ change.
-- Audio, camera, wired connectivity, full USB/Type-C coverage, battery,
-  suspend/resume, cooling/throttling, exhaustive wireless and accelerated GPU.
+- Battery behavior: the 27 October TypeError had no safe location; the 28
+  October v2 diagnostic safely reported the location at `_safe_read_text:696`;
+  cause and fix remain open.
+- Audio, camera, wired connectivity, full USB/Type-C coverage, cooling/throttling,
+  suspend/resume, exhaustive wireless and accelerated GPU.
 - General ARM64/multi-board compatibility, final reproducibility, maintained
   signing/update/recovery infrastructure and binary redistribution rights.
 - Separate ARM64 VM distribution target, deferred until native stability.

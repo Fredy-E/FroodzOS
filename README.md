@@ -4,11 +4,14 @@
 
 This repository preserves the source, development history, diagnostic revisions,
 failed experiments, tests and evidence from the first research on **7 October
-2026** through the **current 26 October 2026 state**: native desktop,
+2026** through the **current 28 October 2026 state**: native desktop,
 owner-confirmed built-in Wi-Fi, a fully written and read-back 32 GiB USB
-persistence partition, and a separate guarded CLI image validated through EFI
-in QEMU and applied to the USB. Its first native boot and reboot persistence
-remain open.
+persistence partition, a separate guarded CLI image validated through EFI
+in QEMU and applied to the USB, a natively proven readiness export, and a
+HOME file canary accepted across two different native boots. Ordinary native
+CLI/login observed as UID 1000; hardened account policy/password security,
+settings/tools persistence, native Hermes, touchpad, battery cause/fix and
+final poweroff remain open.
 
 > **Source and engineering archive, not an installable OS release.** No ISO,
 > firmware-bearing image, package repository, private signing key or installer is
@@ -30,27 +33,27 @@ validator implementation, its private logs or boot images.
 | Input | Keyboard and external mouse work per owner; **built-in touchpad does not**. |
 | Thermal observation | All 20 required CPU/cpuss types recorded. Readout and bounded monitoring are not cooling/fan-control validation. |
 | Networking | **Built-in Wi-Fi works** (owner-confirmed; WCN7850/ath12k activation and DHCP on `wlP4p1s0`). USB Ethernet drivers are present but unexercised. |
-| Persistence | 32 GiB ext4 USB partition written in full and independently read back; native reboot persistence is **not yet proved**. |
-| Guarded CLI workstation | Separate image reviewed and applied; one uninterrupted real EFI/QEMU A/B/C run passes all 50 checks. **Native boot/login still open.** |
+| Persistence | 32 GiB ext4 USB partition written in full and independently read back; **HOME file canary accepted across two different native boots** (checksum, private permissions, owner UID, same USB filesystem and overlay generation). Full settings/tools persistence is **not proved**. |
+| Guarded CLI workstation | Separate image reviewed and applied; one uninterrupted real EFI/QEMU A/B/C run passes all 50 checks; readiness export later proven natively. Ordinary native CLI/login observed (UID 1000); hardened login/settings still open. |
 | Cleanup / power | One native run captured owned graphical-session cleanup; final physical poweroff remains unproven. |
-| Hermes Agent | Not installed natively. Internet, persistent workspace and a suitable safe work session are prerequisites. |
+| Hermes Agent | Not installed natively. The HOME-canary prerequisite is now passed; internet, persistent workspace and a suitable safe work session remain prerequisites. |
 | Other boards / general ARM64 | Project goal, not established support. |
 
 **Existing graphical diagnostic limits remain:** 180-second graphical session,
 guarded CPU readings, owned-only GUI cleanup and a volatile 512 MiB overlay.
 The separate opt-in text workstation uses the USB ext4 overlay and a continuous
-thermal/space guard; its native acceptance is not established. Neither mode is
-a daily-driver recommendation.
+thermal/space guard; its native acceptance is limited to the HOME file canary
+described above. Neither mode is a daily-driver recommendation.
 
 ## Start here
 
-- [Project timeline, 7–26 October 2026](docs/TIMELINE.md)
+- [Project timeline, 7–28 October 2026](docs/TIMELINE.md)
 - [Current status and safety boundaries](docs/STATUS.md)
 - [Complete development-history index](docs/history/README.md)
 - [Current task list](docs/TASKS.md)
 - [Native desktop evidence and remaining prerequisites](docs/dt26-native-desktop-success.md)
 - [Architecture / original design](docs/porting-design.md) — historical, not current execution instructions
-- [Source inputs, pins and recovered replayable deltas](reproducibility/README.md)
+- [Source inputs, pins and replayable deltas](reproducibility/README.md)
 - [Publication scope, exclusions and provenance](docs/PUBLICATION.md)
 - [License and third-party notices](NOTICE.md)
 

@@ -135,6 +135,53 @@ desktop yet.
   locally, create the canary and verify it on another boot. No native
   persistence or new hardware acceptance is claimed.
 
+## 27 October — readiness exporter deployed, then proven natively
+
+- **Exporter deployed and read back (verified).** A one-command readiness
+  exporter (launcher, exporter and start note) was reviewed, applied to the
+  USB with a cache flush, and independently read back: destinations verified
+  and all previously protected files, the original validation kit, prior logs
+  and the seven-entry menu unchanged. Deployment made no boot, partition,
+  firmware or settings change.
+- **Native export proven (verified).** The owner ran the deployed exporter
+  natively from the workstation entry: non-root capture and privileged USB
+  export succeeded, and recovery confirmed the protected files, kit, exporter
+  and prior logs unchanged with new logs archived and zero recovery writes.
+  Export proof only: the same 27 October capture showed the battery collector
+  TypeError without a safe location (cause, location and fix open at that
+  time); the safe location at `_safe_read_text:696` was identified only by
+  the later 28 October v2 readiness diagnostic (cause and fix open). The same
+  capture also showed no touchpad, audio/camera
+  presence-only, and all 20 sensor types as an instantaneous sample, not
+  sustained stability.
+
+## 28 October — workspace proof package and HOME canary across reboot
+
+- **Workspace validator/proof package deployed and read back (verified).**
+  A versioned four-file package was source-reviewed, applied with a cache
+  flush, and independently read back: destinations verified and all
+  previously protected files, the kit, the exporter and all prior logs
+  unchanged. No boot, menu, partition, firmware or settings change from the
+  deployment itself.
+- **HOME file canary accepted across two different native boots (verified).**
+  Actual create on `c62c897a...` and different-boot verify on
+  `f30b3a73...` pass with checksum valid,
+  private permissions, owner UID 1000, the same USB ext4 filesystem and the
+  same versioned overlay generation. Ordinary native CLI/login observed as UID
+  1000 in these 28 October captures, sourced from accepted private receipts
+  and owner transcript reflected in native-home-persistence-accepted.json and
+  workspace parent assessment; no private metadata reproduced. Hardened account
+  policy/password security remain open. The 28 October v2 readiness diagnostic
+  safely reported the battery collector error location at `_safe_read_text:696`
+  (the 27 October TypeError had no safe location); battery cause and fix remain
+  open. Structured fields and source-bound
+  evidence were used; a wording difference between the owner transcript and
+  the saved report was retained without normalization. The earlier same-boot
+  check remains preserved history. This accepts the HOME canary file only:
+  installed settings/tools, native Hermes, touchpad, battery cause/fix,
+  graphics acceleration, audio/camera, USB-C-PD, suspend, recovery and final
+  hardware poweroff are not accepted.
+
 ## Current state
 
 | Area | State |
@@ -142,10 +189,12 @@ desktop yet.
 | Native text console, thermal logging | verified |
 | Built-in Wi-Fi | verified |
 | Desktop (Plasma) | observed by the owner (dt26); full input/session acceptance open |
-| 32 GiB persistence | media written and fully read back; native reboot persistence **open** |
-| Workstation image | reviewed, uninterrupted EFI A/B/C pass, applied to USB; native boot **open** |
+| 32 GiB persistence | media written and fully read back; **HOME file canary verified across reboot**; settings/tools persistence **open** |
+| Readiness export | **proven natively**; battery/touchpad/peripheral limits observed, not closed |
+| Workstation image | reviewed, uninterrupted EFI A/B/C pass, applied to USB; ordinary native CLI/login observed (UID 1000), hardened login/settings **open** |
 | GRUB responsiveness | gfxterm mitigation applied; owner confirmation **open** |
 | Touchpad | I²C address known; IRQ line unknown |
+| Battery | 27 Oct TypeError had no location; 28 Oct v2 safely reported `_safe_read_text:696`; cause/fix open |
 | Audio, camera, USB-C, power management | open |
 | Signed packages, updates, installer, extra boards | open |
 

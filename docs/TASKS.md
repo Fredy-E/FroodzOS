@@ -1,6 +1,6 @@
 # FroodzOS — current tasks
 
-Updated 26 October 2026. See the [timeline](TIMELINE.md) for chronology and
+Updated 28 October 2026. See the [timeline](TIMELINE.md) for chronology and
 [current status](STATUS.md) for safety limits. Older plans and reports are
 historical inputs, not instructions to erase or rebuild the working USB.
 
@@ -22,26 +22,51 @@ historical inputs, not instructions to erase or rebuild the working USB.
   payloads and 108 prior logs unchanged. Default and independent recovery kept.
 - [x] Fresh parent read-only USB check: 11 current protected files and all
   108 pinned log files match. No new native boot is inferred from readback.
+- [x] Offline readiness exporter deployed and independently read back: launcher,
+  exporter and start note verified at their destinations with cache flush;
+  all previously protected files, the original validation kit, prior logs and
+  the menu unchanged. No boot/partition/firmware change.
+- [x] Native export proven: owner ran the deployed exporter from the
+  workstation entry; non-root capture and privileged USB export succeeded and
+  recovery confirmed protected files, kit, exporter and prior logs unchanged
+  with new logs archived and zero recovery writes. Battery error, touchpad,
+  audio/camera limits and instantaneous-only sensors observed, not closed.
+- [x] Versioned workspace validator/proof package reviewed, applied with cache
+  flush and independently read back: destinations verified; previously
+  protected files, kit, exporter and all prior logs unchanged. No boot, menu,
+  partition, firmware or settings change from deployment.
+- [x] **Native HOME canary accepted across reboot.** Actual create on
+  `c62c897a...` and different-boot verify on
+  `f30b3a73...` pass with checksum valid, private
+  permissions, owner UID 1000, the same USB ext4 filesystem and versioned
+  overlay generation. The earlier same-boot check remains preserved history;
+  it was not retrospectively relabeled a pass. Ordinary native CLI/login
+  observed as UID 1000 in these 28 October captures, sourced from accepted
+  private receipts and owner transcript reflected in
+  native-home-persistence-accepted.json and workspace parent assessment; no
+  private metadata reproduced. Hardened account policy/password security
+  remain open. This accepts the HOME canary
+  file only, not installed settings/tools or peripherals/full readiness.
 - [x] Historical worker audit: 20 transcripts, 19 completed and one interrupted
-  B-oracle task superseded by the reviewed harness and real a12 pass. Failed
-  runs retained, not erased or blindly restarted.
+  B-oracle task superseded by the reviewed, passing harness. Failed runs
+  retained, not erased or blindly restarted.
 
 ## Current priority — owner-run native acceptance
 
-- [ ] Boot the guarded persistent text workstation, set the `live` password
-  locally and verify real login and password-required sudo.
-- [ ] Finish packaging/review/deployment of the small offline native-validator
-  handoff. The approved validator passes 52 tests on each platform; its
-  readiness exit 0 means a report was produced, not every readiness gate passed.
-- [ ] Capture native readiness as the non-root user; explicitly create the
-  HOME canary, reboot into the same entry, verify a different boot ID with the
-  same ext4-backed overlay generation. Same-boot readback is not persistence.
+- [x] Ordinary native CLI/login observed as normal user UID 1000 in the 28
+  October canary captures (create `c62c897a...`, verify `f30b3a73...`);
+  sourced from accepted private receipts and owner transcript reflected in
+  native-home-persistence-accepted.json and workspace parent assessment.
+- [ ] Harden the guarded persistent text workstation account: set the `live`
+  password locally and verify password-required sudo. The HOME canary is not
+  hardened-login or settings/tools proof.
 - [ ] Exercise independent text recovery and observe normal physical poweroff.
 - [ ] Owner feedback on GRUB responsiveness after the first keypress. Modest-mode
   gfxterm/console fallback is applied, not yet confirmed to resolve the bug.
-- [ ] Install/configure native Hermes after persistence is proved. Curated
-  portable skills/bootstrap is prepared; no Windows runtime/profile or secret
-  transfer and no local-model collection. WSL is not a substitute native gate.
+- [ ] Install/configure native Hermes now that the HOME prerequisite is passed.
+  Curated portable skills/bootstrap is prepared; no Windows runtime/profile or
+  secret transfer and no local-model collection. WSL is not a substitute
+  native gate. Application settings/tool persistence needs its own evidence.
 
 ## Hardware and distribution work still open
 
@@ -49,9 +74,12 @@ historical inputs, not instructions to erase or rebuild the working USB.
   physical Linux TLMM interrupt line remains unknown. Do not treat ACPI 960 as
   a GPIO or invent a numeric transform. An isolated no-ICC experiment is not
   native enumeration or function proof.
+- [ ] Battery behavior. The 27 October TypeError had no safe location; the 28
+  October v2 diagnostic safely reported the location at `_safe_read_text:696`;
+  cause and fix remain open.
 - [ ] Audio output/input, camera, wired networking, all USB/Type-C ports,
-  battery behavior, cooling/throttling, suspend/resume, exhaustive wireless
-  coverage and accelerated graphics. Presence does not mean function.
+  cooling/throttling, suspend/resume, exhaustive wireless coverage and
+  accelerated graphics. Presence does not mean function.
 - [ ] General-ARM64 packages, own signing/update/recovery chain, reproducible
   final images, more board tiers and binary/firmware redistribution clearance.
 - [ ] ARM64 VM distribution target — deferred until the native workstation is
@@ -66,7 +94,7 @@ historical inputs, not instructions to erase or rebuild the working USB.
 | 3 | Ubuntu Concept - control boot | Preserved control/explicit DTB |
 | 4 | FroodzOS - Graphics diagnostic (dt26, bounded) | Existing bounded graphics diagnostic |
 | 5 | FroodzOS - Wi-Fi + graphics (dt27, experimental) | Native Wi-Fi accepted; bounded graphics |
-| 6 | FroodzOS workstation v1 - Guarded persistent text CLI (opt-in) | USB ext4-backed CLI; native acceptance open |
+| 6 | FroodzOS workstation v1 - Guarded persistent text CLI (opt-in) | USB ext4-backed CLI; only HOME canary accepted |
 | 7 | Return to firmware boot menu | Exit; no boot-order change |
 
 Live readback on 26 October: menu 4,285 bytes,
