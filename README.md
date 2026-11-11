@@ -19,6 +19,14 @@ first research on **7 October 2026** onward. It documents how a CachyOS-derived,
 system was brought up natively on the 83N3 laptop, and how the first release (0.1 Maverick) is being
 qualified. Failed and rejected revisions are kept on purpose; nothing is retroactively relabelled as a pass.
 
+## Download (development image)
+
+A firmware-free **development image for the Lenovo IdeaPad Slim 3 15Q8X10 (83N3) only** is available as a signed GitHub pre-release:
+[`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick) (1.43 GB compressed raw USB image,
+SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, brightness keys,
+battery and audio do not work or are not claimed, and writing the image erases the target USB stick. Verification steps are in
+[docs/releases/SIGNING.md](docs/releases/SIGNING.md); rights and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md).
+
 ## Status (evidence as of 11 November 2026)
 
 | Area | Evidence-backed status |
@@ -47,6 +55,7 @@ the [roadmap](docs/releases/ROADMAP.md) and the [changelog](CHANGELOG.md).
 ## Start here
 
 - [Release status, evidence boundaries and blockers](docs/releases/CURRENT.md)
+- [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev-maverick.md)
 - [0.1 Maverick scope](docs/releases/0.1-maverick.md) and [promotion policy](docs/releases/POLICY.md)
 - [Changelog](CHANGELOG.md)
 - [Documentation index](docs/README.md)
