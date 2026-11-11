@@ -1,0 +1,28 @@
+{
+  "schema": "froodzos.board-profile.v1",
+  "id": "lenovo-83n3",
+  "manufacturer": "Lenovo",
+  "model": "IdeaPad Slim 3 15Q8X10",
+  "machine_type": "83N3",
+  "soc": "Snapdragon X1-26-100",
+  "architecture": "aarch64",
+  "support_level": "experimental",
+  "full_hardware_acceptance": false,
+  "observations_through": "2026-10-31",
+  "evidence_scope": "Recorded prior owner/native evidence, not fresh hardware tests or release admission",
+  "capabilities": {
+    "native_boot": "native_observed",
+    "text_console": "native_observed",
+    "keyboard_external_mouse": "owner_observed",
+    "wifi": "native_observed",
+    "plasma_desktop": "owner_observed_software_rendering",
+    "home_persistence": "accepted_different_boot",
+    "native_hermes": "not_accepted",
+    "touchpad": "not_working",
+    "gpu_acceleration": "not_accepted",
+    "audio_camera": "not_accepted",
+    "battery_power_suspend": "not_accepted",
+    "type_c_pd": "not_accepted",
+    "safe_final_poweroff": "not_accepted"
+  }
+}

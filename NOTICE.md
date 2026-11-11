@@ -1,14 +1,20 @@
 # Licensing and third-party notices
 
-## No blanket relicensing
+## Project licence (decided 2026-11-10)
 
-Publication was requested by the project owner on 19 October 2026. A new project
-license was asked about but no choice was received. **No MIT, GPL or other
-blanket license is being applied to the whole repository.** Existing explicit
-per-file grants remain valid; otherwise no additional reuse grant is asserted
-for original unlicensed material. The owner may make that choice separately.
-Public visibility and GitHub's hosting/fork terms are not a substitute for a
-software license.
+The project owner selected **GPL-2.0-or-later** for **FroodzOS's own original source code and tools**
+(for example the scripts under `builder/`, `tools/`, `testing/`, `tests/` and the original project sources
+that carry no other licence). The licence text is in [LICENSE](LICENSE) (GNU General Public License,
+version 2); "or later" means you may also use those files under any later version published by the Free
+Software Foundation. New original source files should carry
+`SPDX-License-Identifier: GPL-2.0-or-later`; adding that header to the existing original files is tracked
+as follow-up work and the licence applies to them meanwhile.
+
+This does **not** relicense third-party material. Existing explicit per-file grants and upstream licences
+remain exactly as they are (see the table below). Documentation prose, research notes and history are
+owner-created engineering material for which **no separate licence has been selected yet**; keep
+provenance and existing notices. Public visibility and GitHub's hosting terms are not a substitute for a
+licence.
 
 ## Components
 
@@ -18,22 +24,26 @@ software license.
 | Lenovo 83N3 board DTS | Preserved `BSD-3-Clause` SPDX header and Qualcomm Innovation Center, Linaro and Jens Glathe copyright notices. See `third_party/linux/BSD-3-Clause`. The kernel tree contains other separately licensed includes; obtain them from the pinned upstream source. |
 | stubble `linux.c` / alignment delta | `ubuntu/stubble` at `9f11278e080a5c4a77db6acf4c8f75c14412087a`; preserved `LGPL-2.1-or-later` SPDX header. See `third_party/stubble/LICENSE.LGPL2.1`. |
 | `builder/initcpio/install/filesystems` | Derived from mkinitcpio 42.2; preserved `GPL-2.0-only` SPDX notice. GPL version 2 text is also included under `third_party/linux/GPL-2.0`. |
-| Other source files with SPDX headers | Their existing file-specific licenses apply. These are not overridden by this notice or the absence of a root LICENSE. |
-| Original research/history/test documentation and unlicensed scripts | Owner-created engineering material; no new blanket license has been selected. Keep provenance and existing notices. |
+| Other source files with SPDX headers | Their existing file-specific licences apply. They are not overridden by the project licence above. |
+| FroodzOS original code and tools | **GPL-2.0-or-later**, see above. |
+| Original research, history and documentation prose | Owner-created; no separate licence selected yet. |
 
-Historical filenames and local package names containing `cachyos` or `kestrel`
-record development provenance; they do not establish affiliation, trademark
-permission, upstream binary-repository access rights or an adopted public distro
-identity. No upstream logos are bundled.
+Historical filenames and local package names containing `cachyos` or `kestrel` record development
+provenance; they do not establish affiliation, trademark permission, upstream binary-repository access
+rights or an adopted public distribution identity. No upstream logos are bundled.
 
-## Excluded material
+## Excluded material and rights for binaries
 
-No Windows-extracted/vendor firmware, bootable UKI, ISO/squashfs/VHDX, private
-signing key, credential store, password database or raw private machine journal
-is redistributed. Referencing a firmware filename is not a redistribution
-license. A public bootable image needs its own component-by-component rights
-and corresponding-source review; this source archive is not that release.
+No Windows-extracted/vendor firmware, bootable kernel image, ISO/squashfs/VHDX, private signing key,
+credential store, password database or raw private machine journal is redistributed. Referencing a
+firmware filename is not a redistribution licence.
 
-Full third-party fetched web pages are not copied merely because they were used
-for research; authored analysis and source URLs are retained. Any quoted upstream
-material retains its original authorship and terms.
+A **public bootable image is not available and is blocked on rights**, component by component:
+the CachyOS repository policy prohibits redistributing its repository in other distributions; vendor
+firmware extracted from an owner's own Windows installation carries no redistribution grant; the Arch Linux
+ARM base-system terms and trademark/branding use have not been reviewed. Private owner-only development
+images exist; they are not part of this archive. A public image needs its own component-by-component rights
+and corresponding-source review.
+
+Full third-party fetched web pages are not copied merely because they were used for research; authored
+analysis and source URLs are retained. Any quoted upstream material retains its original authorship and terms.

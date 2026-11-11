@@ -1,5 +1,8 @@
 # Current status — 28 October 2026
 
+> **Superseded for current status (2026-11-10).** This page reflects the 28 October state. For the
+> current release status, evidence boundaries and blockers see [docs/releases/CURRENT.md](releases/CURRENT.md).
+
 This page, the [timeline](TIMELINE.md) and [current task list](TASKS.md)
 supersede older top-level status descriptions. Historical reports and failed
 experiments remain history, not retroactively successful runs.
@@ -110,8 +113,8 @@ reported post-keypress lag is still awaiting owner confirmation.
   application settings and tool persistence still need their own evidence.
   No local model weights, Windows profile/runtime or secret transfer; no WSL
   installation as a substitute.
-- Touchpad function: I2C address is grounded, physical Linux interrupt line is
-  unknown. ACPI pin 960 is not a Linux TLMM GPIO number; no guessed IRQ change.
+- Touchpad function: works in basic mouse mode through a user-space polling driver (see `docs/touchpad.md`). The physical
+  Linux interrupt line is still unknown (ACPI pin 960 is not a Linux TLMM GPIO number); no guessed IRQ change.
 - Battery behavior: the 27 October TypeError had no safe location; the 28
   October v2 diagnostic safely reported the location at `_safe_read_text:696`;
   cause and fix remain open.
