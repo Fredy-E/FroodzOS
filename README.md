@@ -14,14 +14,22 @@
 
 ## Main goal
 
-**FroodzOS must open every kind of file and run the apps and operating systems of other platforms directly on your own machine —
-as natively as technically possible — starting with a few formats and growing without a fixed limit:**
-`.zip` `.rar` `.iso` `.docx` `.xlsx` `.exe` `.apk` `.dmg` and, over time, literally everything: office files, archives, disk images,
-Windows programs, phone apps and other operating systems.
+**FroodzOS must open every kind of file and run the apps and operating systems of every other platform directly on your own machine —
+as natively as technically possible. It starts with a few formats and has no fixed limit.**
 
-This is the direction of the project, **not something it does today**: the current image is a desktop with a working Wi-Fi, keyboard and
-touchpad on one laptop. The plan, what "native" can mean for each format (native, compatibility layer, virtual machine, or not feasible
-because of technology or law), and the phases are in [docs/releases/UNIVERSAL-COMPATIBILITY.md](docs/releases/UNIVERSAL-COMPATIBILITY.md).
+| Pillar | What it means |
+|---|---|
+| **Open any file** | Archives, disk images, documents, spreadsheets, presentations, e-books, photos and RAW, audio, video, fonts, 3D and CAD, databases, mail, certificates, packages, scripts — `.zip` `.rar` `.7z` `.iso` `.dmg` `.vhdx` `.docx` `.xlsx` `.pptx` `.pdf` `.epub` `.heic` `.cr2` `.mkv` `.flac` `.stl` `.dwg` `.sqlite` `.eml` `.pfx` `.deb` and more. **372 extensions in 18 categories are catalogued already** ([list](docs/compat/SUMMARY.md)); unknown types are sniffed by content and offered the best available handler. |
+| **Run any app** | Linux ARM64 and x86-64 programs, Windows `.exe` `.msi` (ARM64 and x86-64), Android `.apk`, Java `.jar`, .NET, WebAssembly `.wasm`, AppImage/Flatpak, scripts — and, where law and technology allow, more. |
+| **Run any operating system** | Other systems as guests (QEMU/KVM) and legacy platforms through emulators. |
+| **As native as possible** | Native code first, then a compatibility layer inside the same desktop, then a virtual machine — and FroodzOS says which one is in use, instead of silently falling back. |
+| **Open Anything** | One launcher and file-association layer that picks the right handler for any file, explains what it needs, and installs it on request. |
+| **Honest status** | Every format shows its realistic ceiling (native, compat, VM, limited, not feasible) and whether the published image can do it today. |
+
+This is the direction of the project, **not something it does today**: the current image is a desktop with Wi-Fi, keyboard and touchpad
+on one laptop, with Dolphin and the command-line archive tools; most of the catalogue is still *planned*. Where technology (a different CPU
+instruction set) or law (a licence or DRM that forbids it) stands in the way — for example iOS apps — the plan says so instead of
+promising it. Plan, feasibility and phases: [docs/releases/UNIVERSAL-COMPATIBILITY.md](docs/releases/UNIVERSAL-COMPATIBILITY.md).
 
 ## What this repository is
 

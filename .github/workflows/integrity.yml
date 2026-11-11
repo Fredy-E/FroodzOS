@@ -16,6 +16,8 @@ jobs:
           python-version: '3.12'
       - name: Verify publication (file list, no binaries, checksums)
         run: python -B tools/verify-publication.py
+      - name: Compatibility catalogue is up to date
+        run: python -B tools/compat-catalogue.py --check
       - name: Validate release metadata
         run: python -B tools/validate_release.py
       - name: SHA256SUMS is up to date

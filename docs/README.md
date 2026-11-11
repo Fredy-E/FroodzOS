@@ -3,6 +3,7 @@
 | Where | What |
 |---|---|
 | [releases/](releases/README.md) | Version and codename policy, roadmap, 0.1 Maverick scope, **current status and blockers**; [how an image would be published](releases/PUBLISHING-IMAGES.md) |
+| [compat/SUMMARY.md](compat/SUMMARY.md), [formats.tsv](compat/formats.tsv) | Catalogue of every file extension the project aims to open or run (generated) |
 | [releases/UNIVERSAL-COMPATIBILITY.md](releases/UNIVERSAL-COMPATIBILITY.md) | **Main goal**: open every file type and run other platforms' apps and operating systems as natively as feasible; plan and feasibility |
 | [releases/RIGHTS-REVIEW.md](releases/RIGHTS-REVIEW.md), [SOURCE-OFFER.md](releases/SOURCE-OFFER.md), [FIRMWARE.md](releases/FIRMWARE.md), [SIGNING.md](releases/SIGNING.md) | Public-image rights review, GPL source offer, firmware policy, release signing key |
 | [releases/RELEASE-NOTES-0.1.0-dev-maverick.md](releases/RELEASE-NOTES-0.1.0-dev-maverick.md) | Draft notes for the 0.1.0-dev image release |
