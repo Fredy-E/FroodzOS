@@ -2,6 +2,11 @@
 
 > **Historical record retained.** For the accepted 19 October native desktop milestone and current limits, see [STATUS.md](STATUS.md) and [dt26 native report](dt26-native-desktop-success.md). Earlier pending gates, menu numbers, estimates and publication pauses below describe their original date, not current instructions. The owner requested this source/history upload on 19 October; no firmware-bearing binary release is authorized or included.
 
+> **Superseded details (2026-11-10).** The public repository now exists (https://github.com/Fredy-E/FroodzOS). The proposed label
+> "FroodzOS 0.1 Alpha - ARM64 / Lenovo 83N3" below was replaced by the official display
+> "FroodzOS 0.1 Maverick - ARM64 Alpha", which is reserved for a qualified candidate; the current version is `0.1.0-dev`.
+> See [docs/releases/](releases/README.md).
+
 
 Updated 2026-10-18. The user has chosen **FroodzOS** as the public project name. This records a naming decision, not authorization to publish, register accounts/domains, change licenses, or rename working boot components.
 

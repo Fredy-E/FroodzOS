@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+[Unit]
+Description=FroodzOS touchpad polling driver (I2C HID at 0x38 to a uinput pointer; beta)
+# Starts when either flag is on the kernel command line (entry 2 of menu v4 carries fz_tp_probe=1).
+ConditionKernelCommandLine=|fz_touchpad=1
+ConditionKernelCommandLine=|fz_tp_probe=1
+After=systemd-udevd.service systemd-modules-load.service
+Conflicts=fz-tp-probe.service
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+# Prefer an updated driver placed on the stick (fz-touchpad-live.py); otherwise use the copy baked into the image.
+# (systemd needs $$ for a literal dollar in a command line)
+ExecStart=/bin/sh -c 'P=/run/archiso/bootmnt/FroodzOS-maverick-dev-candidate/fz-touchpad-live.py; if [ -f "$$P" ]; then exec /usr/bin/python3 "$$P"; fi; exec /usr/bin/python3 /usr/local/sbin/fz-touchpad.py'
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

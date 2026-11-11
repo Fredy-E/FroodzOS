@@ -1,0 +1,208 @@
+{
+  "schema": "froodzos.codenames.v1",
+  "authority_document": "docs/releases/CODENAMES.md",
+  "authority_sha256": "775f846fc9a15e5cd99ee272a65c1880df7aba1693dda01ab9bf6156a9e76aeb",
+  "authority_role": "OWNER_SELECTED_NAMING_ONLY_NOT_RELEASE_QUALIFICATION",
+  "entries": [
+    {
+      "series": "0.1",
+      "codename": "Maverick",
+      "slug": "maverick",
+      "intended_stage": "alpha",
+      "display_name": "FroodzOS 0.1 Maverick — ARM64 Alpha",
+      "selection_status": "selected"
+    },
+    {
+      "series": "0.2",
+      "codename": "Chaffee",
+      "slug": "chaffee",
+      "intended_stage": "alpha",
+      "display_name": "FroodzOS 0.2 Chaffee — ARM64 Alpha",
+      "selection_status": "selected"
+    },
+    {
+      "series": "0.3",
+      "codename": "Hellcat",
+      "slug": "hellcat",
+      "intended_stage": "alpha",
+      "display_name": "FroodzOS 0.3 Hellcat — ARM64 Alpha",
+      "selection_status": "selected"
+    },
+    {
+      "series": "0.4",
+      "codename": "Viper",
+      "slug": "viper",
+      "intended_stage": "alpha",
+      "display_name": "FroodzOS 0.4 Viper — ARM64 Alpha",
+      "selection_status": "selected"
+    },
+    {
+      "series": "0.5",
+      "codename": "Raptor",
+      "slug": "raptor",
+      "intended_stage": "beta",
+      "display_name": "FroodzOS 0.5 Raptor — ARM64 Beta",
+      "selection_status": "selected"
+    },
+    {
+      "series": "0.6",
+      "codename": "Pershing",
+      "slug": "pershing",
+      "intended_stage": "beta",
+      "display_name": "FroodzOS 0.6 Pershing — ARM64 Beta",
+      "selection_status": "selected"
+    },
+    {
+      "series": "0.7",
+      "codename": "Apache",
+      "slug": "apache",
+      "intended_stage": "beta",
+      "display_name": "FroodzOS 0.7 Apache — ARM64 Beta",
+      "selection_status": "selected"
+    },
+    {
+      "series": "0.8",
+      "codename": "Wolverine",
+      "slug": "wolverine",
+      "intended_stage": "beta",
+      "display_name": "FroodzOS 0.8 Wolverine — ARM64 Beta",
+      "selection_status": "selected"
+    },
+    {
+      "series": "0.9",
+      "codename": "Nighthawk",
+      "slug": "nighthawk",
+      "intended_stage": "rc",
+      "display_name": "FroodzOS 0.9 Nighthawk — ARM64 RC",
+      "selection_status": "selected"
+    },
+    {
+      "series": "1.0",
+      "codename": "Sherman",
+      "slug": "sherman",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 1.0 Sherman — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "1.1",
+      "codename": "Mustang",
+      "slug": "mustang",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 1.1 Mustang — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "1.2",
+      "codename": "Bulldog",
+      "slug": "bulldog",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 1.2 Bulldog — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "1.3",
+      "codename": "Corsair",
+      "slug": "corsair",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 1.3 Corsair — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "1.4",
+      "codename": "Phantom",
+      "slug": "phantom",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 1.4 Phantom — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "1.5",
+      "codename": "Super Sherman",
+      "slug": "super-sherman",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 1.5 Super Sherman — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "2.0",
+      "codename": "Abrams",
+      "slug": "abrams",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 2.0 Abrams — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "2.1",
+      "codename": "Thunderbolt",
+      "slug": "thunderbolt",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 2.1 Thunderbolt — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "2.2",
+      "codename": "Bradley",
+      "slug": "bradley",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 2.2 Bradley — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "2.3",
+      "codename": "Stryker",
+      "slug": "stryker",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 2.3 Stryker — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "2.4",
+      "codename": "Paladin",
+      "slug": "paladin",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 2.4 Paladin — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "3.0",
+      "codename": "Blackbird",
+      "slug": "blackbird",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 3.0 Blackbird — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "3.1",
+      "codename": "Spectre",
+      "slug": "spectre",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 3.1 Spectre — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "3.2",
+      "codename": "Hornet",
+      "slug": "hornet",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 3.2 Hornet — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "3.3",
+      "codename": "Valkyrie",
+      "slug": "valkyrie",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 3.3 Valkyrie — ARM64",
+      "selection_status": "selected"
+    },
+    {
+      "series": "4.0",
+      "codename": "Banshee",
+      "slug": "banshee",
+      "intended_stage": "stable",
+      "display_name": "FroodzOS 4.0 Banshee — ARM64",
+      "selection_status": "selected"
+    }
+  ]
+}

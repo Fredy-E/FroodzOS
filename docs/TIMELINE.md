@@ -182,6 +182,33 @@ desktop yet.
   graphics acceleration, audio/camera, USB-C-PD, suspend, recovery and final
   hardware poweroff are not accepted.
 
+## 29 October – 10 November 2026 — Maverick identity, limited 0.1 scope, first candidate
+
+- **Owner-approved isolated privileged cleanup test (component).** Normal and overflow
+  cases passed; timeout and cancel failed, because a sudo-related process was still alive when
+  cancellation returned. The failure record is retained unchanged.
+- **1 November.** The owner's version and codename roadmap (0.1 Maverick through 4.0 Banshee) was
+  adopted as development metadata (`0.1.0-dev`), with a validator; see [docs/releases](releases/README.md).
+  A single-file verified bundle replaced the unpacked-directory delivery design, and a cooperative
+  process-lifecycle component was repaired after an independent review found a late-deadline bypass.
+- **9–10 November.** A fresh isolated root fixture passed one run including timeout and cancel
+  (fixture level, independently reviewed as a fixture pass only; a first attempt was refused before any
+  root process because of an invocation mistake, and is retained as a failed run). This does not close the
+  original failure or approve anything for production.
+- **10 November: limited 0.1 scope.** The owner chose the fastest route to a first 0.1: a limited live
+  alpha **without** the native Hermes workstation integration (parked, not deleted).
+- **10 November: first private development candidate (observed).** The live system's identity was
+  relabelled `0.1.0-dev` Maverick (identity fields only; legacy Kestrel identifiers kept) and added to the
+  USB stick additively beside the original system. The owner booted it natively: Wi-Fi works, keyboard and
+  mouse work, the touchpad does not. It is private and unpublished; it is not a qualified alpha.
+- **10 November: touchpad progress (open).** With a diagnostic device tree that drops the touchpad
+  bus's interconnect votes, that I2C bus now probes; the tree's touchpad node describes a different
+  variant (address 0x5d) and no interrupt is mapped, so the driver refuses it. A read-only probe of the
+  ACPI-indicated address 0x38 is prepared.
+- **10 November: boot menu v3 (awaiting owner confirmation).** Fewer entries, a small bitmap font, a
+  selectable menu display mode, and a return to the firmware's native 1920x1200 mode before the kernel
+  loads (the earlier 1024x768 menu mode had been inherited by the kernel).
+
 ## Current state
 
 | Area | State |
@@ -192,8 +219,8 @@ desktop yet.
 | 32 GiB persistence | media written and fully read back; **HOME file canary verified across reboot**; settings/tools persistence **open** |
 | Readiness export | **proven natively**; battery/touchpad/peripheral limits observed, not closed |
 | Workstation image | reviewed, uninterrupted EFI A/B/C pass, applied to USB; ordinary native CLI/login observed (UID 1000), hardened login/settings **open** |
-| GRUB responsiveness | gfxterm mitigation applied; owner confirmation **open** |
-| Touchpad | I²C address known; IRQ line unknown |
+| GRUB responsiveness | menu v3 applied 10 Nov (fewer entries, small font, native-mode handoff); owner confirmation **open** |
+| Touchpad | I²C address known; with a diagnostic device tree the bus probes (10 Nov); wrong variant node and no interrupt mapped; **open** |
 | Battery | 27 Oct TypeError had no location; 28 Oct v2 safely reported `_safe_read_text:696`; cause/fix open |
 | Audio, camera, USB-C, power management | open |
 | Signed packages, updates, installer, extra boards | open |
