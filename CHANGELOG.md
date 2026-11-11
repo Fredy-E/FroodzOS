@@ -8,6 +8,9 @@ namespaces and never mean a product release. Dates are record dates, not release
 
 Status: **development, not a qualified alpha. No binaries, tag or release exist.**
 
+### Released (2026-11-11)
+- Pre-release [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick): firmware-free development image for the 83N3 (build `maverick-public-dev-20261111.2`), signed checksums, package list and source offer.
+
 ### Added (2026-11-11, release candidate)
 - Firmware-free public image build tooling in `builder/public-image/`, exact-build manifest `release/manifests/maverick-public-dev-20261111.2.json`,
   rights review, source offer, firmware and signing documents (`docs/releases/`), release signing public key (`release/signing/`).
@@ -35,7 +38,7 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 - Touchpad tap-to-click, gestures and natural scrolling; audio, camera, USB-C and charging, battery diagnostics, suspend, GPU acceleration:
   not working or not accepted.
 - Safe-shutdown and recovery qualification still open.
-- No public binary image: rights for CachyOS repository content, vendor firmware and the base system are unresolved.
+- The published image is a development image for one laptop; Arch Linux ARM publishes no explicit redistribution statement (see `docs/releases/RIGHTS-REVIEW.md`).
 
 ## History before this changelog
 

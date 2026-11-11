@@ -43,12 +43,12 @@ No Windows-extracted/vendor firmware, bootable kernel image, ISO/squashfs/VHDX, 
 credential store, password database or raw private machine journal is redistributed. Referencing a
 firmware filename is not a redistribution licence.
 
-A **public bootable image is not available and is blocked on rights**, component by component:
-the CachyOS repository policy prohibits redistributing its repository in other distributions; vendor
-firmware extracted from an owner's own Windows installation carries no redistribution grant; the Arch Linux
-ARM base-system terms and trademark/branding use have not been reviewed. Private owner-only development
-images exist; they are not part of this archive. A public image needs its own component-by-component rights
-and corresponding-source review.
+A firmware-free **development image** is published as a GitHub pre-release (`v0.1.0-dev-maverick`). It contains unmodified Arch Linux ARM
+binary packages (licences and versions in the shipped `pkglist.tsv`), one project-built kernel package, and the unmodified ALARM `grub`
+package. It does not contain firmware extracted from a Windows installation, any CachyOS repository package, or Mozilla Firefox.
+The rights review, its sources and the points that remain open are in `docs/releases/RIGHTS-REVIEW.md`; the GPL written offer is in
+`docs/releases/SOURCE-OFFER.md`. Private owner-only development images with vendor firmware exist; they are not part of this archive
+and are not redistributed.
 
 Full third-party fetched web pages are not copied merely because they were used for research; authored
 analysis and source URLs are retained. Any quoted upstream material retains its original authorship and terms.
