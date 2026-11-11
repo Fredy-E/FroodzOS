@@ -1,6 +1,6 @@
 # Publishing an OS image: checklist and best practice
 
-Status: **no image is published and none may be until the gates below pass.** This page is a plan, not an announcement.
+Status (2026-11-11): a firmware-free release candidate, build `maverick-public-dev-20261111.2`, exists with its manifest, package list, rights review, source offer and signature; publication is gated on the maintainer's explicit approval. The sections below are the original plan; `RIGHTS-REVIEW.md`, `SIGNING.md`, `FIRMWARE.md` and `SOURCE-OFFER.md` record how each gate was handled.
 The authority for gates is [POLICY.md](POLICY.md); rights are summarised in [NOTICE.md](../../NOTICE.md).
 
 ## 1. What exists today (and what is not an ISO)

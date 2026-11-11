@@ -1,0 +1,125 @@
+{
+  "build_id": "maverick-public-dev-20261111.2",
+  "schema": "froodzos-build-manifest/1",
+  "product": {
+    "version": "0.1.0-dev",
+    "codename": "Maverick"
+  },
+  "source": {
+    "repository": "https://github.com/Fredy-E/FroodzOS",
+    "revision": "main 70bd357 plus the pull request that adds builder/public-image, docs/releases/RIGHTS-REVIEW.md, SOURCE-OFFER.md, SIGNING.md",
+    "dirty_delta": "Build tools are in builder/public-image/ of the repository (added by the release pull request); the build ran from copies in the maintainer candidate folder with identical content.",
+    "note": "The root is derived from a pinned private development candidate, not rebuilt from source."
+  },
+  "inputs": {
+    "candidate_root_sfs_sha256": "c5f93c71193030ec0008d4182d18b403f19ab6f28034c1963f84bdd0d987fdca",
+    "base_uki_sha256": "4fb18edfb4ae2f2727658b5c94f43a3ccee78dd33d8e952a1b11a656ddd90867",
+    "touchpad_uki_source_sha256": "fb8ab6893d844a388f58238b8fc7088d2dfd042e7102a1ec635031ede64f0e42",
+    "menu_source": "output/grub.cfg.v5 (cb726e55...) transformed by builder/public-image/make-menu-public.py (grub.cfg.public)",
+    "root_package_origin": "592 packages: 591 unmodified Arch Linux ARM (core, extra) and 1 project-built kernel (see PACKAGE-ORIGIN-AUDIT.md)",
+    "packages_removed": [
+      "linux-firmware-amd",
+      "linux-firmware-amdgpu",
+      "linux-firmware-broadcom",
+      "linux-firmware-cirrus",
+      "linux-firmware-intel",
+      "linux-firmware-mediatek",
+      "linux-firmware-nvidia",
+      "linux-firmware-other",
+      "linux-firmware-radeon",
+      "linux-firmware-ti",
+      "firefox"
+    ],
+    "other_removals": [
+      "usr/lib/firmware/updates (vendor firmware extracted from a Windows installation)",
+      "pacman keyring private key and revocation certificate",
+      "project-local overlay repository and its signature",
+      "four Arch Linux logo files (usr/share/pixmaps/archlinux-logo*) and the LOGO reference",
+      "Mozilla Firefox (trademark policy)"
+    ],
+    "root_base_sfs_sha256": "972f1ffd763e123bad6094d938c75878c57f69a4bdbb85698f9eb3dafba1c805",
+    "root_base_note": "touchpad driver image r5 (candidate root c5f93c71... plus 6 added driver entries) is the actual build input"
+  },
+  "toolchain": {
+    "builder": "CachyOSBuilder WSL2 distribution (aarch64)",
+    "squashfs": "sqfstar from squashfs-tools 4.7.5, xz, 128 KiB blocks",
+    "grub": "Arch Linux ARM package grub 2:2.16-1 (grub-mkstandalone, arm64-efi)",
+    "uki": "stubblify with the pinned stubble stub (ubuntu/stubble 9f11278e080a5c4a77db6acf4c8f75c14412087a)",
+    "python": "3.14 (builder)"
+  },
+  "board_profile": {
+    "board": "Lenovo IdeaPad Slim 3 15Q8X10 (83N3), Snapdragon X1-26-100",
+    "firmware": "none of the vendor 83N3 firmware is included; generic Arch Linux ARM linux-firmware-qcom, -atheros, -realtek and licence texts are included",
+    "redistribution_status": "reviewed 2026-11-11, see RIGHTS-REVIEW.md; ALARM publishes no explicit redistribution statement (accepted risk); GPL written offer in SOURCE-OFFER.md"
+  },
+  "artifacts": [
+    {
+      "label": "image_zst",
+      "file": "FroodzOS-0.1.0-dev-maverick-arm64-83n3-nofw.img.zst",
+      "bytes": 1429818805,
+      "sha256": "6e702fed36fa7ee7bc5c28fb47132a7fb945adc369c6ae2495205db9094a8efc"
+    },
+    {
+      "label": "image_raw",
+      "file": "FroodzOS-0.1.0-dev-maverick-arm64-83n3-nofw.img",
+      "bytes": 1695547392,
+      "sha256": "3097b17accfc030e8bea5a6e718fc12251417fed9652d137cdef2e5b51c7cf64"
+    },
+    {
+      "label": "root_sfs",
+      "file": "airootfs-public.sfs",
+      "bytes": 1285947392,
+      "sha256": "e6f4a596a99e215eb39000a46a8ab512b7af2f7136533c431b235b92cceba981"
+    },
+    {
+      "label": "uki_touchpad",
+      "file": "froodzos-maverick-tp.efi",
+      "bytes": 110180864,
+      "sha256": "616bb786bb56b097c7c22a55cfecb04a91a001fc1ad231b3ade469b2e0f515c0"
+    },
+    {
+      "label": "uki_base",
+      "file": "froodzos-maverick-base.efi",
+      "bytes": 110180864,
+      "sha256": "f66f329afd2c48b1efc414948b58deaae249547b98ef4696feebb3b79d0e94a5"
+    },
+    {
+      "label": "grub_cfg",
+      "file": "grub.cfg.public",
+      "bytes": 3620,
+      "sha256": "bfa8700fb72527d506d84a45a8ab1804d28aa503c6fb47abca05b5a7fbab7f3d"
+    }
+  ],
+  "test_receipts": [
+    {
+      "name": "file-listing comparison of the public root against its input (r5 touchpad image)",
+      "result": "179483 -> 173065 entries; no unexpected removals (the only paths outside the planned classes belong to the removed Firefox package); content changes only in etc/os-release, usr/lib/os-release, etc/pacman.conf and the linux-firmware meta-package record; kernel package renamed; vendor firmware, keyring private key, Firefox, Arch logos and cachyos-named paths absent; driver files present; root directory root:root mode 555",
+      "scope": "file listings"
+    },
+    {
+      "name": "QEMU boot of this image",
+      "result": "passed: multi-user reached, build id maverick-public-dev-20261111.2, linux-froodzos-arm64, no vendor firmware dir, no keyring private key, pacman -Dk clean, 592 packages, fz-touchpad SELFTEST PASS",
+      "scope": "emulator (QEMU TCG virt) with grub.cfg replaced by a test variant; image sha256 3097b17accfc030e8bea5a6e718fc12251417fed9652d137cdef2e5b51c7cf64; not laptop hardware"
+    },
+    {
+      "name": "native boot on the Lenovo 83N3 of the previous build maverick-public-dev-20261111.1 (same UKIs and GRUB menu, root differs only by Firefox, Arch logo and os-release)",
+      "result": "boots to the desktop; Wi-Fi works; touchpad works; brightness keys change the indicator but not the panel; battery and power management not checked; kernel log equals the log of the earlier boot with vendor firmware",
+      "scope": "owner test 2026-11-11, one laptop"
+    }
+  ],
+  "limitations": [
+    "The release image (build .2) itself was not booted on the laptop; the previous build (.1) was. They differ only by the removal of Firefox and Arch branding.",
+    "Screen brightness keys change the on-screen indicator but not the panel brightness.",
+    "Battery level, charging state and power management are not working or not verified; audio, camera, USB-C power delivery, suspend and GPU acceleration are not claimed.",
+    "Touchpad works in basic mouse mode only (polling driver): no tap-to-click or gestures.",
+    "Boot loader and kernel images are unsigned; Secure Boot must be off. The downloads are signed (SHA256SUMS.asc).",
+    "No vendor firmware is included. Default live accounts are those of the development image (user live, password live).",
+    "Arch Linux ARM publishes no explicit redistribution statement; the maintainer acceptance of the three-year written source offer is recorded at release approval."
+  ],
+  "publication": {
+    "status": "unpublished",
+    "owner_authorised": false,
+    "rights_cleared": false,
+    "qualified_release": false
+  }
+}

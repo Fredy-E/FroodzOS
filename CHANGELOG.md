@@ -8,6 +8,11 @@ namespaces and never mean a product release. Dates are record dates, not release
 
 Status: **development, not a qualified alpha. No binaries, tag or release exist.**
 
+### Added (2026-11-11, release candidate)
+- Firmware-free public image build tooling in `builder/public-image/`, exact-build manifest `release/manifests/maverick-public-dev-20261111.2.json`,
+  rights review, source offer, firmware and signing documents (`docs/releases/`), release signing public key (`release/signing/`).
+- Draft release notes: `docs/releases/RELEASE-NOTES-0.1.0-dev-maverick.md`.
+
 ### Added
 - Release identity metadata: the 25 owner-selected codenames, the `0.1.0-dev` development identity, the
   Lenovo 83N3 board profile, a validator (`tools/validate_release.py`) and its tests; release policy,
