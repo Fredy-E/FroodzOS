@@ -1,0 +1,373 @@
+extension	category	ceiling	phase	candidate_handlers	in_image_today	note
+zip	archive	native	1	libarchive 7zip ark	partial	-
+zipx	archive	native	1	libarchive 7zip ark	partial	-
+7z	archive	native	1	libarchive 7zip ark	partial	-
+tar	archive	native	1	libarchive 7zip ark	partial	-
+gz	archive	native	1	libarchive 7zip ark	partial	-
+tgz	archive	native	1	libarchive 7zip ark	partial	-
+bz2	archive	native	1	libarchive 7zip ark	partial	-
+tbz2	archive	native	1	libarchive 7zip ark	partial	-
+xz	archive	native	1	libarchive 7zip ark	partial	-
+txz	archive	native	1	libarchive 7zip ark	partial	-
+zst	archive	native	1	libarchive 7zip ark	partial	-
+tzst	archive	native	1	libarchive 7zip ark	partial	-
+lz4	archive	native	1	libarchive 7zip ark	partial	-
+lzma	archive	native	1	libarchive 7zip ark	partial	-
+z	archive	native	1	libarchive 7zip ark	partial	-
+lz	archive	native	1	libarchive 7zip ark	partial	-
+arj	archive	native	1	libarchive 7zip ark	partial	-
+lzh	archive	native	1	libarchive 7zip ark	partial	-
+lha	archive	native	1	libarchive 7zip ark	partial	-
+cpio	archive	native	1	libarchive 7zip ark	partial	-
+ar	archive	native	1	libarchive 7zip ark	partial	-
+shar	archive	native	1	libarchive 7zip ark	partial	-
+rar	archive	native	1	unrar libarchive ark	partial	unrar has a non-free licence: check redistribution before bundling
+r00	archive	native	1	unrar libarchive ark	partial	unrar has a non-free licence: check redistribution before bundling
+cab	archive	native	1	unshield cabextract	no	InstallShield and Microsoft cabinets
+squashfs	archive	native	1	libarchive squashfs-tools erofs-utils	partial	-
+sfs	archive	native	1	libarchive squashfs-tools erofs-utils	partial	-
+erofs	archive	native	1	libarchive squashfs-tools erofs-utils	partial	-
+iso	disk-image	native	1	udisks2 cdemu libarchive	partial	mounting and reading; booting is the vm row
+udf	disk-image	native	1	udisks2 cdemu libarchive	partial	mounting and reading; booting is the vm row
+bin	disk-image	native	1	udisks2 cdemu libarchive	partial	mounting and reading; booting is the vm row
+cue	disk-image	native	1	udisks2 cdemu libarchive	partial	mounting and reading; booting is the vm row
+nrg	disk-image	native	1	udisks2 cdemu libarchive	partial	mounting and reading; booting is the vm row
+mdf	disk-image	native	1	udisks2 cdemu libarchive	partial	mounting and reading; booting is the vm row
+mds	disk-image	native	1	udisks2 cdemu libarchive	partial	mounting and reading; booting is the vm row
+ccd	disk-image	native	1	udisks2 cdemu libarchive	partial	mounting and reading; booting is the vm row
+img	disk-image	native	1	udisks2 losetup e2fsprogs dosfstools	partial	-
+wim	disk-image	native	1	wimlib	no	Windows imaging format
+esd	disk-image	native	1	wimlib	no	Windows imaging format
+swm	disk-image	native	1	wimlib	no	Windows imaging format
+vhd	disk-image	native	1	qemu-img qemu-nbd libguestfs	no	mount or convert; running the guest is the vm row
+vhdx	disk-image	native	1	qemu-img qemu-nbd libguestfs	no	mount or convert; running the guest is the vm row
+vmdk	disk-image	native	1	qemu-img qemu-nbd libguestfs	no	mount or convert; running the guest is the vm row
+qcow2	disk-image	native	1	qemu-img qemu-nbd libguestfs	no	mount or convert; running the guest is the vm row
+qcow	disk-image	native	1	qemu-img qemu-nbd libguestfs	no	mount or convert; running the guest is the vm row
+vdi	disk-image	native	1	qemu-img qemu-nbd libguestfs	no	mount or convert; running the guest is the vm row
+dmg	disk-image	limited	1	dmg2img hfsprogs apfs-fuse 7zip	no	compressed HFS+ images work; APFS and encrypted images are limited
+sparseimage	disk-image	limited	1	dmg2img hfsprogs apfs-fuse 7zip	no	compressed HFS+ images work; APFS and encrypted images are limited
+sparsebundle	disk-image	limited	1	dmg2img hfsprogs apfs-fuse 7zip	no	compressed HFS+ images work; APFS and encrypted images are limited
+docx	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+doc	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+docm	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+dotx	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+dot	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+rtf	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+odt	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+ott	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+fodt	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+wps	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+wpd	document	native	1	libreoffice onlyoffice	no	layout fidelity varies, fonts are substituted
+xlsx	document	native	1	libreoffice onlyoffice	no	macros and some functions differ
+xls	document	native	1	libreoffice onlyoffice	no	macros and some functions differ
+xlsm	document	native	1	libreoffice onlyoffice	no	macros and some functions differ
+xlsb	document	native	1	libreoffice onlyoffice	no	macros and some functions differ
+xltx	document	native	1	libreoffice onlyoffice	no	macros and some functions differ
+ods	document	native	1	libreoffice onlyoffice	no	macros and some functions differ
+ots	document	native	1	libreoffice onlyoffice	no	macros and some functions differ
+fods	document	native	1	libreoffice onlyoffice	no	macros and some functions differ
+numbers	document	native	1	libreoffice onlyoffice	no	macros and some functions differ
+pptx	document	native	1	libreoffice onlyoffice	no	animations and embedded fonts can differ; .key is Apple Keynote here (also used for private keys)
+ppt	document	native	1	libreoffice onlyoffice	no	animations and embedded fonts can differ; .key is Apple Keynote here (also used for private keys)
+pptm	document	native	1	libreoffice onlyoffice	no	animations and embedded fonts can differ; .key is Apple Keynote here (also used for private keys)
+potx	document	native	1	libreoffice onlyoffice	no	animations and embedded fonts can differ; .key is Apple Keynote here (also used for private keys)
+ppsx	document	native	1	libreoffice onlyoffice	no	animations and embedded fonts can differ; .key is Apple Keynote here (also used for private keys)
+odp	document	native	1	libreoffice onlyoffice	no	animations and embedded fonts can differ; .key is Apple Keynote here (also used for private keys)
+otp	document	native	1	libreoffice onlyoffice	no	animations and embedded fonts can differ; .key is Apple Keynote here (also used for private keys)
+fodp	document	native	1	libreoffice onlyoffice	no	animations and embedded fonts can differ; .key is Apple Keynote here (also used for private keys)
+key	document	native	1	libreoffice onlyoffice	no	animations and embedded fonts can differ; .key is Apple Keynote here (also used for private keys)
+odg	document	native	1	libreoffice inkscape	no	Visio, Publisher, Pages and CorelDRAW import is best-effort
+otg	document	native	1	libreoffice inkscape	no	Visio, Publisher, Pages and CorelDRAW import is best-effort
+vsd	document	native	1	libreoffice inkscape	no	Visio, Publisher, Pages and CorelDRAW import is best-effort
+vsdx	document	native	1	libreoffice inkscape	no	Visio, Publisher, Pages and CorelDRAW import is best-effort
+pub	document	native	1	libreoffice inkscape	no	Visio, Publisher, Pages and CorelDRAW import is best-effort
+pages	document	native	1	libreoffice inkscape	no	Visio, Publisher, Pages and CorelDRAW import is best-effort
+pdf	document	native	1	okular poppler mupdf	partial	-
+ps	document	native	1	okular poppler mupdf	partial	-
+eps	document	native	1	okular poppler mupdf	partial	-
+xps	document	native	1	okular poppler mupdf	partial	-
+oxps	document	native	1	okular poppler mupdf	partial	-
+djvu	document	native	1	okular poppler mupdf	partial	-
+djv	document	native	1	okular poppler mupdf	partial	-
+epub	document	native	1	okular calibre foliate	no	DRM-protected books are not supported
+mobi	document	native	1	okular calibre foliate	no	DRM-protected books are not supported
+azw	document	native	1	okular calibre foliate	no	DRM-protected books are not supported
+azw3	document	native	1	okular calibre foliate	no	DRM-protected books are not supported
+fb2	document	native	1	okular calibre foliate	no	DRM-protected books are not supported
+cbz	document	native	1	okular calibre foliate	no	DRM-protected books are not supported
+cbr	document	native	1	okular calibre foliate	no	DRM-protected books are not supported
+cb7	document	native	1	okular calibre foliate	no	DRM-protected books are not supported
+lit	document	native	1	okular calibre foliate	no	DRM-protected books are not supported
+txt	document	native	1	kate nano python	partial	-
+md	document	native	1	kate nano python	partial	-
+rst	document	native	1	kate nano python	partial	-
+log	document	native	1	kate nano python	partial	-
+csv	document	native	1	kate nano python	partial	-
+tsv	document	native	1	kate nano python	partial	-
+ini	document	native	1	kate nano python	partial	-
+cfg	document	native	1	kate nano python	partial	-
+conf	document	native	1	kate nano python	partial	-
+tex	document	native	1	kate nano python	partial	-
+bib	document	native	1	kate nano python	partial	-
+org	document	native	1	kate nano python	partial	-
+adoc	document	native	1	kate nano python	partial	-
+png	image	native	1	gwenview kimageformats imagemagick	no	-
+jpg	image	native	1	gwenview kimageformats imagemagick	no	-
+jpeg	image	native	1	gwenview kimageformats imagemagick	no	-
+jpe	image	native	1	gwenview kimageformats imagemagick	no	-
+gif	image	native	1	gwenview kimageformats imagemagick	no	-
+bmp	image	native	1	gwenview kimageformats imagemagick	no	-
+ico	image	native	1	gwenview kimageformats imagemagick	no	-
+cur	image	native	1	gwenview kimageformats imagemagick	no	-
+ppm	image	native	1	gwenview kimageformats imagemagick	no	-
+pgm	image	native	1	gwenview kimageformats imagemagick	no	-
+pbm	image	native	1	gwenview kimageformats imagemagick	no	-
+pnm	image	native	1	gwenview kimageformats imagemagick	no	-
+tga	image	native	1	gwenview kimageformats imagemagick	no	-
+pcx	image	native	1	gwenview kimageformats imagemagick	no	-
+xbm	image	native	1	gwenview kimageformats imagemagick	no	-
+xpm	image	native	1	gwenview kimageformats imagemagick	no	-
+webp	image	native	1	gwenview kimageformats imagemagick	no	-
+apng	image	native	1	gwenview kimageformats imagemagick	no	-
+heic	image	native	1	gwenview libheif libjxl libavif	no	HEVC-based HEIC may need a patent-encumbered decoder
+heif	image	native	1	gwenview libheif libjxl libavif	no	HEVC-based HEIC may need a patent-encumbered decoder
+avif	image	native	1	gwenview libheif libjxl libavif	no	HEVC-based HEIC may need a patent-encumbered decoder
+jxl	image	native	1	gwenview libheif libjxl libavif	no	HEVC-based HEIC may need a patent-encumbered decoder
+jp2	image	native	1	gwenview libheif libjxl libavif	no	HEVC-based HEIC may need a patent-encumbered decoder
+j2k	image	native	1	gwenview libheif libjxl libavif	no	HEVC-based HEIC may need a patent-encumbered decoder
+tif	image	native	1	gwenview libtiff imagemagick	no	-
+tiff	image	native	1	gwenview libtiff imagemagick	no	-
+dds	image	native	1	gwenview libtiff imagemagick	no	-
+exr	image	native	1	gwenview libtiff imagemagick	no	-
+hdr	image	native	1	gwenview libtiff imagemagick	no	-
+raw	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+cr2	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+cr3	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+nef	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+nrw	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+arw	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+sr2	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+dng	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+orf	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+rw2	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+raf	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+pef	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+srw	image	native	1	libraw darktable rawtherapee	partial	camera RAW; libraw is already in the image
+psd	image	native	1	gimp krita	no	Photoshop import is best-effort
+xcf	image	native	1	gimp krita	no	Photoshop import is best-effort
+kra	image	native	1	gimp krita	no	Photoshop import is best-effort
+ora	image	native	1	gimp krita	no	Photoshop import is best-effort
+svg	image	native	1	inkscape librsvg	no	Illustrator and Windows metafile import is best-effort
+svgz	image	native	1	inkscape librsvg	no	Illustrator and Windows metafile import is best-effort
+ai	image	native	1	inkscape librsvg	no	Illustrator and Windows metafile import is best-effort
+cdr	image	native	1	inkscape librsvg	no	Illustrator and Windows metafile import is best-effort
+wmf	image	native	1	inkscape librsvg	no	Illustrator and Windows metafile import is best-effort
+emf	image	native	1	inkscape librsvg	no	Illustrator and Windows metafile import is best-effort
+mp3	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+flac	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+ogg	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+oga	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+opus	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+wav	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+aac	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+m4a	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+alac	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+wma	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+aiff	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+aif	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+ape	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+wv	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+mka	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+mp2	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+ac3	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+dts	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+amr	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+au	audio	native	1	ffmpeg vlc mpv elisa	partial	ffmpeg is already in the image
+mid	audio	native	1	timidity fluidsynth	no	-
+midi	audio	native	1	timidity fluidsynth	no	-
+kar	audio	native	1	timidity fluidsynth	no	-
+mod	audio	native	1	libopenmpt mpv	no	tracker music
+xm	audio	native	1	libopenmpt mpv	no	tracker music
+it	audio	native	1	libopenmpt mpv	no	tracker music
+s3m	audio	native	1	libopenmpt mpv	no	tracker music
+mp4	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+m4v	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+mkv	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+avi	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+mov	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+webm	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+wmv	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+asf	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+flv	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+f4v	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+mpg	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+mpeg	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+ts	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+m2ts	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+mts	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+3gp	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+3g2	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+ogv	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+vob	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+rm	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+rmvb	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+divx	video	native	1	ffmpeg vlc mpv haruna	partial	hardware decoding depends on the GPU driver
+srt	video	native	1	ffmpeg mpv	partial	subtitles
+ass	video	native	1	ffmpeg mpv	partial	subtitles
+ssa	video	native	1	ffmpeg mpv	partial	subtitles
+vtt	video	native	1	ffmpeg mpv	partial	subtitles
+sub	video	native	1	ffmpeg mpv	partial	subtitles
+sup	video	native	1	ffmpeg mpv	partial	subtitles
+ttf	font	native	1	fontconfig fontforge	partial	fontconfig is already in the image
+otf	font	native	1	fontconfig fontforge	partial	fontconfig is already in the image
+ttc	font	native	1	fontconfig fontforge	partial	fontconfig is already in the image
+woff	font	native	1	fontconfig fontforge	partial	fontconfig is already in the image
+woff2	font	native	1	fontconfig fontforge	partial	fontconfig is already in the image
+pfb	font	native	1	fontconfig fontforge	partial	fontconfig is already in the image
+pfm	font	native	1	fontconfig fontforge	partial	fontconfig is already in the image
+bdf	font	native	1	fontconfig fontforge	partial	fontconfig is already in the image
+pcf	font	native	1	fontconfig fontforge	partial	fontconfig is already in the image
+stl	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+obj	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+fbx	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+gltf	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+glb	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+3ds	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+dae	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+ply	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+3mf	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+blend	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+usd	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+usdz	3d-cad	native	2	blender meshlab openscad	no	USDZ and FBX import are best-effort
+step	3d-cad	native	2	freecad librecad qcad	no	DWG is proprietary: import is best-effort
+stp	3d-cad	native	2	freecad librecad qcad	no	DWG is proprietary: import is best-effort
+iges	3d-cad	native	2	freecad librecad qcad	no	DWG is proprietary: import is best-effort
+igs	3d-cad	native	2	freecad librecad qcad	no	DWG is proprietary: import is best-effort
+dxf	3d-cad	native	2	freecad librecad qcad	no	DWG is proprietary: import is best-effort
+dwg	3d-cad	native	2	freecad librecad qcad	no	DWG is proprietary: import is best-effort
+gcode	3d-cad	native	2	cura prusa-slicer	no	-
+sqlite	data	native	1	sqlite sqlitebrowser duckdb	partial	sqlite is already in the image
+sqlite3	data	native	1	sqlite sqlitebrowser duckdb	partial	sqlite is already in the image
+db	data	native	1	sqlite sqlitebrowser duckdb	partial	sqlite is already in the image
+db3	data	native	1	sqlite sqlitebrowser duckdb	partial	sqlite is already in the image
+parquet	data	native	1	sqlite sqlitebrowser duckdb	partial	sqlite is already in the image
+arrow	data	native	1	sqlite sqlitebrowser duckdb	partial	sqlite is already in the image
+feather	data	native	1	sqlite sqlitebrowser duckdb	partial	sqlite is already in the image
+json	data	native	1	python jq	partial	python is already in the image
+jsonl	data	native	1	python jq	partial	python is already in the image
+yaml	data	native	1	python jq	partial	python is already in the image
+yml	data	native	1	python jq	partial	python is already in the image
+toml	data	native	1	python jq	partial	python is already in the image
+xml	data	native	1	python jq	partial	python is already in the image
+ipynb	data	native	1	python jq	partial	python is already in the image
+har	data	native	1	python jq	partial	python is already in the image
+geojson	data	native	1	python jq	partial	python is already in the image
+eml	mail	native	2	thunderbird kontact libpst	no	Outlook formats are best-effort
+mbox	mail	native	2	thunderbird kontact libpst	no	Outlook formats are best-effort
+msg	mail	native	2	thunderbird kontact libpst	no	Outlook formats are best-effort
+pst	mail	native	2	thunderbird kontact libpst	no	Outlook formats are best-effort
+ost	mail	native	2	thunderbird kontact libpst	no	Outlook formats are best-effort
+emlx	mail	native	2	thunderbird kontact libpst	no	Outlook formats are best-effort
+ics	mail	native	2	kontact khard	no	-
+vcf	mail	native	2	kontact khard	no	-
+ical	mail	native	2	kontact khard	no	-
+pem	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+crt	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+cer	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+der	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+p12	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+pfx	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+gpg	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+asc	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+sig	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+kdbx	security	native	1	openssl gnupg keepassxc	partial	openssl and gnupg are already in the image
+deb	package	native	2	dpkg rpm-tools libarchive	partial	extraction and inspection; installing foreign packages is not the aim
+rpm	package	native	2	dpkg rpm-tools libarchive	partial	extraction and inspection; installing foreign packages is not the aim
+pkg.tar.zst	package	native	2	pacman libarchive	partial	native package format of the base system
+pkg.tar.xz	package	native	2	pacman libarchive	partial	native package format of the base system
+appimage	package	native	2	appimage-runtime flatpak snapd	no	must be an ARM64 build
+flatpak	package	native	2	appimage-runtime flatpak snapd	no	must be an ARM64 build
+snap	package	native	2	appimage-runtime flatpak snapd	no	must be an ARM64 build
+whl	package	native	2	python-pip libarchive	partial	-
+egg	package	native	2	python-pip libarchive	partial	-
+gem	package	native	2	python-pip libarchive	partial	-
+crate	package	native	2	python-pip libarchive	partial	-
+sh	executable	native	1	bash python nodejs perl ruby	partial	-
+bash	executable	native	1	bash python nodejs perl ruby	partial	-
+py	executable	native	1	bash python nodejs perl ruby	partial	-
+js	executable	native	1	bash python nodejs perl ruby	partial	-
+mjs	executable	native	1	bash python nodejs perl ruby	partial	-
+pl	executable	native	1	bash python nodejs perl ruby	partial	-
+rb	executable	native	1	bash python nodejs perl ruby	partial	-
+lua	executable	native	1	bash python nodejs perl ruby	partial	-
+php	executable	native	1	bash python nodejs perl ruby	partial	-
+jar	executable	native	1	jre-openjdk	no	Java runs natively on ARM64
+class	executable	native	1	jre-openjdk	no	Java runs natively on ARM64
+war	executable	native	1	jre-openjdk	no	Java runs natively on ARM64
+nupkg	executable	native	2	dotnet-runtime mono	no	.NET assemblies: see exe/dll for Windows ones
+wasm	executable	native	2	wasmtime wasmer	no	-
+wat	executable	native	2	wasmtime wasmer	no	-
+elf	executable	native	1	binutils	no	Linux ARM64 binaries run directly; Linux x86-64 programs need FEX-Emu, Box64 or qemu-user through binfmt_misc
+so	executable	native	1	binutils	no	Linux ARM64 binaries run directly; Linux x86-64 programs need FEX-Emu, Box64 or qemu-user through binfmt_misc
+ko	executable	native	1	binutils	no	Linux ARM64 binaries run directly; Linux x86-64 programs need FEX-Emu, Box64 or qemu-user through binfmt_misc
+exe	executable	compat	2	wine fex-emu box64 dxvk vkd3d-proton	no	Windows x86-64 programs (Windows ARM64 programs run through Wine directly); no kernel drivers or anti-cheat; GPU translation on Adreno is experimental
+com	executable	compat	2	wine fex-emu box64 dxvk vkd3d-proton	no	Windows x86-64 programs (Windows ARM64 programs run through Wine directly); no kernel drivers or anti-cheat; GPU translation on Adreno is experimental
+scr	executable	compat	2	wine fex-emu box64 dxvk vkd3d-proton	no	Windows x86-64 programs (Windows ARM64 programs run through Wine directly); no kernel drivers or anti-cheat; GPU translation on Adreno is experimental
+msi	executable	compat	2	wine msitools	no	Windows installers; MSIX needs extra work
+msix	executable	compat	2	wine msitools	no	Windows installers; MSIX needs extra work
+appx	executable	compat	2	wine msitools	no	Windows installers; MSIX needs extra work
+appxbundle	executable	compat	2	wine msitools	no	Windows installers; MSIX needs extra work
+msp	executable	compat	2	wine msitools	no	Windows installers; MSIX needs extra work
+dll	executable	compat	2	wine	no	libraries and shortcuts of Windows programs; .sys drivers cannot run
+ocx	executable	compat	2	wine	no	libraries and shortcuts of Windows programs; .sys drivers cannot run
+sys	executable	compat	2	wine	no	libraries and shortcuts of Windows programs; .sys drivers cannot run
+lnk	executable	compat	2	wine	no	libraries and shortcuts of Windows programs; .sys drivers cannot run
+cpl	executable	compat	2	wine	no	libraries and shortcuts of Windows programs; .sys drivers cannot run
+bat	executable	compat	2	wine powershell	no	Windows scripts: PowerShell exists for ARM64 Linux; VBScript is limited
+cmd	executable	compat	2	wine powershell	no	Windows scripts: PowerShell exists for ARM64 Linux; VBScript is limited
+ps1	executable	compat	2	wine powershell	no	Windows scripts: PowerShell exists for ARM64 Linux; VBScript is limited
+vbs	executable	compat	2	wine powershell	no	Windows scripts: PowerShell exists for ARM64 Linux; VBScript is limited
+wsf	executable	compat	2	wine powershell	no	Windows scripts: PowerShell exists for ARM64 Linux; VBScript is limited
+reg	executable	compat	2	wine powershell	no	Windows scripts: PowerShell exists for ARM64 Linux; VBScript is limited
+apk	mobile-app	native	3	waydroid	no	Android apps run in a container; ARM64 apps need no CPU translation; no Google Play, unofficial on Snapdragon X
+xapk	mobile-app	native	3	waydroid	no	Android apps run in a container; ARM64 apps need no CPU translation; no Google Play, unofficial on Snapdragon X
+apks	mobile-app	native	3	waydroid	no	Android apps run in a container; ARM64 apps need no CPU translation; no Google Play, unofficial on Snapdragon X
+apkm	mobile-app	native	3	waydroid	no	Android apps run in a container; ARM64 apps need no CPU translation; no Google Play, unofficial on Snapdragon X
+aab	mobile-app	limited	3	waydroid bundletool	no	Android App Bundles must be converted to APKs first
+ipa	mobile-app	notfeasible	never	touchhle	no	iOS apps: FairPlay DRM, no UIKit; only a few old 32-bit games run in touchHLE
+app	macos	limited	5	darling xar pbzx 7zip	no	command-line tools only through Darling; GUI apps and Apple licence terms are blockers
+pkg	macos	limited	5	darling xar pbzx 7zip	no	command-line tools only through Darling; GUI apps and Apple licence terms are blockers
+mpkg	macos	limited	5	darling xar pbzx 7zip	no	command-line tools only through Darling; GUI apps and Apple licence terms are blockers
+dylib	macos	notfeasible	never	-	no	macOS libraries: not runnable outside macOS
+bundle	macos	notfeasible	never	-	no	macOS libraries: not runnable outside macOS
+framework	macos	notfeasible	never	-	no	macOS libraries: not runnable outside macOS
+nes	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+sfc	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+smc	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+gb	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+gbc	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+gba	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+nds	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+n64	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+z64	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+gen	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+smd	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+sms	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+gg	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+pce	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+a26	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+chd	emulation	compat	5	retroarch mame dolphin-emu	no	emulators exist; the user supplies legally owned ROMs
+d64	emulation	compat	5	dosbox-staging scummvm	no	DOS and legacy games
+adf	emulation	compat	5	dosbox-staging scummvm	no	DOS and legacy games
+ova	other-os	vm	4	qemu-system-aarch64 libvirt virt-manager	no	a whole guest operating system (other CPU architectures too, by slow emulation): needs KVM (EL2 boot path) to be fast
+ovf	other-os	vm	4	qemu-system-aarch64 libvirt virt-manager	no	a whole guest operating system (other CPU architectures too, by slow emulation): needs KVM (EL2 boot path) to be fast
+vbox	other-os	vm	4	qemu-system-aarch64 libvirt virt-manager	no	a whole guest operating system (other CPU architectures too, by slow emulation): needs KVM (EL2 boot path) to be fast
+html	web	native	1	falkon qtwebengine	no	a browser is not in the published image (Firefox was removed for trademark reasons)
+htm	web	native	1	falkon qtwebengine	no	a browser is not in the published image (Firefox was removed for trademark reasons)
+xhtml	web	native	1	falkon qtwebengine	no	a browser is not in the published image (Firefox was removed for trademark reasons)
+mht	web	native	1	falkon qtwebengine	no	a browser is not in the published image (Firefox was removed for trademark reasons)
+torrent	web	native	2	qbittorrent transmission	no	-
+url	web	native	1	xdg-utils	no	-
+desktop	web	native	1	xdg-utils	no	-
+webloc	web	native	1	xdg-utils	no	-

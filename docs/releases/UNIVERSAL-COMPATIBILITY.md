@@ -5,9 +5,11 @@ machine, as natively as technically possible — starting with a few formats and
 the owner include archives (`.zip` `.rar`), disk images (`.iso` `.dmg`), office documents (`.docx` `.xlsx`), Windows programs
 (`.exe`), phone apps (`.apk`), and other operating systems, "literally everything".
 
-**This is the project's direction, not a current feature.** Today the published development image does none of this beyond what a plain
-Plasma desktop gives (file manager, image viewer, PDF viewer, mounting of ISO images through `udisks2`, the `libarchive` tools). Nothing below
-is promised for a date, and each row says what is technically possible.
+**This is the project's direction, not a current feature.** Today the published development image has a Plasma desktop with Dolphin
+(file manager) and Konsole, the command-line compression tools (`gzip`, `bzip2`, `xz`, `zstd`, `lz4`, `tar`), `bsdtar` from `libarchive`
+(reads zip, 7z, ISO and some RAR), `udisks2` for mounting images, and libraries such as `ffmpeg`, `poppler`, `libraw` and `sqlite`.
+It has **no** graphical archive tool, document or PDF viewer, image viewer, media player, office suite, browser, Wine, Waydroid or QEMU.
+Nothing below is promised for a date, and each row says what is technically possible.
 
 ## What "native" means here
 
@@ -34,6 +36,30 @@ claiming support. "Native" is therefore the aim for each format, not a guarantee
 | macOS (`.dmg` apps) | Darling for command-line tools only | Mostly not feasible (Apple EULA, no arm64 app path) | Out of scope for GUI apps |
 | iOS (`.ipa`) | none practical (touchHLE runs a few old 32-bit games only) | Not feasible | Out of scope |
 | "Open anything" integration | `binfmt_misc`, file associations (`xdg-mime`), one launcher that picks the right handler | Native glue | Design only |
+
+## The catalogue (grows without limit)
+
+[`docs/compat/formats.tsv`](../compat/formats.tsv) lists every extension the project aims to handle — **372 in 18 categories** at the
+time of writing (summary: [SUMMARY.md](../compat/SUMMARY.md)): archives, disk images, documents, e-books, images, audio, video, fonts,
+3D/CAD, data, mail, security, packages, executables, mobile apps, macOS, emulation, other-OS images, web and scripts. For each
+extension it records the realistic ceiling, the phase, candidate handlers, whether the published image can do anything with it
+today, and the constraint (licence, DRM, fidelity). The file is generated from `tools/compat-catalogue.py`; CI fails if the two
+differ. **To add an extension**, add it to a group in that script (or a new group), run the script, and send the pull request.
+
+## "Open Anything" design
+
+1. **Identify** by content (libmagic) and extension, not by name alone; unknown types are reported with the sniffed type.
+2. **Choose** the handler with the highest native level that is installed; if none is, offer the best candidate from the catalogue and say what
+   it needs (package, licence, size) before installing.
+3. **Run** natively, else through a compatibility layer, else in a virtual machine — and show which one, with the cost (speed, features).
+4. **Isolate**: foreign executables run unprivileged in a sandbox (separate prefix or container), never as root, and never from a
+   downloads folder without an explicit user action.
+5. **Record**: the catalogue row, the handler used and the result feed the "what works today" table, so claims stay honest.
+
+## Quality gates for each new format
+
+A format moves from *planned* to *supported* only when: a handler is in the image (rights review repeated for new packages), it has been
+tested on real sample files on the laptop, its limits are written in the release notes, and the catalogue row says so.
 
 ## Phases
 
