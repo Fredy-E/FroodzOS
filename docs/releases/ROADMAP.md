@@ -38,6 +38,42 @@ feasibility in [UNIVERSAL-COMPATIBILITY.md](UNIVERSAL-COMPATIBILITY.md). It is a
 | 3.3 | Valkyrie | Stable feature release | Graduate sufficiently validated experimental engineering into the stable feature line. The Valkyrie name does not make unstable defaults acceptable. |
 | 4.0 | Banshee | Stable / major generation | Fourth justified major generation, with its own approved scope, migrations and evidence. No 4.1+ codename is assigned. |
 
+## Main goal mapped onto the series (proposal, 2026-11-11)
+
+The cross-cutting main goal ([UNIVERSAL-COMPATIBILITY.md](UNIVERSAL-COMPATIBILITY.md)) lands in the selected series as below. The
+names and their order are the owner's; the "main-goal focus" column is a **recommendation, not a promise or a date**, and every item
+passes the same gates as any other feature (rights review, hardware test, honest release notes).
+
+| Version | Codename | Main-goal focus (recommended) |
+|---|---|---|
+| 0.1 | Maverick | Qualify the first live baseline; the goal and the extension catalogue are recorded. |
+| 0.2 | Chaffee | **Phase 1 first slice:** archive, document, image and media handlers in the image and a first "Open Anything" launcher. |
+| 0.3 | Hellcat | AI workstation (Hermes) and **Phase 2 start:** Windows programs through Wine with FEX-Emu or Box64. |
+| 0.4 | Viper | Close the desktop and hardware gaps the compatibility layers need: brightness, battery, GPU acceleration, touchpad gestures, audio. |
+| 0.5 | Raptor | First qualified beta with a published support matrix, a tested Windows-app set and **Phase 3:** Android apps through Waydroid. |
+| 0.6 | Pershing | Signed update lifecycle that also covers the compatibility packages. |
+| 0.7 | Apache | Installer and migration. |
+| 0.8 | Wolverine | Endurance and regression testing of the compatibility layers. |
+| 0.9 | Nighthawk | Freeze the first-stable feature set, including the declared compatibility set. |
+| 1.0 | Sherman | Qualified files, Windows programs and Android apps on the supported hardware, with an honest matrix. |
+| 1.1 | Mustang | A second board or VM target, with the compatibility set retested there. |
+| 1.2 | Bulldog | Security hardening, including sandboxing of foreign executables. |
+| 1.3 | Corsair | **Phase 4:** whole-OS guests (QEMU/KVM) where the hardware allows. |
+| 1.4 | Phantom | Compatibility improvements: GPU translation and more formats. |
+| 1.5 | Super Sherman | Consolidate and widen the catalogue. |
+| 2.0 | Abrams | Second generation, only with a substantial justified change. |
+| 2.1 | Thunderbolt | Measured translation-speed improvements. |
+| 2.2 | Bradley | "Open Anything" fully integrated in the desktop. |
+| 2.3 | Stryker | Laptop and mobile operation, including Android apps. |
+| 2.4 | Paladin | Mature the 2.x maintenance and migration path. |
+| 3.0 | Blackbird | Third generation. |
+| 3.1 | Spectre | Specialised emulation: legacy and console platforms. |
+| 3.2 | Hornet | Broaden use cases and target profiles. |
+| 3.3 | Valkyrie | Validated experimental capabilities, for example macOS command-line tools through Darling. |
+| 4.0 | Banshee | Whatever remains feasible. |
+
+iOS apps and macOS GUI apps stay *not feasible* unless the technology or the law changes.
+
 There is no automatic date/percentage progression. Security, integrity and legal
 checks apply before each artifact, not only at their named later milestone.
 Support stays board/configuration-specific. No 4.1+ name or release date is

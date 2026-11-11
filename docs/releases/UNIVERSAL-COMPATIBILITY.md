@@ -63,6 +63,8 @@ tested on real sample files on the laptop, its limits are written in the release
 
 ## Phases
 
+The phases are mapped onto the selected codenames in [ROADMAP.md](ROADMAP.md) (Phase 1 aimed at 0.2 Chaffee, Phase 2 from 0.3 Hellcat, Phase 3 by 0.5 Raptor, Phase 4 at 1.3 Corsair).
+
 1. **Files** — add archive, disk-image and office handlers to the image, file associations and an "open with the right tool" launcher;
    test on real files. Licences: `unrar` has a custom licence (check redistribution before bundling).
 2. **Windows programs** — Wine for ARM64 and x86-64 (FEX-Emu/Box64), Vulkan translation on the Adreno GPU, per-app test list.
