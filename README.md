@@ -6,11 +6,22 @@
 |---|---|
 | Current version | **`0.1.0-dev`, codename Maverick** (development; **not** a qualified alpha) |
 | Target milestone | FroodzOS 0.1 Maverick - ARM64 Alpha: a limited live alpha for one laptop |
-| Binaries | **None published.** No ISO, image, firmware, kernel image or installer is distributed here |
+| Binaries | One signed **development image** for the 83N3 only, as a GitHub pre-release ([`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick)). No vendor firmware, no installer |
 | Licence | Original FroodzOS code and tools: **GPL-2.0-or-later** (see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md)); third-party material keeps its own licences |
 
-> **Source and engineering archive, not an installable OS release.** A desktop on one laptop is not
-> general ARM64 compatibility. Release dates are not assigned; see the [release policy](docs/releases/POLICY.md).
+> **Early development.** A live desktop on one laptop is not general ARM64 compatibility, and not yet a finished operating system.
+> Release dates are not assigned; see the [release policy](docs/releases/POLICY.md).
+
+## Main goal
+
+**FroodzOS must open every kind of file and run the apps and operating systems of other platforms directly on your own machine —
+as natively as technically possible — starting with a few formats and growing without a fixed limit:**
+`.zip` `.rar` `.iso` `.docx` `.xlsx` `.exe` `.apk` `.dmg` and, over time, literally everything: office files, archives, disk images,
+Windows programs, phone apps and other operating systems.
+
+This is the direction of the project, **not something it does today**: the current image is a desktop with a working Wi-Fi, keyboard and
+touchpad on one laptop. The plan, what "native" can mean for each format (native, compatibility layer, virtual machine, or not feasible
+because of technology or law), and the phases are in [docs/releases/UNIVERSAL-COMPATIBILITY.md](docs/releases/UNIVERSAL-COMPATIBILITY.md).
 
 ## What this repository is
 
@@ -54,6 +65,7 @@ the [roadmap](docs/releases/ROADMAP.md) and the [changelog](CHANGELOG.md).
 
 ## Start here
 
+- [Main goal and compatibility plan](docs/releases/UNIVERSAL-COMPATIBILITY.md)
 - [Release status, evidence boundaries and blockers](docs/releases/CURRENT.md)
 - [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev-maverick.md)
 - [0.1 Maverick scope](docs/releases/0.1-maverick.md) and [promotion policy](docs/releases/POLICY.md)

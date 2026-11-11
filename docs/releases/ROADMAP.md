@@ -7,6 +7,9 @@ owner-promised feature lists or publication permission. Features can land early;
 Hellcat does not defer today's Hermes priority. A failed gate stops promotion,
 not all safe source/test work. Current identity remains **0.1.0-dev Maverick**.
 
+**Cross-cutting main goal (all series):** open every kind of file and run other platforms' apps and operating systems as natively as feasible; plan and
+feasibility in [UNIVERSAL-COMPATIBILITY.md](UNIVERSAL-COMPATIBILITY.md). It is a direction, not a delivered feature or a dated promise.
+
 | Series | Selected codename | Intended class | Recommended qualification focus — not delivered status |
 |---|---|---|---|
 | 0.1 | Maverick | Alpha | Qualify the first experimental, board-specific live baseline: native boot, usable text console/input, documented networking, safe shutdown and tested recovery. Establish release provenance and legal/publication gates. Hermes is included only if its own integration is accepted. |
