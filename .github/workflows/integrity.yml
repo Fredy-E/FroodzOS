@@ -1,0 +1,24 @@
+name: integrity
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publication-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify publication (file list, no binaries, checksums)
+        run: python -B tools/verify-publication.py
+      - name: Validate release metadata
+        run: python -B tools/validate_release.py
+      - name: SHA256SUMS is up to date
+        run: |
+          python -B tools/regenerate-publication.py
+          git diff --exit-code -- SHA256SUMS

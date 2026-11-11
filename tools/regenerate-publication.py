@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Rebuild SHA256SUMS from the files actually present (every file except SHA256SUMS itself).
 
 Run after adding or changing files, then run tools/verify-publication.py. The historical

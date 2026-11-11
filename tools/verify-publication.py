@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Verify a fresh source checkout/ZIP without requiring Git or native hardware."""
 import argparse
 import hashlib

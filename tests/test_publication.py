@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Portable tests for publication checksum/path/privacy gates."""
 import hashlib
 import importlib.util

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Fix duplicate adc@9000 under pmk8550 in hamoa-pmics.dtsi (2026-10-08).
 
 Two nodes named adc@9000 exist under pmic@0: pmk8550_adc_tm (a stale partial

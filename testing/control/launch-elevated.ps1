@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Launch the USB writer elevated (UAC prompt appears - approve it). 2026-10-08
 $argList = @(
   '-NoProfile',

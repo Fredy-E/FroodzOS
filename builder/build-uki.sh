@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Task 2.3 (part 2): assemble the Slim 3 UKI from built kernel + stubble (2026-10-08)
 set -euo pipefail
 KSRC=/home/builder/src/ksrc

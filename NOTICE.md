@@ -24,6 +24,11 @@ licence.
 | Lenovo 83N3 board DTS | Preserved `BSD-3-Clause` SPDX header and Qualcomm Innovation Center, Linaro and Jens Glathe copyright notices. See `third_party/linux/BSD-3-Clause`. The kernel tree contains other separately licensed includes; obtain them from the pinned upstream source. |
 | stubble `linux.c` / alignment delta | `ubuntu/stubble` at `9f11278e080a5c4a77db6acf4c8f75c14412087a`; preserved `LGPL-2.1-or-later` SPDX header. See `third_party/stubble/LICENSE.LGPL2.1`. |
 | `builder/initcpio/install/filesystems` | Derived from mkinitcpio 42.2; preserved `GPL-2.0-only` SPDX notice. GPL version 2 text is also included under `third_party/linux/GPL-2.0`. |
+| `testing/boot-failure/control-reference/boot/grub/grub.cfg` | A captured Ubuntu control-image GRUB configuration kept as comparison evidence; Canonical/Ubuntu and GRUB terms apply, not the project licence. |
+| `testing/boot-failure/uefi-package/usr/share/qemu/firmware/*.json` | QEMU firmware descriptor files from the EDK2/QEMU packages (upstream licences apply); retained as test-fixture evidence. |
+| `boards/lenovo-83n3/kernel.config` | A captured Linux kernel configuration; the Linux kernel's GPL-2.0-only terms apply. |
+| `pkgs/*/PKGBUILD` and patches | Packaging recipes derived from the CachyOS and Arch Linux ARM packaging; their upstream terms apply and the `license=` field describes the packaged software, not the recipe. Origin of each recipe is recorded in its history. |
+| Original scripts under `builder/`, `tools/`, `tests/`, `testing/control/`, `boards/lenovo-83n3/touchpad/` | Tagged `SPDX-License-Identifier: GPL-2.0-or-later` (`tools/add-spdx-headers.py`). Frozen evidence under `testing/boot-failure/` is intentionally not edited (hash-pinned) and is covered by this project licence unless a file says otherwise. |
 | Other source files with SPDX headers | Their existing file-specific licences apply. They are not overridden by the project licence above. |
 | FroodzOS original code and tools | **GPL-2.0-or-later**, see above. |
 | Original research, history and documentation prose | Owner-created; no separate licence selected yet. |

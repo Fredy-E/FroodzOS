@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Task 3.4: local-only Qualcomm firmware staging for the Lenovo 83N3 (ADR-5).
 # Copies firmware from the machine's OWN Windows installation (read-only) into
 # the live session's firmware path. NEVER uploads or redistributes anything.

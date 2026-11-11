@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # HISTORICAL NETWORK REPRODUCER, NOT A CURRENT SETUP SCRIPT.
 # Network constants are documentation-only redactions. Do not use as-is.
 if [ "${FROODZOS_ALLOW_HISTORICAL_NETWORK:-0}" != 1 ]; then

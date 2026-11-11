@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Task 3.1/3.3: project signing keys + signed overlay repo (ADR-7, 2026-10-08)
 # - Offline master key material generated here for convenience, exported to D: for
 #   the user to archive OFF the machine; the build key signs packages in the builder.

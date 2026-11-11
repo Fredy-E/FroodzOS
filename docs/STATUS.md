@@ -113,7 +113,7 @@ reported post-keypress lag is still awaiting owner confirmation.
   application settings and tool persistence still need their own evidence.
   No local model weights, Windows profile/runtime or secret transfer; no WSL
   installation as a substitute.
-- Touchpad function: works in basic mouse mode through a user-space polling driver (see `docs/touchpad.md`). The physical
+- Touchpad function (update 2026-11-11, see [touchpad.md](touchpad.md)): works in basic mouse mode through a user-space polling driver (see `docs/touchpad.md`). The physical
   Linux interrupt line is still unknown (ACPI pin 960 is not a Linux TLMM GPIO number); no guessed IRQ change.
 - Battery behavior: the 27 October TypeError had no safe location; the 28
   October v2 diagnostic safely reported the location at `_safe_read_text:696`;

@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Phase 2 Task 2.1: pin + fetch kernel/stubble sources (2026-10-08)
 set -e
 SRC=/home/builder/src

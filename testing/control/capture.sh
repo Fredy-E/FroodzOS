@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Phase 0 control-test evidence capture - run inside the Ubuntu Concept live session
 # Usage: sudo bash /media/ubuntu/*/testing/control/capture.sh  (or wherever this file lives)
 set -u

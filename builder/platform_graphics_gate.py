@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Validate packed graphics archive closure for dt25.
 
 Fail-closed: every clause must independently reject a broken image.

@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # G2 smoke boot + G0b runtime proof: boot our Image under qemu-system-aarch64
 # -cpu cortex-a53 (ARMv8-A) with a minimal static init (2026-10-08).
 set -euo pipefail

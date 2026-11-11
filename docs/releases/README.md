@@ -16,7 +16,7 @@ board status, not approval receipts. Future exact-build records belong in
 From the project root, `python -B tools/validate_release.py` performs a bounded,
 read-only metadata consistency check. It prints `DEVELOPMENT_METADATA_ONLY`
 and `qualification: NOT_EVALUATED`; exit0 is **not** package, hardware or release
-acceptance. `python -B testing/test_release_metadata.py` runs inert regression
+acceptance. `python -B -m unittest discover -s tests` runs inert regression
 checks; for this project, Linux execution is gated to the named CachyOSBuilder
 UID/EUID1001 with clean PATH. Windows fixtures use the Hermes scratch directory.
 No installer, network, privilege, boot or media operation is performed.

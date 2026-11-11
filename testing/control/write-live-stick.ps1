@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 param(
   [string]$StagingDir = 'D:\CachyOS-ARM64\live-staging'
 )

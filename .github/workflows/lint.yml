@@ -1,0 +1,49 @@
+name: lint
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Python syntax errors only
+        run: |
+          python -B - <<'PY'
+          import ast, pathlib, sys
+          bad = 0
+          for p in pathlib.Path('.').rglob('*.py'):
+              if '.git' in p.parts:
+                  continue
+              try:
+                  ast.parse(p.read_text(encoding='utf-8', errors='replace'), filename=str(p))
+              except SyntaxError as e:
+                  print('SYNTAX', p, e)
+                  bad += 1
+          sys.exit(1 if bad else 0)
+          PY
+      - name: Shell syntax (builder and tools only)
+        run: |
+          set -e
+          for f in builder/*.sh tools/*.sh; do bash -n "$f"; done
+  powershell-parse:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse PowerShell scripts (syntax only)
+        shell: pwsh
+        run: |
+          $bad = 0
+          Get-ChildItem -Recurse -Filter *.ps1 | Where-Object { -not $_.FullName.Contains([IO.Path]::DirectorySeparatorChar + '.git' + [IO.Path]::DirectorySeparatorChar) } | ForEach-Object {
+            $errs = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$null, [ref]$errs) | Out-Null
+            if ($errs) { Write-Output "PARSE $($_.FullName): $($errs[0].Message)"; $bad++ }
+          }
+          if ($bad) { exit 1 }

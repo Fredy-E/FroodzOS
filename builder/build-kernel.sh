@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Task 2.2: build the hardware-enablement kernel from pinned jglathe tree (2026-10-08)
 # Tree: linux_ms_dev_kit @ 3f0d8691afa098ba378d7d5a3968f03219887719
 set -euo pipefail

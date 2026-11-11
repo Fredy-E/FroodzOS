@@ -39,10 +39,10 @@ the owner on 2026-11-10; that is an observation of one candidate, not qualificat
 | HOME persistence | Different-boot proof accepted and sealed; **do not repeat the HOME challenge** |
 | Installed application/settings/tool persistence | Not yet accepted |
 | Native Hermes install/authentication | Out of the 0.1 scope (parked); not accepted; do not copy host credentials or runtime profile |
-| Touchpad | **Not working.** 2026-11-10 progress: with a diagnostic device tree the touchpad's I2C bus now probes; the device tree's touchpad node describes a different variant (address 0x5d) and no interrupt line is mapped, so the driver refuses it. No guessed interrupt number is accepted. A read-only probe of the ACPI-indicated address 0x38 is prepared |
+| Touchpad | **Works in basic mouse mode** (owner-tested 2026-11-11) through a user-space polling driver; tap-to-click, gestures and natural scrolling are not available. The kernel path (interrupt line, device tree node) is still open. See [../touchpad.md](../touchpad.md). |
 | Graphics acceleration, audio, camera, USB-C-PD | Unaccepted |
 | Battery diagnostics, suspend, power/thermal endurance, final hardware power-off | Unaccepted |
-| GRUB menu | Menu v3 applied 2026-11-10 (fewer entries, small font, selectable menu mode); responsiveness awaiting owner confirmation |
+| GRUB menu | Menu v5 applied 2026-11-11 (default entry includes the touchpad driver; previous default kept as a fallback entry); the default boot was owner-tested with touchpad, Wi-Fi, native 1920x1200 and a clean poweroff. Menu responsiveness was not explicitly confirmed. |
 | General ARM64 boards / a distribution VM target | Downstream, independently qualified targets; not supplied by unit fixtures |
 
 ## Current blockers to a qualified 0.1 alpha
@@ -50,7 +50,7 @@ the owner on 2026-11-10; that is an observation of one candidate, not qualificat
 1. **Release qualification is open.** Exact-candidate boot with confirmed display mode, recovery and
    safe shutdown, declared hardware limitations, source/artifact provenance, authenticated artifacts and
    the legal/redistribution/publication gates are not satisfied by a codename catalog or a test count.
-2. **Touchpad** is an open hardware item. It may ship as a documented limitation if it is not resolved.
+2. **Touchpad** works in basic mouse mode only; gestures and a proper kernel driver are open and may ship as documented limitations.
 3. **Rights for any public binary image.** Redistribution of the CachyOS repository in other distributions
    is prohibited by its policy, vendor firmware extracted from the owner's installation carries no
    redistribution grant, and the Arch Linux ARM base and branding terms are unreviewed. Public source
