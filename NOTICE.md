@@ -52,3 +52,10 @@ and corresponding-source review.
 
 Full third-party fetched web pages are not copied merely because they were used for research; authored
 analysis and source URLs are retained. Any quoted upstream material retains its original authorship and terms.
+
+## Trademarks and affiliation
+
+FroodzOS is an independent hobby project. It is **not affiliated with, endorsed by or sponsored by** Arch Linux, Arch Linux ARM,
+CachyOS, Mozilla, Qualcomm, Lenovo, Microsoft or Canonical. Product and company names belong to their owners. The public image is
+based on unmodified Arch Linux ARM binary packages and says so; it does not use the Arch Linux logo or name as its own, and it
+does not include the Mozilla Firefox browser. Details and open points: `docs/releases/RIGHTS-REVIEW.md`.
