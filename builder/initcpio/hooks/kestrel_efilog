@@ -1,4 +1,5 @@
 #!/usr/bin/ash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Early RAM capture. Firmware is separately opt-in, write-once and bounded.
 run_earlyhook() {
     [ "$(getarg kestrel_log)" = 1 ] || [ "$(getarg kestrel_efilog)" = 1 ] || return 0

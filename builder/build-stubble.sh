@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Task 2.3 (part 1): build the stubble UKI stub from pinned ubuntu/stubble (2026-10-08)
 set -euo pipefail
 cd /home/builder/src

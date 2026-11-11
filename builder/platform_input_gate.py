@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Require the modular I2C-HID path before the live-root transition."""
 import re
 import shlex

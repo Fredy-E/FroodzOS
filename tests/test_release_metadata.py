@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Read-only release identity checks. Fixtures never qualify/release an OS."""
 import copy
 import hashlib

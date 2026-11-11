@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Task 1.4 (G0b) + Task 1.5 (G1) on CachyOSBuilder (2026-10-08)
 set -e
 

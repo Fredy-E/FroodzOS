@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Build + sign the linux-cachyos-arm64 package from the validated build tree (2026-10-08)
 set -euo pipefail
 rm -rf /home/builder/pkg-linux

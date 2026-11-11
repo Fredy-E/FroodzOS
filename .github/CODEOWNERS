@@ -1,0 +1,9 @@
+# Solo-maintained for now. Do not require code-owner review in branch protection until there is a second owner.
+*                              @Fredy-E
+/.github/                      @Fredy-E
+/tools/                        @Fredy-E
+/tests/                        @Fredy-E
+/release/                      @Fredy-E
+/docs/releases/CODENAMES.md    @Fredy-E
+/LICENSE                       @Fredy-E
+/NOTICE.md                     @Fredy-E

@@ -63,15 +63,16 @@ historical inputs, not instructions to erase or rebuild the working USB.
 - [ ] Exercise independent text recovery and observe normal physical poweroff.
 - [ ] Owner feedback on GRUB responsiveness after the first keypress. Modest-mode
   gfxterm/console fallback is applied, not yet confirmed to resolve the bug.
-- [ ] Install/configure native Hermes now that the HOME prerequisite is passed.
+- [ ] (Parked 2026-11-10; out of the 0.1 scope) Install/configure native Hermes now that the HOME prerequisite is passed.
   Curated portable skills/bootstrap is prepared; no Windows runtime/profile or
   secret transfer and no local-model collection. WSL is not a substitute
   native gate. Application settings/tool persistence needs its own evidence.
 
 ## Hardware and distribution work still open
 
-- [ ] Built-in touchpad. Address `0x38` on IC20/Linux i2c19 is grounded; the
-  physical Linux TLMM interrupt line remains unknown. Do not treat ACPI 960 as
+- [x] Built-in touchpad in basic mouse mode (2026-11-11): user-space polling driver, owner-tested; see
+  [touchpad.md](touchpad.md). Still open: tap-to-click/gestures and a proper kernel driver. Address `0x38` on IC20/Linux
+  i2c-0 is grounded; the physical Linux TLMM interrupt line remains unknown. Do not treat ACPI 960 as
   a GPIO or invent a numeric transform. An isolated no-ICC experiment is not
   native enumeration or function proof.
 - [ ] Battery behavior. The 27 October TypeError had no safe location; the 28

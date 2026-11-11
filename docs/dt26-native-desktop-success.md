@@ -1,5 +1,8 @@
 # dt26 native desktop milestone — 2026-10-19
 
+> **Historical (2026-10-19).** Touchpad and Wi-Fi were open at the time. Wi-Fi and the touchpad (basic mouse mode) work in the
+> 0.1.0-dev candidate; current status is in [releases/CURRENT.md](releases/CURRENT.md).
+
 The owner reported: **“Goal achieved Desktop loaded!”** and proposed running Hermes Agent directly on native Linux. This establishes user-observed desktop pixels; it does not establish keyboard/pointer, networking, persistence, or which of the two recovered boots the observation belongs to.
 
 ## Evidence recovered, USB read-only

@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 SYNC=/home/builder/imgroot/var/lib/pacman/sync
 echo "== perms =="
 stat -c "%U %G %a %n" "$SYNC" "$SYNC/cachyos-arm64.db" 2>&1

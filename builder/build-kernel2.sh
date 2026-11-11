@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Task 2.2 rebuild (targeted): Image + modules + ONLY the Slim 3 DTB (2026-10-08)
 set -euo pipefail
 cd /home/builder/src/ksrc

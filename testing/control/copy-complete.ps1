@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Complete the USB file copy and verify every file (2026-10-08, non-elevated).
 $ErrorActionPreference = 'Stop'
 $log = 'D:\CachyOS-ARM64\testing\control\copy-complete.log'

@@ -1,4 +1,5 @@
 #!/usr/bin/ash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Capture runs in run_latehook (after archiso mounted the USB) so the live
 # mount is never contested. run_cleanuphook stops snapshots; the static kmsg
 # streamer survives switch_root and the overlay service resumes logging.

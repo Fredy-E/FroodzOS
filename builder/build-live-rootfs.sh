@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Phase 4: build the live rootfs for the ARM64 image (2026-10-08)
 # Desktop per M1 bar: Plasma desktop, wired network, USB, safe shutdown.
 # Firmware staged from THIS machine's own Windows DriverStore (local-only, ADR-5).

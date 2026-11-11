@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Phase 4: live initramfs (mkinitcpio-archiso) + final live UKI (2026-10-08)
 set -euo pipefail
 KSRC=/home/builder/src/ksrc

@@ -2,8 +2,7 @@
 
 This is a retrospective engineering record, not a claim that the original work
 had Git commits. The main workspace and extracted kernel tree were not Git
-repositories. The first public source snapshot is being prepared on 19 October
-2026; the dated records below preserve the actual earlier chronology without
+repositories. The first public source snapshot was published in October 2026; the dated records below preserve the actual earlier chronology without
 backdating commits or inventing successes.
 
 ## Read in order
@@ -12,7 +11,7 @@ backdating commits or inventing successes.
    first research to the current state.
 1. [Bootstrap, image defects and dt1–dt20](bootstrap-through-dt20.md)
 2. [dt21 USB breakthrough through dt26 desktop](dt21-through-dt26.md)
-3. [Current accepted state and remaining limits](../STATUS.md)
+3. [Current status and remaining limits](../releases/CURRENT.md) ([STATUS.md](../STATUS.md) is the 28 October snapshot)
 
 The original [design](../porting-design.md), [decision record](../decisions.md),
 [implementation plan](../implementation-plan.md), [phase 1](../phase1-results.md),

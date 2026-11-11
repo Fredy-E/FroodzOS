@@ -209,6 +209,15 @@ desktop yet.
   selectable menu display mode, and a return to the firmware's native 1920x1200 mode before the kernel
   loads (the earlier 1024x768 menu mode had been inherited by the kernel).
 
+## 11 November 2026 — touchpad works, menu v5, repository revamp
+
+- Touchpad: the user-space polling driver was written to the private test media and owner-tested; the pointer works with no
+  errors in the boot log (basic mouse mode). See [touchpad.md](touchpad.md).
+- Menu v5: the default entry now boots the touchpad-capable setup; the previous default stays as a fallback entry.
+  The default boot was owner-tested: touchpad, Wi-Fi, native 1920x1200 and a clean poweroff.
+- The candidate was accepted by the owner as the private Maverick 0.1 development candidate. No public binary exists.
+- Repository revamp pushed as a pull request; CI, SPDX headers and directory indexes added in a follow-up.
+
 ## Current state
 
 | Area | State |

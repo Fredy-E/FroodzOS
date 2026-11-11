@@ -1,4 +1,5 @@
 #!/usr/bin/ash
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Opt-in RAM-overlay simpledrm/software-Plasma diagnostic. Inert by default.
 # Gated by kestrel_graphics=1. Stages helpers/config/units into the writable
 # /sysroot RAM overlay only. Never blocks normal boot: all staging failures

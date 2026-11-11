@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Validate pre-pivot module closure for the Slim 3 USB repeater bus.
 
 Presence alone is insufficient: these modular bus/providers must be in

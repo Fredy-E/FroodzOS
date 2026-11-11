@@ -19,7 +19,7 @@ first research on **7 October 2026** onward. It documents how a CachyOS-derived,
 system was brought up natively on the 83N3 laptop, and how the first release (0.1 Maverick) is being
 qualified. Failed and rejected revisions are kept on purpose; nothing is retroactively relabelled as a pass.
 
-## Status (evidence as of 10 November 2026)
+## Status (evidence as of 11 November 2026)
 
 | Area | Evidence-backed status |
 |---|---|
@@ -49,6 +49,7 @@ the [roadmap](docs/releases/ROADMAP.md) and the [changelog](CHANGELOG.md).
 - [Release status, evidence boundaries and blockers](docs/releases/CURRENT.md)
 - [0.1 Maverick scope](docs/releases/0.1-maverick.md) and [promotion policy](docs/releases/POLICY.md)
 - [Changelog](CHANGELOG.md)
+- [Documentation index](docs/README.md)
 - [Project timeline](docs/TIMELINE.md), [task list](docs/TASKS.md), [complete history index](docs/history/README.md)
 - [Native desktop evidence](docs/dt26-native-desktop-success.md)
 - [Source inputs, pins and replayable deltas](reproducibility/README.md)
@@ -61,13 +62,15 @@ the [roadmap](docs/releases/ROADMAP.md) and the [changelog](CHANGELOG.md).
 |---|---|
 | `builder/` | Build recipes, initramfs hooks, platform gates, supervisors and logger sources. |
 | `pkgs/` | Packaging records and the retained numbered diagnostic-patch history. Some old patch documents are malformed; do not replay them blindly. |
-| `boards/lenovo-83n3/` | Captured kernel configuration and board device-tree source. |
+| `boards/lenovo-83n3/` | Captured kernel configuration, board device-tree source and the touchpad polling driver. |
 | `reproducibility/` | Pinned upstream references and byte-tested cumulative source deltas. |
 | `release/` | Machine-readable development identity, the 25 codenames and the board profile. |
 | `testing/` | Diagnostic and test scripts and reviewed receipts, including failed runs. |
 | `docs/` | Decisions, research, phase reports, current state, release documents and chronological history. |
 | `third_party/` | Applicable upstream licence texts and notices; no vendor firmware. |
-| `tools/`, `tests/` | Publication integrity verification, the release-metadata validator, and their tests. |
+| `tools/`, `tests/` | Publication integrity verification, the release-metadata validator, SPDX and privacy helpers, and tests. |
+| `research/` | Raw research data (JSON and JSONL); not documentation. Prose research is under `docs/research/`. |
+| `.github/` | Issue and pull-request templates, CODEOWNERS and CI workflows. |
 
 ## Verification
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Fail closed if initramfs PID 1 or WSL helper exclusion is wrong."""
 import argparse, hashlib, json, subprocess, tempfile
 from pathlib import Path

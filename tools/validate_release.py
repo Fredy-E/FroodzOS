@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
 """Read-only development metadata consistency, NEVER release qualification.
 
 This snapshot intentionally admits only Maverick 0.1.0-dev metadata. A later
