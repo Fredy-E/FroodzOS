@@ -26,8 +26,10 @@ as natively as technically possible. It starts with a few formats and has no fix
 | **Open Anything** | One launcher and file-association layer that picks the right handler for any file, explains what it needs, and installs it on request. |
 | **Honest status** | Every format shows its realistic ceiling (native, compat, VM, limited, not feasible) and whether the published image can do it today. |
 
-This is the direction of the project, **not something it does today**: the current image is a desktop with Wi-Fi, keyboard and touchpad
-on one laptop, with Dolphin and the command-line archive tools; most of the catalogue is still *planned*. Where technology (a different CPU
+This is the direction of the project, **not something it does fully today**: the current image (`0.1.0-dev.2`) is a desktop with Wi-Fi, keyboard
+and touchpad on one laptop, plus first file handlers (Ark, 7zip, LibreOffice, Okular, Gwenview, Haruna/mpv, Kate, Falkon and archive/filesystem
+tools; see [docs/compat/HANDLERS-PHASE1.md](docs/compat/HANDLERS-PHASE1.md)). Most of the catalogue is still *planned*, and none of the new handlers has been
+tested on real sample files on the laptop yet. Where technology (a different CPU
 instruction set) or law (a licence or DRM that forbids it) stands in the way — for example iOS apps — the plan says so instead of
 promising it. Plan, feasibility and phases: [docs/releases/UNIVERSAL-COMPATIBILITY.md](docs/releases/UNIVERSAL-COMPATIBILITY.md).
 

@@ -5,10 +5,11 @@ machine, as natively as technically possible — starting with a few formats and
 the owner include archives (`.zip` `.rar`), disk images (`.iso` `.dmg`), office documents (`.docx` `.xlsx`), Windows programs
 (`.exe`), phone apps (`.apk`), and other operating systems, "literally everything".
 
-**This is the project's direction, not a current feature.** Today the published development image has a Plasma desktop with Dolphin
-(file manager) and Konsole, the command-line compression tools (`gzip`, `bzip2`, `xz`, `zstd`, `lz4`, `tar`), `bsdtar` from `libarchive`
-(reads zip, 7z, ISO and some RAR), `udisks2` for mounting images, and libraries such as `ffmpeg`, `poppler`, `libraw` and `sqlite`.
-It has **no** graphical archive tool, document or PDF viewer, image viewer, media player, office suite, browser, Wine, Waydroid or QEMU.
+**This is the project's direction, not a finished feature.** The first development image had only a Plasma desktop with Dolphin and Konsole and
+the command-line compression tools. From `0.1.0-dev.2` the image adds first handlers: Ark, 7zip, unrar, unzip/zip, cabextract, lhasa,
+unshield and filesystem tools for archives and disk images; Okular (PDF, e-books), Gwenview and the image-format libraries, Haruna, mpv and
+Elisa for media, Kate, LibreOffice for office files, and the Falkon browser (details and licences: [HANDLERS-PHASE1.md](../compat/HANDLERS-PHASE1.md)).
+They are installed packages, **not yet tested on real sample files on the laptop**. There is still no Wine, Waydroid or QEMU.
 Nothing below is promised for a date, and each row says what is technically possible.
 
 ## What "native" means here

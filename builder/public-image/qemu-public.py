@@ -10,9 +10,10 @@ import hashlib, json, os, re, select, shutil, subprocess, sys, time
 from pathlib import Path
 
 C = Path('/mnt/d/CachyOS-ARM64/maverick-dev-candidate-20261110'); B = Path('/mnt/c/FroodzOS-build')
-IMG = B / 'FroodzOS-0.1.0-dev-maverick-arm64-83n3-nofw.img'; TEST = B / 'qemu-public-test.img'
+IMG = B / os.environ.get('FZ_IMG', 'FroodzOS-0.1.0-dev-maverick-arm64-83n3-nofw.img'); TEST = B / 'qemu-public-test.img'
+EXPECT_BUILD = os.environ.get('FZ_EXPECT_BUILD', 'maverick-public-dev')
 FW = Path('/mnt/d/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd')
-tag = 'public-image-qemu-1'; log_path = C / 'output' / (tag + '.log'); res_path = C / 'output' / (tag + '-result.json')
+tag = os.environ.get('FZ_TAG', 'public-image-qemu-1'); log_path = C / 'output' / (tag + '.log'); res_path = C / 'output' / (tag + '-result.json')
 img_sha = hashlib.file_digest(IMG.open('rb'), 'sha256').hexdigest()
 cfg = (C / 'output/grub.cfg.public').read_text(encoding='utf-8')
 cfg = cfg.replace('set timeout=10', 'set timeout=1').replace(' kestrel_efilog=0', ' kestrel_efilog=0 console=ttyAMA0,115200')
@@ -28,6 +29,7 @@ start = time.monotonic(); out = b''; reason = 'deadline'; mu_at = None; typed = 
 CMDS = [b'live\n', b'live\n',
         b'echo ===ID===; grep -E "^(PRETTY_NAME|BUILD_ID|ID)=" /etc/os-release; uname -r; pacman -Q linux-froodzos-arm64; pacman -Q | wc -l\n',
         b'echo ===PRUNED===; ls /usr/lib/firmware/updates 2>&1 | head -2; sudo -n ls -A /etc/pacman.d/gnupg/private-keys-v1.d | wc -l; ls /usr/lib/firmware | wc -l; ls /usr/lib/firmware/ath12k 2>&1 | head -3\n',
+        b'echo ===PHASE1===; pacman -Q firefox 2>&1 | head -1; ls /usr/share/pixmaps | grep -c archlinux; grep -E "^(NAME|VERSION_ID|BUILD_ID)=" /usr/lib/os-release; pacman -Q ark okular gwenview libreoffice-fresh falkon haruna mpv 2>&1 | wc -l; command -v 7zz unrar bsdtar; echo ===PHASE1END===\n',
         b'echo ===DBCHECK===; pacman -Dk 2>&1 | tail -n 6; echo dbrc=$?\n',
         b'echo ===UNITS===; systemctl is-enabled fz-touchpad; systemctl --failed --no-legend | head -8\n',
         b'echo ===SELFTEST===; sudo -n python3 /usr/local/sbin/fz-touchpad.py --selftest; echo rc=$?\n',
@@ -61,14 +63,17 @@ markers = {
     'grub_started': 'GNU GRUB' in text or 'Booting' in text or 'EFI stub' in text,
     'multi_user': mu_at is not None,
     'logged_in_and_ran': '===END===' in clean,
-    'identity_public_build': 'maverick-public-dev' in clean and 'firmware-free public build' in clean,
+    'identity_public_build': EXPECT_BUILD in clean and 'firmware-free public build' in clean,
+    'no_firefox': "package 'firefox' was not found" in seg('===PHASE1===', '===PHASE1END==='),
+    'no_arch_logo': '\n0\n' in seg('===PHASE1===', '===PHASE1END==='),
+    'handlers_installed': '\n7\n' in seg('===PHASE1===', '===PHASE1END==='),
     'kernel_package_renamed': 'linux-froodzos-arm64 7.3.0rc3-1' in clean,
     'no_vendor_firmware_dir': bool(re.search(r'===PRUNED===\s*\n[^\n]*No such file', clean)),
     'no_private_keyring_key': bool(re.search(r'===PRUNED===[^\n]*\n[^\n]*No such file[^\n]*\n[^\n]*\n?\s*0\b', clean)) or '\n0\n' in seg('===PRUNED===', '===DBCHECK==='),
     'selftest_pass': 'fz-touchpad: SELFTEST PASS' in clean,
     'panic': 'Kernel panic' in text,
 }
-passed = all(markers[k] for k in ('multi_user', 'logged_in_and_ran', 'identity_public_build', 'kernel_package_renamed', 'selftest_pass')) and not markers['panic']
+passed = all(markers[k] for k in ('multi_user', 'logged_in_and_ran', 'identity_public_build', 'kernel_package_renamed', 'selftest_pass', 'no_firefox', 'no_arch_logo', 'handlers_installed')) and not markers['panic']
 tail = clean[clean.rfind('===ID==='):] if '===ID===' in clean else clean[-3500:]
 summary = {'tag': tag, 'seconds': round(time.monotonic() - start, 1), 'stop_reason': reason, 'markers': markers, 'passed': passed,
            'image_sha256': img_sha, 'hardware_validated': False,
