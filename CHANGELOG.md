@@ -8,6 +8,9 @@ namespaces and never mean a product release. Dates are record dates, not release
 
 Status: **development, not a qualified alpha. No binaries, tag or release exist.**
 
+### Direction (2026-11-11)
+- Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
+
 ### Released (2026-11-11)
 - Pre-release [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick): firmware-free development image for the 83N3 (build `maverick-public-dev-20261111.2`), signed checksums, package list and source offer.
 
