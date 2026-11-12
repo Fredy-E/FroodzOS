@@ -11,6 +11,10 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
+### Released (2026-11-11, 0.1.0-dev.2)
+- Pre-release `v0.1.0-dev.2-maverick`: Phase 1 file handlers (Ark, 7zip, unrar, unzip/zip, cabextract, lhasa, unshield, squashfs/erofs/dosfstools/exfatprogs/ntfs-3g/mtools,
+  Okular, Gwenview, Haruna/mpv/Elisa, Kate, LibreOffice, Falkon) on a full system upgrade; release procedure `docs/releases/RELEASING.md`; handler inventory `docs/compat/HANDLERS-PHASE1.md`.
+
 ### Released (2026-11-11)
 - Pre-release [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick): firmware-free development image for the 83N3 (build `maverick-public-dev-20261111.2`), signed checksums, package list and source offer.
 

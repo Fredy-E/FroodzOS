@@ -27,3 +27,20 @@ See [PACKAGE-ORIGIN-AUDIT.md](PACKAGE-ORIGIN-AUDIT.md) and the shipped `pkglist.
 1. ALARM has no explicit redistribution statement; a derivative that wants certainty should ask the ALARM maintainers.
 2. `ID_LIKE=arch`, the `.zst` firmware packaging and the GRUB "User Product" scope are interpretations, not confirmed rulings.
 3. The image ships default live accounts of the development image; they are documented in the release notes.
+
+## 4. Addendum for 0.1.0-dev.2 (2026-11-11): file handlers added
+
+The Phase 1 build adds 150 packages from the Arch Linux ARM `core` and `extra` repositories (the full list with versions and licences is the shipped
+`pkglist.tsv`; the handler subset is in [../compat/HANDLERS-PHASE1.md](../compat/HANDLERS-PHASE1.md)) and upgrades 229 installed packages, because a partial
+upgrade is not supported and the mirror keeps only current versions. Licences as recorded in the sync databases:
+
+| Point | Finding | Decision |
+|---|---|---|
+| UnRAR licence | `unrar` and the RAR code in `7zip` use `LicenseRef-UnRAR`: decompression and redistribution are allowed, building a RAR compressor is not. | Ship unmodified with the licence files; the release notes and HANDLERS-PHASE1 say RAR is extract-only. *Uncertain:* DFSG-style distributions treat this licence as non-free; it does not forbid our use. |
+| Info-ZIP | `zip` (`LicenseRef-Info-ZIP`) and `unzip` (custom) permit redistribution with notices. | Ship unmodified with licence files. |
+| LibreOffice | MPL-2.0 and LGPL-3.0-or-later; The Document Foundation's name rules apply to modified builds. | Unmodified ALARM package, name kept; no FroodzOS branding added. |
+| QtWebEngine and Falkon | `qt6-webengine` is pulled in by Okular and Gwenview; it bundles Chromium code under several licences listed in the package's licence files. Falkon is GPL-2.0-or-later. | Unmodified ALARM packages with their licence files. No Mozilla code. |
+| Firmware | The full upgrade would have re-installed the ten pruned `linux-firmware-*` packages through the `linux-firmware` meta package. | The build keeps the old meta package (`--ignore linux-firmware`) and upgrades only the Qualcomm, Atheros, Realtek and licence packages; verified: no NVIDIA, Intel, AMD, MediaTek or other pruned firmware in the image. |
+| Branding | The upgrade did not touch the `filesystem` package, so the FroodzOS `os-release` and the removal of the Arch logo files remain. | Verified in the emulator test (`no_arch_logo`, identity strings). |
+
+Open points are unchanged from sections 2 and 3 (no explicit ALARM redistribution statement; `ID_LIKE=arch`; the GRUB "User Product" scope).

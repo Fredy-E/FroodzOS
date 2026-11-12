@@ -24,10 +24,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT_TSV = ROOT / 'docs' / 'compat' / 'formats.tsv'
 OUT_MD = ROOT / 'docs' / 'compat' / 'SUMMARY.md'
-BUILD = 'maverick-public-dev-20261111.2'
-# Packages of the published image (pkglist.tsv of the build above) that can act as handlers.
+BUILD = 'maverick-public-dev-20261111.3'
+# Packages of the published image (pkglist.tsv of the build above) that can act as handlers. Names used in GROUPS that differ from
+# the package name are listed too: libreoffice = libreoffice-fresh, qtwebengine = qt6-webengine.
 IN_IMAGE = {'libarchive', 'udisks2', 'ffmpeg', 'poppler', 'libraw', 'dolphin', 'kio-extras', 'kio-fuse', 'sqlite', 'openssl',
-            'gnupg', 'fontconfig', 'python', 'tar', 'gzip', 'bzip2', 'xz', 'zstd', 'lz4', 'file', 'e2fsprogs', 'parted'}
+            'gnupg', 'fontconfig', 'python', 'tar', 'gzip', 'bzip2', 'xz', 'zstd', 'lz4', 'file', 'e2fsprogs', 'parted',
+            'ark', '7zip', 'unrar', 'unzip', 'zip', 'cabextract', 'lhasa', 'unshield', 'squashfs-tools', 'erofs-utils',
+            'dosfstools', 'exfatprogs', 'ntfs-3g', 'mtools', 'okular', 'gwenview', 'kimageformats', 'libheif', 'libjxl',
+            'libavif', 'haruna', 'mpv', 'elisa', 'kate', 'ffmpegthumbs', 'kdegraphics-thumbnailers', 'libreoffice',
+            'falkon', 'qtwebengine'}
 
 CEILINGS = ('native', 'compat', 'vm', 'limited', 'notfeasible')
 PHASES = ('1', '2', '3', '4', '5', 'never')
@@ -93,7 +98,7 @@ GROUPS = [
     ('emulation', 'compat', '5', ['retroarch', 'mame', 'dolphin-emu'], 'nes sfc smc gb gbc gba nds n64 z64 gen smd sms gg pce a26 chd', 'emulators exist; the user supplies legally owned ROMs'),
     ('emulation', 'compat', '5', ['dosbox-staging', 'scummvm'], 'd64 adf', 'DOS and legacy games'),
     ('other-os', 'vm', '4', ['qemu-system-aarch64', 'libvirt', 'virt-manager'], 'ova ovf vbox', 'a whole guest operating system (other CPU architectures too, by slow emulation): needs KVM (EL2 boot path) to be fast'),
-    ('web', 'native', '1', ['falkon', 'qtwebengine'], 'html htm xhtml mht', 'a browser is not in the published image (Firefox was removed for trademark reasons)'),
+    ('web', 'native', '1', ['falkon', 'qtwebengine'], 'html htm xhtml mht', 'Falkon (QtWebEngine) is in the image since 0.1.0-dev.2; Firefox was removed for trademark reasons'),
     ('web', 'native', '2', ['qbittorrent', 'transmission'], 'torrent', ''),
     ('web', 'native', '1', ['xdg-utils'], 'url desktop webloc', ''),
 ]
