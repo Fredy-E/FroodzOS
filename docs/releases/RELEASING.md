@@ -107,6 +107,13 @@ build to it. See [POLICY.md](POLICY.md).
   source. Compare each local digest with the asset digest GitHub shows. If verification fails, do not move or delete
   the tag; publish a new version instead.
 
+## 2b. Graphics check (lesson of 0.1.0-dev.2)
+
+A full system upgrade can change the Plasma/KWin version and break the bounded graphics session even though the emulator boot passes (the
+graphics supervisor's preflight fails in QEMU, so the emulator never starts a session). Before publishing any build that upgraded Plasma, boot it on
+the laptop and read the `kestrel-graphics-supervisor` lines in the boot log (`KESTREL_GRAPHICS_SESSION_ACCEPTED_MONITORING` must not be followed by
+`MONITOR_SESSION_LOST`), and run `egltest.py` for the EGL chain. See `builder/public-image/README.md`.
+
 ## 3. Required release assets
 
 | Asset | Content |

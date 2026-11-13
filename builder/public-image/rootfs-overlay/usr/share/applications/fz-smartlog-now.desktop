@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Save a diagnostic log now
+Comment=Ask the FroodzOS smart log to write a full snapshot (and compressed kernel and system logs) to the boot stick
+Exec=sh -c 'sudo -n systemctl kill -s USR1 fz-smartlog && (notify-send "FroodzOS log" "Snapshot requested. It is written to Logs on the boot stick within a minute." || true)'
+Icon=utilities-log-viewer
+Terminal=false
+Categories=System;Utility;

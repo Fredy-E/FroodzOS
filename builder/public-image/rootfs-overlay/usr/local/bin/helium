@@ -1,0 +1,4 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# FroodzOS launcher for Helium (Chromium based, installed unmodified in /opt/helium). Uses Wayland when the session is Wayland.
+exec /opt/helium/helium --ozone-platform-hint=auto "$@"

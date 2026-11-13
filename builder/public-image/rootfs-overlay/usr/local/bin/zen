@@ -1,0 +1,5 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# FroodzOS launcher for Zen Browser (Firefox based, installed unmodified in /opt/zen). Uses Wayland natively.
+export MOZ_ENABLE_WAYLAND=1
+exec /opt/zen/zen "$@"

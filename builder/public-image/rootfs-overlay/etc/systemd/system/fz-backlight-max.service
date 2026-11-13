@@ -1,0 +1,11 @@
+[Unit]
+Description=FroodzOS: start with the panel backlight at maximum
+After=systemd-udev-settle.service multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/fz-backlight-max
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

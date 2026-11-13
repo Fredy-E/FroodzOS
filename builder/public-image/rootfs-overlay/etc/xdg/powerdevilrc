@@ -1,0 +1,24 @@
+# FroodzOS default power-management profile for the live session (system-wide default; a user's own ~/.config/powerdevilrc wins).
+# Why: the battery reports 0% (its processor does not start yet), so Plasma used the low-battery behaviour and dimmed or switched the
+# screen off by itself ("session timeouts", "max brightness looks dim", boot test of 2026-11-13). Until power data is real, never dim,
+# blank or suspend on idle, and start at full brightness. Revisit when the battery works.
+[AC]
+DimDisplayWhenIdle=false
+TurnOffDisplayWhenIdle=false
+AutoSuspendWhenIdle=false
+UseProfileSpecificDisplayBrightness=true
+DisplayBrightness=100
+
+[Battery]
+DimDisplayWhenIdle=false
+TurnOffDisplayWhenIdle=false
+AutoSuspendWhenIdle=false
+UseProfileSpecificDisplayBrightness=true
+DisplayBrightness=100
+
+[LowBattery]
+DimDisplayWhenIdle=false
+TurnOffDisplayWhenIdle=false
+AutoSuspendWhenIdle=false
+UseProfileSpecificDisplayBrightness=true
+DisplayBrightness=100

@@ -20,11 +20,13 @@ anyone who received the image, from us or from someone who passed it on.
 | Linux kernel (package `linux-froodzos-arm64`) | The pinned upstream tree and the cumulative patches in `reproducibility/` and `pkgs/`; build recipe in `pkgs/linux-cachyos-arm64/PKGBUILD` (the package was renamed after the build). |
 | Unified kernel image stub (stubble) | `third_party/stubble/` licence and the pinned source in `reproducibility/`. |
 | GRUB EFI binary and modules | Unmodified ALARM package `grub` (version in `pkglist.tsv`), GPL-3.0-or-later; source via the ALARM PKGBUILD and the upstream GRUB tarball. |
+| Helium browser 0.21.2.1 (`/opt/helium`) | Unmodified upstream release. Source: <https://github.com/imputnet/helium-linux> (tag `0.21.2.1`) and <https://github.com/imputnet/helium>; licence texts in `/usr/share/licenses/helium/`. |
+| Zen Browser 1.24.2b (`/opt/zen`) | Unmodified upstream release. Source: <https://github.com/zen-browser/desktop> (tag `1.24.2b`; the release contains `zen.source.tar.zst`); licence text in `/usr/share/licenses/zen-browser/`. |
 | Every other package | `pkglist.tsv` lists name, version, repository, licences and upstream URL. Sources are the ALARM package sources (`https://github.com/archlinuxarm/PKGBUILDs`, one directory per package) and the upstream archives those recipes reference. |
 
 ## What is not in the image
 
-No firmware extracted from a Windows installation, no CachyOS repository package, no Firefox. See `FIRMWARE.md` and
+No firmware extracted from a Windows installation, no CachyOS repository package, no Mozilla Firefox (Zen Browser is a separate, unmodified Firefox-based product). See `FIRMWARE.md` and
 `docs/releases/RIGHTS-REVIEW.md`.
 
 ## Verify what you have

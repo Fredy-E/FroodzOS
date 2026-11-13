@@ -1,0 +1,18 @@
+[Unit]
+Description=FroodzOS smart log (bounded read-only facts about this session)
+Documentation=file:/usr/local/sbin/fz-smartlog
+After=local-fs.target systemd-journald.service
+ConditionPathExists=/usr/local/sbin/fz-smartlog
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/fz-smartlog run
+KillMode=mixed
+TimeoutStopSec=30
+Nice=19
+IOSchedulingClass=idle
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# FroodzOS: the panel backlight comes up at 50% of its scale (2048 of 4095, about 22% PWM duty on the 83N3) and Plasma's power profile did not
+# raise it (smart log of 2026-11-13). Set the maximum once the device exists, and again at 25 s and 70 s in case the desktop restores a lower
+# value; then stop, so later changes by the user stay.
+n=0
+while [ "$n" -lt 60 ]; do ls /sys/class/backlight/*/max_brightness >/dev/null 2>&1 && break; n=$((n+1)); sleep 1; done
+for delay in 0 25 45; do
+    sleep "$delay"
+    for d in /sys/class/backlight/*; do
+        [ -w "$d/brightness" ] || continue
+        max=$(cat "$d/max_brightness" 2>/dev/null); cur=$(cat "$d/brightness" 2>/dev/null)
+        if [ -n "$max" ] && [ "$cur" != "$max" ]; then echo "$max" > "$d/brightness" && logger -t fz-backlight-max "$(basename "$d"): $cur -> $max"; fi
+    done
+done

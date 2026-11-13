@@ -1,0 +1,14 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# FroodzOS: mount a disk image (.img, .iso, FAT/exFAT/NTFS/ext4 image) read-only through udisks and open it in the file manager.
+set -eu
+f=${1:?usage: fz-mount-image <image>}
+out=$(udisksctl loop-setup --read-only --file "$f" 2>&1) || { kdialog --error "Could not attach $f:\n$out" 2>/dev/null || echo "$out" >&2; exit 1; }
+dev=$(printf '%s' "$out" | sed -n 's/.*as \(\/dev\/loop[0-9]*\).*/\1/p')
+sleep 1
+mnt=$(udisksctl mount --block-device "$dev" 2>&1 | sed -n 's/.* at \(.*\)\.$/\1/p' || true)
+[ -n "$mnt" ] || mnt=$(lsblk -nrpo MOUNTPOINT "$dev" 2>/dev/null | awk 'NF' | head -n 1)
+[ -n "$mnt" ] || mnt=$(lsblk -nrpo MOUNTPOINT "${dev}p1" 2>/dev/null | awk 'NF' | head -n 1)
+[ -n "$mnt" ] && exec xdg-open "$mnt"
+kdialog --error "Attached $f as $dev, but found no file system to mount." 2>/dev/null || echo "no file system on $dev" >&2
+exit 1

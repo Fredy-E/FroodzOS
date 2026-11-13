@@ -1,0 +1,5 @@
+# FroodzOS graphics session environment, variant A: Plasma 6.8 no longer supports KWIN_COMPOSE=Q on the DRM platform (kwin exits),
+# so KWin uses its default OpenGL compositor on Mesa software rendering.
+LIBGL_ALWAYS_SOFTWARE=1
+GALLIUM_DRIVER=llvmpipe
+LP_NUM_THREADS=2
