@@ -4,9 +4,9 @@
 
 | | |
 |---|---|
-| Current version | **`0.1.0-dev`, codename Maverick** (development; **not** a qualified alpha) |
+| Current version | **`0.1.0-dev.2`, codename Maverick** (development; **not** a qualified alpha) |
 | Target milestone | FroodzOS 0.1 Maverick - ARM64 Alpha: a limited live alpha for one laptop |
-| Binaries | One signed **development image** for the 83N3 only, as a GitHub pre-release ([`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick)). No vendor firmware, no installer |
+| Binaries | One signed **development image** for the 83N3 only, as a GitHub pre-release ([`v0.1.0-dev.2-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick); the first one, [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick), stays available). No vendor firmware, no installer |
 | Licence | Original FroodzOS code and tools: **GPL-2.0-or-later** (see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md)); third-party material keeps its own licences |
 
 > **Early development.** A live desktop on one laptop is not general ARM64 compatibility, and not yet a finished operating system.
@@ -43,9 +43,9 @@ qualified. Failed and rejected revisions are kept on purpose; nothing is retroac
 ## Download (development image)
 
 A firmware-free **development image for the Lenovo IdeaPad Slim 3 15Q8X10 (83N3) only** is available as a signed GitHub pre-release:
-[`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick) (1.43 GB compressed raw USB image,
-SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, brightness keys,
-battery and audio do not work or are not claimed, and writing the image erases the target USB stick. Verification steps are in
+[`v0.1.0-dev.2-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick) (1.62 GB compressed raw USB image,
+SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, battery and power data
+and audio do not work, Wi-Fi does not survive suspend, and writing the image erases the target USB stick. Verification steps are in
 [docs/releases/SIGNING.md](docs/releases/SIGNING.md); rights and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md).
 
 ## Status (evidence as of 11 November 2026)
@@ -77,7 +77,7 @@ the [roadmap](docs/releases/ROADMAP.md) and the [changelog](CHANGELOG.md).
 
 - [Main goal and compatibility plan](docs/releases/UNIVERSAL-COMPATIBILITY.md)
 - [Release status, evidence boundaries and blockers](docs/releases/CURRENT.md)
-- [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev-maverick.md)
+- [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev.2-maverick.md)
 - [0.1 Maverick scope](docs/releases/0.1-maverick.md) and [promotion policy](docs/releases/POLICY.md)
 - [Changelog](CHANGELOG.md)
 - [Documentation index](docs/README.md)
