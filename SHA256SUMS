@@ -84,7 +84,7 @@ f5bec5f378745139cb347b98e3edefb7ab7b5f9921b3bc5e84ada1fb33305add  builder/public
 c8a062eec9c52a81ec4fa62a6c7856c714528aca6e54cef5f7b175615e5e190b  builder/public-image/gfx-env-C.txt
 537556239f654b6ef9d035d7eaa0acd3538a62e8ca5bc63bbfbf1f9a2a446a87  builder/public-image/make-build-manifest.py
 3044cad339bacdf48222a4283f5356c5283cd2ef12726d809cd7f5b1dc6e6703  builder/public-image/make-menu-public.py
-fc019c326aa22394fd4b388e21ee4335b1b00ddb7bf276fad1e2dd9349bf3404  builder/public-image/make-menu-v10.py
+2e7ef19ea91fe2cb3e91e6178e987439eccbed29ff44f91d7ceb7064c6d68500  builder/public-image/make-menu-v10.py
 4528cfa5d57b97ea9a177b16d736af7092bce607de51bf3c2ba4ee32e121d413  builder/public-image/make-usb-image.sh
 b5acc1fda6ec42d3080d7437df21571367a054e19c8721ebe9ec561fd7326853  builder/public-image/pkg-audit.py
 111fee61343d71eed0912c4eb34ee7e7da2d60defb57ebfe8a00ce272745d1e7  builder/public-image/pkg-resolve.py
@@ -92,7 +92,7 @@ af1ca55f2201ce7b8c21136d96bf3770e929bd044f3caaf0f561f5ed1172762c  builder/public
 6595c8284afce7fb0d06ecd94e14636be44da06921ef6a42df85deeba7820439  builder/public-image/public-root-filter.py
 456ff95053f931f647bbad2cc233dc8a2dd9b5d2497ee97459f89cddc9d0e642  builder/public-image/qemu-egl.py
 9b97131407954ae67c7beb09e56a77cad71ad7bbe9d3e1f32270ec9ab6a36dc5  builder/public-image/qemu-graphics.py
-4e46080cbe6b7a81d3239f3c623408e30f0a22582f14483a052017e32d647542  builder/public-image/qemu-public.py
+cda82b25be42005481299d09a4bd13b01dd1f31c6ae17c642a644163212dbdc8  builder/public-image/qemu-public.py
 88a13ff4aa160048248592052e37ef8cead7dd738cd60adc6b493ddd62759c17  builder/public-image/rootfs-overlay/etc/modules-load.d/90-froodzos-dsp.conf
 be9250cad5638a0d9c334aac7ec2e473f983fe20a57de56e79534f95086dfe24  builder/public-image/rootfs-overlay/etc/mpv/mpv.conf
 b7d0fb958673a7b4d03eb8d30918265f7b51e85e259a758c1672ce90f084519e  builder/public-image/rootfs-overlay/etc/sysctl.d/90-froodzos-userns.conf
