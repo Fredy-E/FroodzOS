@@ -1,0 +1,302 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-smartlog: bounded, read-only facts about a running FroodzOS live session, plus a small automatic analysis, written to the boot
+# stick's Logs folder (or to RAM when the stick cannot be written). The first-boot logger only covers the first minutes; this runs for
+# the whole session and reacts to trouble.
+#
+#   fz-smartlog run       the service: snapshots at 45 s, 150 s, 400 s, then every 15 min; a final one at shutdown; every 30 s new kernel
+#                         and journal warnings are appended; every 15 s cheap checks can trigger an extra "event" snapshot
+#                         (new crash, failed unit, high temperature, low memory, kernel BUG/Oops, error burst).
+#                         SIGUSR1 (systemctl kill -s USR1 fz-smartlog) takes a snapshot on demand.
+#   fz-smartlog once      one snapshot to stdout (a person at a terminal)
+#   fz-smartlog report    print the newest summary of this boot
+#
+# Files in <stick>/Logs/boot-<boot id>/smart/ :
+#   summary.txt          automatic findings in plain words (rewritten after every snapshot)
+#   history.tsv          one line of key numbers per snapshot (trends: temperature, memory, load, battery, crashes ...)
+#   snap-NNN-upSSS.txt   full snapshots;  event-<reason>-upSSS.txt  extra snapshots on trouble
+#   kernel-warnings.log  journal-errors.log  new warnings/errors, no duplicates
+#   dmesg-*.log.gz  journal-*.log.gz  compressed copies of the complete kernel and system logs
+#   events.log           what this script did and why
+#
+# Safety: reads only. The single write target is the folder above (or /run/fz-smartlog). At most FZ_SMARTLOG_MAX_KB (default 24576)
+# per boot, 3 MB per growing log file; every command has a time limit; nothing is read from user files; no Wi-Fi names or keys, no
+# environment dumps. Privacy: kernel and journal text can still contain file names and device identifiers; review before sharing.
+export LC_ALL=C PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+MAX_KB=${FZ_SMARTLOG_MAX_KB:-24576}
+SNAP_KB=${FZ_SMARTLOG_SNAP_KB:-800}
+BOOTMNT=${FZ_SMARTLOG_BOOTMNT:-/run/archiso/bootmnt}
+BOOT_ID=$(cat /proc/sys/kernel/random/boot_id 2>/dev/null || echo unknown)
+N_EVENTS=0; LAST_EVENT=0; DONE_BIG=0
+
+pick_dir() {
+    if [ "$(cat "$BOOTMNT/KESTREL-LOG-TARGET" 2>/dev/null)" = KESTREL_A64_USB_CAPTURE_V1 ] && [ -d "$BOOTMNT/Logs" ]; then
+        d="$BOOTMNT/Logs/boot-$BOOT_ID/smart"
+        if mkdir -p "$d" 2>/dev/null && [ -w "$d" ]; then DEST=$d; WHERE=stick; return; fi
+    fi
+    DEST=/run/fz-smartlog; WHERE=ram; mkdir -p "$DEST" 2>/dev/null
+}
+up() { cut -d. -f1 /proc/uptime; }
+used_kb() { du -sk "$DEST" 2>/dev/null | cut -f1; }
+room() { [ "$(used_kb)" -lt "$MAX_KB" ] 2>/dev/null; }
+small() { [ ! -f "$1" ] || [ "$(wc -c < "$1")" -lt 3000000 ]; }
+have() { command -v "$1" >/dev/null 2>&1; }
+run_t() { s=$1; shift; timeout -k 2 "$s" "$@" 2>&1 | head -n "${LINES_MAX:-200}"; }
+attrs() { d=$1; shift; for f in "$@"; do [ -r "$d/$f" ] && printf '%s=%s\n' "$f" "$(head -c 200 "$d/$f" 2>/dev/null | tr '\n' ' ')"; done; }
+ev() { echo "$(date -u +%T) up=$(up) $*" >> "$DEST/events.log"; }
+mountdbg() { mountpoint -q /sys/kernel/debug 2>/dev/null || mount -t debugfs none /sys/kernel/debug 2>/dev/null; }
+
+# ---------------------------------------------------------------- collectors (each prints a titled section)
+c_system() {
+    printf '\n== system\n'; uname -a; cat /proc/cmdline; cat /proc/loadavg
+    grep -E '^(MemTotal|MemFree|MemAvailable|Buffers|Cached|SwapTotal|SwapFree|Dirty|Writeback|Shmem|Slab|CommitLimit|Committed_AS):' /proc/meminfo
+    grep -E 'PRETTY_NAME|BUILD_ID|VERSION_ID' /etc/os-release 2>/dev/null
+    printf '\n== pressure stall (PSI)\n'; for f in cpu memory io; do printf '%s: ' "$f"; head -n 1 "/proc/pressure/$f" 2>/dev/null; done
+    printf '\n== time and boot\n'; have systemd-analyze && { run_t 15 systemd-analyze time; LINES_MAX=25 run_t 15 systemd-analyze blame; LINES_MAX=20 run_t 15 systemd-analyze critical-chain; }
+    printf '\n== machine (once is enough, cheap)\n'
+    for f in sys_vendor product_name product_version product_family bios_vendor bios_version bios_date board_name; do [ -r /sys/class/dmi/id/$f ] && printf '%s=%s\n' "$f" "$(cat /sys/class/dmi/id/$f)"; done
+    printf 'dt model=%s\n' "$(tr '\0' ' ' < /proc/device-tree/model 2>/dev/null)"; printf 'dt compatible=%s\n' "$(tr '\0' ' ' < /proc/device-tree/compatible 2>/dev/null)"
+    have lscpu && run_t 5 lscpu | grep -E 'Model name|Architecture|CPU\(s\)|Thread|Core|Socket|Max MHz|Min MHz|Vulnerab' | head -n 20
+}
+c_storage() {
+    printf '\n== storage\n'; df -h / /run /tmp "$BOOTMNT" 2>&1 | head -n 8
+    run_t 5 lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINT,RO
+    for b in /sys/block/sd* /sys/block/nvme*; do [ -r "$b/stat" ] && printf '%s stat=%s\n' "$(basename "$b")" "$(cat "$b/stat")"; done
+    grep -E ' (/|/run/archiso/[a-z]+|/boot|/efi) ' /proc/mounts | head -n 12
+    printf '\n== swap and zram\n'; cat /proc/swaps 2>/dev/null | head -n 5
+}
+c_thermal_cpu() {
+    printf '\n== thermal zones (millidegrees, hottest first)\n'
+    for z in /sys/class/thermal/thermal_zone*; do [ -r "$z/temp" ] && printf '%s %s %s\n' "$(basename "$z")" "$(cat "$z/type" 2>/dev/null)" "$(cat "$z/temp" 2>/dev/null)"; done | sort -k3 -n -r | head -n 14
+    printf '\n== cooling devices\n'; for c in /sys/class/thermal/cooling_device*; do [ -r "$c/cur_state" ] && printf '%s %s cur=%s max=%s\n' "$(basename "$c")" "$(cat "$c/type")" "$(cat "$c/cur_state")" "$(cat "$c/max_state" 2>/dev/null)"; done | head -n 10
+    printf '\n== cpu frequency, governor, idle\n'
+    for p in /sys/devices/system/cpu/cpufreq/policy*; do [ -r "$p/scaling_cur_freq" ] && printf '%s cur=%s min=%s max=%s gov=%s\n' "$(basename "$p")" "$(cat "$p/scaling_cur_freq")" "$(cat "$p/cpuinfo_min_freq" 2>/dev/null)" "$(cat "$p/cpuinfo_max_freq" 2>/dev/null)" "$(cat "$p/scaling_governor" 2>/dev/null)"; done
+    printf 'online=%s offline=%s\n' "$(cat /sys/devices/system/cpu/online 2>/dev/null)" "$(cat /sys/devices/system/cpu/offline 2>/dev/null)"
+    printf '\n== interrupts (top 15 by count)\n'; awk 'NR>1{s=0; for(i=2;i<=9;i++) if($i ~ /^[0-9]+$/) s+=$i; print s, $0}' /proc/interrupts 2>/dev/null | sort -n -r | head -n 15 | cut -c1-140
+}
+c_power() {
+    printf '\n== power supplies (raw sysfs)\n'
+    for d in /sys/class/power_supply/*; do [ -d "$d" ] || continue; echo "-- $d"
+        attrs "$d" type status present online capacity capacity_level voltage_now voltage_min_design current_now charge_now charge_full charge_full_design energy_now energy_full energy_full_design power_now health technology manufacturer model_name usb_type; done
+    have upower && { printf '\n== upower\n'; run_t 8 upower -d; }
+    printf '\n== power profile and inhibitors\n'; have powerprofilesctl && run_t 4 powerprofilesctl get; have systemd-inhibit && run_t 4 systemd-inhibit --list --no-pager
+    printf '\n== powerdevil settings in effect\n'; grep -v '^#' /etc/xdg/powerdevilrc 2>/dev/null | head -n 30; cat /home/live/.config/powerdevilrc 2>/dev/null | head -n 40
+    printf '\n== backlight and keyboard light\n'
+    for d in /sys/class/backlight/* /sys/class/leds/*kbd* /sys/class/leds/*backlight*; do [ -d "$d" ] && { echo "-- $d"; attrs "$d" brightness max_brightness actual_brightness type bl_power scale; }; done
+    mountdbg
+    printf '\n== PWM (duty and period)\n'; head -n 40 /sys/kernel/debug/pwm 2>&1; for d in /sys/class/pwm/*/pwm*; do [ -d "$d" ] && { echo "-- $d"; attrs "$d" enable period duty_cycle polarity; }; done
+    printf '\n== power domains and regulators (debugfs, trimmed)\n'; head -n 60 /sys/kernel/debug/pm_genpd/pm_genpd_summary 2>&1; head -n 50 /sys/kernel/debug/regulator/regulator_summary 2>&1
+}
+c_dsp() {
+    mountdbg
+    printf '\n== DSP / remoteproc (battery and audio depend on the ADSP)\n'
+    for r in /sys/class/remoteproc/*; do [ -d "$r" ] && printf '%s name=%s state=%s firmware=%s\n' "$(basename "$r")" "$(cat "$r/name" 2>/dev/null)" "$(cat "$r/state" 2>/dev/null)" "$(cat "$r/firmware" 2>/dev/null)"; done
+    printf '\n== devices waiting for a driver or supplier (debugfs devices_deferred)\n'; head -n 100 /sys/kernel/debug/devices_deferred 2>&1
+    printf '\n== interconnect (summary head) and providers bound to drivers\n'; head -n 50 /sys/kernel/debug/interconnect/interconnect_summary 2>&1
+    for p in qnoc-x1e80100 qcom_q6v5_pas qcom_pmic_glink qcom,battmgr pmic_glink_altmode ucsi_glink qcom-pdr qcom_pd_mapper; do [ -d "/sys/bus/platform/drivers/$p" ] && { echo "-- driver $p"; ls "/sys/bus/platform/drivers/$p" | grep -v -E '^(bind|unbind|uevent|module)$' | head -n 40; }; done
+    printf '\n== firmware files present for this machine\n'; ls -la /usr/lib/firmware/updates/qcom/x1p42100/LENOVO/83N3 2>&1 | head -n 20; ls /usr/lib/firmware/qcom 2>&1 | head -n 20
+    printf '\n== qrtr and rpmsg\n'; have qrtr-lookup && run_t 4 qrtr-lookup; ls /sys/bus/rpmsg/devices 2>/dev/null | head -n 20
+}
+c_kernel() {
+    printf '\n== kernel messages: warnings and errors since boot\n'; run_t 8 dmesg --level=emerg,alert,crit,err,warn --time-format=reltime | tail -n 150
+    printf '\n== kernel messages about hardware subsystems\n'
+    run_t 8 dmesg --time-format=reltime | grep -iE 'adsp|cdsp|q6v5|pdr|pd.mapper|pmic.glink|battmgr|interconnect|bwmon|apr|gpr|soundwire|wcd9|lpass|snd|backlight|dispcc|msm_dpu|simpledrm|kgsl|drm|dwc3|ucsi|typec|ath12k|btqca|bluetooth|camss|venus|thermal|cpufreq|smmu|iommu|firmware' | tail -n 120
+    printf '\n== suspend and resume statistics\n'; for f in success fail failed_prepare failed_suspend failed_resume last_failed_dev last_failed_errno last_failed_step; do [ -r /sys/power/suspend_stats/$f ] && printf '%s=%s\n' "$f" "$(cat /sys/power/suspend_stats/$f)"; done; cat /sys/power/mem_sleep 2>/dev/null
+    printf '\n== kernel taint, oops and lockup indicators\n'; printf 'tainted=%s\n' "$(cat /proc/sys/kernel/tainted 2>/dev/null)"; run_t 6 dmesg | grep -ciE 'Oops|BUG:|Call trace|soft lockup|hung task|Unable to handle|panic' | sed 's/^/oops-like lines: /'
+    printf '\n== loaded modules (count and names)\n'; lsmod 2>/dev/null | wc -l; lsmod 2>/dev/null | awk 'NR>1{print $1}' | tr '\n' ' ' | head -c 3500; echo
+}
+c_services() {
+    printf '\n== failed units, timers, noisy units\n'; run_t 8 systemctl --failed --no-legend
+    LINES_MAX=25 run_t 6 systemctl list-timers --no-pager --no-legend
+    printf '\n-- units with most error-level journal lines this boot\n'
+    timeout 15 journalctl -b -p err -o json-pretty --no-pager -q 2>/dev/null | grep -E '"(_SYSTEMD_UNIT|SYSLOG_IDENTIFIER)"' | sed -E 's/^ *"[A-Z_]+" : "([^"]*)",?/\1/' | sort | uniq -c | sort -n -r | head -n 15
+    printf '\n== crashes (coredumpctl)\n'; have coredumpctl && { run_t 8 coredumpctl list --no-pager -q | tail -n 15; LINES_MAX=40 run_t 8 coredumpctl info --no-pager -q | grep -E 'PID:|Signal:|Executable:|Command Line:|Message:' | tail -n 40; }
+    printf '\n== application warnings of the desktop user (uid 1000), last 60\n'; timeout 12 journalctl -b _UID=1000 -p warning -o short-monotonic --no-pager -q 2>/dev/null | tail -n 60 | cut -c1-240
+}
+c_graphics() {
+    printf '\n== graphics session\n'; run_t 6 journalctl -b -q --no-pager -t kestrel-graphics-supervisor | tail -n 12; run_t 6 loginctl list-sessions --no-legend
+    for c in /sys/class/drm/card*-*; do [ -r "$c/status" ] && printf '%s %s modes=%s\n' "$(basename "$c")" "$(cat "$c/status")" "$(head -n 1 "$c/modes" 2>/dev/null)"; done
+    ls /dev/dri 2>&1 | tr '\n' ' '; echo; run_t 6 journalctl -b -q --no-pager -t kwin_wayland -t kwin_wayland_wrapper -p warning | tail -n 15 | cut -c1-200
+    grep -E 'simpledrm|msm|panfrost|freedreno' /proc/modules 2>/dev/null | head -n 5
+}
+c_audio() {
+    printf '\n== audio\n'; cat /proc/asound/cards 2>&1 | head -n 6; have wpctl && run_t 6 wpctl status | head -n 30; have pactl && run_t 4 pactl info | grep -E 'Server Name|Default (Sink|Source)'
+}
+c_net() {
+    printf '\n== network (no network names, no keys)\n'; run_t 5 ip -br link; run_t 5 ip -br addr; have rfkill && run_t 5 rfkill list
+    have nmcli && run_t 5 nmcli -t -f DEVICE,TYPE,STATE dev
+    have iw && { run_t 5 iw dev | grep -E 'Interface|type|channel'; for i in $(iw dev 2>/dev/null | awk '/Interface/{print $2}'); do timeout 4 iw dev "$i" link 2>/dev/null | grep -E 'signal|rx bitrate|tx bitrate|freq' ; done; }
+    have bluetoothctl && run_t 4 bluetoothctl list | sed -E 's/[0-9A-F]{2}(:[0-9A-F]{2}){5}/XX:XX:XX:XX:XX:XX/'
+}
+c_hw() {
+    printf '\n== usb and pci\n'; have lsusb && run_t 6 lsusb; have lspci && run_t 6 lspci; ls /sys/class/typec 2>/dev/null | head -n 10
+    printf '\n== input devices\n'; grep -E '^(N: Name|H: Handlers)' /proc/bus/input/devices 2>/dev/null | head -n 50
+    printf '\n== cameras and media\n'; ls /dev/video* /dev/media* 2>&1 | head -n 8
+}
+c_proc() {
+    printf '\n== busiest processes\n'; ps -eo pid,ppid,pcpu,pmem,rss,etimes,comm --sort=-pcpu 2>/dev/null | head -n 14
+    printf '\n== largest memory users\n'; ps -eo pid,pcpu,pmem,rss,comm --sort=-rss 2>/dev/null | head -n 10
+    printf '\n== process counts\n'; ps -e --no-headers 2>/dev/null | wc -l | sed 's/^/processes: /'; ps -eo stat --no-headers 2>/dev/null | grep -c '^D' | sed 's/^/uninterruptible (D): /'
+}
+
+snapshot_body() {
+    printf 'fz-smartlog snapshot seq=%s uptime_s=%s boot_id=%s where=%s\n' "$1" "$(up)" "$BOOT_ID" "$WHERE"
+    date -u '+utc=%Y-%m-%dT%H:%M:%SZ'
+    c_system; c_storage; c_thermal_cpu; c_power; c_dsp; c_kernel; c_services; c_graphics; c_audio; c_net; c_hw; c_proc
+}
+
+# ---------------------------------------------------------------- numbers and automatic findings
+metrics() {   # key=value lines, cheap and numeric where possible
+    maxt=0; for z in /sys/class/thermal/thermal_zone*/temp; do v=$(cat "$z" 2>/dev/null); [ -n "$v" ] && [ "$v" -gt "$maxt" ] 2>/dev/null && maxt=$v; done
+    echo "uptime=$(up)"; echo "maxtemp_mc=$maxt"
+    echo "memavail_kb=$(awk '/MemAvailable/{print $2}' /proc/meminfo)"; echo "memtotal_kb=$(awk '/MemTotal/{print $2}' /proc/meminfo)"
+    echo "load1=$(cut -d' ' -f1 /proc/loadavg)"
+    echo "rootuse_pct=$(df / 2>/dev/null | awk 'NR==2{gsub("%","",$5); print $5}')"
+    bat=$(ls -d /sys/class/power_supply/*bat* /sys/class/power_supply/BAT* 2>/dev/null | head -n 1)
+    echo "battery_capacity=$(cat "$bat/capacity" 2>/dev/null)"; echo "battery_voltage=$(cat "$bat/voltage_now" 2>/dev/null)"; echo "battery_status=$(cat "$bat/status" 2>/dev/null)"
+    echo "ac_online=$(cat /sys/class/power_supply/*ac*/online /sys/class/power_supply/AC*/online 2>/dev/null | head -n 1)"
+    echo "backlight=$(cat /sys/class/backlight/*/actual_brightness 2>/dev/null | head -n 1)/$(cat /sys/class/backlight/*/max_brightness 2>/dev/null | head -n 1)"
+    echo "failed_units=$(systemctl --failed --no-legend 2>/dev/null | wc -l)"
+    echo "coredumps=$(coredumpctl list --no-pager --no-legend -q 2>/dev/null | wc -l)"
+    mountdbg; echo "deferred_devices=$(wc -l < /sys/kernel/debug/devices_deferred 2>/dev/null)"
+    echo "remoteproc_running=$(grep -l running /sys/class/remoteproc/*/state 2>/dev/null | wc -l)/$(ls -d /sys/class/remoteproc/* 2>/dev/null | wc -l)"
+    echo "sound_cards=$(grep -c '\[' /proc/asound/cards 2>/dev/null)"
+    echo "kernel_errors=$(dmesg --level=err,crit,alert,emerg 2>/dev/null | wc -l)"; echo "kernel_warnings=$(dmesg --level=warn 2>/dev/null | wc -l)"
+    echo "oops_like=$(dmesg 2>/dev/null | grep -ciE 'Oops|BUG:|Call trace|soft lockup|hung task|Unable to handle')"
+    echo "tainted=$(cat /proc/sys/kernel/tainted 2>/dev/null)"
+    echo "psi_mem_some10=$(sed -n 's/^some .*avg10=\([0-9.]*\).*/\1/p' /proc/pressure/memory 2>/dev/null)"
+    echo "suspend_ok=$(cat /sys/power/suspend_stats/success 2>/dev/null)"; echo "suspend_fail=$(cat /sys/power/suspend_stats/fail 2>/dev/null)"
+    echo "pd_mapper=$(grep -c '^qcom_pd_mapper ' /proc/modules 2>/dev/null)"
+    echo "wifi_up=$(ip -br link 2>/dev/null | grep -ciE '^wl.* UP')"
+}
+getm() { grep "^$1=" "$2" 2>/dev/null | head -n 1 | cut -d= -f2-; }
+
+analyze() {   # analyze <metrics file> : writes summary.txt and appends history.tsv; plain-language findings from simple rules
+    m=$1; S="$DEST/summary.txt"; : > "$S.new"
+    say() { printf '%s\n' "$*" >> "$S.new"; }
+    say "FroodzOS smart summary  boot=$BOOT_ID  uptime=$(getm uptime "$m")s  written=$(date -u +%T)Z  where=$WHERE"
+    say "(automatic rules; facts are in snap-*.txt and history.tsv. A finding is a pointer, not a diagnosis.)"; say
+    bc=$(getm battery_capacity "$m"); bv=$(getm battery_voltage "$m"); bs=$(getm battery_status "$m")
+    if [ -z "$bc" ] && [ -z "$bv" ]; then say "BATTERY: no battery device present."
+    elif [ "${bc:-0}" = 0 ] && { [ -z "$bv" ] || [ "$bv" = 0 ]; }; then say "BATTERY: device exists but reports capacity 0 and no voltage (status '$bs'): its data source is not live. Check ADSP below."
+    else say "BATTERY: capacity ${bc}% voltage ${bv} status ${bs}; AC online=$(getm ac_online "$m")."; fi
+    rp=$(getm remoteproc_running "$m"); say "DSP: remoteproc running $rp (battery, sound and USB-C power data need the ADSP running)."
+    case "$rp" in 0/[1-9]*) say "  -> NO DSP is running. Look at 'devices waiting' in the snapshot; known cause so far: qcom_q6v5_pas defers on its interconnect path." ;; esac
+    dd=$(getm deferred_devices "$m"); say "DEFERRED DEVICES: $dd (drivers still waiting for a supplier)."
+    if [ -r /sys/kernel/debug/devices_deferred ]; then
+        say "  most common suppliers/reasons:"; sed -E 's/^[^ ]+[[:space:]]+//' /sys/kernel/debug/devices_deferred 2>/dev/null | sed -E 's/[0-9a-f]{6,}\./<addr>./g' | sort | uniq -c | sort -n -r | head -n 6 | sed 's/^/    /'
+    fi
+    sc=$(getm sound_cards "$m"); say "SOUND: ${sc:-0} sound card(s) $( [ "${sc:-0}" = 0 ] && echo '(no sound device: depends on the ADSP)')"
+    mt=$(getm maxtemp_mc "$m"); say "THERMAL: hottest sensor $((${mt:-0}/1000)) C (experiment stop 80 C)."
+    ma=$(getm memavail_kb "$m"); mtot=$(getm memtotal_kb "$m"); [ -n "$ma" ] && [ -n "$mtot" ] && say "MEMORY: $((ma/1024)) MB available of $((mtot/1024)) MB; root overlay use $(getm rootuse_pct "$m")%; memory pressure avg10=$(getm psi_mem_some10 "$m")."
+    say "LOAD: 1-minute load $(getm load1 "$m")."
+    bl=$(getm backlight "$m"); say "BACKLIGHT: $bl (actual/max)$( [ "${bl%/*}" = "${bl#*/}" ] || echo ' -> below maximum: the panel is not at full brightness')."
+    say "SUSPEND: $(getm suspend_ok "$m") successful suspend(s), $(getm suspend_fail "$m") failed; pd-mapper module loaded=$(getm pd_mapper "$m")."
+    say "WIFI: $( [ "$(getm wifi_up "$m")" -ge 1 ] 2>/dev/null && echo 'a wireless interface is UP' || echo 'no wireless interface UP')."
+    say "SERVICES: failed units $(getm failed_units "$m"); crashes recorded $(getm coredumps "$m")."
+    say "KERNEL: errors $(getm kernel_errors "$m"), warnings $(getm kernel_warnings "$m"), oops-like lines $(getm oops_like "$m"), taint $(getm tainted "$m")."
+    # trends against the first and the previous history line
+    if [ -s "$DEST/history.tsv" ] && [ "$(wc -l < "$DEST/history.tsv")" -ge 2 ]; then
+        prev=$(tail -n 1 "$DEST/history.tsv" | cut -f4); first=$(sed -n 2p "$DEST/history.tsv" | cut -f4)
+        say "TREND: hottest sensor was ${first:-?} mC at the first snapshot, ${prev:-?} mC at the previous one, $mt mC now."
+    fi
+    say
+    say "NEW SINCE LAST SNAPSHOT:"
+    for k in failed_units coredumps kernel_errors oops_like; do
+        old=$(cat "$DEST/.last-$k" 2>/dev/null); new=$(getm $k "$m")
+        [ -n "$old" ] && [ "${new:-0}" -gt "$old" ] 2>/dev/null && say "  $k rose from $old to $new"
+        echo "$new" > "$DEST/.last-$k"
+    done
+    mv -f "$S.new" "$S"
+    if [ ! -s "$DEST/history.tsv" ]; then printf 'seq\tuptime\tutc\tmaxtemp_mc\tmemavail_kb\tload1\tbattery_capacity\tbattery_voltage\tbacklight\tfailed_units\tcoredumps\tdeferred\tremoteproc\tsound_cards\tkernel_errors\toops_like\n' > "$DEST/history.tsv"; fi
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$2" "$(getm uptime "$m")" "$(date -u +%T)" "$(getm maxtemp_mc "$m")" "$(getm memavail_kb "$m")" "$(getm load1 "$m")" "$(getm battery_capacity "$m")" "$(getm battery_voltage "$m")" "$(getm backlight "$m")" "$(getm failed_units "$m")" "$(getm coredumps "$m")" "$(getm deferred_devices "$m")" "$(getm remoteproc_running "$m")" "$(getm sound_cards "$m")" "$(getm kernel_errors "$m")" "$(getm oops_like "$m")" >> "$DEST/history.tsv"
+}
+
+gz_logs() {   # complete kernel and system logs, compressed (a cut gzip file is useless, so cut lines first)
+    tag=$1; room || return 0
+    n=20000; while :; do dmesg --time-format=iso 2>/dev/null | tail -n $n | gzip -9 > "$DEST/dmesg-$tag.log.gz"; [ "$(wc -c < "$DEST/dmesg-$tag.log.gz")" -lt 1500000 ] || [ $n -le 2000 ] && break; n=$((n/2)); done
+    n=40000; while :; do timeout 25 journalctl -b --no-pager -o short-monotonic -q 2>/dev/null | tail -n $n | gzip -9 > "$DEST/journal-$tag.log.gz"; [ "$(wc -c < "$DEST/journal-$tag.log.gz")" -lt 3000000 ] || [ $n -le 4000 ] && break; n=$((n/2)); done
+}
+
+snapshot() {   # snapshot <seq-or-name> [kind]
+    room || { ev "no room left, snapshot $1 skipped"; return 0; }
+    case "$1" in ''|*[!0-9]*) f="$DEST/event-$1-up$(up).txt"; seqn=0 ;; *) f="$DEST/snap-$(printf '%03d' "$1")-up$(up).txt"; seqn=$1 ;; esac
+    snapshot_body "$1" 2>&1 | head -c $((SNAP_KB * 1024)) > "$f"
+    metrics > "$DEST/.metrics" 2>/dev/null; analyze "$DEST/.metrics" "$1"
+    sync "$f" 2>/dev/null || sync
+}
+
+follow() {   # append new warnings and errors without duplicates; set NEWBAD if the new text looks serious
+    room || return 0
+    NEWBAD=0
+    if small "$DEST/kernel-warnings.log"; then
+        timeout 10 journalctl -k -p warning -o short-monotonic --no-pager -q --cursor-file="$DEST/.cursor-k" > "$DEST/.newk.full" 2>/dev/null
+        head -c 100000 "$DEST/.newk.full" > "$DEST/.newk"
+        cat "$DEST/.newk" >> "$DEST/kernel-warnings.log"; grep -qiE 'Oops|BUG:|Call trace|soft lockup|hung task|Unable to handle|Kernel panic' "$DEST/.newk" && NEWBAD=1
+        [ "$(wc -l < "$DEST/.newk")" -gt 40 ] && NEWBAD=2
+    fi
+    if small "$DEST/journal-errors.log"; then     # read everything first: a pipe closed early would keep journalctl from saving its cursor
+        timeout 10 journalctl -p err -o short-precise --no-pager -q --cursor-file="$DEST/.cursor-j" > "$DEST/.newj.full" 2>/dev/null
+        grep -v -E '^-- ' "$DEST/.newj.full" | head -c 100000 >> "$DEST/journal-errors.log"
+    fi
+    rm -f "$DEST/.newk.full" "$DEST/.newj.full"
+}
+
+heartbeat() {   # proof of life: its last line tells when the system stopped if power or the stick vanished; also notices a resume from suspend
+    printf '%s up=%s\n' "$(date -u +%FT%TZ)" "$(up)" > "$DEST/alive.txt" 2>/dev/null
+    HB=$((${HB:-0}+1)); [ $((HB % 8)) -eq 0 ] && sync "$DEST/alive.txt" 2>/dev/null
+    ss=$(cat /sys/power/suspend_stats/success 2>/dev/null)
+    if [ -n "$ss" ] && [ "$ss" != "${PREV_SUSPEND:-$ss}" ]; then RESUMED=1; fi
+    PREV_SUSPEND=$ss
+}
+
+event_check() {   # cheap, every 15 s; an extra snapshot at most every 120 s and 12 per boot
+    [ "$N_EVENTS" -lt 12 ] || return 0; now=$(up); [ $((now - LAST_EVENT)) -ge 120 ] || return 0
+    why=""
+    if [ "${RESUMED:-0}" = 1 ]; then why="resume"; RESUMED=0; fi
+    cd=$(coredumpctl list --no-pager --no-legend -q 2>/dev/null | wc -l); [ "$cd" -gt "${PREV_CORE:-0}" ] && why="crash"; PREV_CORE=$cd
+    fu=$(systemctl --failed --no-legend 2>/dev/null | wc -l); [ -z "$why" ] && [ "$fu" -gt "${PREV_FAIL:-0}" ] && why="failedunit"; PREV_FAIL=$fu
+    mt=0; for z in /sys/class/thermal/thermal_zone*/temp; do v=$(cat "$z" 2>/dev/null); [ -n "$v" ] && [ "$v" -gt "$mt" ] 2>/dev/null && mt=$v; done
+    [ -z "$why" ] && [ "$mt" -ge 70000 ] && why="hot"
+    ma=$(awk '/MemAvailable/{print $2}' /proc/meminfo); [ -z "$why" ] && [ "${ma:-999999}" -lt 250000 ] && why="lowmem"
+    [ -z "$why" ] && [ "${NEWBAD:-0}" = 1 ] && why="kernelbug"
+    [ -z "$why" ] && [ "${NEWBAD:-0}" = 2 ] && why="kernelburst"
+    NEWBAD=0
+    if [ -n "$why" ]; then N_EVENTS=$((N_EVENTS+1)); LAST_EVENT=$now; ev "event: $why"; snapshot "$why"; fi
+}
+
+final() {
+    [ -n "${FINAL_DONE:-}" ] && return; FINAL_DONE=1
+    follow; snapshot 999; gz_logs final; ev "final snapshot done"; sync
+}
+on_demand() { ev "on-demand snapshot requested"; snapshot "manual"; gz_logs manual; }
+
+case "${1:-run}" in
+once) WHERE=terminal; DEST=/tmp/fz-smartlog-once; mkdir -p "$DEST"; snapshot_body 0; metrics > "$DEST/.metrics"; analyze "$DEST/.metrics" 0; echo; echo "===== summary"; cat "$DEST/summary.txt"; exit 0 ;;
+report) pick_dir; cat "$DEST/summary.txt" 2>&1; exit 0 ;;
+run)
+    pick_dir
+    ev "start where=$WHERE dest=$DEST pid=$$ version=2"
+    trap 'final; exit 0' TERM INT HUP
+    trap 'on_demand' USR1
+    seq=1; tick=0; NEXT=${FZ_SMARTLOG_FIRST:-45}; PERIOD=${FZ_SMARTLOG_PERIOD:-900}; STEP=${FZ_SMARTLOG_TICK:-15}
+    TARGETS=${FZ_SMARTLOG_TARGETS:-"45 150 400"}
+    while [ "$seq" -lt 80 ]; do
+        sleep "$STEP" & wait $!
+        tick=$((tick+1))
+        [ $((tick % 2)) -eq 0 ] && follow
+        heartbeat
+        event_check
+        u=$(up)
+        set -- $TARGETS
+        if [ -n "${1:-}" ] && [ "$u" -ge "$1" ]; then
+            shift; TARGETS="$*"; snapshot $seq; seq=$((seq+1))
+            [ "$DONE_BIG" = 0 ] && [ "$u" -ge 100 ] && { gz_logs early; DONE_BIG=1; }
+        elif [ -z "${1:-}" ] && [ "$u" -ge "$NEXT" ]; then
+            snapshot $seq; seq=$((seq+1)); NEXT=$((u + PERIOD))
+        fi
+        [ "$NEXT" -lt 400 ] && NEXT=$((400 + PERIOD))
+    done
+    final ;;
+*) echo "usage: fz-smartlog run|once|report" >&2; exit 2 ;;
+esac

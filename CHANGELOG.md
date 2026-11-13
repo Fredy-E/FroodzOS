@@ -11,9 +11,13 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
-### Released (2026-11-11, 0.1.0-dev.2)
-- Pre-release `v0.1.0-dev.2-maverick`: Phase 1 file handlers (Ark, 7zip, unrar, unzip/zip, cabextract, lhasa, unshield, squashfs/erofs/dosfstools/exfatprogs/ntfs-3g/mtools,
-  Okular, Gwenview, Haruna/mpv/Elisa, Kate, LibreOffice, Falkon) on a full system upgrade; release procedure `docs/releases/RELEASING.md`; handler inventory `docs/compat/HANDLERS-PHASE1.md`.
+### Released (2026-11-13, 0.1.0-dev.2)
+- Pre-release `v0.1.0-dev.2-maverick` (build `maverick-public-dev-20261113.4`): Phase 1 file handlers (Ark, 7zip, unrar, unzip/zip, cabextract, lhasa, unshield,
+  squashfs/erofs/dosfstools/exfatprogs/ntfs-3g/mtools, Okular, Gwenview, Haruna/mpv/Elisa, Kate, LibreOffice) on a full system upgrade; **Helium and Zen Browser**
+  as unmodified upstream releases; the graphics session fixed for Plasma 6.8 and no longer limited to 180 seconds (`kestrel_graphics_unbounded=1`); panel brightness
+  at maximum (`fz-backlight-max`); the smart log `fz-smartlog`; a smaller root (`prune-root.sh`); release procedure `docs/releases/RELEASING.md`; handler inventory
+  `docs/compat/HANDLERS-PHASE1.md`. Known gaps: no battery or power data and no sound (the ADSP does not start), no GPU acceleration, Wi-Fi does not survive suspend.
+- Tools: `builder/public-image/build-root.sh`, `build-gfx-variant-uki.py` (boot image rewrites, device tree swap), `make-menu-v10.py`, `rootfs-overlay/`, `tests/test_graphics_supervisor.py`.
 
 ### Released (2026-11-11)
 - Pre-release [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick): firmware-free development image for the 83N3 (build `maverick-public-dev-20261111.2`), signed checksums, package list and source offer.

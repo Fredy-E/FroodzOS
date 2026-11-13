@@ -1,0 +1,8 @@
+[Default Applications]
+x-scheme-handler/http=helium.desktop
+x-scheme-handler/https=helium.desktop
+text/html=helium.desktop
+application/xhtml+xml=helium.desktop
+image/svg+xml=org.kde.gwenview.desktop
+application/x-raw-disk-image=fz-mount-image.desktop
+application/vnd.efi.img=fz-mount-image.desktop

@@ -696,8 +696,14 @@ def run_bounded_session(*, thermal_root, drm_root, device_root, card,
                         timeout_s=MAX_SECONDS, poll_s=POLL_S,
                         session_wait_s=SESSION_WAIT_S,
                         start_wait_s=START_WAIT_S,
+                        unbounded=False,
                         _monotonic=None, _sleep=None):
-    """Single bounded attempt; no auto fallback/retry loops. Fixed 180s budget."""
+    """Single bounded attempt; no auto fallback/retry loops. Fixed 180s budget.
+
+    unbounded=True (opt-in, kernel command line kestrel_graphics_unbounded=1) lifts only the 180 s monitoring
+    deadline. The start and session-acceptance waits stay bounded, and the monitor loop still stops the session
+    fail-closed on a temperature at or above 80C, a lost DRM device or a lost owned session.
+    """
     mono = _monotonic or time.monotonic
     slp = _sleep or time.sleep
     timeout_s = min(int(timeout_s), MAX_SECONDS) if int(timeout_s) > 0 else MAX_SECONDS
@@ -860,8 +866,10 @@ def run_bounded_session(*, thermal_root, drm_root, device_root, card,
         return 2
 
     _log("SESSION_ACCEPTED_MONITORING")
+    if unbounded:
+        _log("UNBOUNDED_MONITORING_NO_DEADLINE")
     _cleanup_state["owned_session"] = owned_sid
-    while mono() < deadline:
+    while unbounded or mono() < deadline:
         if signalled():
             _log(f"SIGNAL_CLEANUP_MONITOR")
             _cleanup_state["cleaning"] = True
@@ -900,6 +908,9 @@ def run_bounded_session(*, thermal_root, drm_root, device_root, card,
                             owned=owned_sid, _monotonic=mono, _sleep=slp)
             _cleanup_state["cleaning"] = False
             return 2
+        if unbounded:
+            slp(poll_s)
+            continue
         remaining = deadline - mono()
         if remaining <= 0:
             break
@@ -940,7 +951,15 @@ def main(argv=None):
     parser.add_argument("--timeout-s", type=int, default=MAX_SECONDS)
     parser.add_argument("--session-wait-s", type=int, default=SESSION_WAIT_S)
     parser.add_argument("--status-dir", type=Path, default=_STATUS_DIR_DEFAULT)
+    parser.add_argument("--unbounded", action="store_true",
+                        help="no 180 s monitoring deadline (also enabled by kestrel_graphics_unbounded=1 on the kernel command line)")
+    parser.add_argument("--cmdline", type=Path, default=Path("/proc/cmdline"))
     args = parser.parse_args(argv)
+    unbounded = bool(args.unbounded)
+    try:
+        unbounded = unbounded or "kestrel_graphics_unbounded=1" in args.cmdline.read_text().split()
+    except OSError:
+        pass
 
     ok, required_or_detail = load_policy(args.policy)
     if not ok:
@@ -977,7 +996,8 @@ def main(argv=None):
         required=required_or_detail, guard=_guard,
         runner=_default_runner, status_dir=args.status_dir,
         timeout_s=min(int(args.timeout_s), MAX_SECONDS),
-        session_wait_s=min(int(args.session_wait_s), SESSION_WAIT_S))
+        session_wait_s=min(int(args.session_wait_s), SESSION_WAIT_S),
+        unbounded=unbounded)
     # Never block normal boot: service exit is always 0 after bounded cleanup.
     _log(f"EXIT_{rc}")
     return 0

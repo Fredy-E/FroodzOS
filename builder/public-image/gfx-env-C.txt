@@ -1,0 +1,5 @@
+# FroodzOS graphics session environment, variant C: Plasma 6.8 no longer supports KWIN_COMPOSE=Q on the DRM platform, so KWin uses its default
+# OpenGL compositor. Mesa selects llvmpipe by itself on the firmware framebuffer (checked with tools/egltest.py in an emulator);
+# LIBGL_ALWAYS_SOFTWARE is not set because Mesa warns that it conflicts with KWin's explicit EGL device selection.
+GALLIUM_DRIVER=llvmpipe
+LP_NUM_THREADS=2
