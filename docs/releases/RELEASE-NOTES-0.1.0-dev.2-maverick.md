@@ -43,7 +43,7 @@ differences from the tested stick are the boot menu and the packaging. Helium an
 1. Download all assets. Verify: `gpg --import froodzos-release-public.asc`, compare the fingerprint
    `1432 DC7D B541 96FF 471E FD57 A558 604E 9E92 C7EA` with `docs/releases/SIGNING.md` in the repository,
    `gpg --verify SHA256SUMS.asc SHA256SUMS`, then `sha256sum -c SHA256SUMS --ignore-missing`.
-2. Decompress: `zstd -d FroodzOS-0.1.0-dev.2-maverick-arm64-83n3.img.zst` (about 2.2 GB raw image; the download is 1.6 GB).
+2. Decompress: `zstd -d FroodzOS-0.1.0-dev.2-maverick-arm64-83n3.img.zst` (about 1.9 GB raw image; the download is 1.6 GB).
 3. Write the raw image to a USB stick of at least 4 GB with `dd` or a raw-image writer (Rufus in DD mode, balenaEtcher).
    **This erases the whole stick. Double-check the target device.**
 4. Boot the laptop from the stick (firmware boot menu), choose the first entry. Default account: user `live`, password `live`.
