@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Phase 1 root: add file-handling applications to the firmware-free public root without unpacking it to disk.
 #   public root squashfs (read-only) + overlay (upper layer in a loop-mounted file) -> pacman installs the packages -> mksquashfs of the merged view.
-# Output: C:\FroodzOS-build\airootfs-phase1.sfs. Needs sudo, an ARM64 builder, network access to the Arch Linux ARM mirror.
+# Output: D:\FroodzOS-build\airootfs-phase1.sfs. Needs sudo, an ARM64 builder, network access to the Arch Linux ARM mirror.
 set -euo pipefail
-OUTDIR=/mnt/c/FroodzOS-build
+OUTDIR=/mnt/d/FroodzOS-build
 LOWERSFS=${LOWERSFS:-$OUTDIR/airootfs-public.sfs}
 PINSHA=${PINSHA:-e6f4a596a99e215eb39000a46a8ab512b7af2f7136533c431b235b92cceba981}
 PKGS="falkon ark 7zip unrar unzip zip cabextract lhasa unshield squashfs-tools erofs-utils dosfstools exfatprogs ntfs-3g mtools okular gwenview kimageformats libheif libjxl libavif haruna mpv elisa kate ffmpegthumbs kdegraphics-thumbnailers libreoffice-fresh"

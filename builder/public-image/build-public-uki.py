@@ -16,7 +16,7 @@ m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
 BASE = C / 'input/kestrel-live-dt27-wifi.efi'; BASE_SHA = '4fb18edfb4ae2f2727658b5c94f43a3ccee78dd33d8e952a1b11a656ddd90867'
 TP1 = C / 'touchpad-test/kestrel-maverick-tp1.efi'; TP1_SHA = 'fb8ab6893d844a388f58238b8fc7088d2dfd042e7102a1ec635031ede64f0e42'
 DB = Path('/home/builder/pkgaudit/root/var/lib/pacman/local')   # extracted from the pinned candidate root by pkg-audit
-OUT = Path('/mnt/c/FroodzOS-build/uki'); WORK = Path('/mnt/c/FroodzOS-build/uki-work')
+OUT = Path('/mnt/d/FroodzOS-build/uki'); WORK = Path('/mnt/d/FroodzOS-build/uki-work')
 REMOVE = ['amd', 'amdgpu', 'broadcom', 'cirrus', 'intel', 'mediatek', 'nvidia', 'other', 'radeon', 'ti']
 STUB, LOCK = m.STUB, m.LOCK
 assert m.sha(BASE) == BASE_SHA and m.sha(TP1) == TP1_SHA and m.sha(STUB / 'stubble.efi') == m.STUB_SHA

@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Root build of dev.2: Phase 1 root minus Falkon, plus the fixes from the first laptop test (rootfs-overlay/), without unpacking to disk.
 #   public root squashfs (read-only) + overlay (upper layer in a loop-mounted file) -> pacman installs the packages -> mksquashfs of the merged view.
-# Output: C:\FroodzOS-build\airootfs-${OUTNAME:-r4}.sfs. Needs sudo, an ARM64 builder, network access to the Arch Linux ARM mirror.
+# Output: D:\FroodzOS-build\airootfs-${OUTNAME:-r4}.sfs. Needs sudo, an ARM64 builder, network access to the Arch Linux ARM mirror.
 set -euo pipefail
-OUTDIR=/mnt/c/FroodzOS-build
+OUTDIR=/mnt/d/FroodzOS-build
 LOWERSFS=${LOWERSFS:-$OUTDIR/airootfs-phase1.sfs}
 PINSHA=${PINSHA:-22dde19c5a9e0b2a6e00f30cce7d0866d08159e1127871793553cd0478d1aacf}
 PKGS=""
