@@ -11,6 +11,11 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
+### Development after dev.2 (2026-11-14, not released)
+- Battery percentage, charge state and USB-C power data work on the 83N3 in an owner test: the ADSP was waiting on a bandwidth vote through a disabled NoC; `builder/public-image/fz-dtb-fixup.py` removes such orphaned
+  votes from any compiled DTB and Linux then attaches to the ADSP the laptop firmware already started (no vendor firmware needed). Cause and method: `docs/hardware-dsp-battery.md`. Sound still open.
+- `fz-smartlog`: counts an attached remoteproc as running, derives the battery percentage from energy values, reports wireless interface presence and battery health.
+
 ### Released (2026-11-13, 0.1.0-dev.2)
 - Pre-release `v0.1.0-dev.2-maverick` (build `maverick-public-dev-20261113.4`): Phase 1 file handlers (Ark, 7zip, unrar, unzip/zip, cabextract, lhasa, unshield,
   squashfs/erofs/dosfstools/exfatprogs/ntfs-3g/mtools, Okular, Gwenview, Haruna/mpv/Elisa, Kate, LibreOffice) on a full system upgrade; **Helium and Zen Browser**
