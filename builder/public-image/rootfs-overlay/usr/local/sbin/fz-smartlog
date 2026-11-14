@@ -153,13 +153,19 @@ metrics() {   # key=value lines, cheap and numeric where possible
     echo "load1=$(cut -d' ' -f1 /proc/loadavg)"
     echo "rootuse_pct=$(df / 2>/dev/null | awk 'NR==2{gsub("%","",$5); print $5}')"
     bat=$(ls -d /sys/class/power_supply/*bat* /sys/class/power_supply/BAT* 2>/dev/null | head -n 1)
-    echo "battery_capacity=$(cat "$bat/capacity" 2>/dev/null)"; echo "battery_voltage=$(cat "$bat/voltage_now" 2>/dev/null)"; echo "battery_status=$(cat "$bat/status" 2>/dev/null)"
+    en=$(cat "$bat/energy_now" 2>/dev/null); ef=$(cat "$bat/energy_full" 2>/dev/null); ed=$(cat "$bat/energy_full_design" 2>/dev/null); cap=$(cat "$bat/capacity" 2>/dev/null)
+    # qcom-battmgr reports energy_now/energy_full but not always capacity: derive the percentage so the log never shows an empty battery by mistake
+    [ -z "$cap" ] && [ -n "$en" ] && [ "${ef:-0}" -gt 0 ] 2>/dev/null && cap=$((en * 100 / ef))
+    echo "battery_capacity=$cap"; echo "battery_voltage=$(cat "$bat/voltage_now" 2>/dev/null)"; echo "battery_status=$(cat "$bat/status" 2>/dev/null)"
+    echo "battery_energy_now=$en"; echo "battery_energy_full=$ef"; echo "battery_energy_design=$ed"
+    echo "battery_health_pct=$( [ "${ed:-0}" -gt 0 ] 2>/dev/null && echo $((ef * 100 / ed)) )"
     echo "ac_online=$(cat /sys/class/power_supply/*ac*/online /sys/class/power_supply/AC*/online 2>/dev/null | head -n 1)"
     echo "backlight=$(cat /sys/class/backlight/*/actual_brightness 2>/dev/null | head -n 1)/$(cat /sys/class/backlight/*/max_brightness 2>/dev/null | head -n 1)"
     echo "failed_units=$(systemctl --failed --no-legend 2>/dev/null | wc -l)"
     echo "coredumps=$(coredumpctl list --no-pager --no-legend -q 2>/dev/null | wc -l)"
     mountdbg; echo "deferred_devices=$(wc -l < /sys/kernel/debug/devices_deferred 2>/dev/null)"
-    echo "remoteproc_running=$(grep -l running /sys/class/remoteproc/*/state 2>/dev/null | wc -l)/$(ls -d /sys/class/remoteproc/* 2>/dev/null | wc -l)"
+    echo "remoteproc_running=$(grep -lE '^(running|attached)$' /sys/class/remoteproc/*/state 2>/dev/null | wc -l)/$(ls -d /sys/class/remoteproc/* 2>/dev/null | wc -l)"
+    echo "remoteproc_states=$(for r in /sys/class/remoteproc/*; do [ -d "$r" ] && printf '%s:%s ' "$(cat "$r/name" 2>/dev/null)" "$(cat "$r/state" 2>/dev/null)"; done)"
     echo "sound_cards=$(grep -c '\[' /proc/asound/cards 2>/dev/null)"
     echo "kernel_errors=$(dmesg --level=err,crit,alert,emerg 2>/dev/null | wc -l)"; echo "kernel_warnings=$(dmesg --level=warn 2>/dev/null | wc -l)"
     echo "oops_like=$(dmesg 2>/dev/null | grep -ciE 'Oops|BUG:|Call trace|soft lockup|hung task|Unable to handle')"
@@ -168,6 +174,7 @@ metrics() {   # key=value lines, cheap and numeric where possible
     echo "suspend_ok=$(cat /sys/power/suspend_stats/success 2>/dev/null)"; echo "suspend_fail=$(cat /sys/power/suspend_stats/fail 2>/dev/null)"
     echo "pd_mapper=$(grep -c '^qcom_pd_mapper ' /proc/modules 2>/dev/null)"
     echo "wifi_up=$(ip -br link 2>/dev/null | grep -ciE '^wl.* UP')"
+    echo "wifi_ifaces=$(ls -d /sys/class/net/*/wireless 2>/dev/null | wc -l)"
 }
 getm() { grep "^$1=" "$2" 2>/dev/null | head -n 1 | cut -d= -f2-; }
 
@@ -179,8 +186,8 @@ analyze() {   # analyze <metrics file> : writes summary.txt and appends history.
     bc=$(getm battery_capacity "$m"); bv=$(getm battery_voltage "$m"); bs=$(getm battery_status "$m")
     if [ -z "$bc" ] && [ -z "$bv" ]; then say "BATTERY: no battery device present."
     elif [ "${bc:-0}" = 0 ] && { [ -z "$bv" ] || [ "$bv" = 0 ]; }; then say "BATTERY: device exists but reports capacity 0 and no voltage (status '$bs'): its data source is not live. Check ADSP below."
-    else say "BATTERY: capacity ${bc}% voltage ${bv} status ${bs}; AC online=$(getm ac_online "$m")."; fi
-    rp=$(getm remoteproc_running "$m"); say "DSP: remoteproc running $rp (battery, sound and USB-C power data need the ADSP running)."
+    else say "BATTERY: ${bc}% voltage ${bv} status ${bs}; AC online=$(getm ac_online "$m"); full-charge capacity $(getm battery_health_pct "$m")% of design."; fi
+    rp=$(getm remoteproc_running "$m"); say "DSP: remoteproc running or attached $rp [$(getm remoteproc_states "$m")] (battery, sound and USB-C power data need the ADSP)."
     case "$rp" in 0/[1-9]*) say "  -> NO DSP is running. Look at 'devices waiting' in the snapshot; known cause so far: qcom_q6v5_pas defers on its interconnect path." ;; esac
     dd=$(getm deferred_devices "$m"); say "DEFERRED DEVICES: $dd (drivers still waiting for a supplier)."
     if [ -r /sys/kernel/debug/devices_deferred ]; then
@@ -192,7 +199,7 @@ analyze() {   # analyze <metrics file> : writes summary.txt and appends history.
     say "LOAD: 1-minute load $(getm load1 "$m")."
     bl=$(getm backlight "$m"); say "BACKLIGHT: $bl (actual/max)$( [ "${bl%/*}" = "${bl#*/}" ] || echo ' -> below maximum: the panel is not at full brightness')."
     say "SUSPEND: $(getm suspend_ok "$m") successful suspend(s), $(getm suspend_fail "$m") failed; pd-mapper module loaded=$(getm pd_mapper "$m")."
-    say "WIFI: $( [ "$(getm wifi_up "$m")" -ge 1 ] 2>/dev/null && echo 'a wireless interface is UP' || echo 'no wireless interface UP')."
+    say "WIFI: $(getm wifi_ifaces "$m") wireless interface(s) present, $(getm wifi_up "$m") up.$( [ "$(getm wifi_ifaces "$m")" = 0 ] && echo ' No Wi-Fi device at all: the PCIe or power-sequencer side did not come up (see devices waiting).')"
     say "SERVICES: failed units $(getm failed_units "$m"); crashes recorded $(getm coredumps "$m")."
     say "KERNEL: errors $(getm kernel_errors "$m"), warnings $(getm kernel_warnings "$m"), oops-like lines $(getm oops_like "$m"), taint $(getm tainted "$m")."
     # trends against the first and the previous history line
