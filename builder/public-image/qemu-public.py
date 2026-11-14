@@ -9,7 +9,7 @@ QEMU virt is not the laptop: this proves the image boots, the identity and the p
 import hashlib, json, os, re, select, shutil, subprocess, sys, time
 from pathlib import Path
 
-C = Path('/mnt/d/CachyOS-ARM64/maverick-dev-candidate-20261110'); B = Path('/mnt/c/FroodzOS-build')
+C = Path('/mnt/d/CachyOS-ARM64/maverick-dev-candidate-20261110'); B = Path('/mnt/d/FroodzOS-build')
 IMG = B / os.environ.get('FZ_IMG', 'FroodzOS-0.1.0-dev-maverick-arm64-83n3-nofw.img'); TEST = B / 'qemu-public-test.img'
 EXPECT_BUILD = os.environ.get('FZ_EXPECT_BUILD', 'maverick-public-dev')
 FW = Path('/mnt/d/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd')

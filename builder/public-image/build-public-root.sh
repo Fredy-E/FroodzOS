@@ -1,11 +1,11 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Build the firmware-free public-build root from the pinned private candidate SFS without unpacking it to disk:
-# loop-mount (read-only) -> tar stream -> public-root-filter.py -> sqfstar. Output goes to C:\FroodzOS-build (D: is tight).
+# loop-mount (read-only) -> tar stream -> public-root-filter.py -> sqfstar. Output goes to D:\FroodzOS-build (D: is tight).
 set -euo pipefail
 B=/mnt/d/CachyOS-ARM64/maverick-dev-candidate-20261110
 IN=$B/input/airootfs.sfs
-OUTDIR=/mnt/c/FroodzOS-build
+OUTDIR=/mnt/d/FroodzOS-build
 M=/home/builder/mnt-cand
 PIN=972f1ffd763e123bad6094d938c75878c57f69a4bdbb85698f9eb3dafba1c805   # touchpad driver image r5 (candidate + 6 added entries)
 mkdir -p "$OUTDIR" "$M"

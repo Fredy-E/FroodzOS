@@ -11,7 +11,7 @@ Emulator only: it shows whether KWin starts with the given environment, not how 
 import json, os, re, select, shutil, socket, struct, subprocess, sys, time, zlib
 from pathlib import Path
 
-C = Path('/mnt/d/CachyOS-ARM64/maverick-dev-candidate-20261110'); B = Path('/mnt/c/FroodzOS-build')
+C = Path('/mnt/d/CachyOS-ARM64/maverick-dev-candidate-20261110'); B = Path('/mnt/d/FroodzOS-build')
 IMG = B / os.environ.get('FZ_IMG', 'FroodzOS-0.1.0-dev.2-maverick-arm64-83n3.img'); TEST = B / 'qemu-gfx-test.img'
 UKI = Path(os.environ['FZ_UKI']); tag = os.environ.get('FZ_TAG', 'gfx')
 FW = Path('/mnt/d/CachyOS-ARM64/testing/boot-failure/uefi-package/usr/share/qemu-efi-aarch64/QEMU_EFI.fd')

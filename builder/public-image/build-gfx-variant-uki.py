@@ -81,7 +81,7 @@ for en, fp in repl:
     assert main[chk[2]:chk[2] + chk[3]] == new and len(ents2) == len(cur)
     print('--- %s: sha256 %s (%d B) -> %s (%d B)' % (en, hashlib.sha256(old_e).hexdigest()[:16], len(old_e), hashlib.sha256(new).hexdigest()[:16], len(new)))
 new_xz = lzma.compress(main, format=lzma.FORMAT_XZ, check=lzma.CHECK_CRC32, preset=9 | lzma.PRESET_EXTREME)
-work = Path('/mnt/c/FroodzOS-build/uki-gfx-work'); work.mkdir(parents=True, exist_ok=True)
+work = Path('/mnt/d/FroodzOS-build/uki-gfx-work'); work.mkdir(parents=True, exist_ok=True)
 (work / 'initrd.new').write_bytes(head + new_xz)
 for name in ('.linux', '.osrel', '.cmdline', '.hwids', '.sbat'):
     (work / (name[1:] + '.input')).write_bytes(secs[name])
