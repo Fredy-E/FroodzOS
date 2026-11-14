@@ -92,6 +92,8 @@ c_dsp() {
     printf '\n== DSP / remoteproc (battery and audio depend on the ADSP)\n'
     for r in /sys/class/remoteproc/*; do [ -d "$r" ] && printf '%s name=%s state=%s firmware=%s\n' "$(basename "$r")" "$(cat "$r/name" 2>/dev/null)" "$(cat "$r/state" 2>/dev/null)" "$(cat "$r/firmware" 2>/dev/null)"; done
     printf '\n== devices waiting for a driver or supplier (debugfs devices_deferred)\n'; head -n 100 /sys/kernel/debug/devices_deferred 2>&1
+    printf '\n== why each waiting device waits (device links that are not active yet: consumer <- supplier status)\n'
+    for l in /sys/class/devlink/*; do [ -d "$l" ] || continue; s=$(cat "$l/status" 2>/dev/null); case "$s" in active|"consumer probing") ;; *) printf '%s  %s\n' "$s" "$(basename "$l")" ;; esac; done 2>/dev/null | grep -E 'dormant|available' | head -n 60   # name format: supplier--consumer
     printf '\n== interconnect (summary head) and providers bound to drivers\n'; head -n 50 /sys/kernel/debug/interconnect/interconnect_summary 2>&1
     for p in qnoc-x1e80100 qcom_q6v5_pas qcom_pmic_glink qcom,battmgr pmic_glink_altmode ucsi_glink qcom-pdr qcom_pd_mapper; do [ -d "/sys/bus/platform/drivers/$p" ] && { echo "-- driver $p"; ls "/sys/bus/platform/drivers/$p" | grep -v -E '^(bind|unbind|uevent|module)$' | head -n 40; }; done
     printf '\n== firmware files present for this machine\n'; ls -la /usr/lib/firmware/updates/qcom/x1p42100/LENOVO/83N3 2>&1 | head -n 20; ls /usr/lib/firmware/qcom 2>&1 | head -n 20

@@ -3,7 +3,8 @@
 """FroodzOS device-tree fix-up for Snapdragon X (Hamoa/Purwa) boards. Works on the compiled .dtb, so it applies to ANY board's
 DTB without its source tree.
 
-Rule "icc-orphan" (the one that makes the battery work): a Qualcomm PAS remoteproc node (ADSP by default) that carries an
+Rule "icc-orphan" (the one that makes the battery work): a Qualcomm PAS remoteproc node (ADSP by default) or a GENI serial engine
+(`qcom,geni-i2c`, `-spi`, `-uart`, `-debug-uart`) that carries an
 `interconnects` bandwidth vote through a NoC provider which is disabled (or missing) in the DTB can never probe: qcom_q6v5_pas
 returns "failed to acquire interconnect path" forever, and battery, USB-C PD data, audio and the sensor hub all wait for it.
 Deleting the vote (NULL path = "no vote") lets the driver probe. On boards where the firmware already booted the ADSP the
@@ -55,8 +56,10 @@ def plan(nodes, only_adsp=True):
     actions = []
     for path, props in nodes.items():
         comp = props.get('compatible', '')
-        if '-pas' not in comp or 'interconnects' not in props: continue
-        if only_adsp and 'adsp' not in comp: continue
+        if 'interconnects' not in props or 'disabled' in props.get('status', '"okay"'): continue
+        if 'qcom,geni-' in comp: pass                      # I2C/SPI/UART serial engines: the same no-vote fallback the owner-tested I2C5/I2C9 fix uses
+        elif '-pas' in comp and not (only_adsp and 'adsp' not in comp): pass
+        else: continue
         vals, i, bad = cells(props['interconnects']), 0, []
         while i < len(vals):
             prov = by_ph.get(vals[i])
@@ -82,6 +85,8 @@ def main(argv):
         return 0
     shutil.copyfile(src, out)
     for path, bad in acts:
+        if subprocess.run(['fdtget', str(out), path, 'compatible'], capture_output=True).returncode != 0:
+            print('fz-dtb-fixup: SKIPPED %s (path not found in the blob)' % path); continue
         for prop in ('interconnects', 'interconnect-names'):
             if prop in nodes[path]:
                 subprocess.run(['fdtput', '-d', str(out), path, prop], check=True)

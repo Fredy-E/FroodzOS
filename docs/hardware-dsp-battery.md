@@ -31,4 +31,10 @@ line is expected and harmless). That matters for distribution: the battery works
   the experiment, not a consequence of the ADSP change. The method above patches the shipped DTB instead of recompiling a source tree.
 * The smart log counted an `attached` remoteproc as not running and derived no percentage when the driver reports only `energy_now` and
   `energy_full`; both are fixed in `fz-smartlog` (root r7).
-* geni-i2c `qup-config`, `qcom-bwmon`, `temp-alarm` and DWC3 `a800000` are still deferred: the same orphaned-vote pattern is the first suspect.
+* **I2C buses** (`b80000`, `b84000`, `b8c000`, `b9c000` = i2c0/1/3/7): `geni_i2c: Failed to get 'qup-config' ICC path`. Their `qup-config` path
+  starts at the disabled `gem_noc`. `fz-dtb-fixup.py` now applies the same rule to GENI serial engines (the owner-tested I2C5/I2C9 fallback);
+  in image H (not yet booted) these four buses lose their votes. The touchpad bus (`88c000`) is found by name by `fz-touchpad`, so bus renumbering is harmless.
+* **Temperature alarms** (7 PMIC `temp-alarm`): they wait for the `pmk8550_vadc` IIO channel; the kernel config had `CONFIG_QCOM_SPMI_ADC5_GEN3` unset, so no
+  driver existed. Set to `=m` in `boards/lenovo-83n3/kernel.config` for the next kernel build; the stick carries a module built from the same tree for an `insmod` test.
+* `qcom-bwmon` (OPP table) and DWC3 `a800000` (`failed to register DWC3 Core`, no further reason in the log) stay open. The smart log now lists device links that
+  are not active, which names the missing supplier on the next boot.
