@@ -15,6 +15,11 @@ DTS = """/dts-v1/;
     noc_ok: interconnect@2 { #interconnect-cells = <2>; phandle = <0x11>; };
     remoteproc@10 { compatible = "qcom,x1e80100-adsp-pas"; interconnects = <0x10 0 7 0x37 1 7>; interconnect-names = "x"; };
     remoteproc@20 { compatible = "qcom,x1e80100-cdsp-pas"; interconnects = <0x11 0 7 0x37 1 7>; };
+    phy_hs: phy@40 { #phy-cells = <0>; phandle = <0x20>; };
+    phy_ss: phy@50 { #phy-cells = <1>; status = "disabled"; phandle = <0x21>; };
+    usb@60 { compatible = "qcom,x1e80100-dwc3", "qcom,snps-dwc3"; phys = <0x20 0x21 0>; phy-names = "usb2-phy", "usb3-phy"; status = "okay"; };
+    i2c@30 { compatible = "qcom,geni-i2c"; interconnects = <0x11 0 7 0x10 1 7>; interconnect-names = "qup-core", "qup-config"; status = "okay"; };
+    spi@30 { compatible = "qcom,geni-spi"; interconnects = <0x10 1 7>; status = "disabled"; };
   };
 };
 """
@@ -31,7 +36,14 @@ class Fixup(unittest.TestCase):
     def test_adsp_with_disabled_provider_loses_the_vote(self):
         out = self.run_fix()
         self.assertNotIn('interconnect-names', out)
-        self.assertEqual(out.count('interconnects ='), 1)       # only the cdsp (healthy provider) keeps its vote
+        self.assertEqual(out.count('interconnects ='), 2)       # the cdsp (healthy provider) and the disabled spi keep theirs
+        self.assertNotIn('qup-config', out)                      # the i2c engine routed through the disabled provider lost its votes
+
+    def test_usb_controller_with_disabled_ss_phy_becomes_usb2(self):
+        out = self.run_fix()
+        self.assertIn('maximum-speed = "high-speed"', out)
+        self.assertIn('phy-names = "usb2-phy";', out)
+        self.assertNotIn('usb3-phy', out)
 
     def test_dry_run_changes_nothing(self):
         d = Path(tempfile.mkdtemp()); (d / 'a.dts').write_text(DTS)
