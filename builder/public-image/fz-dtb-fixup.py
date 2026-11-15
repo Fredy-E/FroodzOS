@@ -10,6 +10,10 @@ returns "failed to acquire interconnect path" forever, and battery, USB-C PD dat
 Deleting the vote (NULL path = "no vote") lets the driver probe. On boards where the firmware already booted the ADSP the
 driver then simply attaches to the running processor; otherwise it loads firmware from /lib/firmware as usual.
 
+Rule "orphan-usb3-phy": a DWC3 USB controller whose `phys` list names a PHY that is disabled in the DTB (a board that wires only the
+USB 2.0 pair of a port, with the SuperSpeed PHY left disabled) never probes and keeps its suppliers' sync_state pending. The disabled
+PHY entry is removed from `phys`/`phy-names` and `maximum-speed = "high-speed"` is set, so the port works as USB 2.0.
+
     fz-dtb-fixup.py <in.dtb> <out.dtb> [--all-pas] [--dry-run]
 
 Needs dtc, fdtput (package dtc). The input is never modified. Prints one line per action; exit 0 even when nothing is needed.
@@ -29,7 +33,7 @@ def parse(dts):
         line = (pend + ' ' + raw.strip()).strip(); pend = ''
         if '=' in line and not line.endswith(';') and not line.endswith('{'):
             pend = line; continue            # property continued on the next line
-        m = re.match(r'^(?:[A-Za-z_][\w]*:\s*)?([\w,.+@/-]+)\s*\{$', line)
+        m = re.match(r'^(?:[A-Za-z_][\w]*:\s*)*([\w,.+@/-]+)\s*\{$', line)
         if m:
             name = m.group(1)
             path = '/' if not stack else (('' if stack[-1] == '/' else stack[-1]) + '/' + name)
@@ -73,15 +77,39 @@ def plan(nodes, only_adsp=True):
     return actions
 
 
+def strings(v):
+    return re.findall(r'"([^"]*)"', v)
+
+
+def plan_usb(nodes):
+    by_ph = {cells(p['phandle'])[0]: path for path, p in nodes.items() if 'phandle' in p}
+    out = []
+    for path, props in nodes.items():
+        if 'dwc3' not in props.get('compatible', '') or 'disabled' in props.get('status', '"okay"'): continue
+        if 'phys' not in props or 'phy-names' not in props: continue
+        names, vals, i, keep, drop = strings(props['phy-names']), cells(props['phys']), 0, [], []
+        for nm in names:
+            if i >= len(vals): break
+            prov = by_ph.get(vals[i]); pp = nodes.get(prov, {}) if prov else {}
+            n = cells(pp['#phy-cells'])[0] if '#phy-cells' in pp else 0
+            ent = (nm, vals[i:i + 1 + n]); i += 1 + n
+            (drop if prov is None or 'disabled' in pp.get('status', '"okay"') else keep).append(ent)
+        if drop and keep:
+            out.append((path, keep, drop, 'maximum-speed' not in props))
+    return out
+
+
 def main(argv):
     args = [a for a in argv if not a.startswith('--')]
     if len(args) != 2: print(__doc__); return 2
     src, out = Path(args[0]), Path(args[1])
     nodes = parse(decompile(src))
     acts = plan(nodes, only_adsp='--all-pas' not in argv)
-    if not acts: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
+    usb = plan_usb(nodes)
+    if not acts and not usb: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
     if '--dry-run' in argv:
         for path, bad in acts: print('fz-dtb-fixup: would drop interconnect votes of %s (disabled providers: %s)' % (path, ', '.join(bad)))
+        for path, keep, drop, _ in usb: print('fz-dtb-fixup: would drop PHY %s of %s (disabled provider), keep %s' % ([d[0] for d in drop], path, [k[0] for k in keep]))
         return 0
     shutil.copyfile(src, out)
     for path, bad in acts:
@@ -91,6 +119,12 @@ def main(argv):
             if prop in nodes[path]:
                 subprocess.run(['fdtput', '-d', str(out), path, prop], check=True)
         print('fz-dtb-fixup: dropped interconnect votes of %s (disabled providers: %s)' % (path, ', '.join(bad)))
+    for path, keep, drop, setspeed in usb:
+        flat = [hex(c) for _, e in keep for c in e]
+        subprocess.run(['fdtput', '-t', 'x', str(out), path, 'phys'] + flat, check=True)
+        subprocess.run(['fdtput', '-t', 's', str(out), path, 'phy-names'] + [k[0] for k in keep], check=True)
+        if setspeed: subprocess.run(['fdtput', '-t', 's', str(out), path, 'maximum-speed', 'high-speed'], check=True)
+        print('fz-dtb-fixup: dropped PHY %s of %s (provider disabled); the port runs as USB 2.0' % ([d[0] for d in drop], path))
     return 0
 
 
