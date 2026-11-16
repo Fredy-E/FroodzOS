@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
+"""fz-kexec-uki: test a changed device tree (or kernel command line) from inside the running live session, without going through the
+firmware boot menu or editing the stick. EXPERIMENTAL: kexec on this laptop is untested; Wi-Fi/PCIe may not come back after it.
+
+    fz-kexec-uki [--uki PATH] [--dtb FILE] [--append "args"] [--exec]
+
+It reads the unified kernel image the session was booted from (BOOT_IMAGE in /proc/cmdline, or --uki), extracts its kernel (.linux)
+and initramfs (.initrd), and loads them with `kexec -l` using --dtb (default: the device tree the running kernel uses,
+/sys/firmware/fdt) and the running command line (plus --append). Without --exec it only stages the load (`kexec -l`); with --exec it
+then jumps into the new kernel at once (`kexec -e`) - unmounts are NOT done, so save your work first (fz-vault-save).
+
+Typical live fix of a device tree:
+    sudo cp /sys/firmware/fdt /tmp/live.dtb
+    sudo fz-dtb-fixup.py /tmp/live.dtb /tmp/new.dtb       (or fdtput by hand)
+    sudo fz-kexec-uki --dtb /tmp/new.dtb --exec
+"""
+import os, re, struct, subprocess, sys
+from pathlib import Path
+
+
+def sections(blob):
+    if blob[:2] != b'MZ': raise SystemExit('not a PE/EFI file')
+    pe = struct.unpack_from('<I', blob, 0x3c)[0]
+    if blob[pe:pe + 4] != b'PE\0\0': raise SystemExit('no PE header')
+    nsec, = struct.unpack_from('<H', blob, pe + 6)
+    optsz, = struct.unpack_from('<H', blob, pe + 20)
+    off = pe + 24 + optsz
+    out = {}
+    for i in range(nsec):
+        name, vsize, _va, rsize, rptr = struct.unpack_from('<8sIIII', blob, off + 40 * i)
+        out[name.rstrip(b'\0').decode('ascii', 'replace')] = blob[rptr:rptr + (min(vsize, rsize) if vsize else rsize)]
+    return out
+
+
+def find_uki(arg):
+    if arg: return Path(arg)
+    m = re.search(r'BOOT_IMAGE=(\S+)', Path('/proc/cmdline').read_text())
+    if not m: raise SystemExit('no BOOT_IMAGE in /proc/cmdline; pass --uki')
+    rel = m.group(1).lstrip('/').replace('\\', '/')
+    for base in ('/run/archiso/bootmnt', '/boot/efi', '/efi', '/boot'):
+        if (Path(base) / rel).is_file(): return Path(base) / rel
+    raise SystemExit('cannot find %s on the stick; pass --uki' % rel)
+
+
+def main(argv):
+    uki = dtb = None; add = ''; go = False
+    it = iter(argv)
+    for a in it:
+        if a == '--uki': uki = next(it)
+        elif a == '--dtb': dtb = next(it)
+        elif a == '--append': add = next(it)
+        elif a == '--exec': go = True
+        else: print(__doc__); return 2
+    if os.geteuid() != 0: raise SystemExit('run with sudo')
+    path = find_uki(uki); sec = sections(path.read_bytes())
+    for need in ('.linux', '.initrd'):
+        if need not in sec: raise SystemExit('%s has no %s section' % (path, need))
+    work = Path('/run/fz-kexec'); work.mkdir(exist_ok=True)
+    (work / 'Image').write_bytes(sec['.linux']); (work / 'initrd').write_bytes(sec['.initrd'])
+    if sec['.linux'][56:60] != b'ARM\x64': raise SystemExit('.linux is not an arm64 Image (magic missing); kexec cannot load it')
+    dtbf = dtb or '/sys/firmware/fdt'
+    if not Path(dtbf).exists(): raise SystemExit('no device tree at %s; pass --dtb' % dtbf)
+    cmd = Path('/proc/cmdline').read_text().strip()
+    cmd = ' '.join(w for w in cmd.split() if not w.startswith('BOOT_IMAGE=')) + (' ' + add if add else '')
+    args = ['kexec', '-l', str(work / 'Image'), '--initrd=%s' % (work / 'initrd'), '--dtb=%s' % dtbf, '--command-line=%s' % cmd]
+    print('UKI    :', path, '(.linux %d bytes, .initrd %d bytes)' % (len(sec['.linux']), len(sec['.initrd'])))
+    print('dtb    :', dtbf); print('cmdline:', cmd)
+    r = subprocess.run(args)
+    if r.returncode: raise SystemExit('kexec -l failed (%d)' % r.returncode)
+    print('staged. To jump now: sudo kexec -e   (or run this tool again with --exec)')
+    if go:
+        subprocess.run(['sync']); os.execvp('kexec', ['kexec', '-e'])
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))
