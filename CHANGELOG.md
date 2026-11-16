@@ -11,6 +11,10 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
+### Live-fix tools (2026-11-16, not released)
+- `builder/public-image/build-root.sh`: the package list can be passed in `PKGS` (r7 adds `kexec-tools dtc efibootmgr git openssh evtest strace`, about 10 MB), and the root now ships `fz-dtb-fixup.py` and the new `fz-kexec-uki` in `/usr/local/sbin`.
+- `fz-kexec-uki` (experimental, untested on the laptop): extracts the kernel and initramfs from the booted unified kernel image and stages a `kexec` load with a changed device tree, so a device-tree fix can be tried from the running live session without the firmware boot menu.
+
 ### Development after dev.2 (2026-11-14, not released)
 - Battery percentage, charge state and USB-C power data work on the 83N3 in an owner test: the ADSP was waiting on a bandwidth vote through a disabled NoC; `builder/public-image/fz-dtb-fixup.py` removes such orphaned
   votes from any compiled DTB and Linux then attaches to the ADSP the laptop firmware already started (no vendor firmware needed). Cause and method: `docs/hardware-dsp-battery.md`. Sound still open.
