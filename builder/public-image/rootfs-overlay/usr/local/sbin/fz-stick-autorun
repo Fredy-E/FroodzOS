@@ -1,0 +1,17 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-stick-autorun: opt-in boot hook for the test stick. When the kernel command line has fz_autorun=1 and the boot stick carries
+# FroodzOS-addons/autorun.sh, run that script once as root late in boot (the test entries boot to multi-user.target and start the desktop themselves). The stick is the OS itself (it holds this very
+# root and the kernel), so its owner already controls what boots; nothing runs without the flag and nothing is installed to disk.
+# Used for private add-ons (they never ship in the public image) and for unattended post-boot checks. The script's output is kept in
+# <stick>/Logs/autorun-<boot id>.txt (or /run/fz-autorun.log when the stick is not writable). Time limit 300 s.
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+B=${FZ_BOOTMNT:-/run/archiso/bootmnt}
+S=$B/FroodzOS-addons/autorun.sh
+grep -qw 'fz_autorun=1' "${FZ_CMDLINE:-/proc/cmdline}" || exit 0
+[ -f "$S" ] || exit 0
+ID=$(cat /proc/sys/kernel/random/boot_id 2>/dev/null | cut -c1-8)
+LOG=${FZ_LOG:-/run/fz-autorun.log}
+{ echo "fz-stick-autorun $(date -u +%FT%TZ) running $S"; timeout -k 5 300 sh "$S"; echo "exit code $?"; } > "$LOG" 2>&1
+if [ -d "$B/Logs" ] && [ -w "$B/Logs" ]; then cp "$LOG" "$B/Logs/autorun-${ID:-boot}.txt" 2>/dev/null; fi
+exit 0

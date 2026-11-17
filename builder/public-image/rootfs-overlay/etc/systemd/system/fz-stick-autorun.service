@@ -1,0 +1,12 @@
+[Unit]
+Description=FroodzOS: run the boot stick's add-on script (only with fz_autorun=1 on the kernel command line)
+ConditionKernelCommandLine=fz_autorun=1
+ConditionPathExists=/run/archiso/bootmnt/FroodzOS-addons/autorun.sh
+After=NetworkManager.service fz-smartlog.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/fz-stick-autorun
+
+[Install]
+WantedBy=multi-user.target

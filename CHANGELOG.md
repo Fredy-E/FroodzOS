@@ -11,6 +11,9 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
+### Stick autorun hook (2026-11-17, not released)
+- New `fz-stick-autorun` service in the root: with `fz_autorun=1` on the kernel command line and a `FroodzOS-addons/autorun.sh` on the boot stick, it runs that script once as root late in boot (non-blocking, 300 s limit) and keeps its output in `Logs/autorun-<boot id>.txt`. Without the flag or the file it does nothing. It lets a test stick bring its own private add-ons and unattended post-boot checks without rebuilding the root; no private content is part of the repository or the public image.
+
 ### Live-fix tools (2026-11-16, not released)
 - `builder/public-image/build-root.sh`: the package list can be passed in `PKGS` (r7 adds `kexec-tools dtc efibootmgr git openssh evtest strace`, about 10 MB), and the root now ships `fz-dtb-fixup.py` and the new `fz-kexec-uki` in `/usr/local/sbin`.
 - `fz-kexec-uki` (experimental, untested on the laptop): extracts the kernel and initramfs from the booted unified kernel image and stages a `kexec` load with a changed device tree, so a device-tree fix can be tried from the running live session without the firmware boot menu.
