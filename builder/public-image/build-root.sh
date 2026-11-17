@@ -70,8 +70,8 @@ $PAC -Rns --noconfirm falkon 2>&1 | tail -n 8
 $PAC -Syu --needed --noconfirm --ignore linux-firmware $PKGS 2>&1 | tail -n 60
 echo "install done $(date -u +%T)"
 OVL=${OVL:-/mnt/d/CachyOS-ARM64/publication/20261110-revamp/repository/builder/public-image/rootfs-overlay}
-for f in etc/mpv/mpv.conf etc/sysctl.d/90-froodzos-userns.conf usr/local/bin/fz-mount-image usr/share/applications/fz-mount-image.desktop usr/local/sbin/fz-smartlog etc/systemd/system/fz-smartlog.service etc/xdg/powerdevilrc usr/share/applications/fz-smartlog-now.desktop usr/local/sbin/fz-backlight-max usr/local/sbin/fz-kexec-uki etc/systemd/system/fz-backlight-max.service etc/modules-load.d/90-froodzos-dsp.conf usr/local/bin/helium usr/local/bin/zen usr/share/applications/helium.desktop usr/share/applications/zen.desktop; do
-  mode=644; case "$f" in usr/local/bin/fz-mount-image|usr/local/sbin/fz-smartlog|usr/local/sbin/fz-backlight-max|usr/local/sbin/fz-kexec-uki|usr/local/bin/helium|usr/local/bin/zen) mode=755;; esac
+for f in etc/mpv/mpv.conf etc/sysctl.d/90-froodzos-userns.conf usr/local/bin/fz-mount-image usr/share/applications/fz-mount-image.desktop usr/local/sbin/fz-smartlog etc/systemd/system/fz-smartlog.service etc/xdg/powerdevilrc usr/share/applications/fz-smartlog-now.desktop usr/local/sbin/fz-backlight-max usr/local/sbin/fz-kexec-uki usr/local/sbin/fz-stick-autorun etc/systemd/system/fz-stick-autorun.service etc/systemd/system/fz-backlight-max.service etc/modules-load.d/90-froodzos-dsp.conf usr/local/bin/helium usr/local/bin/zen usr/share/applications/helium.desktop usr/share/applications/zen.desktop; do
+  mode=644; case "$f" in usr/local/bin/fz-mount-image|usr/local/sbin/fz-smartlog|usr/local/sbin/fz-backlight-max|usr/local/sbin/fz-kexec-uki|usr/local/sbin/fz-stick-autorun|usr/local/bin/helium|usr/local/bin/zen) mode=755;; esac
   sudo install -D -m "$mode" -o root -g root "$OVL/$f" "$BASE/merged/$f"
 done
 # live-fix tools: the device-tree fix-up (needs dtc, installed through PKGS) next to the kexec helper
@@ -79,6 +79,7 @@ sudo install -D -m 755 -o root -g root "$OVL/../fz-dtb-fixup.py" "$BASE/merged/u
 sudo mkdir -p "$BASE/merged/etc/systemd/system/multi-user.target.wants"
 sudo ln -sf ../fz-smartlog.service "$BASE/merged/etc/systemd/system/multi-user.target.wants/fz-smartlog.service"
 sudo ln -sf ../fz-backlight-max.service "$BASE/merged/etc/systemd/system/multi-user.target.wants/fz-backlight-max.service"
+sudo ln -sf ../fz-stick-autorun.service "$BASE/merged/etc/systemd/system/multi-user.target.wants/fz-stick-autorun.service"
 # default applications: browser and disk images (appended to an existing /etc/xdg/mimeapps.list, else created)
 M="$BASE/merged/etc/xdg/mimeapps.list"
 if sudo test -f "$M"; then
