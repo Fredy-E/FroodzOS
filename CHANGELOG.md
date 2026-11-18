@@ -11,6 +11,13 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
+### First live-boot findings (2026-11-18, not released)
+- Boot time: the shared-library cache is now built in the image and `ldconfig.service` is masked (it took 28 s of every live boot on the USB root; packages installed in a running session still run ldconfig through their pacman hook).
+- `fz-touchpad.service` gets a drop-in `ExecCondition` so the user-space fallback driver steps aside when the kernel driver (`i2c_hid_of`) owns the touchpad; before, it failed five times with EBUSY and left systemd degraded.
+- `fz-smartlog` picked the AC supply as the battery (the glob `*bat*` also matches `qcom-battmgr-ac`) and reported no battery; it now selects the supply by `type=Battery`.
+- New `builder/public-image/fz-board-touchpad.py`: patches a compiled device tree so the Lenovo IdeaPad Slim 3 15Q8X10 touchpad (FocalTech FTCS0038 at I2C 0x38, interrupt TLMM GPIO 19 level-low; the board DTS wrongly lists a GXTP5100 at 0x5d without interrupt) binds the kernel `i2c_hid_of` driver. Owner-tested on the laptop 2026-11-18 (`0-0038` bound, pad works); gestures unconfirmed.
+- systemd-timesyncd is enabled; `wireless-regdb rtkit alsa-utils` are installed in the r9 root (regulatory database, RTKit, ALSA tools).
+
 ### Stick autorun hook (2026-11-17, not released)
 - New `fz-stick-autorun` service in the root: with `fz_autorun=1` on the kernel command line and a `FroodzOS-addons/autorun.sh` on the boot stick, it runs that script once as root late in boot (non-blocking, 300 s limit) and keeps its output in `Logs/autorun-<boot id>.txt`. Without the flag or the file it does nothing. It lets a test stick bring its own private add-ons and unattended post-boot checks without rebuilding the root; no private content is part of the repository or the public image.
 

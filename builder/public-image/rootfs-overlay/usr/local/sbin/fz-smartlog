@@ -154,7 +154,7 @@ metrics() {   # key=value lines, cheap and numeric where possible
     echo "memavail_kb=$(awk '/MemAvailable/{print $2}' /proc/meminfo)"; echo "memtotal_kb=$(awk '/MemTotal/{print $2}' /proc/meminfo)"
     echo "load1=$(cut -d' ' -f1 /proc/loadavg)"
     echo "rootuse_pct=$(df / 2>/dev/null | awk 'NR==2{gsub("%","",$5); print $5}')"
-    bat=$(ls -d /sys/class/power_supply/*bat* /sys/class/power_supply/BAT* 2>/dev/null | head -n 1)
+    bat=; for d in /sys/class/power_supply/*; do [ "$(cat "$d/type" 2>/dev/null)" = Battery ] && { bat=$d; break; }; done   # by type: the glob *bat* also matches qcom-battmgr-ac
     en=$(cat "$bat/energy_now" 2>/dev/null); ef=$(cat "$bat/energy_full" 2>/dev/null); ed=$(cat "$bat/energy_full_design" 2>/dev/null); cap=$(cat "$bat/capacity" 2>/dev/null)
     # qcom-battmgr reports energy_now/energy_full but not always capacity: derive the percentage so the log never shows an empty battery by mistake
     [ -z "$cap" ] && [ -n "$en" ] && [ "${ef:-0}" -gt 0 ] 2>/dev/null && cap=$((en * 100 / ef))
