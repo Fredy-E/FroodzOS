@@ -1,0 +1,14 @@
+[Unit]
+Description=FroodzOS: persistent home and Wi-Fi profiles from a FROODZ_PERSIST partition (only with fz_persist=1)
+ConditionKernelCommandLine=fz_persist=1
+After=local-fs.target systemd-udevd.service
+Before=NetworkManager.service systemd-user-sessions.service kestrel-graphics.service kestrel-graphics-sddm.service sddm.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/fz-persist
+ExecStop=/usr/bin/sync
+
+[Install]
+WantedBy=multi-user.target

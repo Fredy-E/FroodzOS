@@ -1,0 +1,38 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-persist: opt-in persistent home and Wi-Fi profiles for a FroodzOS live stick. With fz_persist=1 on the kernel command line and an ext4
+# partition labelled FROODZ_PERSIST (on the boot stick or any attached disk), it mounts that partition and bind-mounts
+#   <partition>/home/<user>             over the live user's home directory (seeded from the live home on first use), and
+#   <partition>/nm-connections (0700)   over /etc/NetworkManager/system-connections (saved Wi-Fi networks and their passwords).
+# Everything else stays RAM-only. It runs before NetworkManager and the desktop session start. Without the flag, the label, or when
+# anything fails, it exits 0 and the session is simply not persistent. Whatever is stored on the partition (browser profiles, sign-ins,
+# Wi-Fi passwords) is readable by anyone who has the stick: use it only on media you control. Create the partition once with:
+#   mkfs.ext4 -L FROODZ_PERSIST /dev/sdXN
+# Test hooks: FZ_CMDLINE, FZ_PERSIST_DEV, FZ_PERSIST_MNT, FZ_PERSIST_DRY (print instead of mounting).
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+CMDLINE=${FZ_CMDLINE:-/proc/cmdline}
+DEV=${FZ_PERSIST_DEV:-/dev/disk/by-label/FROODZ_PERSIST}
+M=${FZ_PERSIST_MNT:-/run/fz-persist}
+say() { echo "fz-persist: $*"; }
+run() { if [ -n "$FZ_PERSIST_DRY" ]; then echo "DRY $*"; else "$@"; fi; }
+grep -qw 'fz_persist=1' "$CMDLINE" || exit 0
+i=0; while [ ! -e "$DEV" ] && [ $i -lt 40 ]; do sleep 0.5; i=$((i+1)); done
+[ -e "$DEV" ] || { say "no partition labelled FROODZ_PERSIST, session stays RAM-only"; exit 0; }
+U=$(getent passwd | awk -F: '$3>=1000 && $3<60000 && $7 !~ /nologin|false/ {print $1; exit}')
+[ -n "$U" ] || { say "no desktop user found"; exit 0; }
+H=$(getent passwd "$U" | cut -d: -f6); UID_=$(id -u "$U"); GID_=$(id -g "$U")
+mkdir -p "$M" && run mount -o noatime,commit=30,errors=remount-ro "$DEV" "$M" || { say "could not mount $DEV"; exit 0; }
+P=$M/home/$U
+if [ ! -d "$P" ]; then
+  say "first use: seeding $P from $H"
+  run mkdir -p "$P" && run cp -a "$H/." "$P/" || { say "seeding failed, session stays RAM-only"; run umount "$M"; exit 0; }
+  run chown "$UID_:$GID_" "$P"
+fi
+run mount --bind "$P" "$H" && say "home of $U is persistent ($P)" || say "bind mount of the home failed"
+N=/etc/NetworkManager/system-connections
+if [ -d "$(dirname "$N")" ]; then
+  [ -d "$M/nm-connections" ] || { run mkdir -p "$M/nm-connections"; [ -d "$N" ] && run cp -a "$N/." "$M/nm-connections/" 2>/dev/null; }
+  run chmod 700 "$M/nm-connections"; run chown root:root "$M/nm-connections"
+  run mkdir -p "$N"; run mount --bind "$M/nm-connections" "$N" && say "saved Wi-Fi profiles are persistent"
+fi
+exit 0
