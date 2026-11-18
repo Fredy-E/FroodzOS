@@ -70,7 +70,7 @@ $PAC -Rns --noconfirm falkon 2>&1 | tail -n 8
 $PAC -Syu --needed --noconfirm --ignore linux-firmware $PKGS 2>&1 | tail -n 60
 echo "install done $(date -u +%T)"
 OVL=${OVL:-/mnt/d/CachyOS-ARM64/publication/20261110-revamp/repository/builder/public-image/rootfs-overlay}
-for f in etc/mpv/mpv.conf etc/sysctl.d/90-froodzos-userns.conf usr/local/bin/fz-mount-image usr/share/applications/fz-mount-image.desktop usr/local/sbin/fz-smartlog etc/systemd/system/fz-smartlog.service etc/xdg/powerdevilrc usr/share/applications/fz-smartlog-now.desktop usr/local/sbin/fz-backlight-max usr/local/sbin/fz-kexec-uki usr/local/sbin/fz-stick-autorun etc/systemd/system/fz-stick-autorun.service etc/systemd/system/fz-backlight-max.service etc/modules-load.d/90-froodzos-dsp.conf usr/local/bin/helium usr/local/bin/zen usr/share/applications/helium.desktop usr/share/applications/zen.desktop; do
+for f in etc/mpv/mpv.conf etc/sysctl.d/90-froodzos-userns.conf usr/local/bin/fz-mount-image usr/share/applications/fz-mount-image.desktop usr/local/sbin/fz-smartlog etc/systemd/system/fz-smartlog.service etc/xdg/powerdevilrc usr/share/applications/fz-smartlog-now.desktop usr/local/sbin/fz-backlight-max usr/local/sbin/fz-kexec-uki usr/local/sbin/fz-stick-autorun etc/systemd/system/fz-stick-autorun.service etc/systemd/system/fz-touchpad.service.d/10-native-driver.conf etc/systemd/system/fz-backlight-max.service etc/modules-load.d/90-froodzos-dsp.conf usr/local/bin/helium usr/local/bin/zen usr/share/applications/helium.desktop usr/share/applications/zen.desktop; do
   mode=644; case "$f" in usr/local/bin/fz-mount-image|usr/local/sbin/fz-smartlog|usr/local/sbin/fz-backlight-max|usr/local/sbin/fz-kexec-uki|usr/local/sbin/fz-stick-autorun|usr/local/bin/helium|usr/local/bin/zen) mode=755;; esac
   sudo install -D -m "$mode" -o root -g root "$OVL/$f" "$BASE/merged/$f"
 done
@@ -80,6 +80,10 @@ sudo mkdir -p "$BASE/merged/etc/systemd/system/multi-user.target.wants"
 sudo ln -sf ../fz-smartlog.service "$BASE/merged/etc/systemd/system/multi-user.target.wants/fz-smartlog.service"
 sudo ln -sf ../fz-backlight-max.service "$BASE/merged/etc/systemd/system/multi-user.target.wants/fz-backlight-max.service"
 sudo ln -sf ../fz-stick-autorun.service "$BASE/merged/etc/systemd/system/multi-user.target.wants/fz-stick-autorun.service"
+# clock: the laptop has no usable RTC after a cold start; enable network time (what `systemctl enable systemd-timesyncd` does)
+sudo mkdir -p "$BASE/merged/etc/systemd/system/sysinit.target.wants"
+sudo ln -sf /usr/lib/systemd/system/systemd-timesyncd.service "$BASE/merged/etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service"
+sudo ln -sf /usr/lib/systemd/system/systemd-timesyncd.service "$BASE/merged/etc/systemd/system/dbus-org.freedesktop.timesync1.service"
 # default applications: browser and disk images (appended to an existing /etc/xdg/mimeapps.list, else created)
 M="$BASE/merged/etc/xdg/mimeapps.list"
 if sudo test -f "$M"; then
@@ -126,6 +130,10 @@ if [ "${PRUNE:-0}" = 1 ]; then
   for f in usr/lib/firmware/ath12k usr/lib/firmware/qcom/x1e80100 opt/helium/helium opt/zen/zen usr/bin/haruna usr/lib/libreoffice usr/local/sbin/fz-smartlog; do sudo test -e "$BASE/merged/$f" && echo "kept: $f" || echo "MISSING: $f"; done
   pacman --root "$BASE/merged" --dbpath "$BASE/merged/var/lib/pacman" -Q > "$OUTDIR/${OUTNAME:-r4}-installed.txt"
 fi
+# the shared-library cache is built here, so ldconfig.service (28 s on every live boot, measured 2026-11-18) is not needed at boot;
+# packages installed in a running session still run ldconfig through their pacman hook
+sudo ldconfig -r "$BASE/merged" && sudo test -s "$BASE/merged/etc/ld.so.cache" && echo "ld.so.cache built" || { echo "ldconfig failed"; exit 5; }
+sudo ln -sf /dev/null "$BASE/merged/etc/systemd/system/ldconfig.service"
 # release the bind mounts before squashing
 for m in merged/dev merged/proc merged/sys; do sudo umount "$BASE/$m"; done
 echo "mksquashfs start $(date -u +%T)"
