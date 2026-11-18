@@ -4,9 +4,9 @@
 
 | | |
 |---|---|
-| Current version | **`0.1.0-dev.2`, codename Maverick** (development; **not** a qualified alpha) |
+| Current version | **`0.1.0-dev.3`, codename Maverick** (development; **not** a qualified alpha) |
 | Target milestone | FroodzOS 0.1 Maverick - ARM64 Alpha: a limited live alpha for one laptop |
-| Binaries | One signed **development image** for the 83N3 only, as a GitHub pre-release ([`v0.1.0-dev.2-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick); the first one, [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick), stays available). No vendor firmware, no installer |
+| Binaries | One signed **development image** for the 83N3 only, as a GitHub pre-release ([`v0.1.0-dev.3-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.3-maverick); the earlier ones, [`v0.1.0-dev.2-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick) and [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick), stay available). No vendor firmware, no installer |
 | Licence | Original FroodzOS code and tools: **GPL-2.0-or-later** (see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md)); third-party material keeps its own licences |
 
 > **Early development.** A live desktop on one laptop is not general ARM64 compatibility, and not yet a finished operating system.
@@ -26,7 +26,7 @@ as natively as technically possible. It starts with a few formats and has no fix
 | **Open Anything** | One launcher and file-association layer that picks the right handler for any file, explains what it needs, and installs it on request. |
 | **Honest status** | Every format shows its realistic ceiling (native, compat, VM, limited, not feasible) and whether the published image can do it today. |
 
-This is the direction of the project, **not something it does fully today**: the current image (`0.1.0-dev.2`) is a desktop with Wi-Fi, keyboard
+This is the direction of the project, **not something it does fully today**: the current image (`0.1.0-dev.3`) is a desktop with Wi-Fi, keyboard
 and touchpad on one laptop, plus first file handlers (Ark, 7zip, LibreOffice, Okular, Gwenview, Haruna/mpv, Kate, Falkon and archive/filesystem
 tools; see [docs/compat/HANDLERS-PHASE1.md](docs/compat/HANDLERS-PHASE1.md)). Most of the catalogue is still *planned*, and none of the new handlers has been
 tested on real sample files on the laptop yet. Where technology (a different CPU
@@ -43,25 +43,26 @@ qualified. Failed and rejected revisions are kept on purpose; nothing is retroac
 ## Download (development image)
 
 A firmware-free **development image for the Lenovo IdeaPad Slim 3 15Q8X10 (83N3) only** is available as a signed GitHub pre-release:
-[`v0.1.0-dev.2-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick) (1.62 GB compressed raw USB image,
-SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, battery and power data
-and audio do not work, Wi-Fi does not survive suspend, and writing the image erases the target USB stick. Verification steps are in
+[`v0.1.0-dev.3-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.3-maverick) (1.63 GB compressed raw USB image,
+SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, audio does not work,
+Wi-Fi does not survive suspend, the released image itself was only emulator-tested, and writing the image erases the target USB stick. Verification steps are in
 [docs/releases/SIGNING.md](docs/releases/SIGNING.md); rights and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md).
 
-## Status (evidence as of 11 November 2026)
+## Status (evidence as of 18 November 2026)
 
 | Area | Evidence-backed status |
 |---|---|
 | Native USB boot and live root | Verified on the 83N3: boot chain, writable live overlay, systemd, interactive console. A private `0.1.0-dev` candidate also booted natively on 2026-11-10. |
 | Desktop and display | Owner saw Plasma with software rendering; the panel is 1920x1200. A fix so the kernel receives the native mode instead of a 1024x768 menu mode was applied on 2026-11-10 and awaits owner confirmation. **No accelerated GPU claim.** |
-| Input | Keyboard and external mouse work. **The built-in touchpad works in basic mouse mode** in the private candidate through a user-space polling driver ([`docs/touchpad.md`](docs/touchpad.md)); tap-to-click and gestures are not available yet. |
+| Input | Keyboard and external mouse work. **The built-in touchpad works through the kernel driver** (`i2c_hid_of`; owner test 2026-11-18 with the device-tree fix in `0.1.0-dev.3`); gesture quality is unconfirmed. The user-space polling driver ([`docs/touchpad.md`](docs/touchpad.md)) remains as a fallback entry. |
 | Networking | **Built-in Wi-Fi works** (WCN7850 / ath12k). USB Ethernet is unexercised. |
 | Persistence | A 32 GiB ext4 USB partition was written in full and read back; a HOME file canary was accepted across two different native boots. Full settings and tools persistence is not proved. |
 | Thermal | All 20 required CPU/cpuss sensor types observed. That is not cooling or fan-control validation. |
-| Audio, camera, USB-C and charging, battery, suspend | Not accepted. They would be documented limitations of a limited 0.1. |
+| Battery | **Level, charge state and USB-C power data work** (owner test 2026-11-18; [`docs/hardware-dsp-battery.md`](docs/hardware-dsp-battery.md)). |
+| Audio, camera, USB-C display, suspend | Not accepted. They would be documented limitations of a limited 0.1. |
 | Safe shutdown and recovery qualification | Open. |
 | Hermes workstation integration | Out of the 0.1 scope (owner decision 2026-11-10); parked, not deleted. |
-| Public binary image | Not available. Rights for a public image (CachyOS repository terms, vendor firmware, base-system terms) are unresolved; see [NOTICE.md](NOTICE.md). |
+| Public binary image | Signed development pre-releases for the 83N3 only, no vendor firmware ([`v0.1.0-dev.3-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.3-maverick) is the latest); rights position and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md). |
 | Other boards / general ARM64 | A project goal, not established support. |
 
 Details and the evidence classes behind each row are in [docs/releases/CURRENT.md](docs/releases/CURRENT.md).
@@ -77,7 +78,7 @@ the [roadmap](docs/releases/ROADMAP.md) and the [changelog](CHANGELOG.md).
 
 - [Main goal and compatibility plan](docs/releases/UNIVERSAL-COMPATIBILITY.md)
 - [Release status, evidence boundaries and blockers](docs/releases/CURRENT.md)
-- [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev.2-maverick.md)
+- [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.3-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev.3-maverick.md)
 - [0.1 Maverick scope](docs/releases/0.1-maverick.md) and [promotion policy](docs/releases/POLICY.md)
 - [Changelog](CHANGELOG.md)
 - [Documentation index](docs/README.md)
