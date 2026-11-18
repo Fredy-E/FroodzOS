@@ -7,7 +7,7 @@
  },
  "source": {
   "repository": "https://github.com/Fredy-E/FroodzOS",
-  "revision": "main b6ba366 plus the release pull request for build maverick-public-dev-20261118.2 (persistence overlay files and build-root.sh change, release notes, rights review, changelog)",
+  "revision": "main 41ec978 plus the release pull request for build maverick-public-dev-20261118.2 (persistence overlay files and build-root.sh change, release notes, rights review, changelog)",
   "dirty_delta": "The build ran from copies in the maintainer candidate folder (tools/) and from builder/public-image/rootfs-overlay/ with content identical to the files in the pull request.",
   "note": "The root is derived from the pinned Phase 1 root (sha256 22dde19c5a9e0b2a6e00f30cce7d0866d08159e1127871793553cd0478d1aacf) by builder/public-image/build-root.sh with PRUNE=1 and PKGS=\"kexec-tools dtc efibootmgr git openssh evtest strace wireless-regdb rtkit alsa-utils\": full system upgrade, the overlay files, Helium and Zen from their official tarballs, a prebuilt ld.so.cache and size reduction."
  },
