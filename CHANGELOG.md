@@ -11,6 +11,11 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
+### 0.1.0-dev.3 candidate (2026-11-18)
+- Version bump to `0.1.0-dev.3` (build id `maverick-public-dev-20261118.2`); first boot entry uses the device tree with both fixes (orphaned-vote removal and the real touchpad), the second entry keeps the dev.2 style user-space touchpad driver. Release notes: `docs/releases/RELEASE-NOTES-0.1.0-dev.3-maverick.md`.
+- New opt-in `fz-persist` service (`fz_persist=1` on the kernel command line): mounts the ext4 partition labelled `FROODZ_PERSIST`, seeds it from the live home on first use and bind-mounts it over the live user's home and the saved NetworkManager connections, so a stick can keep a sign-in and Wi-Fi networks across reboots. Without the flag or the partition it does nothing. Whoever holds the stick can read what is stored there; the public image ships no such partition.
+- `etc/environment.d/90-froodzos.conf` sets `POWERDEVIL_NO_DDCUTIL=1` (PowerDevil's DDC probe of `/dev/i2c-*` fails with EACCES on this laptop).
+
 ### First live-boot findings (2026-11-18, not released)
 - Boot time: the shared-library cache is now built in the image and `ldconfig.service` is masked (it took 28 s of every live boot on the USB root; packages installed in a running session still run ldconfig through their pacman hook).
 - `fz-touchpad.service` gets a drop-in `ExecCondition` so the user-space fallback driver steps aside when the kernel driver (`i2c_hid_of`) owns the touchpad; before, it failed five times with EBUSY and left systemd degraded.

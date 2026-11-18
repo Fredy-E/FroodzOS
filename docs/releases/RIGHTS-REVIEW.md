@@ -60,3 +60,19 @@ The published build `maverick-public-dev-20261113.4` differs from the earlier de
 | Firmware | Still none of the 83N3 vendor firmware; the experimental boot entry for the ADSP needs files the owner stages privately and is not part of the release. | See `FIRMWARE.md`. |
 
 Open points: those of sections 2 and 3, plus the trademark and artwork terms of Helium and Zen, and the missing certification of the Helium signing key.
+
+## 6. Addendum for the 0.1.0-dev.3 build (2026-11-18): live-fix tools, full upgrade, persistence
+
+The build `maverick-public-dev-20261118.2` is derived from the pinned Phase 1 root by `builder/public-image/build-root.sh`, like the dev.2 build. It differs as follows (file-listing comparison against the dev.2 root: 112,052 to 112,914 entries; 759 pacman packages, 17 more than dev.2).
+
+| Point | Finding | Decision |
+|---|---|---|
+| New packages | `kexec-tools` (GPL-2.0-or-later), `dtc` (GPL-2.0-or-later), `efibootmgr` (GPL-2.0-or-later), `git` (GPL-2.0-only), `openssh` (BSD-2-Clause, BSD-3-Clause, ISC, MIT, 0BSD and public-domain parts), `evtest` (GPL, version not stated by the package), `strace` (LGPL-2.1-or-later), `alsa-utils` (GPL-2.0-or-later), `rtkit` (GPL-3.0-or-later and MIT) and their dependencies, all from the Arch Linux ARM `core` and `extra` repositories. | Unmodified ALARM packages with their licence texts (`/usr/share/licenses/`). `pkglist.tsv` lists every package with repository and licence. |
+| `wireless-regdb` | The package licence field says `custom`; the shipped `/usr/share/licenses/wireless-regdb/LICENSE` is the upstream text. The database carries radio regulation data and is not an executable. | Unmodified package with its licence text. Accepted: the exact terms are those of that file; no separate legal review was done (open point, like the other `custom` entries in `pkglist.tsv`). |
+| Full system upgrade | The build upgraded the existing packages (Plasma and KDE Frameworks 6.32, `qt6-webengine` and others). The pruned `linux-firmware-*` packages were again kept out (see section 4); the listing comparison shows no vendor firmware, no Firefox, no Arch logo files and no private keys. | Same filters as dev.2. |
+| Kernel and boot | The kernel package, GRUB and the boot images are those of the previous build, with two device-tree changes (`fz-dtb-fixup.py`, `fz-board-touchpad.py`, original GPL-2.0-or-later tools in this repository) applied to the compiled device tree inside the first boot entry's image. | Source of the tools in this repository at the tag; no firmware is added by them. |
+| Persistence | `fz-persist` (original code) mounts a user-created ext4 partition labelled `FROODZ_PERSIST` when the kernel option `fz_persist=1` is set, and `fz-stick-autorun` runs a script from the boot stick when `fz_autorun=1` is set. | Both are off by default; the image contains no such partition and no script. Release notes state that whoever holds a stick with persistence can read what is stored there. |
+| Project code | `fz-persist`, `fz-stick-autorun`, `fz-kexec-uki`, `fz-board-touchpad.py` and the overlay drop-ins are original FroodzOS code under GPL-2.0-or-later. | Source in this repository at the tag. |
+| Firmware | Still none of the 83N3 vendor firmware. | See `FIRMWARE.md`. |
+
+Open points: those of sections 2, 3 and 5, plus the licence text of `wireless-regdb` and the `GPL` (version unspecified) licence field of `evtest`.
