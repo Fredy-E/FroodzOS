@@ -65,15 +65,19 @@ if [ -n "${FZ_PLAN_ONLY:-}" ]; then
 fi
 echo "install start $(date -u +%T)"
 # Falkon aborts under the kernel's user-namespace restriction and the project chose Chromium instead; -s also removes dependencies nothing else needs
-$PAC -Rns --noconfirm falkon 2>&1 | tail -n 8
+$PAC -Rns --noconfirm falkon 2>&1 | tail -n 8 || true   # already gone when the input root is a later build (r10 and newer)
 # full system upgrade together with the new packages: a partial upgrade is not supported on Arch
 $PAC -Syu --needed --noconfirm --ignore linux-firmware $PKGS 2>&1 | tail -n 60
 echo "install done $(date -u +%T)"
 OVL=${OVL:-/mnt/d/CachyOS-ARM64/publication/20261110-revamp/repository/builder/public-image/rootfs-overlay}
-for f in etc/mpv/mpv.conf etc/sysctl.d/90-froodzos-userns.conf usr/local/bin/fz-mount-image usr/share/applications/fz-mount-image.desktop usr/local/sbin/fz-smartlog etc/systemd/system/fz-smartlog.service etc/xdg/powerdevilrc usr/share/applications/fz-smartlog-now.desktop usr/local/sbin/fz-backlight-max usr/local/sbin/fz-kexec-uki usr/local/sbin/fz-stick-autorun etc/systemd/system/fz-stick-autorun.service usr/local/sbin/fz-persist etc/systemd/system/fz-persist.service etc/systemd/system/fz-touchpad.service.d/10-native-driver.conf etc/environment.d/90-froodzos.conf etc/systemd/system/fz-backlight-max.service etc/modules-load.d/90-froodzos-dsp.conf usr/local/bin/helium usr/local/bin/zen usr/share/applications/helium.desktop usr/share/applications/zen.desktop; do
+for f in etc/mpv/mpv.conf etc/sysctl.d/90-froodzos-userns.conf usr/local/bin/fz-mount-image usr/share/applications/fz-mount-image.desktop usr/local/sbin/fz-smartlog etc/systemd/system/fz-smartlog.service etc/xdg/powerdevilrc usr/share/applications/fz-smartlog-now.desktop usr/local/sbin/fz-backlight-max usr/local/sbin/fz-kexec-uki usr/local/sbin/fz-stick-autorun etc/systemd/system/fz-stick-autorun.service usr/local/sbin/fz-persist etc/systemd/system/fz-persist.service etc/systemd/system/fz-touchpad.service.d/10-native-driver.conf etc/environment.d/90-froodzos.conf etc/systemd/system/fz-backlight-max.service etc/modules-load.d/90-froodzos-dsp.conf usr/local/bin/helium usr/local/bin/zen usr/share/applications/helium.desktop usr/share/applications/zen.desktop etc/systemd/system/NetworkManager.service.d/10-froodzos-stop.conf usr/share/alsa/ucm2/Qualcomm/x1e80100/LENOVO-Ideapad-3.conf usr/share/alsa/ucm2/Qualcomm/x1e80100/Ideapad-3-HiFi.conf; do
   mode=644; case "$f" in usr/local/bin/fz-mount-image|usr/local/sbin/fz-smartlog|usr/local/sbin/fz-backlight-max|usr/local/sbin/fz-kexec-uki|usr/local/sbin/fz-stick-autorun|usr/local/sbin/fz-persist|usr/local/bin/helium|usr/local/bin/zen) mode=755;; esac
   sudo install -D -m "$mode" -o root -g root "$OVL/$f" "$BASE/merged/$f"
 done
+# sound: the ALSA card of this laptop is named X1E80100-LENOVO-Ideapad-3 (by short name and by long name) and matches no stock UCM profile
+UCD="$BASE/merged/usr/share/alsa/ucm2/conf.d/x1e80100"
+sudo ln -sf ../../Qualcomm/x1e80100/LENOVO-Ideapad-3.conf "$UCD/X1E80100-LENOVO-Ideapad-3.conf"
+sudo ln -sf ../../Qualcomm/x1e80100/LENOVO-Ideapad-3.conf "$UCD/LENOVO-83N3-IdeaPadSlim315Q8X10-LNVNB161216.conf"
 # live-fix tools: the device-tree fix-up (needs dtc, installed through PKGS) next to the kexec helper
 sudo install -D -m 755 -o root -g root "$OVL/../fz-dtb-fixup.py" "$BASE/merged/usr/local/sbin/fz-dtb-fixup.py"
 sudo mkdir -p "$BASE/merged/etc/systemd/system/multi-user.target.wants"
