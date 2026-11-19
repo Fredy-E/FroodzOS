@@ -20,6 +20,13 @@ DTS = """/dts-v1/;
     usb@60 { compatible = "qcom,x1e80100-dwc3", "qcom,snps-dwc3"; phys = <0x20 0x21 0>; phy-names = "usb2-phy", "usb3-phy"; status = "okay"; };
     i2c@30 { compatible = "qcom,geni-i2c"; interconnects = <0x11 0 7 0x10 1 7>; interconnect-names = "qup-core", "qup-config"; status = "okay"; };
     spi@30 { compatible = "qcom,geni-spi"; interconnects = <0x10 1 7>; status = "disabled"; };
+    dp0: displayport-controller@70 { compatible = "qcom,x1e80100-dp"; phandle = <0x30>; };
+    wcd: codec@80 { compatible = "qcom,wcd9385-codec"; phandle = <0x31>; };
+  };
+  sound {
+    compatible = "qcom,x1e80100-sndcard";
+    displayport-0-dai-link { link-name = "DisplayPort0 Playback"; cpu { sound-dai = <0x32 0>; }; codec { sound-dai = <0x30 0>; }; };
+    wcd-playback-dai-link { link-name = "WCD Playback"; cpu { sound-dai = <0x32 1>; }; codec { sound-dai = <0x31 0>; }; };
   };
 };
 """
@@ -44,6 +51,12 @@ class Fixup(unittest.TestCase):
         self.assertIn('maximum-speed = "high-speed"', out)
         self.assertIn('phy-names = "usb2-phy";', out)
         self.assertNotIn('usb3-phy', out)
+
+    def test_sound_nodp_is_opt_in_and_removes_only_the_displayport_link(self):
+        self.assertIn('displayport-0-dai-link', self.run_fix())
+        out = self.run_fix('--sound-nodp')
+        self.assertNotIn('displayport-0-dai-link', out)
+        self.assertIn('wcd-playback-dai-link', out)
 
     def test_dry_run_changes_nothing(self):
         d = Path(tempfile.mkdtemp()); (d / 'a.dts').write_text(DTS)
