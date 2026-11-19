@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-2.0-or-later
 """fz-kexec-uki: test a changed device tree (or kernel command line) from inside the running live session, without going through the
-firmware boot menu or editing the stick. EXPERIMENTAL: kexec on this laptop is untested; Wi-Fi/PCIe may not come back after it.
+firmware boot menu or editing the stick. EXPERIMENTAL and KNOWN BAD on the 83N3: the jump (`kexec -e`) works but the new kernel is blind - arm64 kexec does not hand over
+the firmware framebuffer, so the screen stays black and the session is lost (owner-tested 2026-11-19, only a power cycle helps).
+Use a boot menu entry on the stick instead. The jump therefore needs the explicit flag --i-accept-a-black-screen.
 
-    fz-kexec-uki [--uki PATH] [--dtb FILE] [--append "args"] [--exec]
+    fz-kexec-uki [--uki PATH] [--dtb FILE] [--append "args"] [--exec --i-accept-a-black-screen]
 
 It reads the unified kernel image the session was booted from (BOOT_IMAGE in /proc/cmdline, or --uki), extracts its kernel (.linux)
 and initramfs (.initrd), and loads them with `kexec -l` using --dtb (default: the device tree the running kernel uses,
-/sys/firmware/fdt) and the running command line (plus --append). Without --exec it only stages the load (`kexec -l`); with --exec it
-then jumps into the new kernel at once (`kexec -e`) - unmounts are NOT done, so save your work first (fz-vault-save).
+/sys/firmware/fdt) and the running command line (plus --append). Without --exec it only stages the load (`kexec -l`); with --exec (and
+the flag above) it then jumps into the new kernel at once (`kexec -e`) - unmounts are NOT done, so save your work first.
 
 Typical live fix of a device tree:
     sudo cp /sys/firmware/fdt /tmp/live.dtb
     sudo fz-dtb-fixup.py /tmp/live.dtb /tmp/new.dtb       (or fdtput by hand)
-    sudo fz-kexec-uki --dtb /tmp/new.dtb --exec
+    sudo fz-kexec-uki --dtb /tmp/new.dtb          (stage only; then put the new dtb into a stick boot entry and reboot)
 """
 import os, re, struct, subprocess, sys
 from pathlib import Path
@@ -44,15 +46,19 @@ def find_uki(arg):
 
 
 def main(argv):
-    uki = dtb = None; add = ''; go = False
+    uki = dtb = None; add = ''; go = False; ack = False
     it = iter(argv)
     for a in it:
         if a == '--uki': uki = next(it)
         elif a == '--dtb': dtb = next(it)
         elif a == '--append': add = next(it)
         elif a == '--exec': go = True
+        elif a == '--i-accept-a-black-screen': ack = True
         else: print(__doc__); return 2
     if os.geteuid() != 0: raise SystemExit('run with sudo')
+    if go and not ack:
+        raise SystemExit('refusing --exec: on this laptop the new kernel has no display handover, the screen stays black and the session is lost. '
+                         'Edit a boot entry on the stick and reboot instead. If you really want it, add --i-accept-a-black-screen.')
     path = find_uki(uki); sec = sections(path.read_bytes())
     for need in ('.linux', '.initrd'):
         if need not in sec: raise SystemExit('%s has no %s section' % (path, need))
@@ -68,7 +74,7 @@ def main(argv):
     print('dtb    :', dtbf); print('cmdline:', cmd)
     r = subprocess.run(args)
     if r.returncode: raise SystemExit('kexec -l failed (%d)' % r.returncode)
-    print('staged. To jump now: sudo kexec -e   (or run this tool again with --exec)')
+    print('staged (nothing has been jumped to). Prefer a stick boot entry; the jump gives a black screen on this laptop.')
     if go:
         subprocess.run(['sync']); os.execvp('kexec', ['kexec', '-e'])
     return 0

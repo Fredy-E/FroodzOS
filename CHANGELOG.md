@@ -11,6 +11,10 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
+### After dev.3 (2026-11-19, work towards dev.4, not released)
+- `fz-dtb-fixup.py --sound-nodp` (opt-in): deletes the `*-dai-link` nodes of a sound card whose codec is a DisplayPort controller. On the 83N3 the card could never complete because the display driver is blacklisted, so the DP controllers never probe; with the two DP links removed the speaker and headset links can bind. Test `test_sound_nodp_is_opt_in_and_removes_only_the_displayport_link`.
+- `fz-kexec-uki --exec` now needs `--i-accept-a-black-screen`: the jump works but arm64 kexec hands over no framebuffer, so the new kernel is blind and the session is lost (owner-tested 2026-11-19). Staging with `kexec -l` is unchanged.
+
 ### 0.1.0-dev.3 candidate (2026-11-18)
 - Version bump to `0.1.0-dev.3` (build id `maverick-public-dev-20261118.2`); first boot entry uses the device tree with both fixes (orphaned-vote removal and the real touchpad), the second entry keeps the dev.2 style user-space touchpad driver. Release notes: `docs/releases/RELEASE-NOTES-0.1.0-dev.3-maverick.md`.
 - New opt-in `fz-persist` service (`fz_persist=1` on the kernel command line): mounts the ext4 partition labelled `FROODZ_PERSIST`, seeds it from the live home on first use and bind-mounts it over the live user's home and the saved NetworkManager connections, so a stick can keep a sign-in and Wi-Fi networks across reboots. Without the flag or the partition it does nothing. Whoever holds the stick can read what is stored there; the public image ships no such partition.

@@ -14,7 +14,13 @@ Rule "orphan-usb3-phy": a DWC3 USB controller whose `phys` list names a PHY that
 USB 2.0 pair of a port, with the SuperSpeed PHY left disabled) never probes and keeps its suppliers' sync_state pending. The disabled
 PHY entry is removed from `phys`/`phy-names` and `maximum-speed = "high-speed"` is set, so the port works as USB 2.0.
 
-    fz-dtb-fixup.py <in.dtb> <out.dtb> [--all-pas] [--dry-run]
+Rule "sound-nodp" (opt-in, `--sound-nodp`): a sound card node whose `*-dai-link` children use a DisplayPort controller (`qcom,*-dp`)
+as their codec can never complete while the display subsystem is not probed (the images blacklist the display clock driver and run on
+the firmware framebuffer): the whole card then defers forever with "DisplayPort0 Playback: codec dai not found" and no ALSA card appears even
+though the audio processor, codecs and soundwire are up. The rule deletes those dai-link nodes so the speaker and headset links can bind.
+Turn it off again once the display driver works.
+
+    fz-dtb-fixup.py <in.dtb> <out.dtb> [--all-pas] [--sound-nodp] [--dry-run]
 
 Needs dtc, fdtput (package dtc). The input is never modified. Prints one line per action; exit 0 even when nothing is needed.
 """
@@ -99,6 +105,20 @@ def plan_usb(nodes):
     return out
 
 
+def plan_sound_nodp(nodes):
+    """Paths of `*dai-link*` nodes whose `codec` child points at a DisplayPort controller node."""
+    by_ph = {cells(p['phandle'])[0]: path for path, p in nodes.items() if 'phandle' in p}
+    out = []
+    for path, props in nodes.items():
+        if 'dai-link' not in path.rsplit('/', 1)[-1]: continue
+        cod = nodes.get(path + '/codec', {})
+        vals = cells(cod['sound-dai']) if 'sound-dai' in cod else []
+        tgt = nodes.get(by_ph.get(vals[0]), {}) if vals else {}
+        if re.search(r'-dp"|displayport', tgt.get('compatible', '')):
+            out.append(path)
+    return sorted(out)
+
+
 def main(argv):
     args = [a for a in argv if not a.startswith('--')]
     if len(args) != 2: print(__doc__); return 2
@@ -106,10 +126,12 @@ def main(argv):
     nodes = parse(decompile(src))
     acts = plan(nodes, only_adsp='--all-pas' not in argv)
     usb = plan_usb(nodes)
-    if not acts and not usb: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
+    snd = plan_sound_nodp(nodes) if '--sound-nodp' in argv else []
+    if not acts and not usb and not snd: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
     if '--dry-run' in argv:
         for path, bad in acts: print('fz-dtb-fixup: would drop interconnect votes of %s (disabled providers: %s)' % (path, ', '.join(bad)))
         for path, keep, drop, _ in usb: print('fz-dtb-fixup: would drop PHY %s of %s (disabled provider), keep %s' % ([d[0] for d in drop], path, [k[0] for k in keep]))
+        for path in snd: print('fz-dtb-fixup: would delete the DisplayPort dai-link %s' % path)
         return 0
     shutil.copyfile(src, out)
     for path, bad in acts:
@@ -125,6 +147,9 @@ def main(argv):
         subprocess.run(['fdtput', '-t', 's', str(out), path, 'phy-names'] + [k[0] for k in keep], check=True)
         if setspeed: subprocess.run(['fdtput', '-t', 's', str(out), path, 'maximum-speed', 'high-speed'], check=True)
         print('fz-dtb-fixup: dropped PHY %s of %s (provider disabled); the port runs as USB 2.0' % ([d[0] for d in drop], path))
+    for path in snd:
+        subprocess.run(['fdtput', '-r', str(out), path], check=True)
+        print('fz-dtb-fixup: deleted the DisplayPort dai-link %s (its codec, a DP controller, never probes without the display driver)' % path)
     return 0
 
 
