@@ -78,6 +78,9 @@ done
 UCD="$BASE/merged/usr/share/alsa/ucm2/conf.d/x1e80100"
 sudo ln -sf ../../Qualcomm/x1e80100/LENOVO-Ideapad-3.conf "$UCD/X1E80100-LENOVO-Ideapad-3.conf"
 sudo ln -sf ../../Qualcomm/x1e80100/LENOVO-Ideapad-3.conf "$UCD/LENOVO-83N3-IdeaPadSlim315Q8X10-LNVNB161216.conf"
+# topology: the T14s class (2 WSA speakers, 2 mics, WCD headset) uses the Romulus topology; with the Yoga Slim 7x one the ADSP rejected GRAPH_START
+# (owner-tested 2026-11-19: Romulus plays through the speakers). The ADSP firmware itself is still the laptop's own and is not shipped.
+sudo ln -sf X1E80100-Romulus-tplg.bin "$BASE/merged/usr/lib/firmware/qcom/x1e80100/X1E80100-LENOVO-Ideapad-3-tplg.bin"
 # live-fix tools: the device-tree fix-up (needs dtc, installed through PKGS) next to the kexec helper
 sudo install -D -m 755 -o root -g root "$OVL/../fz-dtb-fixup.py" "$BASE/merged/usr/local/sbin/fz-dtb-fixup.py"
 sudo mkdir -p "$BASE/merged/etc/systemd/system/multi-user.target.wants"
