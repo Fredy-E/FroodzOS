@@ -1,0 +1,3 @@
+# FroodzOS live system: the internal NVMe drive (and the Windows installation on it) is read-only and is not offered by the desktop for mounting.
+# The sound setup (fz-sound-setup) mounts the Windows partition read-only itself; nothing in a live session may write to the internal disk.
+ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="nvme[0-9]*n[0-9]*", ATTR{ro}="1", ENV{UDISKS_IGNORE}="1"

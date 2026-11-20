@@ -14,7 +14,7 @@ H=$(cd "$(dirname "$0")" && pwd)
 export PYTHONDONTWRITEBYTECODE=1
 mkdir -p "$W"
 objcopy -O binary --only-section=.dtbauto "$SRC" "$W/base.dtb"
-python3 "$H/fz-dtb-fixup.py" "$W/base.dtb" "$W/pre.dtb" --all-pas --sound-nodp --wsa-right-gpio13
+python3 "$H/fz-dtb-fixup.py" "$W/base.dtb" "$W/pre.dtb" --all-pas --sound-nodp --wsa-right-gpio13 ${FZ_DTB_EXTRA:-}   # FZ_DTB_EXTRA: more rules, e.g. --enable-nvme (experimental, test builds only)
 python3 "$H/fz-board-touchpad.py" "$W/pre.dtb" "$W/dspM.dtb"
 python3 "$H/build-gfx-variant-uki.py" "$SRC" - "$OUT" "@dtb=$W/dspM.dtb"
 objcopy -O binary --only-section=.dtbauto "$OUT" "$W/chk.dtb"; cmp "$W/chk.dtb" "$W/dspM.dtb" && echo "device tree in the image matches"

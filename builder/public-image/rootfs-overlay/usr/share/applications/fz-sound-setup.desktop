@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Set up sound (laptop firmware)
+Comment=Copy this laptop's own audio firmware from its Windows partition (read-only), restart the audio DSP and the audio session. Nothing is installed or uploaded.
+Exec=konsole --hold -e sudo -n /usr/local/sbin/fz-sound-setup
+Icon=audio-speakers
+Terminal=false
+Categories=System;AudioVideo;
