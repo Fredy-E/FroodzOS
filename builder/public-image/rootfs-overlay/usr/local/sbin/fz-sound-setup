@@ -4,7 +4,7 @@
 #
 # The image ships no Qualcomm firmware (docs/releases/FIRMWARE.md). The speakers need the audio DSP (ADSP) restarted with the firmware that
 # came with this machine's Windows installation. This script copies those few files, read-only, from
-#   1. --source <dir>, 2. the boot stick directory FroodzOS-firmware, 3. the machine's Windows partition (NTFS, mounted read-only),
+#   1. --source <dir>, 2. the machine's own Windows partition (NTFS, mounted read-only), 3. the boot stick directory FroodzOS-firmware,
 # into /usr/lib/firmware/updates (the live system's RAM overlay: nothing is written to the boot stick, to Windows or to the network, and the
 # files are gone at power-off), restarts the ADSP and the user's audio session, and reports what happened.
 #
@@ -59,9 +59,6 @@ else
     [ -d "$SRC" ] || { say "--source $SRC is not a directory"; exit 1; }
     LIST=$(find_in "$SRC"); say "source: $SRC"
   fi
-  if [ -z "$LIST" ] && [ -d /run/archiso/bootmnt/FroodzOS-firmware ]; then
-    LIST=$(find_in /run/archiso/bootmnt/FroodzOS-firmware); [ -n "$LIST" ] && say "source: the boot stick folder FroodzOS-firmware"
-  fi
   if [ -z "$LIST" ]; then
     # the Windows partition(s) of this machine, read-only; BitLocker volumes cannot be read
     while read -r dev fstype; do
@@ -81,8 +78,11 @@ else
       else rmdir "$m" 2>/dev/null; say "could not mount $dev read-only (Windows hibernated or not NTFS?)"; fi
     done < <(lsblk -rno PATH,FSTYPE 2>/dev/null)
   fi
+  if [ -z "$LIST" ] && [ -d /run/archiso/bootmnt/FroodzOS-firmware ]; then
+    LIST=$(find_in /run/archiso/bootmnt/FroodzOS-firmware); [ -n "$LIST" ] && say "source: the boot stick folder FroodzOS-firmware"
+  fi
   if [ -z "$LIST" ]; then
-    say "no firmware found. Looked in --source, the stick folder FroodzOS-firmware and the Windows partition. Needed: ${FILES[*]}"
+    say "no firmware found. Looked in --source, the Windows partition and the stick folder FroodzOS-firmware. Needed: ${FILES[*]}"
     exit 1
   fi
   miss=0; for f in "${FILES[@]}"; do printf '%s\n' "$LIST" | cut -f1 | grep -qx "$f" || { say "MISSING $f"; miss=1; }; done

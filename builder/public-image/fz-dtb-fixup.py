@@ -25,7 +25,13 @@ bus share `reset-gpios = <&lpass_tlmm 12 ...>` in the upstream-derived board fil
 RIGHT amp (unique id 1, node `speaker@0,1`) has its own reset on lpass_tlmm gpio13 (proven on the laptop: driving gpio13 high made the
 second amp enumerate and play). The rule rewrites the right amp's reset line to gpio13.
 
-    fz-dtb-fixup.py <in.dtb> <out.dtb> [--all-pas] [--sound-nodp] [--wsa-right-gpio13] [--dry-run]
+Rule "enable-nvme" (opt-in, `--enable-nvme`, Lenovo IdeaPad Slim 3 15Q8X10 / 83N3): the board file of the bring-up era leaves the PCIe controller of the internal
+NVMe drive (`pcie@1bf8000`, "pcie6a") and its PHY (`phy@1bfc000`) disabled, so the internal disk and the Windows partition on it are invisible to Linux
+(`lsblk` shows only the USB stick). The rule sets both to "okay"; the bandwidth votes of the controller through NoC providers that are disabled in the same
+tree are then dropped by rule "icc-orphan" (which also covers `qcom,pcie-*` nodes). EXPERIMENTAL: the bring-up notes record a silent reset around the PCIe/NoC
+probes of an older kernel, so use it only on a test boot entry.
+
+    fz-dtb-fixup.py <in.dtb> <out.dtb> [--all-pas] [--sound-nodp] [--wsa-right-gpio13] [--enable-nvme] [--dry-run]
 
 Needs dtc, fdtput (package dtc). The input is never modified. Prints one line per action; exit 0 even when nothing is needed.
 """
@@ -73,6 +79,7 @@ def plan(nodes, only_adsp=True):
         comp = props.get('compatible', '')
         if 'interconnects' not in props or 'disabled' in props.get('status', '"okay"'): continue
         if 'qcom,geni-' in comp: pass                      # I2C/SPI/UART serial engines: the same no-vote fallback the owner-tested I2C5/I2C9 fix uses
+        elif 'qcom,pcie-' in comp: pass                    # PCIe controllers (an enabled one can never probe through a disabled NoC)
         elif '-pas' in comp and not (only_adsp and 'adsp' not in comp): pass
         else: continue
         vals, i, bad = cells(props['interconnects']), 0, []
@@ -135,23 +142,39 @@ def plan_wsa_right(nodes):
     return sorted(out)
 
 
+def plan_enable_nvme(nodes):
+    """Paths of the disabled PCIe controller (`pcie@1bf8000`, qcom,pcie-*) and PHY (`phy@1bfc000`) of the internal NVMe slot."""
+    out = []
+    for path, props in nodes.items():
+        last = path.rsplit('/', 1)[-1]
+        if last == 'pcie@1bf8000' and 'qcom,pcie-' in props.get('compatible', '') and 'disabled' in props.get('status', ''): out.append(path)
+        if last == 'phy@1bfc000' and 'pcie-phy' in props.get('compatible', '') and 'disabled' in props.get('status', ''): out.append(path)
+    return sorted(out)
+
+
 def main(argv):
     args = [a for a in argv if not a.startswith('--')]
     if len(args) != 2: print(__doc__); return 2
     src, out = Path(args[0]), Path(args[1])
     nodes = parse(decompile(src))
+    nvme = plan_enable_nvme(nodes) if '--enable-nvme' in argv else []
+    for path in nvme: nodes[path]['status'] = '"okay"'      # so the vote rule below sees the controller as enabled
     acts = plan(nodes, only_adsp='--all-pas' not in argv)
     usb = plan_usb(nodes)
     snd = plan_sound_nodp(nodes) if '--sound-nodp' in argv else []
     wsa = plan_wsa_right(nodes) if '--wsa-right-gpio13' in argv else []
-    if not acts and not usb and not snd and not wsa: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
+    if not acts and not usb and not snd and not wsa and not nvme: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
     if '--dry-run' in argv:
+        for path in nvme: print('fz-dtb-fixup: would enable %s (internal NVMe PCIe controller/PHY)' % path)
         for path, bad in acts: print('fz-dtb-fixup: would drop interconnect votes of %s (disabled providers: %s)' % (path, ', '.join(bad)))
         for path, keep, drop, _ in usb: print('fz-dtb-fixup: would drop PHY %s of %s (disabled provider), keep %s' % ([d[0] for d in drop], path, [k[0] for k in keep]))
         for path in snd: print('fz-dtb-fixup: would delete the DisplayPort dai-link %s' % path)
         for path, _ in wsa: print('fz-dtb-fixup: would move the reset of the right speaker amp %s to lpass_tlmm gpio13' % path)
         return 0
     shutil.copyfile(src, out)
+    for path in nvme:
+        subprocess.run(['fdtput', '-t', 's', str(out), path, 'status', 'okay'], check=True)
+        print('fz-dtb-fixup: enabled %s (internal NVMe PCIe controller/PHY)' % path)
     for path, bad in acts:
         if subprocess.run(['fdtget', str(out), path, 'compatible'], capture_output=True).returncode != 0:
             print('fz-dtb-fixup: SKIPPED %s (path not found in the blob)' % path); continue

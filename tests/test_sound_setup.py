@@ -37,6 +37,14 @@ class SoundSetup(unittest.TestCase):
         self.assertIn('usr/local/sbin/fz-sound-setup|', b)        # mode 755
         self.assertIn('multi-user.target.wants/fz-sound-setup.service', b)
 
+    def test_internal_disk_is_read_only_and_hidden_from_the_desktop(self):
+        rule = OVL / 'etc/udev/rules.d/90-froodzos-internal-ro.rules'
+        t = rule.read_text()
+        self.assertIn('KERNEL=="nvme[0-9]*n[0-9]*"', t)          # the disk and its partitions
+        self.assertIn('ATTR{ro}="1"', t)
+        self.assertIn('UDISKS_IGNORE', t)
+        self.assertIn('etc/udev/rules.d/90-froodzos-internal-ro.rules', BUILD.read_text())
+
     @unittest.skipUnless(POSIX, 'needs bash and find')
     def test_script_syntax(self):
         self.assertEqual(subprocess.run(['bash', '-n', str(SCRIPT)]).returncode, 0)
