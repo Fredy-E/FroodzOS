@@ -70,7 +70,7 @@ $PAC -Rns --noconfirm falkon 2>&1 | tail -n 8 || true   # already gone when the 
 $PAC -Syu --needed --noconfirm --ignore linux-firmware $PKGS 2>&1 | tail -n 60
 echo "install done $(date -u +%T)"
 OVL=${OVL:-/mnt/d/CachyOS-ARM64/publication/20261110-revamp/repository/builder/public-image/rootfs-overlay}
-for f in etc/mpv/mpv.conf etc/sysctl.d/90-froodzos-userns.conf usr/local/bin/fz-mount-image usr/share/applications/fz-mount-image.desktop usr/local/sbin/fz-smartlog etc/systemd/system/fz-smartlog.service etc/xdg/powerdevilrc usr/share/applications/fz-smartlog-now.desktop usr/local/sbin/fz-backlight-max usr/local/sbin/fz-kexec-uki usr/local/sbin/fz-stick-autorun etc/systemd/system/fz-stick-autorun.service usr/local/sbin/fz-persist etc/systemd/system/fz-persist.service etc/systemd/system/fz-touchpad.service.d/10-native-driver.conf etc/environment.d/90-froodzos.conf etc/systemd/system/fz-backlight-max.service etc/modules-load.d/90-froodzos-dsp.conf usr/local/bin/helium usr/local/bin/zen usr/share/applications/helium.desktop usr/share/applications/zen.desktop etc/systemd/system/NetworkManager.service.d/10-froodzos-stop.conf usr/share/alsa/ucm2/Qualcomm/x1e80100/LENOVO-Ideapad-3.conf usr/share/alsa/ucm2/Qualcomm/x1e80100/Ideapad-3-HiFi.conf; do
+for f in etc/mpv/mpv.conf etc/sysctl.d/90-froodzos-userns.conf usr/local/bin/fz-mount-image usr/share/applications/fz-mount-image.desktop usr/local/sbin/fz-smartlog etc/systemd/system/fz-smartlog.service etc/xdg/powerdevilrc usr/share/applications/fz-smartlog-now.desktop usr/local/sbin/fz-backlight-max usr/local/sbin/fz-kexec-uki usr/local/sbin/fz-stick-autorun etc/systemd/system/fz-stick-autorun.service usr/local/sbin/fz-persist etc/systemd/system/fz-persist.service etc/systemd/system/fz-touchpad.service.d/10-native-driver.conf etc/environment.d/90-froodzos.conf etc/systemd/system/fz-backlight-max.service etc/modules-load.d/90-froodzos-dsp.conf usr/local/bin/helium usr/local/bin/zen usr/share/applications/helium.desktop usr/share/applications/zen.desktop etc/systemd/system/NetworkManager.service.d/10-froodzos-stop.conf etc/systemd/system/iio-sensor-proxy.service.d/10-froodzos-stop.conf usr/share/alsa/ucm2/Qualcomm/x1e80100/LENOVO-Ideapad-3.conf usr/share/alsa/ucm2/Qualcomm/x1e80100/Ideapad-3-HiFi.conf; do
   mode=644; case "$f" in usr/local/bin/fz-mount-image|usr/local/sbin/fz-smartlog|usr/local/sbin/fz-backlight-max|usr/local/sbin/fz-kexec-uki|usr/local/sbin/fz-stick-autorun|usr/local/sbin/fz-persist|usr/local/bin/helium|usr/local/bin/zen) mode=755;; esac
   sudo install -D -m "$mode" -o root -g root "$OVL/$f" "$BASE/merged/$f"
 done
@@ -95,7 +95,8 @@ sudo ln -sf /usr/lib/systemd/system/systemd-timesyncd.service "$BASE/merged/etc/
 # default applications: browser and disk images (appended to an existing /etc/xdg/mimeapps.list, else created)
 M="$BASE/merged/etc/xdg/mimeapps.list"
 if sudo test -f "$M"; then
-  grep -v '^\[Default Applications\]' "$OVL/etc/xdg-mimeapps-default.list" | sudo tee -a "$M" > /dev/null
+  # (an input root built with this script already carries the lines: do not append them twice)
+  sudo grep -q 'fz-mount-image' "$M" || grep -v '^\[Default Applications\]' "$OVL/etc/xdg-mimeapps-default.list" | sudo tee -a "$M" > /dev/null
 else
   sudo install -D -m 644 -o root -g root "$OVL/etc/xdg-mimeapps-default.list" "$M"
 fi
@@ -105,9 +106,13 @@ HEL_SHA=720b90b55c190c25069d2443f121a0c3c4fee705564060d7b8d3f219aa9e1ef0; ZEN_SH
 test "$(sha256sum "$BD/helium-0.21.2.1-arm64_linux.tar.xz" | cut -d' ' -f1)" = "$HEL_SHA" || { echo "Helium tarball does not match the pin"; exit 4; }
 test "$(sha256sum "$BD/zen.linux-aarch64.tar.xz" | cut -d' ' -f1)" = "$ZEN_SHA" || { echo "Zen tarball does not match the pin"; exit 4; }
 sudo mkdir -p "$BASE/merged/opt"
-sudo tar -xJf "$BD/helium-0.21.2.1-arm64_linux.tar.xz" -C "$BASE/merged/opt" --no-same-owner --no-same-permissions
-sudo mv "$BASE/merged/opt/helium-0.21.2.1-arm64_linux" "$BASE/merged/opt/helium"
-sudo tar -xJf "$BD/zen.linux-aarch64.tar.xz" -C "$BASE/merged/opt" --no-same-owner --no-same-permissions
+if sudo test -x "$BASE/merged/opt/helium/helium" && sudo test -x "$BASE/merged/opt/zen/zen"; then
+  echo "browsers already in the input root (same pinned tarballs): not unpacked again"
+else
+  sudo tar -xJf "$BD/helium-0.21.2.1-arm64_linux.tar.xz" -C "$BASE/merged/opt" --no-same-owner --no-same-permissions
+  sudo mv "$BASE/merged/opt/helium-0.21.2.1-arm64_linux" "$BASE/merged/opt/helium"
+  sudo tar -xJf "$BD/zen.linux-aarch64.tar.xz" -C "$BASE/merged/opt" --no-same-owner --no-same-permissions
+fi
 sudo chown -R root:root "$BASE/merged/opt/helium" "$BASE/merged/opt/zen"
 sudo chmod -R go-w "$BASE/merged/opt/helium" "$BASE/merged/opt/zen"
 # Helium ships every translation; keep English, Arabic and French (smaller image)
