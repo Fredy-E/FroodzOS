@@ -76,3 +76,18 @@ The build `maverick-public-dev-20261118.2` is derived from the pinned Phase 1 ro
 | Firmware | Still none of the 83N3 vendor firmware. | See `FIRMWARE.md`. |
 
 Open points: those of sections 2, 3 and 5, plus the licence text of `wireless-regdb` and the `GPL` (version unspecified) licence field of `evtest`.
+
+## 7. Addendum for the 0.1.0-dev.4 build (2026-11-20): sound userspace, shutdown fixes
+
+The build `maverick-public-dev-20261120.2` is derived like dev.3 (the dev.3 root, then three further `build-root.sh` runs with a full upgrade each). File-listing comparison against the dev.3 root: 112,914 to 113,750 entries; 782 pacman packages, 23 more than dev.3, none removed. The pruned `linux-firmware-*` packages were again kept out; the listing comparison shows no vendor firmware, no Firefox, no Arch logo files and no private keys among the added or changed entries.
+
+| Point | Finding | Decision |
+|---|---|---|
+| New packages | The sound userspace: `pipewire-audio`, `pipewire-pulse`, `pipewire-alsa`, `plasma-pa`, `pulseaudio-qt`, `alsa-card-profiles`, `libgpiod` and their dependencies (`lilv`, `lv2`, `serd`, `sord`, `sratom`, `zix`, `sbc`, `bluez-libs`, `libldac`, `liblc3`, `libfreeaptx`, `libebur128`, `libmysofa`, `spandsp`, `webrtc-audio-processing-1`, `libfdk-aac`). All unmodified Arch Linux ARM `extra` packages with their licence texts under `/usr/share/licenses/`; licences are MIT, LGPL-2.1/3.0, GPL-2.0-or-later, ISC/0BSD, BSD-3-Clause, Apache-2.0 and CC-BY-SA-4.0 (libgpiod documentation). | Accepted. `pkglist.tsv` lists every package with repository and licence. |
+| `libfdk-aac` | Pulled in by the PipeWire Bluetooth codecs. Its licence is the Fraunhofer FDK AAC licence (`LicenseRef-Fraunhofer`), which allows redistribution in source and binary form under conditions, grants no patent licence and is not GPL-compatible. The licence text (`NOTICE`) is shipped by the package. | Unmodified ALARM package, shipped with its licence text; no FroodzOS code links against it. Accepted, with the patent position noted as an open point (same class as the codecs already inside `ffmpeg` and `vlc`). |
+| Boot image | The first entry now uses `froodzos-maverick-dspM.efi`: the base boot image with a device tree patched by `fz-dtb-fixup.py` (rules `icc-orphan`, `orphan-usb3-phy`, `sound-nodp`, `wsa-right-gpio13`) and `fz-board-touchpad.py`, rebuilt by `builder/public-image/build-sound-uki.sh`; only the `.dtbauto` section differs from the base image. | Original GPL-2.0-or-later tools in this repository; no firmware is added. |
+| Sound files | The root links `X1E80100-Romulus-tplg.bin` (already in the `linux-firmware-qcom` package that the image has carried since dev.1, reviewed in section 2) under the name the card requests, and ships board UCM profiles derived from the Qualcomm T14s profile of the `alsa-ucm-conf` package (BSD-3-Clause), without the DisplayPort parts. | UCM files keep their upstream licence header; the topology file is the unmodified package file. The audio DSP firmware itself is the laptop's own and is not shipped (`FIRMWARE.md`). |
+| Project code | `fz-bootmnt-ro` (script and unit), the `iio-sensor-proxy` and `NetworkManager` stop drop-ins, the PipeWire/UCM overlay files and `build-sound-uki.sh` are original FroodzOS code under GPL-2.0-or-later. | Source in this repository at the tag. |
+| Private add-ons | The sound start-up helper (ADSP reload, `fz-wsa-right` hold unit) used in the owner tests belongs to the private stick add-ons and is not shipped. | Not part of the release. |
+
+Open points: those of sections 2, 3, 5 and 6, plus the Fraunhofer FDK AAC licence and patent position of `libfdk-aac`.
