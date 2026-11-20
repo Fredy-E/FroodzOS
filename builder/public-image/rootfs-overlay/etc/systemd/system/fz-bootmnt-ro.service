@@ -1,0 +1,17 @@
+[Unit]
+Description=FroodzOS: remount the boot stick read-only at shutdown
+DefaultDependencies=no
+Conflicts=shutdown.target
+Before=shutdown.target kestrel-usb-log.service fz-smartlog.service
+ConditionPathIsMountPoint=/run/archiso/bootmnt
+RequiresMountsFor=/run/archiso/bootmnt
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/true
+ExecStop=/usr/local/sbin/fz-bootmnt-ro
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

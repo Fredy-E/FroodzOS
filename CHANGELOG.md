@@ -23,6 +23,8 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### After dev.3, sound and shutdown follow-up (2026-11-20, work towards dev.4, not released)
 - **Both speakers play (owner-tested 2026-11-20).** On the 83N3 the two WSA884x amplifiers do not share one reset line: lpass-tlmm gpio12 releases the left amp, gpio13 the right one (with only gpio12 driven, the SoundWire controller enumerated one device and the right speaker stayed silent). New opt-in rule `fz-dtb-fixup.py --wsa-right-gpio13` rewrites the right amp's `reset-gpios`; covered by `tests/test_dtb_fixup.py`.
 - Shutdown: a `iio-sensor-proxy.service` drop-in (`TimeoutStopSec=3`, `KillSignal=SIGKILL`) removes a 90 s wait at every power-off (the service waits for the absent `hexagonrpcd` sensor registry and ignores SIGTERM).
+- **Boot-image rule tested on the laptop (2026-11-20):** with `--wsa-right-gpio13` in the device tree both speakers play from boot, with no user-space helper; shutdown takes about 10 s.
+- New `fz-bootmnt-ro` (script plus `fz-bootmnt-ro.service`, enabled in the root): at shutdown it stops the stick's log writers, syncs and remounts the boot stick read-only so the FAT dirty flag does not stay set ("Volume was not properly unmounted" in Windows). If something still holds a file it is stopped and the remount retried (never PID 1 or systemd); it always exits 0, and does nothing when `/run/archiso/bootmnt` is not a mount. Failure details go to `Logs/shutdown-bootmnt-fail.txt` on the stick. Tests: `tests/test_bootmnt_ro.py`.
 - `build-root.sh` can use a root built by an earlier run as its input (browsers and default-application lines are not applied twice).
 
 ### 0.1.0-dev.3 candidate (2026-11-18)

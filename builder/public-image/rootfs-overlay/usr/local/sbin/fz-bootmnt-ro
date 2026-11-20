@@ -1,0 +1,27 @@
+#!/bin/sh
+# shutdown helper: stop the stick log writers, sync, remount the stick read-only (clears the FAT dirty flag). Failure details go to the stick, success to FROODZ_PERSIST.
+B=/run/archiso/bootmnt
+pkill -f 'journalctl -b 0 -f' 2>/dev/null
+pkill -x kestrel-kmsg 2>/dev/null
+sleep 0.5
+sync
+# up to 3 tries: if something still holds a file open on the stick (smartlog snapshot, log writers), note it, stop it (never PID 1 or systemd) and retry
+rc=1; n=0; seen=""
+while [ "$n" -lt 3 ]; do
+  o=$(mount -o remount,ro "$B" 2>&1); rc=$?
+  [ "$rc" -eq 0 ] && break
+  [ -n "$seen" ] || seen=$(fuser -vm "$B" 2>&1 | head -n 15)
+  for p in $(fuser -m "$B" 2>/dev/null); do
+    [ "$p" = "$$" ] && continue; [ "$p" -le 1 ] 2>/dev/null && continue
+    case "$(cat /proc/$p/comm 2>/dev/null)" in systemd*|sh|bash) continue;; esac
+    kill -KILL "$p" 2>/dev/null
+  done
+  sleep 1; n=$((n+1))
+done
+if [ "$rc" -ne 0 ]; then
+  { echo "$(date -u +%FT%TZ) remount ro of $B FAILED rc=$rc after $n tries: $o"; grep " $B " /proc/mounts; echo "$seen"; } >> "$B/Logs/shutdown-bootmnt-fail.txt" 2>&1
+elif mountpoint -q /run/fz-persist; then
+  echo "$(date -u +%FT%TZ) remount ro of $B ok after $n retries${seen:+ (held by: $(echo "$seen" | tr -s ' \n' ' ' | cut -c1-200))}" >> /run/fz-persist/shutdown-bootmnt.log
+fi
+echo "fz-bootmnt-ro: remount ro rc=$rc" > /dev/kmsg 2>/dev/null
+exit 0
