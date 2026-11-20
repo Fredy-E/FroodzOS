@@ -11,6 +11,9 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
+### Next, 0.1.0-dev.5 (work in progress, not released)
+- New `fz-sound-setup` (opt-in command, launcher and `fz_sound=1` unit): copies this laptop's own audio firmware read-only from its Windows partition (or the stick or a folder) into the live firmware overlay, restarts the audio DSP and the audio session, so sound works from the public image without the private stick add-ons. `docs/releases/FIRMWARE.md`, `tests/test_sound_setup.py`.
+
 ### Released (2026-11-20, 0.1.0-dev.4)
 - Pre-release `v0.1.0-dev.4-maverick` (build `maverick-public-dev-20261120.2`): both speaker amplifiers in the device tree (`--wsa-right-gpio13`, `--sound-nodp`), the sound userspace (PipeWire, UCM profile, Romulus topology link), shutdown in about 10 s (`iio-sensor-proxy`, NetworkManager and smart-log stop limits), the `fz-bootmnt-ro` service that leaves the boot stick clean, `builder/public-image/build-sound-uki.sh`. Release notes: `docs/releases/RELEASE-NOTES-0.1.0-dev.4-maverick.md`. No sound out of the box (the DSP needs the laptop's own firmware); the image itself was emulator-tested only.
 

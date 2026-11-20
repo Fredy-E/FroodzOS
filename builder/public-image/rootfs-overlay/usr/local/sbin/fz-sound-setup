@@ -1,0 +1,125 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-sound-setup: bring up sound on the Lenovo IdeaPad Slim 3 15Q8X10 (83N3) using the laptop's OWN audio firmware.
+#
+# The image ships no Qualcomm firmware (docs/releases/FIRMWARE.md). The speakers need the audio DSP (ADSP) restarted with the firmware that
+# came with this machine's Windows installation. This script copies those few files, read-only, from
+#   1. --source <dir>, 2. the boot stick directory FroodzOS-firmware, 3. the machine's Windows partition (NTFS, mounted read-only),
+# into /usr/lib/firmware/updates (the live system's RAM overlay: nothing is written to the boot stick, to Windows or to the network, and the
+# files are gone at power-off), restarts the ADSP and the user's audio session, and reports what happened.
+#
+#   sudo fz-sound-setup [--dry-run] [--source DIR] [--stage-only] [--no-reload] [--wait SECONDS] [--force]
+#
+# Kernel option `fz_sound=1` runs it once automatically, 45 s after boot (fz-sound-setup.service). Do not share the copied firmware.
+set -uo pipefail
+
+DEST=/usr/lib/firmware/updates/qcom/x1p42100/LENOVO/83N3
+FILES=(qcadsp8380.mbn adsp_dtbs.elf adspr.jsn adsps.jsn adspua.jsn battmgr.jsn)
+DRY=0; SRC=""; STAGE_ONLY=0; NO_RELOAD=0; WAIT=0; FORCE=0
+LOG=${FZ_SOUND_LOG:-/run/fz-sound-setup.log}
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --dry-run) DRY=1 ;;
+    --source) SRC=${2:?--source needs a directory}; shift ;;
+    --stage-only) STAGE_ONLY=1 ;;
+    --no-reload) NO_RELOAD=1 ;;
+    --wait) WAIT=${2:?--wait needs seconds}; shift ;;
+    --force) FORCE=1 ;;
+    -h|--help) sed -n '2,15p' "$0"; exit 0 ;;
+    *) echo "fz-sound-setup: unknown option $1" >&2; exit 2 ;;
+  esac
+  shift
+done
+say() { echo "fz-sound-setup: $*" | tee -a "$LOG"; }
+[ "$(id -u)" = 0 ] || [ -n "${FZ_SOUND_TEST:-}" ] || { echo "fz-sound-setup: run it with sudo" >&2; exit 1; }   # FZ_SOUND_TEST is for the unit tests (dry run only)
+[ "$WAIT" -gt 0 ] && sleep "$WAIT"
+
+# this laptop only: the firmware names and the speaker wiring are specific to the 83N3
+prod=$(cat /sys/class/dmi/id/product_name 2>/dev/null || true)
+case "$prod" in *83N3*) ;; *) if [ "$FORCE" != 1 ]; then say "this is not an 83N3 (product '$prod'); use --force to run anyway"; exit 1; fi ;; esac
+
+have_all() { local f; for f in "${FILES[@]}"; do [ -s "$1/$f" ] || return 1; done; }
+find_in() {          # newest copy of every file below $1 (a DriverStore or a plain folder); prints "name<TAB>path"
+  local f p
+  for f in "${FILES[@]}"; do
+    p=$(find "$1" -iname "$f" -type f -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -n 1 | cut -d' ' -f2-)
+    [ -n "$p" ] && printf '%s\t%s\n' "$f" "$p"
+  done
+}
+
+MOUNTS=()
+cleanup() { local m; for m in "${MOUNTS[@]:-}"; do [ -n "$m" ] && umount "$m" 2>/dev/null && rmdir "$m" 2>/dev/null; done; return 0; }
+trap cleanup EXIT
+
+LIST=""
+if have_all "$DEST" && [ -z "$SRC" ]; then
+  say "firmware already staged in $DEST"
+else
+  if [ -n "$SRC" ]; then
+    [ -d "$SRC" ] || { say "--source $SRC is not a directory"; exit 1; }
+    LIST=$(find_in "$SRC"); say "source: $SRC"
+  fi
+  if [ -z "$LIST" ] && [ -d /run/archiso/bootmnt/FroodzOS-firmware ]; then
+    LIST=$(find_in /run/archiso/bootmnt/FroodzOS-firmware); [ -n "$LIST" ] && say "source: the boot stick folder FroodzOS-firmware"
+  fi
+  if [ -z "$LIST" ]; then
+    # the Windows partition(s) of this machine, read-only; BitLocker volumes cannot be read
+    while read -r dev fstype; do
+      case "$fstype" in
+        BitLocker|bitlocker) say "$dev is BitLocker-encrypted: unlock it in Windows or pass --source with the copied files"; continue ;;
+        ntfs) ;; *) continue ;;
+      esac
+      m=$(mktemp -d /run/fz-win.XXXXXX)
+      if mount -t ntfs3 -o ro,noexec,nosuid,nodev "$dev" "$m" 2>/dev/null || ntfs-3g -o ro,noexec,nosuid,nodev "$dev" "$m" 2>/dev/null; then
+        MOUNTS+=("$m")
+        ds="$m/Windows/System32/DriverStore/FileRepository"
+        if [ -d "$ds" ]; then
+          L=$(find_in "$ds")
+          if [ -n "$L" ]; then LIST=$L; say "source: Windows DriverStore on $dev (mounted read-only)"; break; fi
+        fi
+        umount "$m" 2>/dev/null && rmdir "$m" 2>/dev/null
+      else rmdir "$m" 2>/dev/null; say "could not mount $dev read-only (Windows hibernated or not NTFS?)"; fi
+    done < <(lsblk -rno PATH,FSTYPE 2>/dev/null)
+  fi
+  if [ -z "$LIST" ]; then
+    say "no firmware found. Looked in --source, the stick folder FroodzOS-firmware and the Windows partition. Needed: ${FILES[*]}"
+    exit 1
+  fi
+  miss=0; for f in "${FILES[@]}"; do printf '%s\n' "$LIST" | cut -f1 | grep -qx "$f" || { say "MISSING $f"; miss=1; }; done
+  [ "$miss" = 0 ] || { say "incomplete firmware set; nothing staged"; exit 1; }
+  while IFS=$'\t' read -r f p; do
+    say "stage $f  <-  ${p#*/DriverStore/FileRepository/}  ($(stat -c %s "$p") bytes)"
+    [ "$DRY" = 1 ] || install -D -m 0644 "$p" "$DEST/$f"
+  done <<< "$LIST"
+  [ "$DRY" = 1 ] && { say "dry run: nothing written"; exit 0; }
+  cleanup; MOUNTS=()
+fi
+[ "$STAGE_ONLY" = 1 ] && { say "staged only (no reload)"; exit 0; }
+[ "$NO_RELOAD" = 1 ] && exit 0
+
+# restart the ADSP so it boots this firmware (the laptop firmware had started it without the audio services)
+r=""; for d in /sys/class/remoteproc/*; do [ "$(cat "$d/name" 2>/dev/null)" = adsp ] && r=$d && break; done
+[ -n "$r" ] || { say "no remoteproc named adsp: this kernel has no ADSP support"; exit 1; }
+say "ADSP state before: $(cat "$r/state")"
+if [ "$(cat "$r/state")" = running ] || [ "$(cat "$r/state")" = attached ]; then timeout 60 sh -c "echo stop > $r/state" 2>>"$LOG"; sleep 3; fi
+timeout 90 sh -c "echo start > $r/state" 2>>"$LOG"; say "ADSP start finished (code $?), state: $(cat "$r/state")"
+card() { grep -q '\[' /proc/asound/cards 2>/dev/null; }
+for _ in $(seq 1 20); do card && break; sleep 1; done
+if ! card; then say "no sound card yet: reloading qcom_pd_mapper"; modprobe -r qcom_pd_mapper 2>>"$LOG"; modprobe qcom_pd_mapper 2>>"$LOG"; for _ in $(seq 1 30); do card && break; sleep 1; done; fi
+if ! card; then say "still no sound card: see dmesg | grep -iE 'snd|audioreach|q6apm|wsa|soundwire'"; exit 1; fi
+say "sound card: $(head -n 1 /proc/asound/cards | sed 's/^ *//')"
+systemctl restart upower 2>/dev/null || true
+
+# restart the audio session of the (first) desktop user so WirePlumber sees the new card
+u=$(getent passwd | awk -F: '$3>=1000 && $3<60000 && $7 !~ /nologin|false/ {print $1; exit}')
+if [ -n "$u" ]; then
+  uid=$(id -u "$u")
+  if [ -d "/run/user/$uid" ]; then
+    sleep 5
+    runuser -u "$u" -- env XDG_RUNTIME_DIR="/run/user/$uid" systemctl --user restart wireplumber 2>>"$LOG"
+    sleep 4
+    sink=$(runuser -u "$u" -- env XDG_RUNTIME_DIR="/run/user/$uid" wpctl status 2>/dev/null | grep -i -m1 'Speaker')
+    [ -n "$sink" ] && say "audio sink: $(echo "$sink" | sed 's/^[ │├└─*]*//')" || say "no speaker sink listed yet: wait a few seconds and run 'wpctl status'"
+  fi
+fi
+say "done. Try:  speaker-test -c 2 -t wav -l 1     (log: $LOG)"

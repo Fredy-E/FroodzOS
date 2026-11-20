@@ -24,3 +24,18 @@ sudo tools/setup-local-firmware.sh                    # copies into /usr/lib/fir
 ```
 
 The script reads the Windows DriverStore read-only and never uploads or redistributes anything. Do not share the copied files.
+
+## Sound from the image (0.1.0-dev.5 and later)
+
+The speakers need the audio DSP restarted with this laptop's own firmware. The image ships the command that does it:
+
+```
+sudo fz-sound-setup --dry-run     # shows which files it would copy and from where
+sudo fz-sound-setup               # copy, restart the audio DSP and the audio session, report the sound card and sink
+```
+
+It copies six files (`qcadsp8380.mbn`, `adsp_dtbs.elf`, `adspr.jsn`, `adsps.jsn`, `adspua.jsn`, `battmgr.jsn`) into `/usr/lib/firmware/updates/` in the live system's memory,
+from `--source <folder>`, from a folder `FroodzOS-firmware` on the boot stick, or from this machine's own Windows partition (NTFS, mounted read-only; a
+BitLocker-encrypted partition cannot be read). Nothing is written to Windows or to the boot stick and nothing leaves the machine; the files vanish at power-off,
+so run it again after every boot, or add `fz_sound=1` to the kernel options to run it once automatically 45 seconds after boot. There is also a
+"Set up sound (laptop firmware)" launcher in the application menu. Do not share the copied files.
