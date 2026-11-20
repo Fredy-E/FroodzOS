@@ -20,6 +20,11 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 - Shutdown: a `NetworkManager.service` drop-in stops NetworkManager before wpa_supplicant and caps its stop time at 10 s (it used to wait the full 90 s); `fz-smartlog.service` now waits at most 8 s at shutdown (was 30 s, its final snapshot took about 18 s).
 - `build-root.sh` no longer fails when the input root already lacks Falkon.
 
+### After dev.3, sound and shutdown follow-up (2026-11-20, work towards dev.4, not released)
+- **Both speakers play (owner-tested 2026-11-20).** On the 83N3 the two WSA884x amplifiers do not share one reset line: lpass-tlmm gpio12 releases the left amp, gpio13 the right one (with only gpio12 driven, the SoundWire controller enumerated one device and the right speaker stayed silent). New opt-in rule `fz-dtb-fixup.py --wsa-right-gpio13` rewrites the right amp's `reset-gpios`; covered by `tests/test_dtb_fixup.py`.
+- Shutdown: a `iio-sensor-proxy.service` drop-in (`TimeoutStopSec=3`, `KillSignal=SIGKILL`) removes a 90 s wait at every power-off (the service waits for the absent `hexagonrpcd` sensor registry and ignores SIGTERM).
+- `build-root.sh` can use a root built by an earlier run as its input (browsers and default-application lines are not applied twice).
+
 ### 0.1.0-dev.3 candidate (2026-11-18)
 - Version bump to `0.1.0-dev.3` (build id `maverick-public-dev-20261118.2`); first boot entry uses the device tree with both fixes (orphaned-vote removal and the real touchpad), the second entry keeps the dev.2 style user-space touchpad driver. Release notes: `docs/releases/RELEASE-NOTES-0.1.0-dev.3-maverick.md`.
 - New opt-in `fz-persist` service (`fz_persist=1` on the kernel command line): mounts the ext4 partition labelled `FROODZ_PERSIST`, seeds it from the live home on first use and bind-mounts it over the live user's home and the saved NetworkManager connections, so a stick can keep a sign-in and Wi-Fi networks across reboots. Without the flag or the partition it does nothing. Whoever holds the stick can read what is stored there; the public image ships no such partition.

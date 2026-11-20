@@ -20,7 +20,12 @@ the firmware framebuffer): the whole card then defers forever with "DisplayPort0
 though the audio processor, codecs and soundwire are up. The rule deletes those dai-link nodes so the speaker and headset links can bind.
 Turn it off again once the display driver works.
 
-    fz-dtb-fixup.py <in.dtb> <out.dtb> [--all-pas] [--sound-nodp] [--dry-run]
+Rule "wsa-right-gpio13" (opt-in, `--wsa-right-gpio13`, Lenovo IdeaPad Slim 3 15Q8X10 / 83N3): the two WSA884x speaker amplifiers on the WSA SoundWire
+bus share `reset-gpios = <&lpass_tlmm 12 ...>` in the upstream-derived board file, but on this board gpio12 only releases the LEFT amp; the
+RIGHT amp (unique id 1, node `speaker@0,1`) has its own reset on lpass_tlmm gpio13 (proven on the laptop: driving gpio13 high made the
+second amp enumerate and play). The rule rewrites the right amp's reset line to gpio13.
+
+    fz-dtb-fixup.py <in.dtb> <out.dtb> [--all-pas] [--sound-nodp] [--wsa-right-gpio13] [--dry-run]
 
 Needs dtc, fdtput (package dtc). The input is never modified. Prints one line per action; exit 0 even when nothing is needed.
 """
@@ -119,6 +124,17 @@ def plan_sound_nodp(nodes):
     return sorted(out)
 
 
+def plan_wsa_right(nodes):
+    """(path, [phandle, 13, flags]) for each right WSA884x amp (`speaker@0,1`, compatible sdw20217020400) whose reset is gpio12."""
+    out = []
+    for path, props in nodes.items():
+        if not path.rsplit('/', 1)[-1].startswith('speaker@') or not path.endswith('@0,1'): continue
+        if 'sdw20217020400' not in props.get('compatible', '') or 'reset-gpios' not in props: continue
+        v = cells(props['reset-gpios'])
+        if len(v) == 3 and v[1] == 12: out.append((path, [v[0], 13, v[2]]))
+    return sorted(out)
+
+
 def main(argv):
     args = [a for a in argv if not a.startswith('--')]
     if len(args) != 2: print(__doc__); return 2
@@ -127,11 +143,13 @@ def main(argv):
     acts = plan(nodes, only_adsp='--all-pas' not in argv)
     usb = plan_usb(nodes)
     snd = plan_sound_nodp(nodes) if '--sound-nodp' in argv else []
-    if not acts and not usb and not snd: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
+    wsa = plan_wsa_right(nodes) if '--wsa-right-gpio13' in argv else []
+    if not acts and not usb and not snd and not wsa: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
     if '--dry-run' in argv:
         for path, bad in acts: print('fz-dtb-fixup: would drop interconnect votes of %s (disabled providers: %s)' % (path, ', '.join(bad)))
         for path, keep, drop, _ in usb: print('fz-dtb-fixup: would drop PHY %s of %s (disabled provider), keep %s' % ([d[0] for d in drop], path, [k[0] for k in keep]))
         for path in snd: print('fz-dtb-fixup: would delete the DisplayPort dai-link %s' % path)
+        for path, _ in wsa: print('fz-dtb-fixup: would move the reset of the right speaker amp %s to lpass_tlmm gpio13' % path)
         return 0
     shutil.copyfile(src, out)
     for path, bad in acts:
@@ -150,6 +168,9 @@ def main(argv):
     for path in snd:
         subprocess.run(['fdtput', '-r', str(out), path], check=True)
         print('fz-dtb-fixup: deleted the DisplayPort dai-link %s (its codec, a DP controller, never probes without the display driver)' % path)
+    for path, val in wsa:
+        subprocess.run(['fdtput', '-t', 'x', str(out), path, 'reset-gpios'] + [hex(c) for c in val], check=True)
+        print('fz-dtb-fixup: right speaker amp %s now resets on lpass_tlmm gpio13' % path)
     return 0
 
 

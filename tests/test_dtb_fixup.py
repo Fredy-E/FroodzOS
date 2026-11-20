@@ -22,6 +22,10 @@ DTS = """/dts-v1/;
     spi@30 { compatible = "qcom,geni-spi"; interconnects = <0x10 1 7>; status = "disabled"; };
     dp0: displayport-controller@70 { compatible = "qcom,x1e80100-dp"; phandle = <0x30>; };
     wcd: codec@80 { compatible = "qcom,wcd9385-codec"; phandle = <0x31>; };
+    soundwire@90 { #address-cells = <2>; #size-cells = <0>;
+      speaker@0,0 { compatible = "sdw20217020400"; reg = <0 0>; reset-gpios = <0x41 12 1>; };
+      speaker@0,1 { compatible = "sdw20217020400"; reg = <0 1>; reset-gpios = <0x41 12 1>; };
+    };
   };
   sound {
     compatible = "qcom,x1e80100-sndcard";
@@ -57,6 +61,12 @@ class Fixup(unittest.TestCase):
         out = self.run_fix('--sound-nodp')
         self.assertNotIn('displayport-0-dai-link', out)
         self.assertIn('wcd-playback-dai-link', out)
+
+    def test_wsa_right_gpio13_is_opt_in_and_moves_only_the_right_amp(self):
+        self.assertEqual(self.run_fix().count('reset-gpios = <0x41 0x0c 0x01>'), 2)
+        out = self.run_fix('--wsa-right-gpio13')
+        self.assertEqual(out.count('reset-gpios = <0x41 0x0c 0x01>'), 1)     # the left amp stays on gpio12
+        self.assertEqual(out.count('reset-gpios = <0x41 0x0d 0x01>'), 1)     # the right amp (speaker@0,1) moved to gpio13
 
     def test_dry_run_changes_nothing(self):
         d = Path(tempfile.mkdtemp()); (d / 'a.dts').write_text(DTS)
