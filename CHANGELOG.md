@@ -11,7 +11,10 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.
 
-### After dev.3 (2026-11-19, work towards dev.4, not released)
+### Released (2026-11-20, 0.1.0-dev.4)
+- Pre-release `v0.1.0-dev.4-maverick` (build `maverick-public-dev-20261120.2`): both speaker amplifiers in the device tree (`--wsa-right-gpio13`, `--sound-nodp`), the sound userspace (PipeWire, UCM profile, Romulus topology link), shutdown in about 10 s (`iio-sensor-proxy`, NetworkManager and smart-log stop limits), the `fz-bootmnt-ro` service that leaves the boot stick clean, `builder/public-image/build-sound-uki.sh`. Release notes: `docs/releases/RELEASE-NOTES-0.1.0-dev.4-maverick.md`. No sound out of the box (the DSP needs the laptop's own firmware); the image itself was emulator-tested only.
+
+### After dev.3 (2026-11-19, included in dev.4)
 - `fz-dtb-fixup.py --sound-nodp` (opt-in): deletes the `*-dai-link` nodes of a sound card whose codec is a DisplayPort controller. On the 83N3 the card could never complete because the display driver is blacklisted, so the DP controllers never probe; with the two DP links removed the speaker and headset links can bind. Test `test_sound_nodp_is_opt_in_and_removes_only_the_displayport_link`.
 - `fz-kexec-uki --exec` now needs `--i-accept-a-black-screen`: the jump works but arm64 kexec hands over no framebuffer, so the new kernel is blind and the session is lost (owner-tested 2026-11-19). Staging with `kexec -l` is unchanged.
 
@@ -20,7 +23,7 @@ Status: **development, not a qualified alpha. No binaries, tag or release exist.
 - Shutdown: a `NetworkManager.service` drop-in stops NetworkManager before wpa_supplicant and caps its stop time at 10 s (it used to wait the full 90 s); `fz-smartlog.service` now waits at most 8 s at shutdown (was 30 s, its final snapshot took about 18 s).
 - `build-root.sh` no longer fails when the input root already lacks Falkon.
 
-### After dev.3, sound and shutdown follow-up (2026-11-20, work towards dev.4, not released)
+### After dev.3, sound and shutdown follow-up (2026-11-20, included in dev.4)
 - **Both speakers play (owner-tested 2026-11-20).** On the 83N3 the two WSA884x amplifiers do not share one reset line: lpass-tlmm gpio12 releases the left amp, gpio13 the right one (with only gpio12 driven, the SoundWire controller enumerated one device and the right speaker stayed silent). New opt-in rule `fz-dtb-fixup.py --wsa-right-gpio13` rewrites the right amp's `reset-gpios`; covered by `tests/test_dtb_fixup.py`.
 - Shutdown: a `iio-sensor-proxy.service` drop-in (`TimeoutStopSec=3`, `KillSignal=SIGKILL`) removes a 90 s wait at every power-off (the service waits for the absent `hexagonrpcd` sensor registry and ignores SIGTERM).
 - **Boot-image rule tested on the laptop (2026-11-20):** with `--wsa-right-gpio13` in the device tree both speakers play from boot, with no user-space helper; shutdown takes about 10 s.
