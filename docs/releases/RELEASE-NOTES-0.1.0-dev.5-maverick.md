@@ -23,19 +23,19 @@ The image contains **no** firmware (`FIRMWARE.md`). You need the audio firmware 
    (use one version folder; the April 2026 driver was the one tested) into a new folder `FroodzOS-firmware` on the USB stick (the stick shows up as a
    normal drive in Windows). Do not share the copied files.
 2. Boot the **first** entry, wait for the desktop, open Konsole, run `sudo fz-sound-setup` (read its messages), then `speaker-test -c 2 -t wav -l 1`.
-   Left and right may be swapped (see below).
+   If "Front Left" comes from your right side, see "Swap left and right" in `FIRMWARE.md`.
 
 ## What works (tested)
 **Tested on the laptop (2026-11-22), owner test:** the boot image of this release (identical file) with the root of this release (identical file) from a private test stick
 that has the firmware folder and extra add-ons: `fz-sound-setup` found the six files in the stick folder, restarted the audio DSP and the sound card appeared
 (`X1E80100-LENOVO-Ideapad-3`); the stick was left clean after shutdown. Left, right and both speakers had been heard in the dev.4 test with the same device tree and
-firmware but with a private start-up script; **audible output through `fz-sound-setup` itself is not confirmed in this record.**
-A second owner test (2026-11-22, same boot image and root, first-entry kernel options, no firmware stick add-ons): the desktop started, `sudo fz-sound-setup` from the desktop worked and sound played on both speakers, **but left and right were swapped**.
+firmware but with a private start-up script.
+**Sound confirmed (owner, 2026-11-22, many boots):** with the same boot image and root and the first-entry kernel options (no firmware add-ons on the stick except the firmware folder), the desktop started, `sudo fz-sound-setup` from the desktop worked and both speakers played (`speaker-test -c 2 -t wav -l 1`). On some boots left and right came out reversed and on others in the right order (cause not understood); the swap rule in `FIRMWARE.md` was checked in both directions (it reverses a correct order and back).
 **The released image itself was tested only in an emulator** (QEMU, see `maverick-public-dev-20261120.5.json`); it was not written to a stick and booted on the laptop.
 
 ## What does not work or is unverified
 - **The second boot entry (kernel option `fz_sound=1`) does not reach the desktop** on the laptop: in 5 of 5 owner tests on 2026-11-22 the login screen's display server stopped and no desktop session started; the same system without that option starts the desktop. Cause not yet found. Use the first entry and run `sudo fz-sound-setup` from the desktop.
-- **Left and right speaker channels are swapped** after `fz-sound-setup` in the first-entry test (cause not yet found; an earlier private start-up script gave the right order).
+- **Left and right can come out reversed on some boots** after `fz-sound-setup` (cause not yet found); a one-file rule that swaps them is in `FIRMWARE.md`.
 - **The internal drive is invisible to the live system** (the shipped device tree keeps its PCIe controller disabled), so `fz-sound-setup` cannot read the firmware
   from your Windows partition directly; copy it to the stick as above. An experiment that enables the controller (`--enable-nvme`) trained the link and then crashed the
   kernel in the GPIO core (NULL pointer in `gpio_shared_add_proxy_lookup`) and lost Wi-Fi and sound on the 83N3; it is **not** part of this image.
