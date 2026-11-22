@@ -6,7 +6,7 @@ namespaces and never mean a product release. Dates are record dates, not release
 
 ## [Unreleased] - 0.1.0-dev "Maverick"
 
-Status: **development, not a qualified alpha. No binaries, tag or release exist.**
+Status: **development, not a qualified alpha. No qualified release exists; development pre-releases (`v0.1.0-dev*-maverick`) are published on GitHub and are marked as pre-releases.**
 
 ### Direction (2026-11-11)
 - Main goal recorded: universal file and app compatibility, as native as feasible (`docs/releases/UNIVERSAL-COMPATIBILITY.md`). Not implemented yet.

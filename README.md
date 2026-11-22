@@ -44,7 +44,7 @@ qualified. Failed and rejected revisions are kept on purpose; nothing is retroac
 
 A firmware-free **development image for the Lenovo IdeaPad Slim 3 15Q8X10 (83N3) only** is available as a signed GitHub pre-release:
 [`v0.1.0-dev.5-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.5-maverick) (1.65 GB compressed raw USB image,
-SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, audio does not start without the laptop\'s own firmware, which you copy to a FroodzOS-firmware folder on the stick (then z-sound-setup starts the audio DSP; both speakers work in owner tests with the firmware),
+SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, audio does not start without the laptop\'s own firmware, which you copy to a FroodzOS-firmware folder on the stick (then `fz-sound-setup` starts the audio DSP and the sound card appears; both speakers were heard in owner tests with the firmware and a private start-up script, audible output through `fz-sound-setup` itself is not yet confirmed),
 Wi-Fi does not survive suspend, the released image itself was only emulator-tested, and writing the image erases the target USB stick. Verification steps are in
 [docs/releases/SIGNING.md](docs/releases/SIGNING.md); rights and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md).
 

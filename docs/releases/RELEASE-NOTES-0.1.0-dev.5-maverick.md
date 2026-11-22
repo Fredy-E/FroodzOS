@@ -36,6 +36,7 @@ firmware but with a private start-up script; **audible output through `fz-sound-
 - **The internal drive is invisible to the live system** (the shipped device tree keeps its PCIe controller disabled), so `fz-sound-setup` cannot read the firmware
   from your Windows partition directly; copy it to the stick as above. An experiment that enables the controller (`--enable-nvme`) trained the link and then crashed the
   kernel in the GPIO core (NULL pointer in `gpio_shared_add_proxy_lookup`) and lost Wi-Fi and sound on the 83N3; it is **not** part of this image.
+- `fz-sound-setup --dry-run` is only a true dry run while it still has files to copy; if the firmware is already staged it goes on to restart the audio DSP (known issue, to be fixed in a later build).
 - **No GPU acceleration** (software rendering); USB-C display output and alternate modes are not claimed (the display driver is still disabled).
 - A memory-bandwidth monitor driver (`bwmon`) fails to load its table. **Wi-Fi does not recover after suspend and resume**; suspend and resume are not
   claimed. Touchpad gesture quality is unconfirmed.

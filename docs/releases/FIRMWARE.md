@@ -40,7 +40,7 @@ sudo fz-sound-setup               # copy, restart the audio DSP and the audio se
 ```
 
 It copies six files (`qcadsp8380.mbn`, `adsp_dtbs.elf`, `adspr.jsn`, `adsps.jsn`, `adspua.jsn`, `battmgr.jsn`) into `/usr/lib/firmware/updates/` in the live system's memory,
-from `--source <folder>`, from a folder `FroodzOS-firmware` on the boot stick, or from this machine's own Windows partition (NTFS, mounted read-only; a
-BitLocker-encrypted partition cannot be read). Nothing is written to Windows or to the boot stick and nothing leaves the machine; the files vanish at power-off,
+searched in this order: `--source <folder>`, this machine's own Windows partition (NTFS, mounted read-only; a
+BitLocker-encrypted partition cannot be read), then a folder `FroodzOS-firmware` on the boot stick. Nothing is written to Windows or to the boot stick and nothing leaves the machine; the files vanish at power-off,
 so run it again after every boot, or add `fz_sound=1` to the kernel options to run it once automatically 45 seconds after boot. There is also a
 "Set up sound (laptop firmware)" launcher in the application menu. Do not share the copied files.
