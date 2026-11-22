@@ -91,3 +91,17 @@ The build `maverick-public-dev-20261120.2` is derived like dev.3 (the dev.3 root
 | Private add-ons | The sound start-up helper (ADSP reload, `fz-wsa-right` hold unit) used in the owner tests belongs to the private stick add-ons and is not shipped. | Not part of the release. |
 
 Open points: those of sections 2, 3, 5 and 6, plus the Fraunhofer FDK AAC licence and patent position of `libfdk-aac`.
+
+## 8. Addendum for the 0.1.0-dev.5 build (2026-11-22): sound set-up command, read-only internal drive
+
+The build `maverick-public-dev-20261120.5` is derived from the dev.4 root by `build-root.sh` runs (three, one per build id .3 to .5) with a full upgrade (file-listing comparison in `maverick-public-dev-20261120.5.json`; no vendor firmware, no Firefox, no Arch logo files and no private keys among the added or changed entries).
+
+| Point | Finding | Decision |
+|---|---|---|
+| `fz-sound-setup` | Original GPL-2.0-or-later script, unit and launcher. It copies six audio firmware files that the user supplies (searched in this order: `--source`, the machine's own Windows partition mounted read-only, a folder on the stick) into the live system's RAM overlay, `/usr/lib/firmware/updates/`. The files are the owner's own copies of Lenovo/Qualcomm drivers installed on the same laptop; they are not in the image, the release assets or the repository, are not uploaded, and vanish at power-off. | Accepted: same position as `tools/setup-local-firmware.sh` (section 2): the user stages their own firmware for their own use. `FIRMWARE.md` says not to share the files. |
+| Read-only internal drive | A udev rule sets `ro=1` on `nvme*n*` block devices and `UDISKS_IGNORE=1`. | Original FroodzOS code; protects the user's data. |
+| Boot image | Unchanged from dev.4 (`froodzos-maverick-dspM.efi`, same sha256); the experimental `--enable-nvme` boot image (`dspN`) is not shipped. | No change. |
+| `--enable-nvme` | Experimental device-tree rule, off by default; tested on the 83N3 on 2026-11-22: kernel NULL-pointer oops, Wi-Fi and sound lost. Kept in the repository as a documented dead end. | Not part of any release image. |
+| Private add-ons | The stick add-ons (autorun, persistence helpers, Claude Code add-on, firmware folder) used in the owner tests are not shipped. | Not part of the release. |
+
+Open points: those of sections 2, 3, 5, 6 and 7.

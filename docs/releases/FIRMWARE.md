@@ -27,6 +27,11 @@ The script reads the Windows DriverStore read-only and never uploads or redistri
 
 ## Sound from the image (0.1.0-dev.5 and later)
 
+**How to supply the files:** in Windows, copy the whole folder `qcsubsys_ext_adsp8380...` (one version) from `C:\Windows\System32\DriverStore\FileRepository\` into a new folder
+`FroodzOS-firmware` on the boot stick (it must contain all six files listed below, `adspr.jsn` included). The live system cannot read your Windows partition yet: the
+internal drive is not visible because the shipped device tree keeps its PCIe controller disabled (the command still looks there first, so it will use the Windows
+copy as soon as that works).
+
 The speakers need the audio DSP restarted with this laptop's own firmware. The image ships the command that does it:
 
 ```
@@ -35,7 +40,7 @@ sudo fz-sound-setup               # copy, restart the audio DSP and the audio se
 ```
 
 It copies six files (`qcadsp8380.mbn`, `adsp_dtbs.elf`, `adspr.jsn`, `adsps.jsn`, `adspua.jsn`, `battmgr.jsn`) into `/usr/lib/firmware/updates/` in the live system's memory,
-from `--source <folder>`, from a folder `FroodzOS-firmware` on the boot stick, or from this machine's own Windows partition (NTFS, mounted read-only; a
-BitLocker-encrypted partition cannot be read). Nothing is written to Windows or to the boot stick and nothing leaves the machine; the files vanish at power-off,
+searched in this order: `--source <folder>`, this machine's own Windows partition (NTFS, mounted read-only; a
+BitLocker-encrypted partition cannot be read), then a folder `FroodzOS-firmware` on the boot stick. Nothing is written to Windows or to the boot stick and nothing leaves the machine; the files vanish at power-off,
 so run it again after every boot, or add `fz_sound=1` to the kernel options to run it once automatically 45 seconds after boot. There is also a
 "Set up sound (laptop firmware)" launcher in the application menu. Do not share the copied files.
