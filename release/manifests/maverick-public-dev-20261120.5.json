@@ -1,0 +1,131 @@
+{
+ "build_id": "maverick-public-dev-20261120.5",
+ "schema": "froodzos-build-manifest/1",
+ "product": {
+  "version": "0.1.0-dev.5",
+  "codename": "Maverick"
+ },
+ "source": {
+  "repository": "https://github.com/Fredy-E/FroodzOS",
+  "revision": "main 1891324 plus the release pull request for build maverick-public-dev-20261120.5 (release notes, rights review, changelog, readme, manifest)",
+  "dirty_delta": "The build ran from copies in the maintainer candidate folder (tools/) and from builder/public-image/rootfs-overlay/ with content identical to the files in main (pull requests 21 to 24).",
+  "note": "The root is derived from the pinned Phase 1 root (sha256 22dde19c5a9e0b2a6e00f30cce7d0866d08159e1127871793553cd0478d1aacf) by builder/public-image/build-root.sh, built in four steps (r10 = the dev.3 root; r11 adds PKGS=\"pipewire-audio pipewire-pulse plasma-pa libgpiod\" and the sound overlay; r12 adds pipewire-alsa and the shutdown drop-ins; r13 adds the fz-bootmnt-ro service; r14 to r16 add fz-sound-setup and its unit and launcher, the read-only internal-drive udev rule and the dev.5 version strings), each a full system upgrade with PRUNE=1, the overlay files, a prebuilt ld.so.cache and size reduction."
+ },
+ "inputs": {
+  "root_sfs_sha256": "1bee763b68bc7b3c5c65044c9b696298d778d4131fb20729cf31bc2a9c98b536",
+  "root_base_sfs_sha256": "22dde19c5a9e0b2a6e00f30cce7d0866d08159e1127871793553cd0478d1aacf",
+  "raw_image_sha256": "8f7166a28e22e61fc1f7f3ea82fc822bd237665afeabb701bfc85fd16f0a0f80",
+  "touchpad_uki_sha256": "87554573e1c8e7f7a6ee6ee8674679d7e367fe5963005745d7a6c9bc71352e0e",
+  "base_uki_sha256": "b9418b062ca4055cb480f20cc3120028fc55f288efedc1d546626d1c48d82dbb",
+  "uki_change": "The first boot entry uses froodzos-maverick-dspM.efi: the base boot image (sha256 above) with its device tree replaced by a copy patched by fz-dtb-fixup.py --all-pas --sound-nodp --wsa-right-gpio13 (orphaned interconnect votes, USB PHY, DisplayPort dai-links of the sound card, right speaker amplifier reset on gpio13) and fz-board-touchpad.py (FocalTech touchpad at I2C 0x38, interrupt TLMM GPIO 19); only the .dtbauto section differs from the base image (builder/public-image/build-sound-uki.sh checks this). The second entry uses the unchanged dev.2 touchpad image.",
+  "grub_efi_sha256": "e8e1a2544b3174950ca319666142e9fc6796cf279adf1ba0fe2e64313cc0c738",
+  "menu": "output/grub.cfg.public12 (sha256 33e18ebfdbd94fc1dedc88d32a534b32931630bcfb60873adc4dd13d4a89c18c) generated from the dev.3 menu (grub.cfg.public10) by changing the version text and the first entry image; two boot entries and a firmware entry, no submenu, no chain-loading; kernel options include kestrel_graphics_unbounded=1, sysctl.kernel.apparmor_restrict_unprivileged_userns=0, cow_spacesize=2G; no fz_autorun, fz_persist or fz_dsp",
+  "root_package_origin": "782 pacman packages (all unmodified Arch Linux ARM except the one project-built kernel); plus two unmodified upstream release tarballs (Helium, Zen) listed in pkglist.tsv",
+  "helium_tarball": "helium-0.21.2.1-arm64_linux.tar.xz sha256 720b90b55c190c25069d2443f121a0c3c4fee705564060d7b8d3f219aa9e1ef0 (signature verified, key BE67 7C19 89D3 5EAB 2C5F 26C9 3516 01AD 01D6 378E)",
+  "zen_tarball": "zen.linux-aarch64.tar.xz sha256 8591434fcf498a836a32bc7314eb89fbdc4bdc8f03a2d735774b1ae69b6b21d5 (release 1.24.2b)",
+  "packages_removed": [
+   "linux-firmware-amd",
+   "linux-firmware-amdgpu",
+   "linux-firmware-broadcom",
+   "linux-firmware-cirrus",
+   "linux-firmware-intel",
+   "linux-firmware-mediatek",
+   "linux-firmware-nvidia",
+   "linux-firmware-other",
+   "linux-firmware-radeon",
+   "linux-firmware-ti",
+   "firefox",
+   "falkon (and its web engine user)"
+  ],
+  "other_removals": [
+   "usr/lib/firmware/updates (vendor firmware extracted from a Windows installation)",
+   "pacman keyring private key and revocation certificate",
+   "project-local overlay repository and its signature",
+   "four Arch Linux logo files (usr/share/pixmaps/archlinux-logo*) and the LOGO reference",
+   "Mozilla Firefox (trademark policy)",
+   "firmware for other Qualcomm chip families and older Wi-Fi generations",
+   "translations except en, ar, fr",
+   "documentation, man pages, info",
+   "development headers, introspection and cmake files",
+   "boot/vmlinuz-* inside the root"
+  ],
+  "size_reduction": "prune-root.sh as in dev.2",
+  "first_entry_uki_sha256": "8186c7824d5e7836485691993129ac745c4db73594f776d65614a9605ff9a11d"
+ },
+ "toolchain": {
+  "builder": "CachyOSBuilder WSL2 distribution (aarch64)",
+  "squashfs": "mksquashfs from squashfs-tools 4.7.5, xz, 128 KiB blocks (build-root.sh)",
+  "grub": "Arch Linux ARM package grub 2:2.16-1 (grub-mkstandalone, arm64-efi)",
+  "uki": "stubblify with the pinned stubble stub (ubuntu/stubble 9f11278e080a5c4a77db6acf4c8f75c14412087a)",
+  "python": "3.14 (builder)"
+ },
+ "board_profile": {
+  "board": "Lenovo IdeaPad Slim 3 15Q8X10 (83N3), Snapdragon X1-26-100",
+  "firmware": "none of the vendor 83N3 firmware is included; Arch Linux ARM linux-firmware-qcom (X1E80100/X1P42100 and video decoder files only after pruning), -atheros (ath12k only after pruning), -realtek and licence texts are included",
+  "redistribution_status": "reviewed 2026-11-11, see RIGHTS-REVIEW.md; ALARM publishes no explicit redistribution statement (accepted risk); GPL written offer in SOURCE-OFFER.md"
+ },
+ "artifacts": [
+  {
+   "label": "raw_image",
+   "file": "FroodzOS-0.1.0-dev.5-maverick-arm64-83n3.img",
+   "bytes": 1927282688,
+   "sha256": "8f7166a28e22e61fc1f7f3ea82fc822bd237665afeabb701bfc85fd16f0a0f80"
+  },
+  {
+   "label": "image_zst",
+   "file": "FroodzOS-0.1.0-dev.5-maverick-arm64-83n3.img.zst",
+   "bytes": 1652238277,
+   "sha256": "a751ddd3ca621e6eb450376ca2c52aaa692626ef44321a8c3df07e7b496b09bf"
+  },
+  {
+   "label": "root_sfs",
+   "file": "airootfs-r16.sfs",
+   "bytes": 1506533376,
+   "sha256": "1bee763b68bc7b3c5c65044c9b696298d778d4131fb20729cf31bc2a9c98b536"
+  },
+  {
+   "label": "pkglist",
+   "file": "pkglist.tsv",
+   "bytes": 67101,
+   "sha256": "3236806e3355e1d8360d4b7371f411cb035943e412ff6b94e1f8b0a8f0759106"
+  }
+ ],
+ "test_receipts": [
+  {
+   "name": "file-listing comparison of this root against the dev.3 root (r10)",
+   "result": "113755 entries against 113750 in the dev.4 root (r13): +5 / -0 / 116 changed (mostly directory timestamps and caches from a full system upgrade); 782 packages, same set as dev.4; added entries are the fz-sound-setup command, its service and launcher, and the internal-disk read-only udev rule; no vendor firmware, no Firefox, no Arch logo, no private key",
+   "scope": "file listings (sfs-delta.py); no vendor firmware, no Firefox, no Arch logo, no private key in the added or changed entries"
+  },
+  {
+   "name": "QEMU boot of this release image",
+   "result": "passed in 340.4 s: multi-user reached, login and commands ran, build id maverick-public-dev-20261120.5, kernel package linux-froodzos-arm64, no firefox, no Arch logo files, handlers installed, Helium and Zen present, Chromium and Falkon absent, fz-smartlog running, selftest pass, no vendor firmware directory, no private keyring key, no panic",
+   "scope": "emulator (QEMU TCG virt) with grub.cfg replaced by a test variant; image sha256 8f7166a28e22e61fc1f7f3ea82fc822bd237665afeabb701bfc85fd16f0a0f80; not laptop hardware"
+  },
+  {
+   "name": "native boot of the first-entry boot image and the r16 root on the Lenovo 83N3",
+   "result": "on 2026-11-22 the owner booted the first-entry boot image (identical sha256) with the r16 root (the released root, byte-identical, sha256 above) from a private test stick that has the owner's own audio firmware in a FroodzOS-firmware folder, with the kernel option fz_sound=1: fz-sound-setup staged all six files from that folder, restarted the audio DSP, and the sound card X1E80100-LENOVO-Ideapad-3 appeared; the stick was left clean after shutdown (no FAT dirty flag). Audible output through fz-sound-setup itself is not confirmed in this record (both speakers were heard in the dev.4 test with the same device tree and firmware and a private start-up script). A second test boot image with the internal PCIe controller enabled (not released) crashed the kernel in the GPIO core and lost Wi-Fi and sound. The released image itself was not written to a stick and booted",
+   "scope": "owner test, one laptop; private menu (adds fz_autorun, fz_persist, fz_dsp, fz_tplg); the released image was not itself booted on the laptop"
+  }
+ ],
+ "limitations": [
+  "Sound needs the owner's own audio firmware: the image contains none. The user copies the audio driver folder from their Windows installation into a FroodzOS-firmware folder on the stick; fz-sound-setup then restarts the audio DSP (second boot entry or command). The live system cannot read the Windows partition because the shipped device tree keeps the internal PCIe controller disabled. Audible output through fz-sound-setup is not confirmed in this record.",
+  "Graphics are software-rendered (llvmpipe) on a firmware framebuffer; there is no GPU acceleration. USB-C display output and alternate modes are not claimed.",
+  "Touchpad: the kernel driver binds and the pad works in an owner test; gesture quality is unconfirmed. The second boot entry keeps the user-space polling driver.",
+  "Battery level, charge state and USB-C power data work in an owner test; power management beyond that is not claimed.",
+  "Wi-Fi does not recover after suspend and resume; suspend and resume are not claimed. A memory-bandwidth monitor driver (bwmon) fails to load its table.",
+  "RAR is extract-only (UnRAR licence). Wine, Waydroid and QEMU are not included.",
+  "Helium and Zen are unmodified third-party releases; their trademark and artwork terms were not reviewed separately and the Helium signing key is not otherwise certified.",
+  "Browser sandboxes need unprivileged user namespaces; the image sets kernel.apparmor_restrict_unprivileged_userns=0.",
+  "Boot loader and kernel images are unsigned; Secure Boot must be off. The downloads are signed (SHA256SUMS.asc).",
+  "The release image itself was only emulator-tested; the owner test used the identical root and boot image on a private stick with firmware add-ons.",
+  "Opt-in persistence (fz_persist=1) was tested on hardware only on the private stick; whoever holds the stick can read what is stored on the persistent partition.",
+  "No vendor firmware is included. Default live accounts are those of the development image (user live, password live).",
+  "Arch Linux ARM publishes no explicit redistribution statement; the maintainer acceptance of the three-year written source offer is recorded at release approval."
+ ],
+ "publication": {
+  "status": "unpublished",
+  "owner_authorised": false,
+  "rights_cleared": false,
+  "qualified_release": false
+ }
+}
