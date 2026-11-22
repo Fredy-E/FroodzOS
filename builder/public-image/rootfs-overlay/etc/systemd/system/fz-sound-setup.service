@@ -1,12 +1,8 @@
 [Unit]
-Description=FroodzOS: stage the laptop's own audio firmware and restart the audio DSP (only with fz_sound=1)
+Description=FroodzOS: stage the laptop's own audio firmware and restart the audio DSP (only with fz_sound=1, started by fz-sound-setup.timer)
 ConditionKernelCommandLine=fz_sound=1
-After=multi-user.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/sbin/fz-sound-setup --wait 45
+ExecStart=/usr/local/sbin/fz-sound-setup
 TimeoutStartSec=300
-
-[Install]
-WantedBy=multi-user.target

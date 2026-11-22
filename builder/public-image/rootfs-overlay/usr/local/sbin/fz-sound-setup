@@ -54,6 +54,7 @@ trap cleanup EXIT
 LIST=""
 if have_all "$DEST" && [ -z "$SRC" ]; then
   say "firmware already staged in $DEST"
+  [ "$DRY" = 1 ] && { say "dry run: nothing written"; exit 0; }
 else
   if [ -n "$SRC" ]; then
     [ -d "$SRC" ] || { say "--source $SRC is not a directory"; exit 1; }

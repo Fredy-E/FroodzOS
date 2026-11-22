@@ -1,0 +1,22 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-swap-lr: swap the left and right speaker channels of the built-in speakers (run it again to undo). Run it as the desktop user, without sudo.
+# It writes (or removes) a WirePlumber rule for the speaker sink and restarts WirePlumber. On some boots the two channels come out reversed.
+D="${XDG_CONFIG_HOME:-$HOME/.config}/wireplumber/wireplumber.conf.d"; F="$D/51-fz-swap-lr.conf"
+if [ -f "$F" ]; then
+  rm -f "$F"; echo "fz-swap-lr: swap removed, left and right are back to the default order"
+else
+  mkdir -p "$D"
+  cat > "$F" <<'EOC'
+monitor.alsa.rules = [
+  {
+    matches = [ { node.name = "~alsa_output.platform-sound.HiFi__Speaker__sink*" } ]
+    actions = { update-props = { audio.position = [ "FR" "FL" ] } }
+  }
+]
+EOC
+  echo "fz-swap-lr: swap added, left and right are exchanged"
+fi
+systemctl --user restart wireplumber
+sleep 3
+echo "fz-swap-lr: test with  speaker-test -c 2 -t wav -l 1"

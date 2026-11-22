@@ -1,0 +1,10 @@
+[Unit]
+Description=FroodzOS: run the sound set-up once, about a minute after boot (only with fz_sound=1)
+ConditionKernelCommandLine=fz_sound=1
+
+[Timer]
+OnBootSec=75s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
