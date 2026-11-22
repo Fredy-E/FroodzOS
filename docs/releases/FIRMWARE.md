@@ -44,3 +44,18 @@ searched in this order: `--source <folder>`, this machine's own Windows partitio
 BitLocker-encrypted partition cannot be read), then a folder `FroodzOS-firmware` on the boot stick. Nothing is written to Windows or to the boot stick and nothing leaves the machine; the files vanish at power-off,
 so run it again after every boot, or use the kernel option `fz_sound=1` (runs it once 45 seconds after boot; **known problem: with this option the desktop did not start in owner tests, so run the command from the desktop instead**). There is also a
 "Set up sound (laptop firmware)" launcher in the application menu. Do not share the copied files.
+
+### Swap left and right (if "Front Left" comes from your right speaker)
+
+On some boots the two speaker channels come out reversed. As the desktop user, create the file `~/.config/wireplumber/wireplumber.conf.d/51-swap-lr.conf` with
+
+```
+monitor.alsa.rules = [
+  {
+    matches = [ { node.name = "~alsa_output.platform-sound.HiFi__Speaker__sink*" } ]
+    actions = { update-props = { audio.position = [ "FR" "FL" ] } }
+  }
+]
+```
+
+and run `systemctl --user restart wireplumber`. Delete the file and restart WirePlumber again to undo it. The cause of the reversed order is not known yet.
