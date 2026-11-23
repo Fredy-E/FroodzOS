@@ -26,6 +26,7 @@ cmd = ['qemu-system-aarch64', '-M', 'virt,gic-version=3', '-cpu', 'cortex-a53', 
        '-device', 'usb-storage,drive=stick', '-nographic', '-no-reboot', '-monitor', 'none']
 NVME = os.environ.get('FZ_NVME') == '1'     # FZ_NVME=1: also attach an emulated NVMe disk with 2 partitions (a stand-in for the internal drive) and check that it is read-only
 NVME_IMG = B / 'qemu-nvme-test.img'
+WD = os.environ.get('FZ_WAYDROID') == '1'      # FZ_WAYDROID=1: also run `fz-waydroid check` and `fz-waydroid init` (must refuse without a persistent partition) in the guest
 if NVME:
     NVME_IMG.unlink(missing_ok=True)
     with NVME_IMG.open('wb') as f: f.truncate(64 * 1024 * 1024)
@@ -42,6 +43,7 @@ CMDS = [b'live\n', b'live\n',
         b'echo ===UNITS===; systemctl is-enabled fz-touchpad; systemctl --failed --no-legend | head -8\n',
         b'echo ===SELFTEST===; sudo -n python3 /usr/local/sbin/fz-touchpad.py --selftest; echo rc=$?\n',
         *([b'echo ===NVME===; ls /dev/nvme0n1*; for d in /dev/nvme0n1*; do echo "$d RO=$(sudo -n blockdev --getro $d)"; done; sudo -n dd if=/dev/zero of=/dev/nvme0n1p1 bs=512 count=1 conv=notrunc >/dev/null 2>&1; echo DDRC=$?; udevadm info -q property -n /dev/nvme0n1p1 | grep UDISKS_IGNORE; echo ===NVMEEND===\n'] if NVME else []),
+        *([b'echo ===WD===; sudo -n fz-waydroid check 2>&1 | tail -n 22; sudo -n lsmod | grep -c binder_linux; sudo -n fz-waydroid init 2>&1 | tail -n 3; echo ===WDEND===\n'] if WD else []),
         b'echo ===MOUNTS===; findmnt -no SOURCE,FSTYPE / ; ls /run/archiso/bootmnt | head -8; echo ===END===\n']
 with log_path.open('xb') as log:
     while time.monotonic() - start < 1500 and proc.poll() is None:
@@ -91,7 +93,12 @@ if NVME:
     markers['nvme_all_read_only'] = len(ros) >= 3 and all(v == '1' for _, v in ros)             # the disk and both partitions
     markers['nvme_write_refused'] = bool(re.search(r'DDRC=[1-9]', nv))                       # dd must fail on the read-only device
     markers['nvme_hidden_from_udisks'] = 'UDISKS_IGNORE=1' in nv
-passed = all(markers[k] for k in ('multi_user', 'logged_in_and_ran', 'identity_public_build', 'kernel_package_renamed', 'selftest_pass', 'no_firefox', 'no_arch_logo', 'handlers_installed', 'r3_chromium_no_falkon', 'r3_files', 'smartlog_running')) and not markers['panic'] and (not NVME or all(markers[k] for k in ('nvme_all_read_only', 'nvme_write_refused', 'nvme_hidden_from_udisks')))
+if WD:
+    wd = seg('===WD===', '===WDEND===')
+    markers['waydroid_binder_loads'] = 'binder filesystem: available' in wd
+    markers['waydroid_tools_present'] = 'MISSING' not in wd and 'tool waydroid:' in wd
+    markers['waydroid_init_needs_persist'] = 'no persistent partition' in wd.split('fz-waydroid init')[-1] or wd.count('no persistent partition') >= 2
+passed = all(markers[k] for k in ('multi_user', 'logged_in_and_ran', 'identity_public_build', 'kernel_package_renamed', 'selftest_pass', 'no_firefox', 'no_arch_logo', 'handlers_installed', 'r3_chromium_no_falkon', 'r3_files', 'smartlog_running')) and not markers['panic'] and (not NVME or all(markers[k] for k in ('nvme_all_read_only', 'nvme_write_refused', 'nvme_hidden_from_udisks'))) and (not WD or all(markers[k] for k in ('waydroid_binder_loads', 'waydroid_tools_present', 'waydroid_init_needs_persist')))
 tail = clean[clean.rfind('===ID==='):] if '===ID===' in clean else clean[-3500:]
 summary = {'tag': tag, 'seconds': round(time.monotonic() - start, 1), 'stop_reason': reason, 'markers': markers, 'passed': passed,
            'image_sha256': img_sha, 'hardware_validated': False,

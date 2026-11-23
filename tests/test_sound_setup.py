@@ -62,6 +62,18 @@ class SoundSetup(unittest.TestCase):
         self.assertNotIn('amixer -c 0 sset', block); self.assertNotIn('amixer -c 0 cset', block)    # never changes a mixer value
         self.assertLess(t.index('sound card: $('), i)           # runs only after the card exists
 
+    def test_waydroid_helper_is_registered_and_never_pipes_a_download_into_a_shell(self):
+        w = (OVL / 'usr/local/sbin/fz-waydroid').read_text()
+        self.assertNotIn(chr(13), w)
+        self.assertNotIn('| sh', w); self.assertNotIn('| bash', w); self.assertNotIn('curl', w)
+        self.assertIn('waydroid init -s VANILLA', w)                 # the image is fetched by waydroid itself, at the user's request
+        self.assertIn('mountpoint -q "$P"', w)                       # data goes to the persistent partition, not the stick's boot files
+        b = BUILD.read_text()
+        self.assertIn('usr/local/sbin/fz-waydroid usr/local/sbin/fz-sound-setup etc/systemd', b)
+        self.assertIn('usr/local/sbin/fz-waydroid|', b)              # mode 755
+        if POSIX:
+            self.assertEqual(subprocess.run(['bash', '-n', str(OVL / 'usr/local/sbin/fz-waydroid')]).returncode, 0)
+
     def test_swap_command_writes_and_removes_a_wireplumber_rule(self):
         t = SWAP.read_text()
         self.assertNotIn('\r', t)
