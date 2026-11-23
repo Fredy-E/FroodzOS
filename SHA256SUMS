@@ -78,7 +78,7 @@ ca53f83e79f983db1410c905fc315216c28fd865cab4f97ccc924e6c3d484486  builder/public
 3a112c885b5b1e6a2924da469180faabafea751c7f61d22d2ab8a46bb9e6edc3  builder/public-image/build-phase1-root.sh
 3e5005e6f2ff2016b0671ef5916c421ea7e19047518783f032db71602f163c4a  builder/public-image/build-public-root.sh
 a7dc551c2d3d7db9f133656bde4f1656820129a92297cb56f3db1615423a8168  builder/public-image/build-public-uki.py
-875d29137c7207027a62476b800bef5a29c3d244d03480d157f877620b62ec74  builder/public-image/build-root.sh
+3c0e4ea8376981edbca9c149aa21eb5ffc10922531ca07bb6026f1fa6dd7c9c7  builder/public-image/build-root.sh
 ac596c3b629fe18454c67e97fb6b876e136de361706716c65658ac11ea0cbd54  builder/public-image/build-sound-uki.sh
 79a3753b8dacd11a57323d14afe8873e38fc3ebc8eccc5c268131cb0ac7de3dd  builder/public-image/egltest.py
 7a25470ac4b36f91147b32849c1775a0c546a2cb9c6ec165ea004256af8ad62c  builder/public-image/fz-board-touchpad.py
@@ -105,7 +105,8 @@ eff9df6270eebb8eccebb92dc3e62e8888d7ab3d91812d17150dbc4e642ff66f  builder/public
 9d7233303e7f6c84578a95b6a7168cb5e09232f58114c2d7e0affa2389c6c7f5  builder/public-image/rootfs-overlay/etc/systemd/system/fz-bootmnt-ro.service
 c5794a282dc550775b4b68ef61d4b53feea80f96744b3a2476cfe42dd6f9b99d  builder/public-image/rootfs-overlay/etc/systemd/system/fz-persist.service
 165eb6772b62373e239cba21e297b9b879271fb8ede41bb3e64e87555fb3e33f  builder/public-image/rootfs-overlay/etc/systemd/system/fz-smartlog.service
-4161668f7909dc949a80b805cfe9dd37fbb116062456a555f852cdc0a8ac90ce  builder/public-image/rootfs-overlay/etc/systemd/system/fz-sound-setup.service
+12656e882d59bed148580e8402a124291208abd271a8b08be9087b66b5506bad  builder/public-image/rootfs-overlay/etc/systemd/system/fz-sound-setup.service
+5d6e1fbb696d7e8dbfb4883a25d3af2cb3a971a648b02feb52d0aa427420e51b  builder/public-image/rootfs-overlay/etc/systemd/system/fz-sound-setup.timer
 b82bb88ebe98fdb044abc10bd84cd3f6f9dc54b9235bdc653935ccbb9fd57b5d  builder/public-image/rootfs-overlay/etc/systemd/system/fz-stick-autorun.service
 6f7811cca6c07c6b48eadbac228e2d0ae094bc6283adb6d7cf304d541995bf44  builder/public-image/rootfs-overlay/etc/systemd/system/fz-touchpad.service.d/10-native-driver.conf
 a02bd6b0c0828a7893bc16db45bf10ad027335330f30724f421db65a6339c8bd  builder/public-image/rootfs-overlay/etc/systemd/system/iio-sensor-proxy.service.d/10-froodzos-stop.conf
@@ -113,6 +114,7 @@ a3ee7d92dcb2e0356cd4735721b295b3cfb3b01b379cbbc199eaba5b516edcce  builder/public
 306645b1d737aa1649a2541e0b03fc3f7e892ab43b7a0f6903de9bfaf26075ff  builder/public-image/rootfs-overlay/etc/xdg-mimeapps-default.list
 cd86b006c6efe2910fe5210710408dc4d66babbd3f8a5436023c1a4cc2137ffc  builder/public-image/rootfs-overlay/etc/xdg/powerdevilrc
 a4a76f0e26fbd2d39bef1fff58f9d8eea7d8d79d2134efcf9a829dcf23fbb332  builder/public-image/rootfs-overlay/usr/local/bin/fz-mount-image
+f29c5f48e1d6003d8dcf0d846cd9d8d52ab5db98399ef063ed541ec504403dce  builder/public-image/rootfs-overlay/usr/local/bin/fz-swap-lr
 8a4360c1f6bff10476d347cc61575efba5b5366f32a4bed865a173579a67d0bb  builder/public-image/rootfs-overlay/usr/local/bin/helium
 bba9a184c4e350badbfa3c026803bd006311a7edb44e8d30582379ef3aa8055e  builder/public-image/rootfs-overlay/usr/local/bin/zen
 a5d7c5cad258dd6fa4cfec7443232bbcd124c927867fe50612adff7221bcdc5e  builder/public-image/rootfs-overlay/usr/local/sbin/fz-backlight-max
@@ -120,7 +122,7 @@ a5d7c5cad258dd6fa4cfec7443232bbcd124c927867fe50612adff7221bcdc5e  builder/public
 8b0b889185bc26838a52eb4b1f7f150ecf9323b3aa05dbaf76f961a5caa0f484  builder/public-image/rootfs-overlay/usr/local/sbin/fz-kexec-uki
 2be1c3f74de25995a96b196b7f1c4a563e77926f57863e2885833fbb5c67503e  builder/public-image/rootfs-overlay/usr/local/sbin/fz-persist
 5121d2cc18c6622e34f17aa228ffe791391f68040dfd26f04d901f10234248b5  builder/public-image/rootfs-overlay/usr/local/sbin/fz-smartlog
-cc01586cf4b1975618652a5168880264ae1cc7e44ba89e693bef1af6433bd9af  builder/public-image/rootfs-overlay/usr/local/sbin/fz-sound-setup
+4f687a12de023f30835b846124acf448051698ce2186d5bb61d8f5993f3db33a  builder/public-image/rootfs-overlay/usr/local/sbin/fz-sound-setup
 b8454548ee34f19db3482d8af3a570aea5de926c09004ebd9b335cf0729d2dd4  builder/public-image/rootfs-overlay/usr/local/sbin/fz-stick-autorun
 4ce3549351d25a9da5a019d3778a161bc2d0be65d1ccc9dbc1da6b63019387ce  builder/public-image/rootfs-overlay/usr/share/alsa/ucm2/Qualcomm/x1e80100/Ideapad-3-HiFi.conf
 c6daa5f6c85785ec85de2be6e1085eac7f9a40ee85f1972eb1faff8c384131b2  builder/public-image/rootfs-overlay/usr/share/alsa/ucm2/Qualcomm/x1e80100/LENOVO-Ideapad-3.conf
@@ -1243,7 +1245,7 @@ ae00895e04f957f4f85d1dca5adff3cbe69536bc4e9959fc6be0239ddc172768  tests/test_dtb
 07722152ebe4d95572f00e833739e6c88d167d91f8dd06a051ec7f5d88074cd9  tests/test_graphics_supervisor.py
 0dc175305a4bf8a022d4c68abeb5f157143452026cfd569cf52129d005471a79  tests/test_publication.py
 a49d6032221852cbcc995859cefcd6c8d6d007f4665c4662cab34efb742ede25  tests/test_release_metadata.py
-6194263dbfb74dfdb9d56c994e46397a3178c6b4edc9e8c7b1069fd85ff820d2  tests/test_sound_setup.py
+92b8416908ec495137d04c2624d6b1b8e8c3a71f2334bc4319c089ed73a2e930  tests/test_sound_setup.py
 22ee1cbb0cdece62e0c9da167d43f0aa756aa2f71993535b93b030168445c599  third_party/README.md
 7a83b1aeb460458db9a4bd521d7f237c45b1650f6e60ea5ffc71e49472454de3  third_party/linux/BSD-3-Clause
 fb5a425bd3b3cd6071a3a9aff9909a859e7c1158d54d32e07658398cd67eb6a0  third_party/linux/COPYING

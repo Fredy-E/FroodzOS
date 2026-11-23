@@ -8,6 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OVL = ROOT / 'builder/public-image/rootfs-overlay'
 SCRIPT = OVL / 'usr/local/sbin/fz-sound-setup'
 UNIT = OVL / 'etc/systemd/system/fz-sound-setup.service'
+TIMER = OVL / 'etc/systemd/system/fz-sound-setup.timer'
+SWAP = OVL / 'usr/local/bin/fz-swap-lr'
 BUILD = ROOT / 'builder/public-image/build-root.sh'
 NEEDED = ['qcadsp8380.mbn', 'adsp_dtbs.elf', 'adspr.jsn', 'adsps.jsn', 'adspua.jsn', 'battmgr.jsn']
 POSIX = sys.platform != 'win32' and shutil.which('bash') and shutil.which('find')
@@ -22,6 +24,12 @@ class SoundSetup(unittest.TestCase):
         t = UNIT.read_text()
         self.assertIn('ConditionKernelCommandLine=fz_sound=1', t)
         self.assertIn('ExecStart=/usr/local/sbin/fz-sound-setup', t)
+        self.assertNotIn('[Install]', t)                          # started by the timer only, never part of the boot transaction
+        self.assertNotIn('After=multi-user.target', t)
+        tm = TIMER.read_text()
+        self.assertIn('ConditionKernelCommandLine=fz_sound=1', tm)
+        self.assertIn('OnBootSec=', tm)
+        self.assertIn('WantedBy=timers.target', tm)
 
     def test_script_only_reads_windows_and_writes_to_the_live_firmware_overlay(self):
         t = SCRIPT.read_text()
@@ -35,7 +43,24 @@ class SoundSetup(unittest.TestCase):
         b = BUILD.read_text()
         self.assertIn('usr/local/sbin/fz-sound-setup etc/systemd/system/fz-sound-setup.service', b)
         self.assertIn('usr/local/sbin/fz-sound-setup|', b)        # mode 755
-        self.assertIn('multi-user.target.wants/fz-sound-setup.service', b)
+        self.assertIn('timers.target.wants/fz-sound-setup.timer', b)
+        self.assertIn('rm -f "$BASE/merged/etc/systemd/system/multi-user.target.wants/fz-sound-setup.service"', b)
+        self.assertIn('usr/local/bin/fz-swap-lr', b)
+        self.assertIn('usr/local/bin/fz-swap-lr|', b)             # mode 755
+
+    def test_dry_run_stops_before_the_dsp_restart_even_when_firmware_is_staged(self):
+        t = SCRIPT.read_text()
+        staged = t.index('firmware already staged in')
+        self.assertIn('[ "$DRY" = 1 ] && { say "dry run: nothing written"; exit 0; }', t[staged:staged + 200])
+
+    def test_swap_command_writes_and_removes_a_wireplumber_rule(self):
+        t = SWAP.read_text()
+        self.assertNotIn('\r', t)
+        self.assertIn('audio.position = [ "FR" "FL" ]', t)
+        self.assertIn('wireplumber.conf.d', t); self.assertIn('51-fz-swap-lr.conf', t)
+        self.assertNotIn('sudo', t.replace('without sudo', ''))
+        if POSIX:
+            self.assertEqual(subprocess.run(['bash', '-n', str(SWAP)]).returncode, 0)
 
     def test_internal_disk_is_read_only_and_hidden_from_the_desktop(self):
         rule = OVL / 'etc/udev/rules.d/90-froodzos-internal-ro.rules'
