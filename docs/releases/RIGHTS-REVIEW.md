@@ -105,3 +105,15 @@ The build `maverick-public-dev-20261120.5` is derived from the dev.4 root by `bu
 | Private add-ons | The stick add-ons (autorun, persistence helpers, Claude Code add-on, firmware folder) used in the owner tests are not shipped. | Not part of the release. |
 
 Open points: those of sections 2, 3, 5, 6 and 7.
+
+## 9. Addendum for the 0.1.0-dev.6 build (2026-11-23): sound timer, swap command
+
+The build `maverick-public-dev-20261122.1` is derived from the dev.5 root (r16) by one `build-root.sh` run (r17) with a full upgrade (file-listing comparison in `maverick-public-dev-20261122.1.json`; no vendor firmware, no Firefox, no Arch logo files and no private keys among the added or changed entries). The package set is unchanged (782 packages, 35 version updates, no new package).
+
+| Point | Finding | Decision |
+|---|---|---|
+| `fz-sound-setup.timer` and changed service | Original GPL-2.0-or-later unit files; the sound set-up starts about 75 s after boot instead of inside the boot transaction. No new data is read or written. | Accepted. |
+| `fz-swap-lr` | Original GPL-2.0-or-later script; writes one WirePlumber rule file in the user's own config directory and restarts the user's WirePlumber. | Accepted. |
+| Boot image, firmware handling | Unchanged from dev.5 (same boot loader and kernel images); no firmware in the image, the release assets or the repository. | No change. |
+
+Open points: those of sections 2, 3, 5, 6, 7 and 8.

@@ -4,9 +4,9 @@
 
 | | |
 |---|---|
-| Current version | **`0.1.0-dev.5`, codename Maverick** (development; **not** a qualified alpha) |
+| Current version | **`0.1.0-dev.6`, codename Maverick** (development; **not** a qualified alpha) |
 | Target milestone | FroodzOS 0.1 Maverick - ARM64 Alpha: a limited live alpha for one laptop |
-| Binaries | One signed **development image** for the 83N3 only, as a GitHub pre-release ([`v0.1.0-dev.5-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.5-maverick); the earlier ones, [`v0.1.0-dev.4-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.4-maverick), [`v0.1.0-dev.3-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.3-maverick), [`v0.1.0-dev.2-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick) and [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick), stay available). No vendor firmware, no installer |
+| Binaries | One signed **development image** for the 83N3 only, as a GitHub pre-release ([`v0.1.0-dev.6-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.6-maverick); the earlier ones, [`v0.1.0-dev.5-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.5-maverick), [`v0.1.0-dev.4-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.4-maverick), [`v0.1.0-dev.3-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.3-maverick), [`v0.1.0-dev.2-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick) and [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick), stay available). No vendor firmware, no installer |
 | Licence | Original FroodzOS code and tools: **GPL-2.0-or-later** (see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md)); third-party material keeps its own licences |
 
 > **Early development.** A live desktop on one laptop is not general ARM64 compatibility, and not yet a finished operating system.
@@ -26,7 +26,7 @@ as natively as technically possible. It starts with a few formats and has no fix
 | **Open Anything** | One launcher and file-association layer that picks the right handler for any file, explains what it needs, and installs it on request. |
 | **Honest status** | Every format shows its realistic ceiling (native, compat, VM, limited, not feasible) and whether the published image can do it today. |
 
-This is the direction of the project, **not something it does fully today**: the current image (`0.1.0-dev.5`) is a desktop with Wi-Fi, keyboard
+This is the direction of the project, **not something it does fully today**: the current image (`0.1.0-dev.6`) is a desktop with Wi-Fi, keyboard
 and touchpad on one laptop, plus first file handlers (Ark, 7zip, LibreOffice, Okular, Gwenview, Haruna/mpv, Kate, Falkon and archive/filesystem
 tools; see [docs/compat/HANDLERS-PHASE1.md](docs/compat/HANDLERS-PHASE1.md)). Most of the catalogue is still *planned*, and none of the new handlers has been
 tested on real sample files on the laptop yet. Where technology (a different CPU
@@ -43,8 +43,8 @@ qualified. Failed and rejected revisions are kept on purpose; nothing is retroac
 ## Download (development image)
 
 A firmware-free **development image for the Lenovo IdeaPad Slim 3 15Q8X10 (83N3) only** is available as a signed GitHub pre-release:
-[`v0.1.0-dev.5-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.5-maverick) (1.65 GB compressed raw USB image,
-SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, audio does not start without the laptop\'s own firmware, which you copy to a FroodzOS-firmware folder on the stick (then `fz-sound-setup` starts the audio DSP and the sound card appears; both speakers were heard in owner tests with the firmware and a private start-up script, audible output through `fz-sound-setup` itself is not yet confirmed),
+[`v0.1.0-dev.6-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.6-maverick) (1.65 GB compressed raw USB image,
+SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, audio does not start without the laptop\'s own firmware, which you copy to a FroodzOS-firmware folder on the stick (then `fz-sound-setup` starts the audio DSP and the sound card appears; both speakers were heard in owner tests after `fz-sound-setup`; left and right can come out reversed on some boots, `fz-swap-lr` swaps them),
 Wi-Fi does not survive suspend, the released image itself was only emulator-tested, and writing the image erases the target USB stick. Verification steps are in
 [docs/releases/SIGNING.md](docs/releases/SIGNING.md); rights and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md).
 
@@ -59,10 +59,11 @@ Wi-Fi does not survive suspend, the released image itself was only emulator-test
 | Persistence | A 32 GiB ext4 USB partition was written in full and read back; a HOME file canary was accepted across two different native boots. Full settings and tools persistence is not proved. |
 | Thermal | All 20 required CPU/cpuss sensor types observed. That is not cooling or fan-control validation. |
 | Battery | **Level, charge state and USB-C power data work** (owner test 2026-11-18; [`docs/hardware-dsp-battery.md`](docs/hardware-dsp-battery.md)). |
-| Audio | Both speakers play in owner tests (2026-11-20) when the audio DSP is started with the laptop's own firmware from a private stick; the released image has no firmware and no sound card out of the box. |`n| Camera, USB-C display, suspend | Not accepted. They would be documented limitations of a limited 0.1. |
+| Audio | Both speakers play in owner tests (2026-11-20 and 2026-11-22) when the audio DSP is started with the laptop's own firmware (`fz-sound-setup`); the released image has no firmware and no sound card out of the box. |
+| Camera, USB-C display, suspend | Not accepted. They would be documented limitations of a limited 0.1. |
 | Shutdown | About 10 s in owner tests, and the boot stick is remounted read-only so it stays clean (`fz-bootmnt-ro`, 2026-11-20). Full safe-shutdown and recovery qualification is still open. |
 | Hermes workstation integration | Out of the 0.1 scope (owner decision 2026-11-10); parked, not deleted. |
-| Public binary image | Signed development pre-releases for the 83N3 only, no vendor firmware ([`v0.1.0-dev.5-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.5-maverick) is the latest); rights position and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md). |
+| Public binary image | Signed development pre-releases for the 83N3 only, no vendor firmware ([`v0.1.0-dev.6-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.6-maverick) is the latest); rights position and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md). |
 | Other boards / general ARM64 | A project goal, not established support. |
 
 Details and the evidence classes behind each row are in [docs/releases/CURRENT.md](docs/releases/CURRENT.md).
@@ -78,7 +79,7 @@ the [roadmap](docs/releases/ROADMAP.md) and the [changelog](CHANGELOG.md).
 
 - [Main goal and compatibility plan](docs/releases/UNIVERSAL-COMPATIBILITY.md)
 - [Release status, evidence boundaries and blockers](docs/releases/CURRENT.md)
-- [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.5-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev.5-maverick.md)
+- [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.6-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev.6-maverick.md)
 - [0.1 Maverick scope](docs/releases/0.1-maverick.md) and [promotion policy](docs/releases/POLICY.md)
 - [Changelog](CHANGELOG.md)
 - [Documentation index](docs/README.md)
