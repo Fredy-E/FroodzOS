@@ -53,6 +53,15 @@ class SoundSetup(unittest.TestCase):
         staged = t.index('firmware already staged in')
         self.assertIn('[ "$DRY" = 1 ] && { say "dry run: nothing written"; exit 0; }', t[staged:staged + 200])
 
+    def test_channel_report_is_read_only_and_cannot_fail_the_script(self):
+        t = SCRIPT.read_text()
+        i = t.index('channel report: soundwire devices')
+        block = t[i - 120:t.index('say "done. Try:')]
+        self.assertIn('>>"$LOG" 2>&1 || true', block)           # a diagnostic only
+        self.assertIn('wpctl inspect @DEFAULT_AUDIO_SINK@', block)
+        self.assertNotIn('amixer -c 0 sset', block); self.assertNotIn('amixer -c 0 cset', block)    # never changes a mixer value
+        self.assertLess(t.index('sound card: $('), i)           # runs only after the card exists
+
     def test_swap_command_writes_and_removes_a_wireplumber_rule(self):
         t = SWAP.read_text()
         self.assertNotIn('\r', t)
