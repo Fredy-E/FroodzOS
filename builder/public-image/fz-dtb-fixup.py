@@ -31,7 +31,17 @@ NVMe drive (`pcie@1bf8000`, "pcie6a") and its PHY (`phy@1bfc000`) disabled, so t
 tree are then dropped by rule "icc-orphan" (which also covers `qcom,pcie-*` nodes). EXPERIMENTAL: the bring-up notes record a silent reset around the PCIe/NoC
 probes of an older kernel, so use it only on a test boot entry.
 
+Rule "nvme-gpio-dedupe" (opt-in, applied by `--enable-nvme`, same board, UNPROVEN on hardware): with the controller enabled, the PCI core
+looks up `wake-gpios` (and `perst-gpios`) without a device, and a GPIO marked shared then oopses in `gpio_shared_add_proxy_lookup`
+(kernel 7.3-rc3), which is the suspected cause of the lost Wi-Fi. On the shipped tree `wake-gpios` is repeated on the `pcie@0` root-port
+child. The rule deletes `wake-gpios` and `perst-gpios` from the `pcie@1bf8000` controller node only when the same property name also exists
+on one of its `pcie@*` child nodes, which keeps its copy; a property not duplicated on a child is never touched. This is a candidate fix: it
+has NOT been proven on hardware.
+
     fz-dtb-fixup.py <in.dtb> <out.dtb> [--all-pas] [--sound-nodp] [--wsa-right-gpio13] [--enable-nvme] [--dry-run]
+    --enable-nvme also applies rule "nvme-gpio-dedupe" (UNPROVEN on hardware).
+    --nvme-dedupe-pins (with --enable-nvme) widens it to every controller `*-gpios` whose GPIO equals one on a root-port child under any name
+    (here `perst-gpios` = the port's `reset-gpios`); also UNPROVEN.
 
 Needs dtc, fdtput (package dtc). The input is never modified. Prints one line per action; exit 0 even when nothing is needed.
 """
@@ -152,20 +162,45 @@ def plan_enable_nvme(nodes):
     return sorted(out)
 
 
+def nvme_gpio_child(nodes, path, prop, by_pin=False):
+    """The `pcie@*` child of `path` that repeats `prop` (same name, or with by_pin the same GPIO cells under any `*-gpios` name), or None."""
+    for p in sorted(nodes):
+        if p.rsplit('/', 1)[0] != path or not p.rsplit('/', 1)[-1].startswith('pcie@'): continue
+        if prop in nodes[p]: return p
+        if by_pin and any(k.endswith('-gpios') and v == nodes[path][prop] for k, v in nodes[p].items()): return p
+    return None
+
+
+def plan_nvme_gpio_dedupe(nodes, by_pin=False):
+    """(controller path, [props]) for gpios of the NVMe controller that are duplicated on one of its `pcie@*` children (the child keeps them).
+    Default: `perst-gpios` / `wake-gpios` repeated under the same name. by_pin (`--nvme-dedupe-pins`): any `*-gpios` property of the controller whose
+    GPIO cells equal a gpio property of a child under any name (the shipped tree has `perst-gpios` on the controller and `reset-gpios` on the port)."""
+    out = []
+    for path, props in nodes.items():
+        if path.rsplit('/', 1)[-1] != 'pcie@1bf8000' or 'qcom,pcie-' not in props.get('compatible', ''): continue
+        names = [k for k in props if k.endswith('-gpios')] if by_pin else ['perst-gpios', 'wake-gpios']
+        dup = sorted(k for k in names if k in props and nvme_gpio_child(nodes, path, k, by_pin))
+        if dup: out.append((path, dup))
+    return sorted(out)
+
+
 def main(argv):
     args = [a for a in argv if not a.startswith('--')]
     if len(args) != 2: print(__doc__); return 2
     src, out = Path(args[0]), Path(args[1])
     nodes = parse(decompile(src))
     nvme = plan_enable_nvme(nodes) if '--enable-nvme' in argv else []
+    dedupe = plan_nvme_gpio_dedupe(nodes, by_pin='--nvme-dedupe-pins' in argv) if '--enable-nvme' in argv else []
     for path in nvme: nodes[path]['status'] = '"okay"'      # so the vote rule below sees the controller as enabled
     acts = plan(nodes, only_adsp='--all-pas' not in argv)
     usb = plan_usb(nodes)
     snd = plan_sound_nodp(nodes) if '--sound-nodp' in argv else []
     wsa = plan_wsa_right(nodes) if '--wsa-right-gpio13' in argv else []
-    if not acts and not usb and not snd and not wsa and not nvme: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
+    if not acts and not usb and not snd and not wsa and not nvme and not dedupe: print('fz-dtb-fixup: nothing to change'); shutil.copyfile(src, out); return 0
     if '--dry-run' in argv:
         for path in nvme: print('fz-dtb-fixup: would enable %s (internal NVMe PCIe controller/PHY)' % path)
+        for path, props in dedupe:
+            for prop in props: print('fz-dtb-fixup: would delete %s of %s (duplicated on its root port child)' % (prop, path))
         for path, bad in acts: print('fz-dtb-fixup: would drop interconnect votes of %s (disabled providers: %s)' % (path, ', '.join(bad)))
         for path, keep, drop, _ in usb: print('fz-dtb-fixup: would drop PHY %s of %s (disabled provider), keep %s' % ([d[0] for d in drop], path, [k[0] for k in keep]))
         for path in snd: print('fz-dtb-fixup: would delete the DisplayPort dai-link %s' % path)
@@ -175,6 +210,11 @@ def main(argv):
     for path in nvme:
         subprocess.run(['fdtput', '-t', 's', str(out), path, 'status', 'okay'], check=True)
         print('fz-dtb-fixup: enabled %s (internal NVMe PCIe controller/PHY)' % path)
+    for path, props in dedupe:
+        for prop in props:
+            child = nvme_gpio_child(nodes, path, prop, '--nvme-dedupe-pins' in argv)
+            subprocess.run(['fdtput', '-d', str(out), path, prop], check=True)
+            print('fz-dtb-fixup: deleted %s of %s (duplicated on its root port child %s)' % (prop, path, child))
     for path, bad in acts:
         if subprocess.run(['fdtget', str(out), path, 'compatible'], capture_output=True).returncode != 0:
             print('fz-dtb-fixup: SKIPPED %s (path not found in the blob)' % path); continue
