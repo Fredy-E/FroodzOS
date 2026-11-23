@@ -30,9 +30,9 @@ claiming support. "Native" is therefore the aim for each format, not a guarantee
 |---|---|---|---|
 | Archives, disk images (`.zip` `.rar` `.7z` `.tar` `.iso` `.img` `.dmg`) | 7zip, unrar (non-free licence), `libarchive`/Ark, `udisks2` + loop, `dmg2img`/`hfsprogs` | Native | Partly: `libarchive`, `udisks2`; the rest not yet installed |
 | Office documents (`.docx` `.xlsx` `.pptx` `.odt`) | LibreOffice, OnlyOffice Desktop Editors (ARM64 builds exist) | Native (layout fidelity varies) | Not yet installed |
-| Windows ARM64 programs | Wine on ARM64 | Near-native, small app library | Not yet |
+| Windows ARM64 programs | Wine on ARM64 | Near-native, small app library | Not yet. Checked 2026-11-23: `wine`, `box64` and `fex-emu` are not in the Arch Linux ARM repositories (only `winetricks`, `vkd3d`, `qemu-user`); they would have to be built from source |
 | Windows x86-64 programs (`.exe` `.msi`) | Wine + FEX-Emu or Box64, DXVK/VKD3D, Proton ARM64 | Compatibility layer (CPU cost, no kernel drivers or anti-cheat) | Not yet; GPU translation on Adreno is experimental |
-| Android apps (`.apk`) | Waydroid (ARM64 apps need no CPU translation), kernel binder support | Native container; unofficial on this hardware | Not yet; needs kernel options and testing |
+| Android apps (`.apk`) | Waydroid (ARM64 apps need no CPU translation), kernel binder support | Native container; unofficial on this hardware | Not yet in the image. Checked 2026-11-23: the project kernel (7.3.0-rc3) has `ANDROID_BINDER_IPC`/`ANDROID_BINDERFS` (modules), `PSI`, `KVM`, `USER_NS`, `VETH`, `BRIDGE`; the `waydroid` package is in the Arch Linux ARM `extra` repository; untested on the laptop |
 | Other operating systems | QEMU/KVM guests | Virtual machine; KVM on this laptop class needs an EL2-capable boot path | Not yet |
 | macOS (`.dmg` apps) | Darling for command-line tools only | Mostly not feasible (Apple EULA, no arm64 app path) | Out of scope for GUI apps |
 | iOS (`.ipa`) | none practical (touchHLE runs a few old 32-bit games only) | Not feasible | Out of scope |
