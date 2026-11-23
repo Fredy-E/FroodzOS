@@ -83,7 +83,7 @@ class SoundSetup(unittest.TestCase):
         if POSIX:
             self.assertEqual(subprocess.run(['bash', '-n', str(SWAP)]).returncode, 0)
 
-    def test_internal_disk_is_read_only_and_hidden_from_the_desktop(self):
+    def test_internal_disk_is_read_only_and_shown_without_automount(self):
         rule = OVL / 'etc/udev/rules.d/90-froodzos-internal-ro.rules'
         t = rule.read_text()
         self.assertIn('KERNEL=="nvme[0-9]*n[0-9]*"', t)          # the disk and its partitions
@@ -91,7 +91,8 @@ class SoundSetup(unittest.TestCase):
         self.assertEqual(len(code), 1)
         self.assertIn('RUN+="/usr/bin/blockdev --setro $devnode"', code[0])    # the sysfs ro attribute cannot be written (dev.5/dev.6 rule never worked)
         self.assertNotIn('ATTR{ro}', code[0])
-        self.assertIn('UDISKS_IGNORE', code[0])
+        self.assertIn('UDISKS_AUTO', code[0]); self.assertIn('ro,nosuid,nodev,noexec', code[0])    # shown by the desktop, never mounted automatically, offered mounts are read-only
+        self.assertNotIn('UDISKS_IGNORE', code[0])
         self.assertIn('etc/udev/rules.d/90-froodzos-internal-ro.rules', BUILD.read_text())
 
     @unittest.skipUnless(POSIX, 'needs bash and find')

@@ -42,7 +42,7 @@ CMDS = [b'live\n', b'live\n',
         b'echo ===DBCHECK===; pacman -Dk 2>&1 | tail -n 6; echo dbrc=$?\n',
         b'echo ===UNITS===; systemctl is-enabled fz-touchpad; systemctl --failed --no-legend | head -8\n',
         b'echo ===SELFTEST===; sudo -n python3 /usr/local/sbin/fz-touchpad.py --selftest; echo rc=$?\n',
-        *([b'echo ===NVME===; ls /dev/nvme0n1*; for d in /dev/nvme0n1*; do echo "$d RO=$(sudo -n blockdev --getro $d)"; done; sudo -n dd if=/dev/zero of=/dev/nvme0n1p1 bs=512 count=1 conv=notrunc >/dev/null 2>&1; echo DDRC=$?; udevadm info -q property -n /dev/nvme0n1p1 | grep UDISKS_IGNORE; echo ===NVMEEND===\n'] if NVME else []),
+        *([b'echo ===NVME===; ls /dev/nvme0n1*; for d in /dev/nvme0n1*; do echo "$d RO=$(sudo -n blockdev --getro $d)"; done; sudo -n dd if=/dev/zero of=/dev/nvme0n1p1 bs=512 count=1 conv=notrunc >/dev/null 2>&1; echo DDRC=$?; udevadm info -q property -n /dev/nvme0n1p1 | grep UDISKS_; echo ===NVMEEND===\n'] if NVME else []),
         *([b'echo ===WD===; sudo -n fz-waydroid check 2>&1 | tail -n 22; sudo -n lsmod | grep -c binder_linux; sudo -n fz-waydroid init 2>&1 | tail -n 3; echo ===WDEND===\n'] if WD else []),
         b'echo ===MOUNTS===; findmnt -no SOURCE,FSTYPE / ; ls /run/archiso/bootmnt | head -8; echo ===END===\n']
 with log_path.open('xb') as log:
@@ -92,7 +92,7 @@ if NVME:
     ros = re.findall(r'(/dev/nvme0n1\S*) RO=(\d)', nv)
     markers['nvme_all_read_only'] = len(ros) >= 3 and all(v == '1' for _, v in ros)             # the disk and both partitions
     markers['nvme_write_refused'] = bool(re.search(r'DDRC=[1-9]', nv))                       # dd must fail on the read-only device
-    markers['nvme_hidden_from_udisks'] = 'UDISKS_IGNORE=1' in nv
+    markers['nvme_hidden_from_udisks'] = 'UDISKS_AUTO=0' in nv and 'UDISKS_IGNORE' not in nv and 'ro,nosuid,nodev,noexec' in nv    # (name kept) shown but not auto-mounted, mounts read-only
 if WD:
     wd = seg('===WD===', '===WDEND===')
     markers['waydroid_binder_loads'] = 'binder filesystem: available' in wd
