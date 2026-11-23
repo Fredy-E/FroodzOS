@@ -66,8 +66,11 @@ class SoundSetup(unittest.TestCase):
         rule = OVL / 'etc/udev/rules.d/90-froodzos-internal-ro.rules'
         t = rule.read_text()
         self.assertIn('KERNEL=="nvme[0-9]*n[0-9]*"', t)          # the disk and its partitions
-        self.assertIn('ATTR{ro}="1"', t)
-        self.assertIn('UDISKS_IGNORE', t)
+        code = [l for l in t.splitlines() if l.strip() and not l.lstrip().startswith('#')]
+        self.assertEqual(len(code), 1)
+        self.assertIn('RUN+="/usr/bin/blockdev --setro $devnode"', code[0])    # the sysfs ro attribute cannot be written (dev.5/dev.6 rule never worked)
+        self.assertNotIn('ATTR{ro}', code[0])
+        self.assertIn('UDISKS_IGNORE', code[0])
         self.assertIn('etc/udev/rules.d/90-froodzos-internal-ro.rules', BUILD.read_text())
 
     @unittest.skipUnless(POSIX, 'needs bash and find')

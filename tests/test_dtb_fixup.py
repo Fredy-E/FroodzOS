@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-2.0-or-later
 """fz-dtb-fixup: drops the interconnect votes of an ADSP whose NoC provider is disabled, and leaves a healthy one alone."""
-import importlib.util, shutil, subprocess, sys, tempfile, unittest
+import contextlib, importlib.util, io, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('fzfix', ROOT / 'builder/public-image/fz-dtb-fixup.py')
 fz = importlib.util.module_from_spec(spec); spec.loader.exec_module(fz)
+
+PORT = 'pcie@0 { device_type = "pci"; wake-gpios = <0x40 0 1>; perst-gpios = <0x40 1 1>; };'
 
 DTS = """/dts-v1/;
 / { #address-cells = <2>; #size-cells = <2>;
@@ -20,7 +22,10 @@ DTS = """/dts-v1/;
     usb@60 { compatible = "qcom,x1e80100-dwc3", "qcom,snps-dwc3"; phys = <0x20 0x21 0>; phy-names = "usb2-phy", "usb3-phy"; status = "okay"; };
     i2c@30 { compatible = "qcom,geni-i2c"; interconnects = <0x11 0 7 0x10 1 7>; interconnect-names = "qup-core", "qup-config"; status = "okay"; };
     spi@30 { compatible = "qcom,geni-spi"; interconnects = <0x10 1 7>; status = "disabled"; };
-    pcie@1bf8000 { compatible = "qcom,pcie-x1e80100"; status = "disabled"; interconnects = <0x10 3 7 0x11 1 7>; interconnect-names = "pcie-mem", "cpu-pcie"; };
+    pcie@1bf8000 { compatible = "qcom,pcie-x1e80100"; status = "disabled"; interconnects = <0x10 3 7 0x11 1 7>; interconnect-names = "pcie-mem", "cpu-pcie";
+      wake-gpios = <0x40 0 1>; perst-gpios = <0x40 1 1>;
+      @PORT@
+    };
     phy@1bfc000 { compatible = "qcom,x1p42100-qmp-gen4x4-pcie-phy"; status = "disabled"; };
     dp0: displayport-controller@70 { compatible = "qcom,x1e80100-dp"; phandle = <0x30>; };
     wcd: codec@80 { compatible = "qcom,wcd9385-codec"; phandle = <0x31>; };
@@ -35,14 +40,18 @@ DTS = """/dts-v1/;
     wcd-playback-dai-link { link-name = "WCD Playback"; cpu { sound-dai = <0x32 1>; }; codec { sound-dai = <0x31 0>; }; };
   };
 };
-"""
+""".replace('@PORT@', PORT)
 
 
 @unittest.skipUnless(shutil.which('dtc') and shutil.which('fdtput'), 'dtc/fdtput not installed')
 class Fixup(unittest.TestCase):
-    def run_fix(self, *extra):
-        d = Path(tempfile.mkdtemp()); (d / 'a.dts').write_text(DTS)
+    def build(self, dts=DTS):
+        d = Path(tempfile.mkdtemp()); (d / 'a.dts').write_text(dts)
         subprocess.run(['dtc', '-I', 'dts', '-O', 'dtb', '-o', str(d / 'a.dtb'), str(d / 'a.dts')], check=True, capture_output=True)
+        return d
+
+    def run_fix(self, *extra, dts=DTS):
+        d = self.build(dts)
         self.assertEqual(fz.main([str(d / 'a.dtb'), str(d / 'b.dtb'), *extra]), 0)
         return subprocess.run(['dtc', '-I', 'dtb', '-O', 'dts', str(d / 'b.dtb')], capture_output=True, text=True).stdout
 
@@ -78,6 +87,69 @@ class Fixup(unittest.TestCase):
         self.assertIn('pcie-phy', out)
         self.assertEqual(out.count('interconnects ='), 2)          # the pcie controller lost its votes (provider is disabled); cdsp and spi keep theirs
         self.assertNotIn('pcie-mem', out)
+
+    def test_nvme_gpio_dedupe_deletes_only_the_duplicated_controller_gpios(self):
+        out = fz.parse(self.run_fix('--enable-nvme'))
+        ctl, port = '/soc@0/pcie@1bf8000', '/soc@0/pcie@1bf8000/pcie@0'
+        self.assertNotIn('wake-gpios', out[ctl])
+        self.assertNotIn('perst-gpios', out[ctl])
+        self.assertIn('wake-gpios', out[port])
+        self.assertIn('perst-gpios', out[port])
+
+    def test_nvme_gpio_dedupe_keeps_a_gpio_the_child_does_not_have(self):
+        dts = DTS.replace(PORT, 'pcie@0 { device_type = "pci"; };')
+        ctl = fz.parse(self.run_fix('--enable-nvme', dts=dts))['/soc@0/pcie@1bf8000']
+        self.assertIn('wake-gpios', ctl)
+        self.assertIn('perst-gpios', ctl)
+
+    def test_nvme_gpio_dedupe_is_opt_in(self):
+        ctl = fz.parse(self.run_fix())['/soc@0/pcie@1bf8000']
+        self.assertIn('wake-gpios', ctl)
+        self.assertIn('perst-gpios', ctl)
+
+    def test_plan_nvme_gpio_dedupe_lists_only_properties_repeated_on_a_pcie_child(self):
+        nodes = fz.parse(fz.decompile(self.build() / 'a.dtb'))
+        self.assertEqual(fz.plan_nvme_gpio_dedupe(nodes), [('/soc@0/pcie@1bf8000', ['perst-gpios', 'wake-gpios'])])
+        only = fz.parse(fz.decompile(self.build(DTS.replace(PORT, 'pcie@0 { device_type = "pci"; };')) / 'a.dtb'))
+        self.assertEqual(fz.plan_nvme_gpio_dedupe(only), [])
+
+    def test_nvme_gpio_dedupe_dry_run_prints_the_lines_and_changes_nothing(self):
+        d = self.build()
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.assertEqual(fz.main([str(d / 'a.dtb'), str(d / 'b.dtb'), '--enable-nvme', '--dry-run']), 0)
+        out = buf.getvalue()
+        self.assertIn('fz-dtb-fixup: would delete wake-gpios of /soc@0/pcie@1bf8000 (duplicated on its root port child)', out)
+        self.assertIn('fz-dtb-fixup: would delete perst-gpios of /soc@0/pcie@1bf8000 (duplicated on its root port child)', out)
+        self.assertFalse((d / 'b.dtb').exists())
+
+    REAL_PORT = 'pcie@0 { device_type = "pci"; reset-gpios = <0x40 1 1>; wake-gpios = <0x40 0 1>; };'     # the shipped shape: perst-gpios on the controller, reset-gpios on the port
+
+    def test_default_dedupe_leaves_perst_when_the_port_names_it_reset(self):
+        dts = DTS.replace(PORT, self.REAL_PORT)
+        ctl = fz.parse(self.run_fix('--enable-nvme', dts=dts))['/soc@0/pcie@1bf8000']
+        self.assertNotIn('wake-gpios', ctl)
+        self.assertIn('perst-gpios', ctl)
+
+    def test_dedupe_pins_also_removes_the_perst_that_the_port_calls_reset(self):
+        dts = DTS.replace(PORT, self.REAL_PORT)
+        out = fz.parse(self.run_fix('--enable-nvme', '--nvme-dedupe-pins', dts=dts))
+        self.assertNotIn('wake-gpios', out['/soc@0/pcie@1bf8000'])
+        self.assertNotIn('perst-gpios', out['/soc@0/pcie@1bf8000'])
+        self.assertIn('reset-gpios', out['/soc@0/pcie@1bf8000/pcie@0'])
+        self.assertIn('wake-gpios', out['/soc@0/pcie@1bf8000/pcie@0'])
+
+    def test_dedupe_pins_keeps_a_controller_gpio_with_a_different_pin(self):
+        dts = DTS.replace(PORT, 'pcie@0 { device_type = "pci"; reset-gpios = <0x40 9 1>; };')
+        ctl = fz.parse(self.run_fix('--enable-nvme', '--nvme-dedupe-pins', dts=dts))['/soc@0/pcie@1bf8000']
+        self.assertIn('perst-gpios', ctl)
+        self.assertIn('wake-gpios', ctl)
+
+    def test_dedupe_pins_needs_enable_nvme(self):
+        dts = DTS.replace(PORT, self.REAL_PORT)
+        ctl = fz.parse(self.run_fix('--nvme-dedupe-pins', dts=dts))['/soc@0/pcie@1bf8000']
+        self.assertIn('perst-gpios', ctl)
+        self.assertIn('wake-gpios', ctl)
 
     def test_dry_run_changes_nothing(self):
         d = Path(tempfile.mkdtemp()); (d / 'a.dts').write_text(DTS)
