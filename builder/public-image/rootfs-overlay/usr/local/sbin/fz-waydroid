@@ -3,6 +3,7 @@
 # fz-waydroid: first steps for running Android apps with Waydroid on a FroodzOS live stick (EXPERIMENTAL, untested on the laptop before dev.8).
 #   sudo fz-waydroid check   read-only report: kernel binder support, tools, session type, memory and the persistent partition
 #                            (it only loads the kernel module binder_linux); prints READY or the list of problems
+#   sudo fz-waydroid report  while Android runs: container state, boot_completed, Android error log lines, kernel lines (also logged to the journal)
 #   sudo fz-waydroid init    keeps Waydroid's data on the FROODZ_PERSIST partition (bind mount over /var/lib/waydroid; with
 #                            --ram it stays in memory instead), starts the container service and runs `waydroid init`, which
 #                            DOWNLOADS the Android system image (about 1 GB) from the Waydroid project's servers
@@ -51,8 +52,20 @@ init() {
   say "next, as the desktop user (not root):  waydroid session start &   then   waydroid show-full-ui   (log: $LOG)"
 }
 
+report() {
+  command -v waydroid >/dev/null 2>&1 || { say "waydroid is not installed in this image"; exit 1; }
+  say "report: container $(systemctl is-active waydroid-container 2>&1)"
+  timeout 20 waydroid status 2>&1 | sed 's/^/  /' | tee -a "$LOG" >(logger -t fz-waydroid)
+  for p in sys.boot_completed ro.build.version.release ro.product.cpu.abi; do say "report: getprop $p = $(timeout 15 waydroid shell getprop "$p" 2>&1 | tr -d '' | tail -n 1)"; done
+  say "report: last Android log lines (errors and fatal only)"
+  timeout 20 waydroid log -n 400 2>&1 | grep -E ' (E|F) ' | tail -n 40 | cut -c1-220 | sed 's/^/  /' | tee -a "$LOG" >(logger -t fz-waydroid)
+  say "report: kernel binder/cgroup lines"
+  dmesg 2>/dev/null | grep -iE 'libprocessgroup|binder_linux.*(fail|err)|waydroid0' | tail -n 12 | cut -c1-200 | sed 's/^/  /' | tee -a "$LOG" >(logger -t fz-waydroid)
+}
+
 case "$cmd" in
   check) check ;;
   init) init ;;
-  *) sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+  report) report ;;
+  *) sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
 esac
