@@ -24,6 +24,13 @@ subprocess.run(['mcopy', '-i', fs, '-o', str(tcfg), '::/boot/grub/grub.cfg'], ch
 cmd = ['qemu-system-aarch64', '-M', 'virt,gic-version=3', '-cpu', 'cortex-a53', '-accel', 'tcg', '-m', '3072', '-smp', '2',
        '-bios', str(FW), '-device', 'qemu-xhci', '-drive', 'if=none,id=stick,format=raw,snapshot=on,file=' + str(TEST),
        '-device', 'usb-storage,drive=stick', '-nographic', '-no-reboot', '-monitor', 'none']
+NVME = os.environ.get('FZ_NVME') == '1'     # FZ_NVME=1: also attach an emulated NVMe disk with 2 partitions (a stand-in for the internal drive) and check that it is read-only
+NVME_IMG = B / 'qemu-nvme-test.img'
+if NVME:
+    NVME_IMG.unlink(missing_ok=True)
+    with NVME_IMG.open('wb') as f: f.truncate(64 * 1024 * 1024)
+    subprocess.run(['sfdisk', str(NVME_IMG)], input=b'label: gpt\nstart=2048, size=60000\nstart=64000, size=60000\n', check=True, capture_output=True)
+    cmd += ['-drive', 'if=none,id=nv,format=raw,snapshot=on,file=' + str(NVME_IMG), '-device', 'nvme,drive=nv,serial=fztest']
 proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0)
 start = time.monotonic(); out = b''; reason = 'deadline'; mu_at = None; typed = False; end_at = None
 CMDS = [b'live\n', b'live\n',
@@ -34,6 +41,7 @@ CMDS = [b'live\n', b'live\n',
         b'echo ===DBCHECK===; pacman -Dk 2>&1 | tail -n 6; echo dbrc=$?\n',
         b'echo ===UNITS===; systemctl is-enabled fz-touchpad; systemctl --failed --no-legend | head -8\n',
         b'echo ===SELFTEST===; sudo -n python3 /usr/local/sbin/fz-touchpad.py --selftest; echo rc=$?\n',
+        *([b'echo ===NVME===; ls /dev/nvme0n1*; for d in /dev/nvme0n1*; do echo "$d RO=$(sudo -n blockdev --getro $d)"; done; sudo -n dd if=/dev/zero of=/dev/nvme0n1p1 bs=512 count=1 conv=notrunc >/dev/null 2>&1; echo DDRC=$?; udevadm info -q property -n /dev/nvme0n1p1 | grep UDISKS_IGNORE; echo ===NVMEEND===\n'] if NVME else []),
         b'echo ===MOUNTS===; findmnt -no SOURCE,FSTYPE / ; ls /run/archiso/bootmnt | head -8; echo ===END===\n']
 with log_path.open('xb') as log:
     while time.monotonic() - start < 1500 and proc.poll() is None:
@@ -77,7 +85,13 @@ markers = {
     'selftest_pass': 'fz-touchpad: SELFTEST PASS' in clean,
     'panic': 'Kernel panic' in text,
 }
-passed = all(markers[k] for k in ('multi_user', 'logged_in_and_ran', 'identity_public_build', 'kernel_package_renamed', 'selftest_pass', 'no_firefox', 'no_arch_logo', 'handlers_installed', 'r3_chromium_no_falkon', 'r3_files', 'smartlog_running')) and not markers['panic']
+if NVME:
+    nv = seg('===NVME===', '===NVMEEND===')
+    ros = re.findall(r'(/dev/nvme0n1\S*) RO=(\d)', nv)
+    markers['nvme_all_read_only'] = len(ros) >= 3 and all(v == '1' for _, v in ros)             # the disk and both partitions
+    markers['nvme_write_refused'] = bool(re.search(r'DDRC=[1-9]', nv))                       # dd must fail on the read-only device
+    markers['nvme_hidden_from_udisks'] = 'UDISKS_IGNORE=1' in nv
+passed = all(markers[k] for k in ('multi_user', 'logged_in_and_ran', 'identity_public_build', 'kernel_package_renamed', 'selftest_pass', 'no_firefox', 'no_arch_logo', 'handlers_installed', 'r3_chromium_no_falkon', 'r3_files', 'smartlog_running')) and not markers['panic'] and (not NVME or all(markers[k] for k in ('nvme_all_read_only', 'nvme_write_refused', 'nvme_hidden_from_udisks')))
 tail = clean[clean.rfind('===ID==='):] if '===ID===' in clean else clean[-3500:]
 summary = {'tag': tag, 'seconds': round(time.monotonic() - start, 1), 'stop_reason': reason, 'markers': markers, 'passed': passed,
            'image_sha256': img_sha, 'hardware_validated': False,

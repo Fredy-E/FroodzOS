@@ -27,10 +27,10 @@ The script reads the Windows DriverStore read-only and never uploads or redistri
 
 ## Sound from the image (0.1.0-dev.5 and later)
 
-**How to supply the files:** in Windows, copy the whole folder `qcsubsys_ext_adsp8380...` (one version) from `C:\Windows\System32\DriverStore\FileRepository\` into a new folder
-`FroodzOS-firmware` on the boot stick (it must contain all six files listed below, `adspr.jsn` included). The live system cannot read your Windows partition yet: the
-internal drive is not visible because the shipped device tree keeps its PCIe controller disabled (the command still looks there first, so it will use the Windows
-copy as soon as that works).
+**Where the files come from (0.1.0-dev.7 and later):** from your own Windows installation on the internal disk. The internal disk is visible to the live system (read-only; the command mounts the
+Windows partition read-only itself), so nothing has to be copied. A BitLocker-encrypted Windows partition cannot be read: then copy the whole folder `qcsubsys_ext_adsp8380...` (one version) from
+`C:\Windows\System32\DriverStore\FileRepository\` into a new folder `FroodzOS-firmware` on the boot stick (it must contain all six files listed below, `adspr.jsn` included). In 0.1.0-dev.5 and dev.6 the
+internal drive was not visible, so the stick folder was the only way.
 
 The speakers need the audio DSP restarted with this laptop's own firmware. The image ships the command that does it:
 

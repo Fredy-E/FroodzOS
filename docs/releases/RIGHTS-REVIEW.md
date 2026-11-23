@@ -117,3 +117,15 @@ The build `maverick-public-dev-20261122.1` is derived from the dev.5 root (r16) 
 | Boot image, firmware handling | Unchanged from dev.5 (same boot loader and kernel images); no firmware in the image, the release assets or the repository. | No change. |
 
 Open points: those of sections 2, 3, 5, 6, 7 and 8.
+
+## 10. Addendum for the 0.1.0-dev.7 build (2026-11-23): internal disk visible read-only, firmware read from Windows
+
+The build `maverick-public-dev-20261123.1` is derived from the dev.6 root (r17) by one `build-root.sh` run (r18) with a full upgrade (file-listing comparison in `maverick-public-dev-20261123.1.json`; no vendor firmware, no Firefox, no Arch logo files and no private keys among the added or changed entries). The package set is unchanged (782 packages; `libseccomp` and `at-spi2-core` updated).
+
+| Point | Finding | Decision |
+|---|---|---|
+| Boot image `froodzos-maverick-dspN2.efi` | The dev.4 sound boot image plus a device-tree change (internal NVMe PCIe controller and PHY enabled, interconnect votes dropped, one duplicated GPIO property deleted) made by the original GPL-2.0-or-later tool `fz-dtb-fixup.py --enable-nvme`; all other sections byte-identical to the base image. | Accepted; tested on the laptop in two owner boots. |
+| Firmware from the user's Windows partition | `fz-sound-setup` mounts the Windows partition read-only and copies six audio firmware files into the live system's RAM overlay. They are the user's own copies of the vendor driver on the same machine; they are not in the image, the release assets or the repository, are not uploaded, and vanish at power-off. | Accepted: same position as section 8 (the user stages their own firmware for their own use). |
+| Read-only rule | The dev.5/dev.6 udev rule (`ATTR{ro}`) did not take effect; the new rule runs `blockdev --setro` on the disk and its partitions. The correction is stated in the release notes and changelog. | Original FroodzOS code; protects the user's data. |
+
+Open points: those of sections 2, 3, 5, 6, 7, 8 and 9.
