@@ -42,12 +42,12 @@ sudo fz-sound-setup               # copy, restart the audio DSP and the audio se
 It copies six files (`qcadsp8380.mbn`, `adsp_dtbs.elf`, `adspr.jsn`, `adsps.jsn`, `adspua.jsn`, `battmgr.jsn`) into `/usr/lib/firmware/updates/` in the live system's memory,
 searched in this order: `--source <folder>`, this machine's own Windows partition (NTFS, mounted read-only; a
 BitLocker-encrypted partition cannot be read), then a folder `FroodzOS-firmware` on the boot stick. Nothing is written to Windows or to the boot stick and nothing leaves the machine; the files vanish at power-off,
-so run it again after every boot, or use the kernel option `fz_sound=1` (runs it once 45 seconds after boot; **known problem: with this option the desktop did not start in owner tests, so run the command from the desktop instead**). There is also a
+so run it again after every boot, or use the kernel option `fz_sound=1` (the second boot entry; since 0.1.0-dev.6 a timer runs it once about 75 seconds after boot; in 0.1.0-dev.5 this option did not reach the desktop on the laptop, so use the command from the desktop there). There is also a
 "Set up sound (laptop firmware)" launcher in the application menu. Do not share the copied files.
 
 ### Swap left and right (if "Front Left" comes from your right speaker)
 
-On some boots the two speaker channels come out reversed. As the desktop user, create the file `~/.config/wireplumber/wireplumber.conf.d/51-swap-lr.conf` with
+On some boots the two speaker channels come out reversed. Since 0.1.0-dev.6 the command `fz-swap-lr` does this for you (run it again to undo it). By hand, as the desktop user, create the file `~/.config/wireplumber/wireplumber.conf.d/51-swap-lr.conf` with
 
 ```
 monitor.alsa.rules = [
