@@ -124,7 +124,7 @@ a5d7c5cad258dd6fa4cfec7443232bbcd124c927867fe50612adff7221bcdc5e  builder/public
 5121d2cc18c6622e34f17aa228ffe791391f68040dfd26f04d901f10234248b5  builder/public-image/rootfs-overlay/usr/local/sbin/fz-smartlog
 50b8ec9d8902a3cbd69a954f17907b54bc2740a107c906ea26b721896d31a4fb  builder/public-image/rootfs-overlay/usr/local/sbin/fz-sound-setup
 b8454548ee34f19db3482d8af3a570aea5de926c09004ebd9b335cf0729d2dd4  builder/public-image/rootfs-overlay/usr/local/sbin/fz-stick-autorun
-5bce7c5aec265b05f7de8e0aa3bd13d50addac514d3fe7e5b6adc98dea28824b  builder/public-image/rootfs-overlay/usr/local/sbin/fz-waydroid
+2f0b680f1b4f1354031dc566aa08f38157b97495ce0ed77876a51652eba75489  builder/public-image/rootfs-overlay/usr/local/sbin/fz-waydroid
 4ce3549351d25a9da5a019d3778a161bc2d0be65d1ccc9dbc1da6b63019387ce  builder/public-image/rootfs-overlay/usr/share/alsa/ucm2/Qualcomm/x1e80100/Ideapad-3-HiFi.conf
 c6daa5f6c85785ec85de2be6e1085eac7f9a40ee85f1972eb1faff8c384131b2  builder/public-image/rootfs-overlay/usr/share/alsa/ucm2/Qualcomm/x1e80100/LENOVO-Ideapad-3.conf
 b6dfb1a5903e18ca0aeb663b6bfcc15e6a594cd0e8a90c01ce4aabf0d11d4f70  builder/public-image/rootfs-overlay/usr/share/applications/fz-mount-image.desktop

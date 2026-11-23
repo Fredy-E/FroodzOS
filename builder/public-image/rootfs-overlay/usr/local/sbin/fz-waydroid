@@ -10,7 +10,7 @@
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 LOG=${FZ_WAYDROID_LOG:-/run/fz-waydroid.log}
 P=${FZ_PERSIST_MNT:-/run/fz-persist}
-say() { echo "fz-waydroid: $*" | tee -a "$LOG"; }
+say() { echo "fz-waydroid: $*" | tee -a "$LOG"; logger -t fz-waydroid -- "$*" 2>/dev/null || true; }   # the journal is saved to the stick's Logs folder by fz-smartlog
 [ "$(id -u)" = 0 ] || { echo "fz-waydroid: run it with sudo"; exit 1; }
 cmd=${1:-help}; shift || true
 RAM=0; for a in "$@"; do [ "$a" = --ram ] && RAM=1; done
