@@ -1,0 +1,9 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+// FroodzOS live system: the person at the keyboard of the live session may mount the internal disk's partitions from the file manager
+// without a password. Safe because the disk is read-only (blockdev --setro, see 90-froodzos-internal-ro.rules) and offered mounts are
+// read-only, nosuid, nodev, noexec. Only local, active sessions; nothing here allows writing, formatting or unmounting other users' mounts.
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.udisks2.filesystem-mount-system" && subject.local && subject.active) {
+        return polkit.Result.YES;
+    }
+});

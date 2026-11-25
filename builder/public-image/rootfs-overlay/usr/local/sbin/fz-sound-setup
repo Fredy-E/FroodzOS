@@ -123,4 +123,17 @@ if [ -n "$u" ]; then
     [ -n "$sink" ] && say "audio sink: $(echo "$sink" | sed 's/^[ │├└─*]*//')" || say "no speaker sink listed yet: wait a few seconds and run 'wpctl status'"
   fi
 fi
+# channel report (read only, never fails the script): when left and right come out reversed on a boot, compare this block with the one of a good boot
+{
+  echo "fz-sound-setup: channel report: soundwire devices (name, modalias)"
+  for d in /sys/bus/soundwire/devices/sdw:*; do [ -e "$d" ] && echo "  $(basename "$d") $(cat "$d/modalias" 2>/dev/null)"; done
+  echo "fz-sound-setup: channel report: speaker mixer controls"
+  timeout 6 amixer -c 0 scontents 2>&1 | grep -iE -A4 "^Simple mixer control '[^']*(Spk|Speaker|WSA|Left|Right)" | head -n 60 | sed 's/^/  /'
+  echo "fz-sound-setup: channel report: soundwire / amplifier kernel lines"
+  dmesg 2>/dev/null | grep -iE 'wsa884|sdw.*(slave|attach|unattach)|swrm' | tail -n 20 | cut -c1-200 | sed 's/^/  /'
+  if [ -n "${u:-}" ] && [ -d "/run/user/${uid:-x}" ]; then
+    echo "fz-sound-setup: channel report: default sink positions and channel map"
+    timeout 6 runuser -u "$u" -- env XDG_RUNTIME_DIR="/run/user/$uid" wpctl inspect @DEFAULT_AUDIO_SINK@ 2>&1 | grep -iE 'node.name|audio.position|audio.channels|api.alsa.pcm|priority.session' | sed 's/^[ *]*/  /'
+  fi
+} >>"$LOG" 2>&1 || true
 say "done. Try:  speaker-test -c 2 -t wav -l 1     (log: $LOG)"

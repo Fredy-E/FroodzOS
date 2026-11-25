@@ -53,6 +53,27 @@ class SoundSetup(unittest.TestCase):
         staged = t.index('firmware already staged in')
         self.assertIn('[ "$DRY" = 1 ] && { say "dry run: nothing written"; exit 0; }', t[staged:staged + 200])
 
+    def test_channel_report_is_read_only_and_cannot_fail_the_script(self):
+        t = SCRIPT.read_text()
+        i = t.index('channel report: soundwire devices')
+        block = t[i - 120:t.index('say "done. Try:')]
+        self.assertIn('>>"$LOG" 2>&1 || true', block)           # a diagnostic only
+        self.assertIn('wpctl inspect @DEFAULT_AUDIO_SINK@', block)
+        self.assertNotIn('amixer -c 0 sset', block); self.assertNotIn('amixer -c 0 cset', block)    # never changes a mixer value
+        self.assertLess(t.index('sound card: $('), i)           # runs only after the card exists
+
+    def test_waydroid_helper_is_registered_and_never_pipes_a_download_into_a_shell(self):
+        w = (OVL / 'usr/local/sbin/fz-waydroid').read_text()
+        self.assertNotIn(chr(13), w)
+        self.assertNotIn('| sh', w); self.assertNotIn('| bash', w); self.assertNotIn('curl', w)
+        self.assertIn('waydroid init -s VANILLA', w)                 # the image is fetched by waydroid itself, at the user's request
+        self.assertIn('mountpoint -q "$P"', w)                       # data goes to the persistent partition, not the stick's boot files
+        b = BUILD.read_text()
+        self.assertIn('usr/local/sbin/fz-waydroid usr/local/sbin/fz-sound-setup etc/systemd', b)
+        self.assertIn('usr/local/sbin/fz-waydroid|', b)              # mode 755
+        if POSIX:
+            self.assertEqual(subprocess.run(['bash', '-n', str(OVL / 'usr/local/sbin/fz-waydroid')]).returncode, 0)
+
     def test_swap_command_writes_and_removes_a_wireplumber_rule(self):
         t = SWAP.read_text()
         self.assertNotIn('\r', t)
@@ -62,7 +83,7 @@ class SoundSetup(unittest.TestCase):
         if POSIX:
             self.assertEqual(subprocess.run(['bash', '-n', str(SWAP)]).returncode, 0)
 
-    def test_internal_disk_is_read_only_and_hidden_from_the_desktop(self):
+    def test_internal_disk_is_read_only_and_shown_without_automount(self):
         rule = OVL / 'etc/udev/rules.d/90-froodzos-internal-ro.rules'
         t = rule.read_text()
         self.assertIn('KERNEL=="nvme[0-9]*n[0-9]*"', t)          # the disk and its partitions
@@ -70,8 +91,17 @@ class SoundSetup(unittest.TestCase):
         self.assertEqual(len(code), 1)
         self.assertIn('RUN+="/usr/bin/blockdev --setro $devnode"', code[0])    # the sysfs ro attribute cannot be written (dev.5/dev.6 rule never worked)
         self.assertNotIn('ATTR{ro}', code[0])
-        self.assertIn('UDISKS_IGNORE', code[0])
+        self.assertIn('UDISKS_AUTO', code[0]); self.assertIn('ro,nosuid,nodev,noexec', code[0])    # shown by the desktop, never mounted automatically, offered mounts are read-only
+        self.assertNotIn('UDISKS_IGNORE', code[0])
         self.assertIn('etc/udev/rules.d/90-froodzos-internal-ro.rules', BUILD.read_text())
+
+    def test_internal_disk_mount_needs_no_password_only_for_local_active_sessions(self):
+        r = (OVL / 'etc/polkit-1/rules.d/90-froodzos-mount-internal.rules').read_text()
+        self.assertIn('org.freedesktop.udisks2.filesystem-mount-system', r)
+        self.assertIn('subject.local && subject.active', r)
+        for other in ('modify-device', 'format', 'unmount-others', 'eject'):       # nothing else is opened up
+            self.assertNotIn(other, r.replace('nothing here allows writing, formatting or unmounting other users', ''))
+        self.assertIn('etc/polkit-1/rules.d/90-froodzos-mount-internal.rules', BUILD.read_text())
 
     @unittest.skipUnless(POSIX, 'needs bash and find')
     def test_script_syntax(self):

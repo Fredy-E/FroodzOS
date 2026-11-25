@@ -9,7 +9,7 @@ the owner include archives (`.zip` `.rar`), disk images (`.iso` `.dmg`), office 
 the command-line compression tools. From `0.1.0-dev.2` the image adds first handlers: Ark, 7zip, unrar, unzip/zip, cabextract, lhasa,
 unshield and filesystem tools for archives and disk images; Okular (PDF, e-books), Gwenview and the image-format libraries, Haruna, mpv and
 Elisa for media, Kate, LibreOffice for office files, and the Falkon browser (details and licences: [HANDLERS-PHASE1.md](../compat/HANDLERS-PHASE1.md)).
-They are installed packages, **not yet tested on real sample files on the laptop**. There is still no Wine, Waydroid or QEMU.
+They are installed packages, **not yet tested on real sample files on the laptop**. Since 0.1.0-dev.8 Waydroid is installed (experimental); there is still no Wine or QEMU.
 Nothing below is promised for a date, and each row says what is technically possible.
 
 ## What "native" means here
@@ -30,9 +30,9 @@ claiming support. "Native" is therefore the aim for each format, not a guarantee
 |---|---|---|---|
 | Archives, disk images (`.zip` `.rar` `.7z` `.tar` `.iso` `.img` `.dmg`) | 7zip, unrar (non-free licence), `libarchive`/Ark, `udisks2` + loop, `dmg2img`/`hfsprogs` | Native | Partly: `libarchive`, `udisks2`; the rest not yet installed |
 | Office documents (`.docx` `.xlsx` `.pptx` `.odt`) | LibreOffice, OnlyOffice Desktop Editors (ARM64 builds exist) | Native (layout fidelity varies) | Not yet installed |
-| Windows ARM64 programs | Wine on ARM64 | Near-native, small app library | Not yet |
+| Windows ARM64 programs | Wine on ARM64 | Near-native, small app library | Not yet. Checked 2026-11-23: `wine`, `box64` and `fex-emu` are not in the Arch Linux ARM repositories (only `winetricks`, `vkd3d`, `qemu-user`); they would have to be built from source |
 | Windows x86-64 programs (`.exe` `.msi`) | Wine + FEX-Emu or Box64, DXVK/VKD3D, Proton ARM64 | Compatibility layer (CPU cost, no kernel drivers or anti-cheat) | Not yet; GPU translation on Adreno is experimental |
-| Android apps (`.apk`) | Waydroid (ARM64 apps need no CPU translation), kernel binder support | Native container; unofficial on this hardware | Not yet; needs kernel options and testing |
+| Android apps (`.apk`) | Waydroid (ARM64 apps need no CPU translation), kernel binder support | Native container; unofficial on this hardware | Installed since 0.1.0-dev.8 (experimental): `waydroid`, `lxc`, `dnsmasq` from Arch Linux ARM and the helper `fz-waydroid`; the Android 13 image (about 1 GB) is downloaded by the user at run time and needs the persistent partition. Owner-tested on the laptop (2026-11-25): Android boots in about 16 s and its window is shown (multi-window mode may be needed); software rendering only, no Google Play, camera and sensors untested. The kernel (7.3.0-rc3) has `ANDROID_BINDER_IPC`/`ANDROID_BINDERFS` (modules), `PSI`, `KVM`, `USER_NS`, `VETH`, `BRIDGE` |
 | Other operating systems | QEMU/KVM guests | Virtual machine; KVM on this laptop class needs an EL2-capable boot path | Not yet |
 | macOS (`.dmg` apps) | Darling for command-line tools only | Mostly not feasible (Apple EULA, no arm64 app path) | Out of scope for GUI apps |
 | iOS (`.ipa`) | none practical (touchHLE runs a few old 32-bit games only) | Not feasible | Out of scope |

@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| Current version | **`0.1.0-dev.7`, codename Maverick** (development; **not** a qualified alpha) |
+| Current version | **`0.1.0-dev.8`, codename Maverick** (development; **not** a qualified alpha) |
 | Target milestone | FroodzOS 0.1 Maverick - ARM64 Alpha: a limited live alpha for one laptop |
 | Binaries | One signed **development image** for the 83N3 only, as a GitHub pre-release ([`v0.1.0-dev.7-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.7-maverick); the earlier ones, [`v0.1.0-dev.6-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.6-maverick), [`v0.1.0-dev.5-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.5-maverick), [`v0.1.0-dev.4-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.4-maverick), [`v0.1.0-dev.3-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.3-maverick), [`v0.1.0-dev.2-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.2-maverick) and [`v0.1.0-dev-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev-maverick), stay available). No vendor firmware, no installer |
 | Licence | Original FroodzOS code and tools: **GPL-2.0-or-later** (see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md)); third-party material keeps its own licences |
@@ -26,7 +26,7 @@ as natively as technically possible. It starts with a few formats and has no fix
 | **Open Anything** | One launcher and file-association layer that picks the right handler for any file, explains what it needs, and installs it on request. |
 | **Honest status** | Every format shows its realistic ceiling (native, compat, VM, limited, not feasible) and whether the published image can do it today. |
 
-This is the direction of the project, **not something it does fully today**: the current image (`0.1.0-dev.7`) is a desktop with Wi-Fi, keyboard
+This is the direction of the project, **not something it does fully today**: the current image (`0.1.0-dev.8`) is a desktop with Wi-Fi, keyboard
 and touchpad on one laptop, plus first file handlers (Ark, 7zip, LibreOffice, Okular, Gwenview, Haruna/mpv, Kate, Falkon and archive/filesystem
 tools; see [docs/compat/HANDLERS-PHASE1.md](docs/compat/HANDLERS-PHASE1.md)). Most of the catalogue is still *planned*, and none of the new handlers has been
 tested on real sample files on the laptop yet. Where technology (a different CPU
@@ -43,8 +43,8 @@ qualified. Failed and rejected revisions are kept on purpose; nothing is retroac
 ## Download (development image)
 
 A firmware-free **development image for the Lenovo IdeaPad Slim 3 15Q8X10 (83N3) only** is available as a signed GitHub pre-release:
-[`v0.1.0-dev.7-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.7-maverick) (1.65 GB compressed raw USB image,
-SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, audio needs the laptop\'s own firmware, which `fz-sound-setup` reads from your Windows partition (the internal disk is visible, read-only, since dev.7; a FroodzOS-firmware folder on the stick is the fallback) and starts the audio DSP so the sound card appears; both speakers were heard in owner tests after `fz-sound-setup`; left and right can come out reversed on some boots, `fz-swap-lr` swaps them),
+[`v0.1.0-dev.8-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.8-maverick) (1.7 GB compressed raw USB image,
+SHA256SUMS and signature, package list, source offer). Read the release notes first: Secure Boot must be off, audio needs the laptop\'s own firmware, which `fz-sound-setup` reads from your Windows partition (the internal disk is visible in the file manager, read-only, since dev.7; a FroodzOS-firmware folder on the stick is the fallback) and starts the audio DSP so the sound card appears; both speakers were heard in owner tests after `fz-sound-setup`; left and right can come out reversed on some boots, `fz-swap-lr` swaps them),
 Wi-Fi does not survive suspend, the released image itself was only emulator-tested, and writing the image erases the target USB stick. Verification steps are in
 [docs/releases/SIGNING.md](docs/releases/SIGNING.md); rights and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md).
 
@@ -63,7 +63,7 @@ Wi-Fi does not survive suspend, the released image itself was only emulator-test
 | Camera, USB-C display, suspend | Not accepted. They would be documented limitations of a limited 0.1. |
 | Shutdown | About 10 s in owner tests, and the boot stick is remounted read-only so it stays clean (`fz-bootmnt-ro`, 2026-11-20). Full safe-shutdown and recovery qualification is still open. |
 | Hermes workstation integration | Out of the 0.1 scope (owner decision 2026-11-10); parked, not deleted. |
-| Public binary image | Signed development pre-releases for the 83N3 only, no vendor firmware ([`v0.1.0-dev.7-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.7-maverick) is the latest); rights position and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md). |
+| Public binary image | Signed development pre-releases for the 83N3 only, no vendor firmware ([`v0.1.0-dev.8-maverick`](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.8-maverick) is the latest); rights position and open points in [docs/releases/RIGHTS-REVIEW.md](docs/releases/RIGHTS-REVIEW.md). |
 | Other boards / general ARM64 | A project goal, not established support. |
 
 Details and the evidence classes behind each row are in [docs/releases/CURRENT.md](docs/releases/CURRENT.md).
@@ -79,7 +79,7 @@ the [roadmap](docs/releases/ROADMAP.md) and the [changelog](CHANGELOG.md).
 
 - [Main goal and compatibility plan](docs/releases/UNIVERSAL-COMPATIBILITY.md)
 - [Release status, evidence boundaries and blockers](docs/releases/CURRENT.md)
-- [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.7-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev.7-maverick.md)
+- [Download the development image](https://github.com/Fredy-E/FroodzOS/releases/tag/v0.1.0-dev.8-maverick) and its [release notes](docs/releases/RELEASE-NOTES-0.1.0-dev.8-maverick.md)
 - [0.1 Maverick scope](docs/releases/0.1-maverick.md) and [promotion policy](docs/releases/POLICY.md)
 - [Changelog](CHANGELOG.md)
 - [Documentation index](docs/README.md)

@@ -129,3 +129,15 @@ The build `maverick-public-dev-20261123.1` is derived from the dev.6 root (r17) 
 | Read-only rule | The dev.5/dev.6 udev rule (`ATTR{ro}`) did not take effect; the new rule runs `blockdev --setro` on the disk and its partitions. The correction is stated in the release notes and changelog. | Original FroodzOS code; protects the user's data. |
 
 Open points: those of sections 2, 3, 5, 6, 7, 8 and 9.
+
+## 11. Addendum for the 0.1.0-dev.8 build (2026-11-25): Waydroid, internal disk shown read-only
+
+The build `maverick-public-dev-20261125.1` is derived from the dev.7 root (r18) by one `build-root.sh` run (r20) that adds packages and original overlay files (file-listing comparison and package audit in `maverick-public-dev-20261125.1.json`; no vendor firmware, no Android image, no Firefox, no Arch logo files and no private keys among the added entries).
+
+| Point | Finding | Decision |
+|---|---|---|
+| `waydroid`, `lxc`, `dnsmasq`, `libgbinder`, `libglibutil`, `python-gbinder`, `python-dbus`, `python-gobject`, `gobject-introspection-runtime`, `libgirepository`, `rsync` and `wget` (12 packages added, 794 in total) | Unmodified Arch Linux ARM packages (Waydroid GPL-3.0-or-later, LXC LGPL-2.1-or-later, dnsmasq GPL-2.0-or-later, python-gbinder GPL-3.0-only; licences are in the packages and in `pkglist.tsv`), redistributed in the root image with source available from Arch Linux ARM; same position as the other packages (section 2). | Accepted. |
+| Android system image | **Not included.** `fz-waydroid init` runs `waydroid init`, which downloads the LineageOS-based Android image from the Waydroid project's servers to the user's own persistent partition at the user's request; nothing is uploaded and no Google software (Play Store, GApps) is installed or downloaded by the script. | Accepted: the user obtains it themselves under its own licences; the notes say so and carry the Android trademark line. |
+| `fz-waydroid`, polkit rule `90-froodzos-mount-internal.rules`, udev rule change | Original FroodzOS code, GPL-2.0-or-later. The polkit rule grants only the mount action to a local, active session; the mount is read-only (`ro,nosuid,nodev,noexec`) and the block device is flagged read-only by udev. | Accepted; protects the user's data. The earlier "hidden from the desktop" statement is superseded. |
+
+Open points: those of sections 2, 3, 5, 6, 7, 8 and 9, plus the unverified polkit rule on hardware.

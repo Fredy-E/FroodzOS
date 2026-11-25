@@ -1,5 +1,5 @@
-# FroodzOS live system: the internal NVMe drive (and the Windows installation on it) is read-only and is not offered by the desktop for mounting.
-# The sound setup (fz-sound-setup) mounts the Windows partition read-only itself; nothing in a live session may write to the internal disk.
+# FroodzOS live system: the internal NVMe drive (and the Windows installation on it) is READ-ONLY (block-device flag) and is shown by the desktop (Dolphin) but never mounted automatically; a mount it offers is read-only.
+# The sound setup (fz-sound-setup) mounts the Windows partition read-only itself; nothing in a live session may write to the internal disk. 0.1.0-dev.5 to dev.7 hid the drive (UDISKS_IGNORE) instead; since dev.8 the read-only flag is the protection.
 # 0.1.0-dev.5/dev.6 used ATTR{ro}="1", which the kernel does not allow (the sysfs file is read-only; owner test 2026-11-23: "Failed to write 1 ... Permission denied"),
 # so the drive was only hidden, not read-only. blockdev --setro sets the read-only flag on the disk and on every partition (all match the KERNEL pattern).
-ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="nvme[0-9]*n[0-9]*", ENV{UDISKS_IGNORE}="1", RUN+="/usr/bin/blockdev --setro $devnode"
+ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="nvme[0-9]*n[0-9]*", ENV{UDISKS_AUTO}="0", ENV{UDISKS_MOUNT_OPTIONS_DEFAULTS}="ro,nosuid,nodev,noexec", RUN+="/usr/bin/blockdev --setro $devnode"

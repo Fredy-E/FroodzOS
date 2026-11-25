@@ -1,0 +1,71 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-waydroid: first steps for running Android apps with Waydroid on a FroodzOS live stick (EXPERIMENTAL, untested on the laptop before dev.8).
+#   sudo fz-waydroid check   read-only report: kernel binder support, tools, session type, memory and the persistent partition
+#                            (it only loads the kernel module binder_linux); prints READY or the list of problems
+#   sudo fz-waydroid report  while Android runs: container state, boot_completed, Android error log lines, kernel lines (also logged to the journal)
+#   sudo fz-waydroid init    keeps Waydroid's data on the FROODZ_PERSIST partition (bind mount over /var/lib/waydroid; with
+#                            --ram it stays in memory instead), starts the container service and runs `waydroid init`, which
+#                            DOWNLOADS the Android system image (about 1 GB) from the Waydroid project's servers
+# The Android image is not part of FroodzOS and is never uploaded anywhere by this script. Everything is logged to /run/fz-waydroid.log.
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+LOG=${FZ_WAYDROID_LOG:-/run/fz-waydroid.log}
+P=${FZ_PERSIST_MNT:-/run/fz-persist}
+say() { echo "fz-waydroid: $*" | tee -a "$LOG"; logger -t fz-waydroid -- "$*" 2>/dev/null || true; }   # the journal is saved to the stick's Logs folder by fz-smartlog
+[ "$(id -u)" = 0 ] || { echo "fz-waydroid: run it with sudo"; exit 1; }
+cmd=${1:-help}; shift || true
+RAM=0; for a in "$@"; do [ "$a" = --ram ] && RAM=1; done
+
+check() {
+  local bad=()
+  say "kernel $(uname -r)"
+  modprobe binder_linux 2>&1 | tee -a "$LOG" >/dev/null
+  if grep -qw binder /proc/filesystems; then say "binder filesystem: available"; else say "binder filesystem: MISSING (modprobe binder_linux failed)"; bad+=("kernel has no binder support"); fi
+  if [ -e /proc/pressure/memory ]; then say "PSI: available"; else say "PSI: missing"; bad+=("no pressure-stall information"); fi
+  for t in waydroid lxc-start dnsmasq nft; do
+    if command -v "$t" >/dev/null 2>&1; then say "tool $t: $(command -v "$t")"; else say "tool $t: MISSING"; bad+=("$t not installed"); fi
+  done
+  local u uid; u=$(getent passwd | awk -F: '$3>=1000 && $3<60000 && $7 !~ /nologin|false/ {print $1; exit}'); uid=$(id -u "$u" 2>/dev/null)
+  if [ -n "$uid" ] && ls /run/user/"$uid"/wayland-* >/dev/null 2>&1; then say "desktop session: Wayland socket present for $u"; else say "desktop session: no Wayland socket found (Waydroid needs a Wayland session)"; bad+=("no Wayland session"); fi
+  say "memory: $(awk '/MemAvailable/ {printf "%.1f GB available", $2/1048576}' /proc/meminfo)"
+  if mountpoint -q "$P" 2>/dev/null; then say "persistent partition: mounted at $P, $(df -h --output=avail "$P" | tail -n 1 | tr -d ' ') free"; else say "persistent partition: not mounted (boot with fz_persist=1 and a FROODZ_PERSIST partition)"; bad+=("no persistent partition: the image would have to live in RAM (use init --ram only with enough memory)"); fi
+  say "unprivileged user namespaces: $(sysctl -n kernel.unprivileged_userns_clone 2>/dev/null || echo n/a)"
+  if [ ${#bad[@]} -eq 0 ]; then say "READY"; else say "NOT READY:"; for b in "${bad[@]}"; do say "  - $b"; done; fi
+  say "report saved in $LOG"
+}
+
+init() {
+  command -v waydroid >/dev/null 2>&1 || { say "waydroid is not installed in this image"; exit 1; }
+  modprobe binder_linux 2>>"$LOG"; grep -qw binder /proc/filesystems || { say "no binder support: run 'sudo fz-waydroid check' and send me $LOG"; exit 1; }
+  mkdir -p /var/lib/waydroid
+  if mountpoint -q "$P" 2>/dev/null; then
+    mkdir -p "$P/waydroid" && mount --bind "$P/waydroid" /var/lib/waydroid && say "Waydroid data is persistent ($P/waydroid)" || { say "could not bind $P/waydroid"; exit 1; }
+  elif [ "$RAM" = 1 ]; then
+    say "WARNING: no persistent partition; the Android image will use memory and be lost at power-off"
+  else
+    say "no persistent partition (boot with fz_persist=1). To keep the image in memory instead, run: sudo fz-waydroid init --ram"; exit 1
+  fi
+  getent hosts ota.waydro.id >/dev/null 2>&1 || { say "no network: ota.waydro.id cannot be resolved (connect Wi-Fi first)"; exit 1; }
+  systemctl start waydroid-container 2>&1 | tee -a "$LOG"
+  say "downloading the Android image (about 1 GB); this can take a while"
+  waydroid init -s VANILLA 2>&1 | tee -a "$LOG"
+  say "next, as the desktop user (not root):  waydroid session start &   then   waydroid show-full-ui   (log: $LOG)"
+}
+
+report() {
+  command -v waydroid >/dev/null 2>&1 || { say "waydroid is not installed in this image"; exit 1; }
+  say "report: container $(systemctl is-active waydroid-container 2>&1)"
+  timeout 20 waydroid status 2>&1 | sed 's/^/  /' | tee -a "$LOG" >(logger -t fz-waydroid)
+  for p in sys.boot_completed ro.build.version.release ro.product.cpu.abi; do say "report: getprop $p = $(timeout 15 waydroid shell getprop "$p" 2>&1 | tr -d '' | tail -n 1)"; done
+  say "report: last Android log lines (errors and fatal only)"
+  timeout 20 waydroid log -n 400 2>&1 | grep -E ' (E|F) ' | tail -n 40 | cut -c1-220 | sed 's/^/  /' | tee -a "$LOG" >(logger -t fz-waydroid)
+  say "report: kernel binder/cgroup lines"
+  dmesg 2>/dev/null | grep -iE 'libprocessgroup|binder_linux.*(fail|err)|waydroid0' | tail -n 12 | cut -c1-200 | sed 's/^/  /' | tee -a "$LOG" >(logger -t fz-waydroid)
+}
+
+case "$cmd" in
+  check) check ;;
+  init) init ;;
+  report) report ;;
+  *) sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+esac
