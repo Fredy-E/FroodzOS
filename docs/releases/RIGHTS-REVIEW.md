@@ -140,4 +140,15 @@ The build `maverick-public-dev-20261125.1` is derived from the dev.7 root (r18) 
 | Android system image | **Not included.** `fz-waydroid init` runs `waydroid init`, which downloads the LineageOS-based Android image from the Waydroid project's servers to the user's own persistent partition at the user's request; nothing is uploaded and no Google software (Play Store, GApps) is installed or downloaded by the script. | Accepted: the user obtains it themselves under its own licences; the notes say so and carry the Android trademark line. |
 | `fz-waydroid`, polkit rule `90-froodzos-mount-internal.rules`, udev rule change | Original FroodzOS code, GPL-2.0-or-later. The polkit rule grants only the mount action to a local, active session; the mount is read-only (`ro,nosuid,nodev,noexec`) and the block device is flagged read-only by udev. | Accepted; protects the user's data. The earlier "hidden from the desktop" statement is superseded. |
 
-Open points: those of sections 2, 3, 5, 6, 7, 8 and 9, plus the unverified polkit rule on hardware.
+Open points: those of sections 2, 3, 5, 6, 7, 8 and 9 (the polkit rule was later owner-tested on the dev.8 candidate: Dolphin opens the read-only disk without a password).
+
+## 12. Addendum for the 0.1.0-dev.9 build (2026-11-25): persistent Waydroid data, suspend disabled
+
+The build `maverick-public-dev-20261125.2` is derived from the dev.8 root (r20) by one `build-root.sh` run (r21) with a full system upgrade (file-listing comparison in `maverick-public-dev-20261125.2.json`; no vendor firmware, no Android image, no Firefox, no Arch logo files and no private keys among the added entries). The package set is unchanged (794 packages; nine versions updated).
+
+| Point | Finding | Decision |
+|---|---|---|
+| `fz-persist`, `fz-persist.service` | Original FroodzOS code, GPL-2.0-or-later: binds a folder on the user's own FROODZ_PERSIST partition over `/var/lib/waydroid` so the user's downloaded Android image is kept; nothing is uploaded. | Accepted. |
+| systemd `sleep.conf.d` and `logind.conf.d` drop-ins | Original configuration files, GPL-2.0-or-later; they switch suspend and hibernate off. | Accepted. |
+
+Open points: those of sections 2, 3, 5, 6, 7, 8 and 9.

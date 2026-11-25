@@ -103,6 +103,24 @@ class SoundSetup(unittest.TestCase):
             self.assertNotIn(other, r.replace('nothing here allows writing, formatting or unmounting other users', ''))
         self.assertIn('etc/polkit-1/rules.d/90-froodzos-mount-internal.rules', BUILD.read_text())
 
+    def test_waydroid_data_is_bound_to_the_persistent_partition_at_boot(self):
+        sc = (OVL / 'usr/local/sbin/fz-persist').read_text()
+        self.assertIn('mount --bind "$M/waydroid" /var/lib/waydroid', sc)
+        self.assertLess(sc.index('/var/lib/waydroid'), sc.rindex('exit 0'))
+        self.assertIn('waydroid-container.service', (OVL / 'etc/systemd/system/fz-persist.service').read_text())
+        self.assertIn('mountpoint -q /var/lib/waydroid', (OVL / 'usr/local/sbin/fz-waydroid').read_text())
+
+    def test_suspend_is_disabled_until_wifi_resume_works(self):
+        sl = (OVL / 'etc/systemd/sleep.conf.d/90-froodzos-nosuspend.conf').read_text()
+        for k in ('AllowSuspend=no', 'AllowHibernation=no', 'AllowHybridSleep=no'):
+            self.assertIn(k, sl)
+        lg = (OVL / 'etc/systemd/logind.conf.d/90-froodzos-nosuspend.conf').read_text()
+        self.assertIn('HandleLidSwitch=ignore', lg)
+        self.assertIn('IdleAction=ignore', lg)
+        b = BUILD.read_text()
+        self.assertIn('etc/systemd/sleep.conf.d/90-froodzos-nosuspend.conf', b)
+        self.assertIn('etc/systemd/logind.conf.d/90-froodzos-nosuspend.conf', b)
+
     @unittest.skipUnless(POSIX, 'needs bash and find')
     def test_script_syntax(self):
         self.assertEqual(subprocess.run(['bash', '-n', str(SCRIPT)]).returncode, 0)

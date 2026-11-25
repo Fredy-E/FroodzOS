@@ -1,0 +1,134 @@
+{
+  "build_id": "maverick-public-dev-20261125.2",
+  "schema": "froodzos-build-manifest/1",
+  "product": {
+    "version": "0.1.0-dev.9",
+    "codename": "Maverick"
+  },
+  "source": {
+    "repository": "https://github.com/Fredy-E/FroodzOS",
+    "revision": "main plus the release pull request for build maverick-public-dev-20261125.2 (persistent Waydroid bind at boot, suspend disabled, release notes, changelog, readme, manifest)",
+    "dirty_delta": "The build ran from builder/public-image/rootfs-overlay/ and build-root.sh with content identical to the files in main after the dev.9 pull request (the changed overlay files are usr/local/sbin/fz-persist, usr/local/sbin/fz-waydroid, etc/systemd/system/fz-persist.service and the new etc/systemd/sleep.conf.d/90-froodzos-nosuspend.conf and etc/systemd/logind.conf.d/90-froodzos-nosuspend.conf). The boot images are the dev.7 files, unchanged.",
+    "note": "The root is derived from the pinned Phase 1 root (sha256 22dde19c5a9e0b2a6e00f30cce7d0866d08159e1127871793553cd0478d1aacf) by builder/public-image/build-root.sh, built in nine steps (r10 = the dev.3 root; r11 adds PKGS=\"pipewire-audio pipewire-pulse plasma-pa libgpiod\" and the sound overlay; r12 adds pipewire-alsa and the shutdown drop-ins; r13 adds the fz-bootmnt-ro service; r14 to r16 add fz-sound-setup and its unit and launcher, the read-only internal-drive udev rule and the dev.5 version strings; r17 starts the sound set-up from a timer, fixes its --dry-run, adds fz-swap-lr and the dev.6 version strings; r18 replaces the udev read-only rule with one that runs blockdev --setro, updates fz-dtb-fixup.py and sets the dev.7 version strings; r19 adds waydroid, lxc, dnsmasq, libgbinder and python-gbinder with their dependencies (PKGS), the fz-waydroid helper, the sound channel report and a udev rule that shows the internal disk without mounting it; r20 adds the polkit rule for the read-only mount and sets the dev.8 version strings; r21 binds the persistent Waydroid folder over /var/lib/waydroid at boot, forbids suspend and hibernate, sets the dev.9 version strings and runs a full system upgrade), each a full system upgrade with PRUNE=1, the overlay files, a prebuilt ld.so.cache and size reduction."
+  },
+  "inputs": {
+    "root_sfs_sha256": "6010ee3c9a15772ecff84a64427853741c198221119596a5069fc52e5b78ce89",
+    "root_base_sfs_sha256": "22dde19c5a9e0b2a6e00f30cce7d0866d08159e1127871793553cd0478d1aacf",
+    "raw_image_sha256": "e077210887acb8662c16e03cb3ee97436d28942d85c722eb50b70dff4e0d5e35",
+    "touchpad_uki_sha256": "87554573e1c8e7f7a6ee6ee8674679d7e367fe5963005745d7a6c9bc71352e0e",
+    "base_uki_sha256": "b9418b062ca4055cb480f20cc3120028fc55f288efedc1d546626d1c48d82dbb",
+    "uki_change": "The first two boot entries use froodzos-maverick-dspN2.efi: the dev.4 sound boot image with a device-tree change made by fz-dtb-fixup.py --enable-nvme (internal NVMe PCIe controller and PHY enabled; the wake-gpios property of the controller node deleted because its root-port child repeats it). The third entry keeps the touchpad boot image, which does not enable the internal disk.",
+    "grub_efi_sha256": "e8e1a2544b3174950ca319666142e9fc6796cf279adf1ba0fe2e64313cc0c738",
+    "menu": "output/grub.cfg.public16 (sha256 0bde31c7092f2418ca5561de7c96ab378117067562bd6c36600782a0ae04bdc2) generated from the dev.7 menu (grub.cfg.public14) by changing the version text; three boot entries and a firmware entry, no submenu, no chain-loading; kernel options include kestrel_graphics_unbounded=1, sysctl.kernel.apparmor_restrict_unprivileged_userns=0, cow_spacesize=2G; no fz_autorun, fz_persist, fz_dsp or fz_tplg (the second entry adds fz_sound=1)",
+    "root_package_origin": "794 pacman packages (all unmodified Arch Linux ARM except the one project-built kernel); plus two unmodified upstream release tarballs (Helium, Zen) listed in pkglist.tsv",
+    "helium_tarball": "helium-0.21.2.1-arm64_linux.tar.xz sha256 720b90b55c190c25069d2443f121a0c3c4fee705564060d7b8d3f219aa9e1ef0 (signature verified, key BE67 7C19 89D3 5EAB 2C5F 26C9 3516 01AD 01D6 378E)",
+    "zen_tarball": "zen.linux-aarch64.tar.xz sha256 8591434fcf498a836a32bc7314eb89fbdc4bdc8f03a2d735774b1ae69b6b21d5 (release 1.24.2b)",
+    "packages_removed": [
+      "linux-firmware-amd",
+      "linux-firmware-amdgpu",
+      "linux-firmware-broadcom",
+      "linux-firmware-cirrus",
+      "linux-firmware-intel",
+      "linux-firmware-mediatek",
+      "linux-firmware-nvidia",
+      "linux-firmware-other",
+      "linux-firmware-radeon",
+      "linux-firmware-ti",
+      "firefox",
+      "falkon (and its web engine user)"
+    ],
+    "other_removals": [
+      "usr/lib/firmware/updates (vendor firmware extracted from a Windows installation)",
+      "pacman keyring private key and revocation certificate",
+      "project-local overlay repository and its signature",
+      "four Arch Linux logo files (usr/share/pixmaps/archlinux-logo*) and the LOGO reference",
+      "Mozilla Firefox (trademark policy)",
+      "firmware for other Qualcomm chip families and older Wi-Fi generations",
+      "translations except en, ar, fr",
+      "documentation, man pages, info",
+      "development headers, introspection and cmake files",
+      "boot/vmlinuz-* inside the root"
+    ],
+    "size_reduction": "prune-root.sh as in dev.2",
+    "first_entry_uki_sha256": "b39e580dddcccb4eb5d2a04656424a5869cb43374bef5f84e8ffa7749593542a"
+  },
+  "toolchain": {
+    "builder": "CachyOSBuilder WSL2 distribution (aarch64)",
+    "squashfs": "mksquashfs from squashfs-tools 4.7.5, xz, 128 KiB blocks (build-root.sh)",
+    "grub": "Arch Linux ARM package grub 2:2.16-1 (grub-mkstandalone, arm64-efi)",
+    "uki": "stubblify with the pinned stubble stub (ubuntu/stubble 9f11278e080a5c4a77db6acf4c8f75c14412087a)",
+    "python": "3.14 (builder)"
+  },
+  "board_profile": {
+    "board": "Lenovo IdeaPad Slim 3 15Q8X10 (83N3), Snapdragon X1-26-100",
+    "firmware": "none of the vendor 83N3 firmware is included; Arch Linux ARM linux-firmware-qcom (X1E80100/X1P42100 and video decoder files only after pruning), -atheros (ath12k only after pruning), -realtek and licence texts are included",
+    "redistribution_status": "reviewed 2026-11-11, see RIGHTS-REVIEW.md; ALARM publishes no explicit redistribution statement (accepted risk); GPL written offer in SOURCE-OFFER.md"
+  },
+  "artifacts": [
+    {
+      "label": "raw_image",
+      "file": "FroodzOS-0.1.0-dev.9-maverick-arm64-83n3.img",
+      "bytes": 1931476992,
+      "sha256": "e077210887acb8662c16e03cb3ee97436d28942d85c722eb50b70dff4e0d5e35"
+    },
+    {
+      "label": "image_zst",
+      "file": "FroodzOS-0.1.0-dev.9-maverick-arm64-83n3.img.zst",
+      "bytes": 1656828324,
+      "sha256": "80cc7d2a110854bb532fcb9ad99dc03fe2d479e5008c39b319196fe7fd627406"
+    },
+    {
+      "label": "root_sfs",
+      "file": "airootfs-r21.sfs",
+      "bytes": 1511112704,
+      "sha256": "6010ee3c9a15772ecff84a64427853741c198221119596a5069fc52e5b78ce89"
+    },
+    {
+      "label": "pkglist",
+      "file": "pkglist.tsv",
+      "bytes": 68107,
+      "sha256": "921ca1efccaeef2d7b0ef4df9bf38ef609985ce339b7858b9a3ea141077e7e7c"
+    }
+  ],
+  "test_receipts": [
+    {
+      "name": "file-listing comparison of this root against the dev.8 root (r20)",
+      "result": "114305 entries in the new root against 114300 in the dev.8 root (r20): 44 removed / 49 added / 172 changed, all from a full system upgrade (cryptsetup 2.8.8 to 2.8.9, kmod 34.3 to 34.4, kwin and plasma5support 6.8.3-1 to 6.8.3-2, mesa 26.3.1-2 to 26.3.1-3, openexr 3.5.4 to 3.5.5, zxing-cpp 3.1.1 to 3.2.0, libmicrohttpd, pacman-mirrorlist) plus the files of this build (fz-persist, fz-waydroid, the fz-persist unit and the two new sleep and logind drop-ins); 794 packages, the same set as dev.8; no vendor firmware, no Firefox, no Arch logo, no private key in the added entries",
+      "scope": "file listings (sfs-delta.py)"
+    },
+    {
+      "name": "QEMU boot of this release image",
+      "result": "passed in 390.2 s with an emulated NVMe disk and the Waydroid checks: multi-user reached, login and commands ran, build id maverick-public-dev-20261125.2, kernel package linux-froodzos-arm64, no firefox, no Arch logo files, handlers installed, fz-smartlog running, selftest pass, no vendor firmware directory, no private keyring key, no panic; NVMe markers: read-only flag on the disk and all partitions, write refused, device not auto-mounted; Waydroid markers: binder_linux loads, waydroid, lxc-start, dnsmasq and nft present, fz-waydroid init refuses without a persistent partition. The qemu run does not boot with fz_persist and does not exercise the boot-time Waydroid bind or the suspend drop-ins at runtime; those two are covered by unit tests of the shipped files only",
+      "scope": "emulator (QEMU TCG virt) with grub.cfg replaced by a test variant, with an emulated 64 MB NVMe disk with two partitions (FZ_NVME=1) and the Waydroid checks (FZ_WAYDROID=1); image sha256 e077210887acb8662c16e03cb3ee97436d28942d85c722eb50b70dff4e0d5e35; not laptop hardware"
+    },
+    {
+      "name": "native boot of the dev.8 release candidate on the Lenovo 83N3 (owner, 2026-11-25), previous test root r20",
+      "result": "the owner booted the dev.7 boot image dspN2 with the dev.8 test root r20 (the same polkit, udev, Waydroid, sound and persistence content as this release; r20 lacks only the two changes of dev.9 and the version strings) from a private test stick with fz_sound=1 and fz_persist=1 (3 GB RAM overlay, 32 GB ext4 FROODZ_PERSIST partition). Results: desktop started, sound and Wi-Fi worked, the internal Windows partition opened in the file manager read-only with no password prompt and creating a folder was refused, Android 13 started and its window was displayed; a plain waydroid init downloaded the Android image again in every boot (the defect fixed in dev.9) and after about 39 minutes the Plasma idle handling suspended the laptop and the Wi-Fi chip failed to resume (ath12k failed to resume core -110, mac80211 warning; the defect worked around in dev.9 by disabling suspend). The two changes of dev.9 and the released image were not booted on the laptop at the time of the build",
+      "scope": "owner test on one laptop; private menu; the root of this release (r21, sha256 above) and the released image were not themselves booted on the laptop at the time of the build; Android rendering is software only"
+    }
+  ],
+  "limitations": [
+    "Sound needs the owner's own audio firmware: the image contains none. fz-sound-setup reads it from the owner's Windows partition on the internal disk (mounted read-only; not possible if Windows is BitLocker-encrypted) or from a FroodzOS-firmware folder on the stick, copies six files into memory and restarts the audio DSP (command, or the second boot entry, which starts it about 75 seconds after boot). Left and right can come out reversed on some boots (cause not found; fz-swap-lr swaps them).",
+    "Graphics are software-rendered (llvmpipe) on a firmware framebuffer; there is no GPU acceleration. USB-C display output and alternate modes are not claimed.",
+    "Touchpad: the kernel driver binds and the pad works in an owner test; gesture quality is unconfirmed. The second boot entry keeps the user-space polling driver.",
+    "Battery level, charge state and USB-C power data work in an owner test; power management beyond that is not claimed.",
+    "Wi-Fi does not recover after suspend and resume; suspend and resume are not claimed. A memory-bandwidth monitor driver (bwmon) fails to load its table.",
+    "RAR is extract-only (UnRAR licence). Wine, Waydroid and QEMU are not included.",
+    "Helium and Zen are unmodified third-party releases; their trademark and artwork terms were not reviewed separately and the Helium signing key is not otherwise certified.",
+    "Browser sandboxes need unprivileged user namespaces; the image sets kernel.apparmor_restrict_unprivileged_userns=0.",
+    "Boot loader and kernel images are unsigned; Secure Boot must be off. The downloads are signed (SHA256SUMS.asc).",
+    "Opt-in persistence (fz_persist=1) was tested on hardware only on the private stick; whoever holds the stick can read what is stored on the persistent partition.",
+    "No vendor firmware is included. Default live accounts are those of the development image (user live, password live).",
+    "Arch Linux ARM publishes no explicit redistribution statement; the maintainer acceptance of the three-year written source offer is recorded at release approval.",
+    "The internal disk is visible to the live system and in the desktop file manager. It is flagged read-only by a udev rule when it appears (blockdev --setro on the disk and every partition), is never mounted automatically (UDISKS_AUTO=0), a mount by the user is forced to ro,nosuid,nodev,noexec, and a polkit rule lets the local active session do that mount without a password (owner-tested on the dev.8 candidate). There is a short moment before the flag is set. The cause of the dev.5 kernel crash with an enabled PCIe controller is not proven.",
+    "Waydroid is experimental: the Android image is not part of the release, it is downloaded by the user (about 800 MB to 1 GB) by waydroid init or fz-waydroid init and stored on the FROODZ_PERSIST partition, which is bound over /var/lib/waydroid at boot (the released image has no such partition; fz-waydroid init --ram keeps it in memory); no GPU acceleration, no Google Play, camera and sensors untested; the window may need the multi-window property. Wine is not included (not in the Arch Linux ARM repositories).",
+    "Suspend, hibernate and lid or idle suspend are disabled by systemd and logind drop-ins because the Wi-Fi chip (ath12k) does not come back after resume; the dev.9 disabling was only emulator-checked.",
+    "The release image itself was only emulator-tested; the owner tests used the identical boot images and a previous test root with the same polkit, udev, sound and Waydroid content on a private stick, with the second-entry kernel options."
+  ],
+  "publication": {
+    "status": "unpublished",
+    "owner_authorised": false,
+    "rights_cleared": false,
+    "qualified_release": false
+  }
+}
