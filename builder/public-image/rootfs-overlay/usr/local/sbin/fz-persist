@@ -3,7 +3,8 @@
 # fz-persist: opt-in persistent home and Wi-Fi profiles for a FroodzOS live stick. With fz_persist=1 on the kernel command line and an ext4
 # partition labelled FROODZ_PERSIST (on the boot stick or any attached disk), it mounts that partition and bind-mounts
 #   <partition>/home/<user>             over the live user's home directory (seeded from the live home on first use), and
-#   <partition>/nm-connections (0700)   over /etc/NetworkManager/system-connections (saved Wi-Fi networks and their passwords).
+#   <partition>/nm-connections (0700)   over /etc/NetworkManager/system-connections (saved Wi-Fi networks and their passwords), and
+#   <partition>/waydroid                over /var/lib/waydroid (the Android image of Waydroid, so it is downloaded only once).
 # Everything else stays RAM-only. It runs before NetworkManager and the desktop session start. Without the flag, the label, or when
 # anything fails, it exits 0 and the session is simply not persistent. Whatever is stored on the partition (browser profiles, sign-ins,
 # Wi-Fi passwords) is readable by anyone who has the stick: use it only on media you control. Create the partition once with:
@@ -34,5 +35,9 @@ if [ -d "$(dirname "$N")" ]; then
   [ -d "$M/nm-connections" ] || { run mkdir -p "$M/nm-connections"; [ -d "$N" ] && run cp -a "$N/." "$M/nm-connections/" 2>/dev/null; }
   run chmod 700 "$M/nm-connections"; run chown root:root "$M/nm-connections"
   run mkdir -p "$N"; run mount --bind "$M/nm-connections" "$N" && say "saved Wi-Fi profiles are persistent"
+fi
+# Waydroid keeps its Android image (about 1 GB, downloaded by `waydroid init`) in /var/lib/waydroid: keep it on the partition so it is downloaded once.
+if command -v waydroid >/dev/null 2>&1 || [ -n "$FZ_PERSIST_DRY" ]; then
+  run mkdir -p "$M/waydroid" /var/lib/waydroid && run mount --bind "$M/waydroid" /var/lib/waydroid && say "Waydroid data is persistent ($M/waydroid)"
 fi
 exit 0

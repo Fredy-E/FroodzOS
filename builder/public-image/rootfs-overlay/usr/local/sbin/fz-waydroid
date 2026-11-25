@@ -39,7 +39,8 @@ init() {
   modprobe binder_linux 2>>"$LOG"; grep -qw binder /proc/filesystems || { say "no binder support: run 'sudo fz-waydroid check' and send me $LOG"; exit 1; }
   mkdir -p /var/lib/waydroid
   if mountpoint -q "$P" 2>/dev/null; then
-    mkdir -p "$P/waydroid" && mount --bind "$P/waydroid" /var/lib/waydroid && say "Waydroid data is persistent ($P/waydroid)" || { say "could not bind $P/waydroid"; exit 1; }
+    if mountpoint -q /var/lib/waydroid 2>/dev/null; then say "Waydroid data is persistent ($P/waydroid, bound at boot)"
+    else mkdir -p "$P/waydroid" && mount --bind "$P/waydroid" /var/lib/waydroid && say "Waydroid data is persistent ($P/waydroid)" || { say "could not bind $P/waydroid"; exit 1; }; fi
   elif [ "$RAM" = 1 ]; then
     say "WARNING: no persistent partition; the Android image will use memory and be lost at power-off"
   else
