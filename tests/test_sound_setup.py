@@ -95,6 +95,14 @@ class SoundSetup(unittest.TestCase):
         self.assertNotIn('UDISKS_IGNORE', code[0])
         self.assertIn('etc/udev/rules.d/90-froodzos-internal-ro.rules', BUILD.read_text())
 
+    def test_internal_disk_mount_needs_no_password_only_for_local_active_sessions(self):
+        r = (OVL / 'etc/polkit-1/rules.d/90-froodzos-mount-internal.rules').read_text()
+        self.assertIn('org.freedesktop.udisks2.filesystem-mount-system', r)
+        self.assertIn('subject.local && subject.active', r)
+        for other in ('modify-device', 'format', 'unmount-others', 'eject'):       # nothing else is opened up
+            self.assertNotIn(other, r.replace('nothing here allows writing, formatting or unmounting other users', ''))
+        self.assertIn('etc/polkit-1/rules.d/90-froodzos-mount-internal.rules', BUILD.read_text())
+
     @unittest.skipUnless(POSIX, 'needs bash and find')
     def test_script_syntax(self):
         self.assertEqual(subprocess.run(['bash', '-n', str(SCRIPT)]).returncode, 0)
