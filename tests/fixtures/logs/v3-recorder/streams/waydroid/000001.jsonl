@@ -1,0 +1,3 @@
+{"mono":20.0,"level":"E","tag":"init","msg":"Control message: Could not find IOmxStore"}
+{"mono":21.0,"level":"E","tag":"libprocessgroup","msg":"Failed to make and chown /sys/fs/cgroup/uid_1000: Read-only file system"}
+{"mono":22.0,"level":"I","tag":"LibBpfLoader","msg":"applying relo to instruction at byte offset: 42"}

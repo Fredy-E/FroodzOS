@@ -1,0 +1,2 @@
+{"mono":11.0,"event":"associated","ssid":"FZ-FAKE-NET","bssid":"02:00:00:00:00:04","ifname":"wlan0"}
+{"mono":31.0,"event":"disconnected","reason":"resume failure","mac":"02:00:00:00:00:05"}

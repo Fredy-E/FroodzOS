@@ -1,0 +1,16 @@
+[Unit]
+Description=FroodzOS record: raise kernel console verbosity (only with fz_record=full)
+Documentation=file:/etc/sysctl.d/90-froodzos-record.conf
+DefaultDependencies=no
+ConditionKernelCommandLine=fz_record=full
+After=systemd-sysctl.service
+Before=sysinit.target shutdown.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sh -c 'if /usr/local/sbin/fz-record-on; then printf "8 4 1 7" > /proc/sys/kernel/printk; printf on > /proc/sys/kernel/printk_devkmsg; else exit 0; fi'
+
+[Install]
+WantedBy=sysinit.target

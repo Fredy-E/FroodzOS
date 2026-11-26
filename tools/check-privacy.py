@@ -40,6 +40,7 @@ ALLOW = [
     ('docs/research/original-package-strategy.md', 'e-mail address', 'public upstream contact (CachyOS admin), not personal'),
     ('docs/phase1-results.md', None, 'public Arch Linux ARM signing identity and a generic WSL subnet'),
     ('tools/check-privacy.py', None, 'the patterns themselves'),
+    ('tests/fixtures/logs/', None, 'synthetic log fixtures; fake MACs, serials and PSKs only'),
     ('SECURITY.md', 'e-mail address', 'reporting contact, if present'),
 ]
 

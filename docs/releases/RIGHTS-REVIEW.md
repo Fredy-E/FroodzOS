@@ -152,3 +152,17 @@ The build `maverick-public-dev-20261125.2` is derived from the dev.8 root (r20) 
 | systemd `sleep.conf.d` and `logind.conf.d` drop-ins | Original configuration files, GPL-2.0-or-later; they switch suspend and hibernate off. | Accepted. |
 
 Open points: those of sections 2, 3, 5, 6, 7, 8 and 9.
+
+## 13. Addendum for the 0.1.0-dev.10 build (2026-11-26): smart log v3 and record mode
+
+The build `maverick-public-dev-20261125.3` is derived from the dev.9 root (r21) by one `build-root.sh` run (r22) with the new overlay files and the package `spectacle` (screenshot tool, KDE, GPL-2.0-or-later and others, unmodified Arch Linux ARM package). The file-listing comparison with r21 and the package audit are in the manifest.
+
+| Point | Finding | Decision |
+|---|---|---|
+| `fz-smartlog` (Python package `fz_smartlog`), `fz-smartlog-write`, `fz-record-on`, `fz-record-journald`, `fz-debug`, `fz-term-record` (+ `render.py`, `fz_term_redact.py`), `fz-ui-capture`, systemd units and configuration drop-ins | Original FroodzOS code, GPL-2.0-or-later, written for this project; no third-party code copied. | Accepted. |
+| Terminal and screen recording (`fz_record=full` only) | Records what the user types and sees and takes screenshots. It is off unless the kernel command line of a private test entry contains `fz_record=full`; the public default menu does not. Recordings stay on the user's own stick (or RAM) and are never uploaded; redaction of passwords and tokens is best effort (`fz_term_redact.py`, `fz_smartlog/redact.py`), so the logs must be treated as private. | Accepted; disclosed in the release notes. |
+| `tools/check-log-leaks.py`, `.github/workflows/privacy.yml` | Repository gate: fails when a tracked file looks like a boot log, a screenshot, a MAC address, a serial number or a password. Test files with synthetic secrets are on an explicit allowlist. | Accepted. |
+| `etc/systemd/coredump.conf.d/90-froodzos.conf` | Original configuration: keeps no core files (`Storage=none`) and bounds sizes; changes the public default (previously unbounded). | Accepted; disclosed. |
+| `spectacle` and its new dependencies `tesseract`, `tesseract-data-afr`, `tesseract-data-osd`, `leptonica`, `jasper`, `kquickimageeditor`, `qt6-imageformats`, `freeglut`, `glu`, `libmng` (11 packages added, none removed, no version changes) | Unmodified Arch Linux ARM packages; licences in `pkglist.tsv`: spectacle GPL-2.0-or-later, kquickimageeditor LGPL-2.1-or-later, qt6-imageformats GPL-3.0/LGPL-3.0 (Qt), tesseract and its data Apache-2.0, freeglut X11, glu SGI-B-2.0 or MIT, and the custom permissive licences of leptonica, jasper (JasPer-2.0) and libmng. The screenshot tool is used only by the record mode. | Accepted. |
+
+Open points: those of sections 2, 3, 5, 6, 7, 8 and 9.

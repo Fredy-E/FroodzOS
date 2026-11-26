@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Default Konsole profile for the live session. A persistent home can override this; seed /etc/skel as well if needed.
+[Desktop Entry]
+DefaultProfile=FroodzOS.profile

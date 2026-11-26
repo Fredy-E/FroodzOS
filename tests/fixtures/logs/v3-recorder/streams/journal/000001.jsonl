@@ -1,0 +1,6 @@
+{"__REALTIME_TIMESTAMP":"1767312001000000","__MONOTONIC_TIMESTAMP":"1000000","PRIORITY":"6","SYSLOG_IDENTIFIER":"systemd","MESSAGE":"Reached target Multi-User System."}
+{"__MONOTONIC_TIMESTAMP":"2000000","PRIORITY":"3","SYSLOG_IDENTIFIER":"systemd","MESSAGE":"Failed to start iio-sensor-proxy.service - IIO Sensor Proxy service."}
+{"__MONOTONIC_TIMESTAMP":"10000000","PRIORITY":"6","SYSLOG_IDENTIFIER":"wpa_supplicant","MESSAGE":"wlan0: psk=\"FZ-FAKE-PSK-0002\" configured for SSID='FZ-FAKE-NET'"}
+{"__MONOTONIC_TIMESTAMP":"30000000","PRIORITY":"3","SYSLOG_IDENTIFIER":"kernel","MESSAGE":"ath12k_wifi7_pci 0004:01:00.0: failed to resume core: -110"}
+{"__MONOTONIC_TIMESTAMP":"30000100","PRIORITY":"3","SYSLOG_IDENTIFIER":"systemd-sleep","MESSAGE":"Failed to resume some devices: phy0"}
+{"__MONOTONIC_TIMESTAMP":"31000000","PRIORITY":"3","SYSLOG_IDENTIFIER":"waydroid","MESSAGE":"init: Control message: Could not find IOmxStore"}

@@ -1,0 +1,99 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# FroodzOS systemd sleep hook (systemd-sleep runs it with "pre" and "post").
+# It records a compact suspend/resume state to the journal so the next failure can be read
+# without another boot round. It is a no-op unless /proc/cmdline contains fz_record=full.
+# Sleep is currently disabled by the 90-froodzos-nosuspend drop-ins; this hook is for later and
+# for manual tests. It reads only safe sysfs (no gpio/regmap/pinctrl/SoundWire registers) and
+# writes only the two PM debug knobs and a trace snapshot, and only while recording is on.
+set -u
+export LC_ALL=C PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+
+REC=${FZ_RECORD_ON:-/usr/local/sbin/fz-record-on}
+DRY=${FZ_RECORD_SLEEP_DRY:-0}
+STATE=${1:-unknown}
+HOW=${2:-unknown}
+TRACE=
+for d in /sys/kernel/tracing /sys/kernel/debug/tracing; do
+    [ -d "$d" ] && { TRACE=$d; break; }
+done
+[ -n "$TRACE" ] || TRACE=/sys/kernel/tracing
+
+is_full() {
+    if [ -x "$REC" ]; then
+        "$REC"
+    elif [ -r "$REC" ]; then
+        sh "$REC"
+    else
+        return 1
+    fi
+}
+
+is_full || exit 0
+
+log() {
+    if [ "$DRY" = 1 ]; then
+        printf 'fz-record-sleep: %s\n' "$*"
+    else
+        logger -t fz-record-sleep "$*" 2>/dev/null || true
+    fi
+}
+
+write_opt() {
+    p=$1
+    v=$2
+    if [ "$DRY" = 1 ]; then
+        printf 'fz-record-sleep: dry-run: would write %s <- %s\n' "$p" "$v"
+        return 0
+    fi
+    [ -w "$p" ] && printf '%s\n' "$v" > "$p" 2>/dev/null
+    return 0
+}
+
+log_state() {
+    log "sleep $STATE ($HOW) at $(date -u +%FT%TZ) uptime=$(cut -d. -f1 /proc/uptime 2>/dev/null)"
+    stats=
+    for f in success fail failed_prepare failed_suspend failed_resume last_failed_dev last_failed_errno last_failed_step; do
+        [ -r "/sys/power/suspend_stats/$f" ] && stats="$stats $f=$(cat "/sys/power/suspend_stats/$f" 2>/dev/null)"
+    done
+    log "suspend_stats$stats"
+    for p in /sys/class/typec/port*; do
+        [ -d "$p" ] || continue
+        vals=
+        for f in data_role power_role vconn_role orientation; do
+            [ -r "$p/$f" ] && vals="$vals $f=$(cat "$p/$f" 2>/dev/null)"
+        done
+        log "typec $(basename "$p")$vals"
+    done
+    for s in /sys/bus/soundwire/devices/sdw:*; do
+        [ -e "$s" ] || continue
+        log "soundwire $(basename "$s") number=$(cat "$s/device_number" 2>/dev/null) status=$(cat "$s/status" 2>/dev/null)"
+    done
+    for b in 0004:01:00.0 0006:01:00.0; do
+        [ -d "/sys/bus/pci/devices/$b" ] || continue
+        log "pci $b speed=$(cat "/sys/bus/pci/devices/$b/current_link_speed" 2>/dev/null) width=$(cat "/sys/bus/pci/devices/$b/current_link_width" 2>/dev/null) power=$(cat "/sys/bus/pci/devices/$b/power_state" 2>/dev/null)"
+    done
+    log "nvme state=$(cat /sys/class/nvme/nvme0/state 2>/dev/null) reset_count=$(cat /sys/class/nvme/nvme0/reset_count 2>/dev/null)"
+    if command -v dmesg >/dev/null 2>&1; then
+        timeout 3 dmesg --time-format=reltime 2>/dev/null | tail -n 40 | while IFS= read -r line; do
+            log "dmesg $line"
+        done
+    fi
+}
+
+case "$STATE" in
+    pre)
+        write_opt /sys/power/pm_debug_messages 1
+        write_opt /sys/power/pm_print_times 1
+        [ -d "$TRACE" ] && write_opt "$TRACE/snapshot" 1
+        log_state
+        ;;
+    post)
+        log_state
+        write_opt /sys/power/pm_debug_messages 0
+        ;;
+    *)
+        log "ignored unexpected argument: $STATE"
+        ;;
+esac
+exit 0

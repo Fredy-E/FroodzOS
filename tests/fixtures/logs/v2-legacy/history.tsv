@@ -1,0 +1,4 @@
+seq	uptime	kernel_errors	oops_like	warn_like
+1	59	2	0	1
+resume	110	3	1	2
+kernelburst	115	4	1	2

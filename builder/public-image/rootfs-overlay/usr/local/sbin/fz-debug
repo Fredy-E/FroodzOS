@@ -1,0 +1,366 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-debug: bounded, reversible kernel/driver debug profiles for the FroodzOS test stick.
+# Uses only dynamic debug, tracefs, and two module parameters; never reads the hazardous debugfs
+# files (regmap registers, /sys/kernel/debug/gpio, pinctrl pinconf, SoundWire registers) and never
+# unbinds a SoundWire device or runs kexec.
+#
+#   sudo fz-debug on wifi|audio|usbc|gpu|nvme|all   enable one or more profiles
+#   sudo fz-debug off [profile...]                  disable everything (or just the named profiles)
+#   fz-debug status                                 show what is active now
+#   fz-debug --from-cmdline                         apply fz_debug=<profile,...> (boot service)
+#   fz-debug check <path-or-command>                safety query: ALLOW (exit 0) or BLOCK (exit 2)
+#
+# FZ_DEBUG_DRY=1, or --dry-run, prints every intended write and changes nothing.
+# Each applied write is logged with `logger -t fz-debug`. There is no automatic expiry:
+# use `fz-debug off` when the test is done. FZ_DEBUG_CTL / FZ_DEBUG_TRACE / FZ_RECORD_ON are
+# test hooks; leave them unset on the stick.
+set -u
+export LC_ALL=C PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+
+DRY=${FZ_DEBUG_DRY:-0}
+CTL=${FZ_DEBUG_CTL:-/sys/kernel/debug/dynamic_debug/control}
+REC_ON=${FZ_RECORD_ON:-/usr/local/sbin/fz-record-on}
+if [ -n "${FZ_DEBUG_TRACE:-}" ]; then
+    TRACE=$FZ_DEBUG_TRACE
+else
+    TRACE=
+    for d in /sys/kernel/tracing /sys/kernel/debug/tracing; do
+        [ -d "$d" ] && { TRACE=$d; break; }
+    done
+    [ -n "$TRACE" ] || TRACE=/sys/kernel/tracing
+fi
+
+WIFI_DYNDBG='module mhi +pm; module qrtr_mhi +pm'
+WIFI_EVENTS='mhi_pm_st_transition mhi_tryset_pm_state mhi_intvec_states mhi_channel_command_start mhi_channel_command_end'
+
+AUDIO_DYNDBG='module snd_soc_wsa884x +p; module soundwire_bus +p; module soundwire_qcom +p; module snd_soc_core +p; module snd_soc_x1e80100 +p; module snd_q6apm +p; module q6apm_dai +p; module q6prm +p; module snd_q6dsp_common +p'
+AUDIO_EVENTS='snd_soc_dapm_start snd_soc_dapm_done snd_soc_dapm_widget_power snd_soc_dapm_widget_event_start snd_soc_dapm_widget_event_done snd_soc_dapm_path snd_soc_dapm_connected snd_soc_dapm_walk_done snd_soc_bias_level_start snd_soc_bias_level_done snd_soc_jack_report'
+
+USBC_DYNDBG='file drivers/usb/typec/* +p; file drivers/usb/typec/ucsi/* +p; file drivers/usb/typec/mux/* +p; file drivers/phy/qualcomm/* +p; file drivers/usb/dwc3/* +p; file drivers/soc/qcom/pmic_glink* +p'
+
+GPU_DYNDBG='module msm +p; module drm +p; module drm_kms_helper +p'
+
+NVME_DYNDBG='file drivers/pci/pcie/* +p; file drivers/pci/controller/* +p; file drivers/phy/qualcomm/* +p'
+
+CLEAR_MODS='module mhi -pm; module qrtr_mhi -pm; module snd_soc_wsa884x -p; module soundwire_bus -p; module soundwire_qcom -p; module snd_soc_core -p; module snd_soc_x1e80100 -p; module snd_q6apm -p; module q6apm_dai -p; module q6prm -p; module snd_q6dsp_common -p; module msm -p; module drm -p; module drm_kms_helper -p'
+CLEAR_FILES='file drivers/usb/typec/* -p; file drivers/usb/typec/ucsi/* -p; file drivers/usb/typec/mux/* -p; file drivers/phy/qualcomm/* -p; file drivers/usb/dwc3/* -p; file drivers/soc/qcom/pmic_glink* -p; file drivers/pci/pcie/* -p; file drivers/pci/controller/* -p'
+
+say() {
+    printf 'fz-debug: %s\n' "$*" >&2
+    [ "$DRY" = 1 ] || logger -t fz-debug "$*" 2>/dev/null || true
+}
+
+usage() {
+    sed -n '2,17p' "$0" >&2
+}
+
+# Hazardous reads/actions from W5 section 5 and the project rules. Refuse even in dry-run.
+blocked() {
+    case "$1" in
+        *"/regmap/"*"/registers"*|\
+        *"/debug/gpio"*|\
+        *"gpioinfo"*"gpiochip9"*|\
+        *"/pinctrl/"*"pinconf-groups"*|\
+        *"/pinctrl/"*"pinmux-pins"*|\
+        *"/pinctrl/"*"pinconf-pins"*|\
+        *"/soundwire/"*"/unbind"*|\
+        *"/soundwire/"*"/bind"*|\
+        *"/soundwire/"*"/registers"*|\
+        *"/soundwire/"*"/command"*|\
+        *"/soundwire/"*"/command_type"*|\
+        *"/soundwire/"*"/start_address"*|\
+        *"/soundwire/"*"/num_bytes"*|\
+        *"/soundwire/"*"/go"|\
+        *"simulate_fw_crash"*|\
+        *"/usb/ucsi/"*"/command"*|\
+        *"/usb/ucsi/"*"/message_out"*|\
+        *"/remoteproc/"*"/state"*|\
+        *"/power/pm_test"*|\
+        *"kexec"*)
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+write_path() {
+    p=$1
+    v=$2
+    if blocked "$p"; then
+        say "REFUSED hazardous path: $p"
+        return 1
+    fi
+    if [ "$DRY" = 1 ]; then
+        printf 'fz-debug: dry-run: would write %s <- %s\n' "$p" "$v"
+        return 0
+    fi
+    if [ ! -e "$p" ]; then
+        say "skip (not present): $p"
+        return 0
+    fi
+    printf '%s\n' "$v" > "$p" 2>/dev/null || { say "write failed: $p"; return 1; }
+    logger -t fz-debug "applied $p <- $v" 2>/dev/null || true
+    return 0
+}
+
+apply_dyndbg() { write_path "$CTL" "$1"; }
+
+enable_events() {
+    sub=$1
+    shift
+    for e in "$@"; do
+        write_path "$TRACE/events/$sub/$e/enable" 1
+    done
+}
+
+disable_events() {
+    sub=$1
+    shift
+    for e in "$@"; do
+        write_path "$TRACE/events/$sub/$e/enable" 0
+    done
+}
+
+set_buffer_kb() {
+    want=$1
+    cur=$(cat "$TRACE/buffer_size_kb" 2>/dev/null | head -n 1)
+    case "$cur" in ''|*[!0-9]*) cur=0 ;; esac
+    [ "$cur" -ge "$want" ] && return 0
+    write_path "$TRACE/buffer_size_kb" "$want"
+}
+
+trace_on() { write_path "$TRACE/tracing_on" 1; }
+
+remove_stmt() {
+    printf '%s\n' "$1" | sed -e 's/ +pm/ -pm/g' -e 's/ +p/ -p/g'
+}
+
+enable_profile() {
+    case "$1" in
+        wifi)
+            apply_dyndbg "$WIFI_DYNDBG"
+            enable_events mhi_host $WIFI_EVENTS
+            set_buffer_kb 8192
+            trace_on
+            say "wifi profile on (mhi/qrtr_mhi dynamic debug + MHI PM/state trace)"
+            ;;
+        audio)
+            apply_dyndbg "$AUDIO_DYNDBG"
+            enable_events asoc $AUDIO_EVENTS
+            set_buffer_kb 4096
+            trace_on
+            say "audio profile on (SoundWire/WSA/ASoC/q6 dynamic debug + ASoC trace)"
+            ;;
+        usbc)
+            apply_dyndbg "$USBC_DYNDBG"
+            say "usbc profile on (typec/UCSI/mux/PHY/dwc3/pmic_glink dynamic debug)"
+            ;;
+        gpu)
+            apply_dyndbg "$GPU_DYNDBG"
+            write_path /sys/module/drm/parameters/debug 0x3
+            write_path /sys/module/msm/parameters/dumpstate 1
+            say "gpu profile on (msm/drm dynamic debug; drm.debug=0x3, msm.dumpstate=1)"
+            ;;
+        nvme)
+            apply_dyndbg "$NVME_DYNDBG"
+            say "nvme/pcie profile on (PCIe + controller + PHY dynamic debug)"
+            ;;
+        all)
+            for p in wifi audio usbc gpu nvme; do enable_profile "$p"; done
+            set_buffer_kb 8192
+            say "all profiles on"
+            ;;
+        *)
+            say "unknown profile: $1"
+            return 2
+            ;;
+    esac
+    return 0
+}
+
+profile_off() {
+    case "$1" in
+        wifi)
+            apply_dyndbg "$(remove_stmt "$WIFI_DYNDBG")"
+            disable_events mhi_host $WIFI_EVENTS
+            say "wifi profile off"
+            ;;
+        audio)
+            apply_dyndbg "$(remove_stmt "$AUDIO_DYNDBG")"
+            disable_events asoc $AUDIO_EVENTS
+            say "audio profile off"
+            ;;
+        usbc)
+            apply_dyndbg "$(remove_stmt "$USBC_DYNDBG")"
+            say "usbc profile off"
+            ;;
+        gpu)
+            apply_dyndbg "$(remove_stmt "$GPU_DYNDBG")"
+            write_path /sys/module/drm/parameters/debug 0
+            write_path /sys/module/msm/parameters/dumpstate 0
+            say "gpu profile off"
+            ;;
+        nvme)
+            apply_dyndbg "$(remove_stmt "$NVME_DYNDBG")"
+            say "nvme/pcie profile off"
+            ;;
+        all)
+            off_all
+            ;;
+        *)
+            say "unknown profile: $1"
+            return 2
+            ;;
+    esac
+    return 0
+}
+
+off_all() {
+    apply_dyndbg "$CLEAR_MODS"
+    apply_dyndbg "$CLEAR_FILES"
+    disable_events mhi_host $WIFI_EVENTS
+    disable_events asoc $AUDIO_EVENTS
+    write_path /sys/module/drm/parameters/debug 0
+    write_path /sys/module/msm/parameters/dumpstate 0
+    say "all fz-debug profiles off"
+}
+
+record_profile() {
+    if [ -x "$REC_ON" ]; then
+        "$REC_ON" --print 2>/dev/null || echo off
+    elif [ -r "$REC_ON" ]; then
+        sh "$REC_ON" --print 2>/dev/null || echo off
+    else
+        echo unknown
+    fi
+}
+
+report_event() {
+    p=$TRACE/events/$1/$2/enable
+    [ -r "$p" ] && [ "$(cat "$p" 2>/dev/null)" = 1 ] && echo "$1/$2=1"
+    return 0
+}
+
+status() {
+    echo "fz_record=$(record_profile)"
+    echo "dynamic debug control: $CTL"
+    if [ -r "$CTL" ]; then
+        grep -E '=p|=_p' "$CTL" 2>/dev/null | head -n 40 || true
+    else
+        echo "dynamic debug control unavailable"
+    fi
+    echo "trace events:"
+    for e in $WIFI_EVENTS; do report_event mhi_host "$e"; done
+    for e in $AUDIO_EVENTS; do report_event asoc "$e"; done
+    printf 'drm.debug=%s\n' "$(cat /sys/module/drm/parameters/debug 2>/dev/null || echo absent)"
+    printf 'msm.dumpstate=%s\n' "$(cat /sys/module/msm/parameters/dumpstate 2>/dev/null || echo absent)"
+}
+
+apply_cmdline() {
+    if [ "${FZ_CMDLINE+set}" = set ]; then
+        CM=$FZ_CMDLINE
+    else
+        CM=$(cat /proc/cmdline 2>/dev/null || true)
+    fi
+    seen=' '
+    found=0
+    oldifs=$IFS
+    set -f
+    for w in $CM; do
+        case "$w" in
+            fz_debug=*)
+                list=${w#fz_debug=}
+                IFS=,
+                for p in $list; do
+                    IFS=$oldifs
+                    [ -n "$p" ] || continue
+                    case " $seen " in *" $p "*) continue ;; esac
+                    seen="$seen$p "
+                    case "$p" in
+                        wifi|audio|usbc|gpu|nvme|all)
+                            enable_profile "$p"
+                            found=1
+                            ;;
+                        *)
+                            say "ignoring unknown fz_debug profile: $p"
+                            ;;
+                    esac
+                done
+                IFS=$oldifs
+                ;;
+        esac
+    done
+    set +f
+    [ "$found" = 1 ] || say "no usable fz_debug= profile on the kernel command line"
+    return 0
+}
+
+prepare() {
+    [ "$DRY" = 1 ] && return 0
+    if [ -z "${FZ_DEBUG_CTL:-}" ] && [ ! -e "$CTL" ] && [ -d /sys/kernel/debug ]; then
+        mount -t debugfs none /sys/kernel/debug 2>/dev/null || true
+    fi
+    if [ -z "${FZ_DEBUG_TRACE:-}" ] && [ ! -d "$TRACE/events" ]; then
+        if [ -d /sys/kernel/tracing ]; then
+            mount -t tracefs tracefs /sys/kernel/tracing 2>/dev/null || true
+        fi
+        for d in /sys/kernel/tracing /sys/kernel/debug/tracing; do
+            [ -d "$d/events" ] && { TRACE=$d; break; }
+        done
+    fi
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --dry-run|-n) DRY=1; shift ;;
+        --help|-h) usage; exit 0 ;;
+        --from-cmdline) prepare; apply_cmdline; exit 0 ;;
+        *) break ;;
+    esac
+done
+
+CMD=${1:-status}
+[ $# -gt 0 ] && shift
+
+case "$CMD" in
+    on)
+        [ $# -gt 0 ] || { say "on needs at least one profile"; exit 2; }
+        prepare
+        rc=0
+        for p in "$@"; do enable_profile "$p" || rc=2; done
+        exit "$rc"
+        ;;
+    off)
+        prepare
+        if [ $# -eq 0 ]; then
+            off_all
+            exit 0
+        fi
+        rc=0
+        for p in "$@"; do profile_off "$p" || rc=2; done
+        exit "$rc"
+        ;;
+    status)
+        status
+        ;;
+    check)
+        [ $# -gt 0 ] || { echo "usage: fz-debug check <path-or-command>" >&2; exit 2; }
+        if blocked "$*"; then
+            echo "BLOCK $*"
+            exit 2
+        fi
+        echo "ALLOW $*"
+        ;;
+    wifi|audio|usbc|gpu|nvme|all)
+        prepare
+        rc=0
+        for p in "$@"; do enable_profile "$p" || rc=2; done
+        exit "$rc"
+        ;;
+    *)
+        usage
+        exit 2
+        ;;
+esac
+exit 0

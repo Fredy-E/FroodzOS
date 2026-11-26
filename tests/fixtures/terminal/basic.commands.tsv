@@ -1,0 +1,3 @@
+1	100.100	100.200	0	/home/live	echo hi
+2	100.300	100.400	0	/home/live	printf '\033[31mred\033[0m\n'
+3	100.500	100.900	0	/home/live	seq progress

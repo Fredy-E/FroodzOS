@@ -1,0 +1,14 @@
+[Unit]
+Description=FroodzOS record: apply fz_debug= kernel debug profiles at boot
+Documentation=file:/usr/local/sbin/fz-debug
+ConditionKernelCommandLine=fz_debug
+After=local-fs.target systemd-modules-load.service systemd-udevd.service
+Before=NetworkManager.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/fz-debug --from-cmdline
+
+[Install]
+WantedBy=multi-user.target

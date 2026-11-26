@@ -1,18 +1,35 @@
 [Unit]
-Description=FroodzOS smart log (bounded read-only facts about this session)
+Description=FroodzOS smart log v3 (continuous black-box recorder + snapshots)
 Documentation=file:/usr/local/sbin/fz-smartlog
-After=local-fs.target systemd-journald.service
+DefaultDependencies=no
+After=systemd-journald.service systemd-journald.socket local-fs.target
+Wants=systemd-journald.service
+Before=basic.target shutdown.target
+Conflicts=shutdown.target
 ConditionPathExists=/usr/local/sbin/fz-smartlog
+StartLimitIntervalSec=60
+StartLimitBurst=5
 
 [Service]
-Type=simple
+Type=notify
+NotifyAccess=main
+WatchdogSec=30
 ExecStart=/usr/local/sbin/fz-smartlog run
+TimeoutStartSec=20
+TimeoutStopSec=25
 KillMode=mixed
-TimeoutStopSec=8
-Nice=19
-IOSchedulingClass=idle
+KillSignal=SIGTERM
 Restart=always
-RestartSec=10
+RestartSec=5
+Nice=-5
+IOSchedulingClass=best-effort
+IOSchedulingPriority=2
+OOMScoreAdjust=-500
+CPUWeight=200
+IOWeight=500
+RuntimeDirectory=fz-smartlog
+RuntimeDirectoryMode=0755
+UMask=0022
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=sysinit.target

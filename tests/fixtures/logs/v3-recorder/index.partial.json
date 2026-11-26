@@ -1,0 +1,30 @@
+{
+  "schema": 3,
+  "boot_id": "99999999-8888-7777-6666-555555555555",
+  "started_utc": "2026-01-02T00:00:00Z",
+  "duration_s": 40,
+  "outcome": "power_loss",
+  "complete": false,
+  "build_id": "0.1.0-fztest",
+  "kernel": "7.3.0-rc3-fztest",
+  "cmdline": ["kestrel_log=1", "fz_record=full", "debug"],
+  "destinations": [
+    {"kind": "stick", "path": "/run/archiso/bootmnt/Logs/boot-99999999", "writable": true}
+  ],
+  "streams": {
+    "kernel": {"total_bytes": 512, "gaps": []},
+    "journal": {"total_bytes": 1024, "gaps": [{"from": 31, "to": 32, "reason": "writer restart"}]},
+    "terminal": {"total_bytes": 256, "gaps": []}
+  },
+  "events": [
+    {"utc": "2026-01-02T00:00:30Z", "mono": 30.0, "reason": "resume", "dir": "events/20260102T000030Z-resume"}
+  ],
+  "summary": {
+    "failed_units": ["iio-sensor-proxy.service"],
+    "suspend": {"success": "0", "fail": "1", "failed_resume": "1", "last_failed_dev": "phy0"},
+    "wifi": {"present": "1", "up": "0", "associated": "no"},
+    "sound": {"cards": "1", "errors": "2"},
+    "waydroid": {"lines": "4", "errors": "1"},
+    "kernel": {"errors": "3", "warnings": "1"}
+  }
+}

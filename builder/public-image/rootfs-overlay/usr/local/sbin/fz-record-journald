@@ -1,0 +1,112 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-record-journald: install the journald "record everything" policy from W1 section 6, but only on a
+# boot whose kernel command line contains fz_record=full. The shipped /etc/systemd/journald.conf.d
+# drop-in is comments only, so a normal public-image boot is unchanged.
+#
+#   fz-record-journald             write /run/systemd/journald.conf.d/95-froodzos-record.conf and restart journald
+#   fz-record-journald --dry-run   print what would be written and done, change nothing
+#   fz-record-journald --print     print the generated drop-in (always, regardless of the switch)
+#
+# fz-record-journald.service runs it once at boot behind ConditionKernelCommandLine=fz_record=full.
+# The runtime file has a different name from the shipped comments-only drop-in, so /etc cannot hide it.
+set -u
+export LC_ALL=C PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+
+DRY=${FZ_RECORD_JOURNALD_DRY:-0}
+RUN=${FZ_RECORD_JOURNALD_RUN:-/run/systemd/journald.conf.d}
+CONF=$RUN/95-froodzos-record.conf
+ON=${FZ_RECORD_ON:-/usr/local/sbin/fz-record-on}
+
+say() { echo "fz-record-journald: $*"; }
+
+config() {
+    cat <<'EOF'
+[Journal]
+# FroodzOS record-everything policy (W1 section 6). Runtime only: written by
+# fz-record-journald.service when the kernel command line contains fz_record=full.
+Storage=volatile
+RuntimeMaxUse=512M
+RuntimeKeepFree=128M
+RuntimeMaxFileSize=64M
+SystemMaxUse=2G
+SystemKeepFree=512M
+SystemMaxFileSize=128M
+MaxFileSec=1h
+Compress=yes
+Seal=no
+SplitMode=none
+ReadKMsg=yes
+MaxLevelStore=debug
+MaxLevelSyslog=debug
+MaxLevelKMsg=debug
+MaxLevelConsole=info
+MaxLevelWall=emerg
+ForwardToSyslog=no
+ForwardToKMsg=yes
+ForwardToConsole=no
+ForwardToWall=no
+RateLimitIntervalSec=0
+RateLimitBurst=0
+SyncIntervalSec=1s
+EOF
+}
+
+is_full() {
+    if [ -x "$ON" ]; then
+        "$ON"
+    elif [ -r "$ON" ]; then
+        sh "$ON"
+    else
+        return 1
+    fi
+}
+
+case "${1:-apply}" in
+    --print)
+        config
+        exit 0
+        ;;
+    --dry-run)
+        DRY=1
+        ;;
+    apply|--apply)
+        ;;
+    --help|-h)
+        sed -n '2,15p' "$0"
+        exit 0
+        ;;
+    *)
+        echo "usage: fz-record-journald [--print|--dry-run]" >&2
+        exit 2
+        ;;
+esac
+
+is_full || { say "fz_record=full is not on the kernel command line: nothing to do"; exit 0; }
+
+if [ "$DRY" = 1 ]; then
+    say "dry run: would write $CONF"
+    config
+    say "dry run: would restart systemd-journald.service"
+    exit 0
+fi
+
+mkdir -p "$RUN" 2>/dev/null || { say "cannot create $RUN"; exit 0; }
+tmp=$CONF.tmp.$$
+trap 'rm -f "$tmp"' EXIT HUP INT TERM
+umask 022
+config > "$tmp" 2>/dev/null || { say "cannot write $tmp"; exit 0; }
+if [ -f "$CONF" ] && command -v cmp >/dev/null 2>&1 && cmp -s "$tmp" "$CONF"; then
+    rm -f "$tmp"
+    say "already applied: $CONF"
+    exit 0
+fi
+mv -f "$tmp" "$CONF" 2>/dev/null || { say "cannot install $CONF"; exit 0; }
+trap - EXIT HUP INT TERM
+say "wrote $CONF"
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl restart systemd-journald.service || say "restart of systemd-journald.service failed"
+else
+    say "systemctl not found: journald keeps its previous configuration until restarted"
+fi
+exit 0

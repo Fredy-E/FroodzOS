@@ -1,0 +1,11 @@
+FroodzOS session summary (synthetic fixture)
+boot=11111111-2222-3333-4444-555555555555 uptime=120s written=00:02:00Z where=stick
+BUILD_ID=0.1.0-fztest
+BATTERY: 100% voltage 12792000 status Not charging; AC online=0.
+SUSPEND: 1 successful suspend(s), 1 failed; resume failures=1 last_failed_dev=phy0 step=resume
+WIFI: 1 wireless interface(s) present, 0 up; last_error=resume -110
+SOUND: 1 sound card(s); errors=2
+KERNEL: errors 4, warnings 2, oops-like lines 1, taint 16896.
+FAILED UNITS: iio-sensor-proxy.service
+WAYDROID: lines=2 errors=1 (excluded from kernel error count)
+DATA: streams=3 last_write=up=118 gaps=0 dest=stick degraded=no

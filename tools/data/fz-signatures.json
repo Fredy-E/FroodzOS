@@ -1,0 +1,647 @@
+{
+  "schema": 1,
+  "description": "FroodzOS boot-log signature catalog. Regexes are generic and case-insensitive; they match a single normalised message after timestamp/priority prefixes are removed. No captured SSID, MAC, serial, username or e-mail value is embedded.",
+  "source": "Productised from the W8 signature-catalog research (FroodzOS test stick, 2026-11-25).",
+  "signatures": [
+    {
+      "id": "nvme-enable-oops",
+      "regex": "^.*(Unable to handle kernel NULL pointer dereference|gpio_shared_add_proxy_lookup).*",
+      "subsystem": "kernel",
+      "severity": "critical",
+      "class": "KNOWN-ISSUE",
+      "issue": "nvme-enable-oops",
+      "note": "NULL dereference during PCIe/NVMe enable; the documented dead end. Keep NVMe enable out of release images.",
+      "priority": 110
+    },
+    {
+      "id": "kernel-hard-fault",
+      "regex": "^.*(kernel BUG at|general protection fault|Kernel panic|soft lockup|hung task|Unable to handle kernel).*",
+      "subsystem": "kernel",
+      "severity": "critical",
+      "class": "KNOWN-ISSUE",
+      "issue": "kernel-hard-fault",
+      "note": "Hard kernel fault signature; collect the full context before blaming a driver.",
+      "priority": 109
+    },
+    {
+      "id": "mac80211-resume-warning",
+      "regex": "^.*WARNING:.*net/mac80211/util\\.c.*",
+      "subsystem": "wifi",
+      "severity": "critical",
+      "class": "KNOWN-ISSUE",
+      "issue": "ath12k-resume-failure",
+      "note": "mac80211 reconfig WARNING during resume; part of the confirmed Wi-Fi resume failure.",
+      "priority": 108
+    },
+    {
+      "id": "ath12k-resume-failure",
+      "regex": "^.*ath12k.*(failed to resume|resume core|firmware crashed|WMI.*timeout).*",
+      "subsystem": "wifi",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "ath12k-resume-failure",
+      "note": "ath12k fails to resume after suspend; suspend was disabled in dev.9 because of this.",
+      "priority": 107
+    },
+    {
+      "id": "wifi-hardware-unavailable-resume",
+      "regex": "^.*Hardware became unavailable upon resume.*",
+      "subsystem": "wifi",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "ath12k-resume-failure",
+      "note": "The PCIe device disappeared during resume; same family as the ath12k resume failure.",
+      "priority": 106
+    },
+    {
+      "id": "audio-topology-1001002",
+      "regex": "^.*(DSP returned error\\s*\\[?1001002\\]?|Failed to start APM port).*",
+      "subsystem": "sound",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "audio-topology-1001002",
+      "note": "Yoga audio topology rejected by the DSP; the Romulus topology is required.",
+      "priority": 105
+    },
+    {
+      "id": "wsa884x-speaker-failure",
+      "regex": "^.*(WSA Playback: ASoC error|DPN_PortCtrl register write failed|Program transport params failed).*",
+      "subsystem": "sound",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "wsa884x-audio",
+      "note": "WSA884x speaker-amplifier bring-up failure on several dspK roots.",
+      "priority": 104
+    },
+    {
+      "id": "soundwire-io-error",
+      "regex": "^.*soundwire.*(IO error|read status failed|SCP|timeout).*",
+      "subsystem": "sound",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "soundwire-io",
+      "note": "SoundWire data-path error; often the cause of a missing speaker node.",
+      "priority": 103
+    },
+    {
+      "id": "audio-codec-warning",
+      "regex": "^.*(snd|ASoC|wcd|WSA|lpass).*(WARN|error|failed).*",
+      "subsystem": "sound",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "audio-codec-warning",
+      "note": "Codec/ASoC warning family; inspect the named component and error code.",
+      "priority": 80
+    },
+    {
+      "id": "pipewire-speaker-start",
+      "regex": "^.*pipewire.*(failed to start|no sound|error).*",
+      "subsystem": "sound",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "pipewire-speaker-start",
+      "note": "PipeWire could not start the speaker node; usually downstream of a SoundWire failure.",
+      "priority": 79
+    },
+    {
+      "id": "iio-sensor-proxy-failed",
+      "regex": "^.*iio-sensor-proxy.*(Failed with result|sensor unavailable|SIGKILL|killed).*",
+      "subsystem": "other",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "iio-sensor-proxy-failed",
+      "note": "Recurring failed unit caused by the stop timeout killing the service.",
+      "priority": 78
+    },
+    {
+      "id": "powerdevil-i2c-eacces",
+      "regex": "^.*powerdevil.*(EACCES|Permission denied).*",
+      "subsystem": "power",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "powerdevil-i2c-eacces",
+      "note": "PowerDevil cannot access an I2C device; seen on most roots and harmless to the session.",
+      "priority": 77
+    },
+    {
+      "id": "polkit-portal-registration",
+      "regex": "^.*polkit.*(portal|registration|Failed to register).*",
+      "subsystem": "other",
+      "severity": "low",
+      "class": "KNOWN-ISSUE",
+      "issue": "polkit-portal-registration",
+      "note": "Portal registration noise from polkit; usually not a user-visible failure.",
+      "priority": 76
+    },
+    {
+      "id": "rtkit-missing",
+      "regex": "^.*(rtkit|RealtimeKit).*(missing|not found|failed|unavailable).*",
+      "subsystem": "other",
+      "severity": "low",
+      "class": "KNOWN-ISSUE",
+      "issue": "rtkit-missing",
+      "note": "RealtimeKit is absent on older roots; audio clients then fall back.",
+      "priority": 75
+    },
+    {
+      "id": "keyring-wkd-failure",
+      "regex": "^.*(WKD|keyserver).*(failed|error|timeout|refused).*",
+      "subsystem": "other",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "keyring-wkd-network",
+      "note": "Keyring refresh fails when the network is not ready or the clock is wrong.",
+      "priority": 74
+    },
+    {
+      "id": "kwin-software-rendering",
+      "regex": "^.*kwin.*(software rendering|OpenGL|EGL|DRM).*(fail|error|fallback).*",
+      "subsystem": "other",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "kwin-software-rendering",
+      "note": "KWin fell back to software rendering or lost a DRM path.",
+      "priority": 73
+    },
+    {
+      "id": "fat-dirty-unmount",
+      "regex": "^.*(FAT-fs.*dirty|Volume was not properly unmounted).*",
+      "subsystem": "storage",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "fat-dirty-unmount",
+      "note": "The FAT dirty flag survived the read-only remount; Windows will offer a check.",
+      "priority": 72
+    },
+    {
+      "id": "rtc-epoch-clock",
+      "regex": "^.*(System time advanced to built-in epoch|Time jumped backwards).*",
+      "subsystem": "other",
+      "severity": "low",
+      "class": "KNOWN-ISSUE",
+      "issue": "rtc-epoch-clock",
+      "note": "No RTC battery: the clock starts at the image build epoch until NTP corrects it.",
+      "priority": 71
+    },
+    {
+      "id": "sddm-helper-crash",
+      "regex": "^.*sddm-helper.*(Segmentation fault|core dumped|killed).*",
+      "subsystem": "other",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "sddm-helper-crash",
+      "note": "sddm-helper is killed at poweroff after the desktop ran; usually late-session noise.",
+      "priority": 70
+    },
+    {
+      "id": "udev-worker-timeout",
+      "regex": "^.*udev-worker.*(timeout|timed out|killed|blocked).*",
+      "subsystem": "other",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "udev-worker-timeout",
+      "note": "udev workers time out or are killed; a storm follows some kernel oopses.",
+      "priority": 69
+    },
+    {
+      "id": "remoteproc-firmware-missing",
+      "regex": "^.*remoteproc.*(firmware.*(not found|failed)|failed to load).*",
+      "subsystem": "other",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "remoteproc-firmware-missing",
+      "note": "A remoteproc firmware is missing; DSP/ADSP features stay offline.",
+      "priority": 68
+    },
+    {
+      "id": "qcom-pcie-probe-failure",
+      "regex": "^.*qcom-pcie.*(probe.*fail|link.*(down|fail)|error).*",
+      "subsystem": "kernel",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "nvme-enable-oops",
+      "note": "PCIe probe/link failure; the same path as the NVMe-enable oops.",
+      "priority": 67
+    },
+    {
+      "id": "coredump",
+      "regex": "^.*(systemd-coredump|Process .* dumped core|segfault at).*",
+      "subsystem": "other",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "coredump",
+      "note": "A userspace process dumped core; identify the binary before attributing it to a driver.",
+      "priority": 66
+    },
+    {
+      "id": "suspend-resume-failure",
+      "regex": "^.*(PM: failed to resume|Some devices failed to suspend|Failed to resume some devices|failed_resume).*",
+      "subsystem": "power",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "suspend-resume-failure",
+      "note": "The suspend/resume cycle reported a failure; the failing device is usually named nearby.",
+      "priority": 65
+    },
+    {
+      "id": "failed-unit-generic",
+      "regex": "^.*Failed to start .*\\.(service|socket|timer|target).*",
+      "subsystem": "other",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "failed-unit",
+      "note": "systemd could not start a unit; the unit name is the actionable part.",
+      "priority": 64
+    },
+    {
+      "id": "unit-failed-state",
+      "regex": "^.*Unit .*\\.(service|socket|timer) entered failed state.*",
+      "subsystem": "other",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "failed-unit",
+      "note": "A unit entered the failed state; correlate with the stop timeout or exit code.",
+      "priority": 63
+    },
+    {
+      "id": "shutdown-timeout",
+      "regex": "^.*(Timed out.*(stop|start)|Failed to (start|stop)).*(shutdown|poweroff|reboot|session).*",
+      "subsystem": "other",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "shutdown-timeout",
+      "note": "A shutdown step timed out and added a failed unit.",
+      "priority": 62
+    },
+    {
+      "id": "storage-io-error",
+      "regex": "^.*(I/O error|blk_update_request|EXT4-fs error|Buffer I/O error).*",
+      "subsystem": "storage",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "storage-io-error",
+      "note": "A block or filesystem I/O error; check the device before trusting later writes.",
+      "priority": 61
+    },
+    {
+      "id": "filesystem-readonly",
+      "regex": "^.*(Remounting filesystem read-only|read-only file system).*",
+      "subsystem": "storage",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "filesystem-readonly",
+      "note": "A filesystem was remounted read-only after an error, or a writer hit EROFS.",
+      "priority": 60
+    },
+    {
+      "id": "kestrel-log-mode",
+      "regex": "^.*KESTREL_(USB_LOG_REFUSED|LOG_|CAPTURE).*",
+      "subsystem": "other",
+      "severity": "info",
+      "class": "KNOWN-ISSUE",
+      "issue": "kestrel-usb-log-mode",
+      "note": "The Kestrel capture marker was absent or accepted; this is the capture-mode decision.",
+      "priority": 59
+    },
+    {
+      "id": "waydroid-container-failure",
+      "regex": "^.*(waydroid|binder).*(crash|ANR|fatal|failed).*",
+      "subsystem": "waydroid",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "waydroid-container",
+      "note": "Waydroid/Android container failure; keep it out of host-kernel error counts.",
+      "priority": 58
+    },
+    {
+      "id": "selftest-failure",
+      "regex": "^.*(SELFTEST DONE:.*[1-9] fail|FAIL adsp|FAIL battery).*",
+      "subsystem": "other",
+      "severity": "low",
+      "class": "KNOWN-ISSUE",
+      "issue": "selftest-failure",
+      "note": "The quick self-test reports a failing resource; this is expected on some boots.",
+      "priority": 57
+    },
+    {
+      "id": "thermal-throttle",
+      "regex": "^.*(thermal.*(trip|throttl)|temperature above).*",
+      "subsystem": "power",
+      "severity": "medium",
+      "class": "KNOWN-ISSUE",
+      "issue": "thermal-throttle",
+      "note": "A thermal trip or throttling event; correlate with load and fan state.",
+      "priority": 56
+    },
+    {
+      "id": "low-memory",
+      "regex": "^.*(Out of memory|oom-kill|MemAvailable.*low).*",
+      "subsystem": "kernel",
+      "severity": "high",
+      "class": "KNOWN-ISSUE",
+      "issue": "low-memory",
+      "note": "Memory pressure or an OOM kill; record the victim and the reclaim state.",
+      "priority": 55
+    },
+    {
+      "id": "bluetooth-firmware",
+      "regex": "^.*bluetooth.*(firmware|failed|timeout).*",
+      "subsystem": "other",
+      "severity": "low",
+      "class": "KNOWN-ISSUE",
+      "issue": "bluetooth-firmware",
+      "note": "Bluetooth firmware or transport failure; check whether the controller enumerated.",
+      "priority": 54
+    },
+    {
+      "id": "boot-banner",
+      "regex": "^.*(Booting Linux|Linux version \\d|Memory:|percpu:|Zone ranges|Early memory node ranges|Kernel command line).*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "boot-banner",
+      "note": "Kernel boot banner and memory map; expected on every boot.",
+      "priority": 20
+    },
+    {
+      "id": "memory-map",
+      "regex": "^.*node\\s+\\d+:\\s+\\[mem.*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "memory-map",
+      "note": "Memory-map reporting from the early kernel.",
+      "priority": 19
+    },
+    {
+      "id": "systemd-unit-lifecycle",
+      "regex": "^systemd(?:-logind|-journald|-udevd|-timesyncd|-networkd|-resolved)?(?:\\[\\d+\\])?: .*(Started|Starting|Stopped|Stopping|Reached target|Created slice|Listening on|Activated service|Deactivated successfully).*",
+      "subsystem": "other",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "systemd-lifecycle",
+      "note": "Normal unit start/stop lifecycle.",
+      "priority": 18
+    },
+    {
+      "id": "systemd-session",
+      "regex": "^systemd-logind: .*(New session|Session .* logged|Watching system buttons|Power key).*",
+      "subsystem": "other",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "login-session",
+      "note": "Login/session bookkeeping.",
+      "priority": 17
+    },
+    {
+      "id": "systemd-journal",
+      "regex": "^systemd-journald: .*(Runtime Journal|Permanent Journal|system journal|Journal file).*",
+      "subsystem": "other",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "journald",
+      "note": "Journald file management.",
+      "priority": 16
+    },
+    {
+      "id": "network-manager-general",
+      "regex": "^NetworkManager: .*(state change|device|connection|dhcp|link|policy).*",
+      "subsystem": "wifi",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "network-manager",
+      "note": "NetworkManager state and connection churn.",
+      "priority": 15
+    },
+    {
+      "id": "wpa-supplicant-general",
+      "regex": "^wpa_supplicant: .*(CTRL-EVENT|Trying to associate|Associated|Authentication|Completed|BSS).*",
+      "subsystem": "wifi",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "wpa-supplicant",
+      "note": "Normal supplicant association events.",
+      "priority": 14
+    },
+    {
+      "id": "kwin-general",
+      "regex": "^kwin.*: .*(OpenGL|compositing|output|screen|Effect|Loading).*",
+      "subsystem": "other",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "kwin",
+      "note": "KWin startup and output configuration.",
+      "priority": 13
+    },
+    {
+      "id": "plasma-general",
+      "regex": "^(plasmashell|kded\\d?|ksmserver|kglobalaccel): .*(Loading|started|available|registered).*",
+      "subsystem": "other",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "plasma",
+      "note": "Plasma desktop startup.",
+      "priority": 12
+    },
+    {
+      "id": "pipewire-general",
+      "regex": "^(pipewire|wireplumber|pipewire-pulse): .*(started|loaded|configured|default|state).*",
+      "subsystem": "sound",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "pipewire",
+      "note": "PipeWire/WirePlumber startup and state.",
+      "priority": 11
+    },
+    {
+      "id": "usb-enumeration",
+      "regex": "^usb \\d+-\\d+(\\.\\d+)?: .*(new .* device|New USB device found|Product:|Manufacturer:|USB disconnect).*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "usb-enumeration",
+      "note": "USB enumeration and disconnect.",
+      "priority": 10
+    },
+    {
+      "id": "of-dependency-cycle",
+      "regex": "^of: .*(dependency cycle|graph).*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "of-dependency",
+      "note": "Device-tree dependency cycles; present on every boot of the current image.",
+      "priority": 9
+    },
+    {
+      "id": "sync-state-deferral",
+      "regex": "^.*sync_state.*(deferred|pending).*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "sync-state",
+      "note": "sync_state deferrals during driver probe.",
+      "priority": 8
+    },
+    {
+      "id": "pmic-glink",
+      "regex": "^.*pmic-glink.*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "pmic-glink",
+      "note": "PMIC GLINK device-link chatter.",
+      "priority": 7
+    },
+    {
+      "id": "pmic-temp-alarm",
+      "regex": "^.*pmic.*temp.*(alarm|deferred).*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "pmic-temp",
+      "note": "PMIC temperature-alarm probe deferral.",
+      "priority": 6
+    },
+    {
+      "id": "qcom-pcie-enumeration",
+      "regex": "^.*qcom-pcie.*(link up|enumerat|host bridge).*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "qcom-pcie",
+      "note": "PCIe link-up and enumeration.",
+      "priority": 5
+    },
+    {
+      "id": "waydroid-bpf-loader",
+      "regex": "^LibBpfLoader:",
+      "subsystem": "waydroid",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "waydroid-bpf-loader",
+      "note": "Waydroid/Android BPF loader debug; very verbose and not a host kernel fault.",
+      "priority": 4
+    },
+    {
+      "id": "android-init-noise",
+      "regex": "^init: .*(Control message|service|Starting|starting|property).*",
+      "subsystem": "waydroid",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "android-init",
+      "note": "Android init messages inside the container.",
+      "priority": 3
+    },
+    {
+      "id": "binder-cgroup-noise",
+      "regex": "^(libprocessgroup|binder.*): .*(cgroup|uid_|Read-only file system).*",
+      "subsystem": "waydroid",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "android-cgroup",
+      "note": "Android cgroup/binder noise; counted by the old summary as kernel errors.",
+      "priority": 2
+    },
+    {
+      "id": "ext4-mount",
+      "regex": "^EXT4-fs .*(mounted filesystem|recovery complete|Remounting).*",
+      "subsystem": "storage",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "ext4-mount",
+      "note": "Normal ext4 mount/recovery messages.",
+      "priority": 1
+    },
+    {
+      "id": "firmware-load",
+      "regex": "^.*(Direct firmware load|firmware: direct-loading|loaded firmware).*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "firmware-load",
+      "note": "Firmware loading messages.",
+      "priority": 0
+    },
+    {
+      "id": "crng-random",
+      "regex": "^.*(crng init done|random: get_random_u32).*",
+      "subsystem": "kernel",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "crng",
+      "note": "Random-number generator readiness.",
+      "priority": -1
+    },
+    {
+      "id": "audit-general",
+      "regex": "^audit: .*(type=|audit).*",
+      "subsystem": "other",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "audit",
+      "note": "Audit records.",
+      "priority": -2
+    },
+    {
+      "id": "avahi-general",
+      "regex": "^avahi-daemon: .*",
+      "subsystem": "other",
+      "severity": "info",
+      "class": "BENIGN-NOISE",
+      "issue": "avahi",
+      "note": "Avahi/mDNS startup.",
+      "priority": -3
+    },
+    {
+      "id": "generic-warning",
+      "regex": "^.*WARNING:.*",
+      "subsystem": "kernel",
+      "severity": "medium",
+      "class": "UNKNOWN/INVESTIGATE",
+      "issue": "unclassified-warning",
+      "note": "A WARNING that matched no known issue; read the stack and the preceding device line.",
+      "priority": 3
+    },
+    {
+      "id": "call-trace",
+      "regex": "^.*(Call trace|---\\[ end trace|RIP:).*",
+      "subsystem": "kernel",
+      "severity": "high",
+      "class": "UNKNOWN/INVESTIGATE",
+      "issue": "unclassified-trace",
+      "note": "A stack trace without a matched known fault; find the line that starts the splat.",
+      "priority": 2
+    },
+    {
+      "id": "generic-io-error",
+      "regex": "^.*(input/output error|I/O error).*",
+      "subsystem": "storage",
+      "severity": "high",
+      "class": "UNKNOWN/INVESTIGATE",
+      "issue": "unclassified-io",
+      "note": "I/O error without a matched device family.",
+      "priority": 1
+    },
+    {
+      "id": "generic-failure",
+      "regex": "^.*(Failed to start|failed with result|fatal error).*",
+      "subsystem": "other",
+      "severity": "medium",
+      "class": "UNKNOWN/INVESTIGATE",
+      "issue": "unclassified-failure",
+      "note": "A failure line not covered by a specific signature; classify it and add a signature.",
+      "priority": 0
+    },
+    {
+      "id": "segfault-generic",
+      "regex": "^.*(segfault|Segmentation fault|dumped core).*",
+      "subsystem": "other",
+      "severity": "high",
+      "class": "UNKNOWN/INVESTIGATE",
+      "issue": "unclassified-segfault",
+      "note": "A userspace crash without a known binary.",
+      "priority": -1
+    }
+  ]
+}

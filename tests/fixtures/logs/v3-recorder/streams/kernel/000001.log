@@ -1,0 +1,9 @@
+6,1,0,-;Linux version 7.3.0-rc3-fztest (builder@example.invalid) (gcc 14.2.0) #1 SMP PREEMPT
+6,2,10000,-;Booting Linux on physical CPU 0x0000000000 [0x000f0510]
+3,3,40000000,-;Unable to handle kernel paging request at virtual address ffffffffffffffff
+6,4,40000100,-;Call trace:
+6,5,40000200,-; gpio_shared_add_proxy_lookup+0x38/0x278
+3,6,41000000,-;WARNING: CPU: 1 PID: 42 at net/mac80211/util.c:1957 ieee80211_reconfig+0xc4/0x1e20
+3,7,41000100,-;ath12k_wifi7_pci 0004:01:00.0: failed to resume core: -110
+3,8,42000000,-;DSP returned error[1001002]
+6,9,42000100,-;Failed to start APM port 105

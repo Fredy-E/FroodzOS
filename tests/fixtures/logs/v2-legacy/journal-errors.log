@@ -1,0 +1,3 @@
+Jan  2 00:00:02 live systemd[1]: Failed to start iio-sensor-proxy.service - IIO Sensor Proxy service.
+Jan  2 00:00:11 live kernel: ath12k_wifi7_pci 0004:01:00.0: failed to resume core: -110
+Jan  2 00:00:13 live waydroid[904]: libprocessgroup: Failed to make and chown /sys/fs/cgroup/uid_1000: Read-only file system

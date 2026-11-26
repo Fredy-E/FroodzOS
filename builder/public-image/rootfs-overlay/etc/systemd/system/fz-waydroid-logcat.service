@@ -1,0 +1,22 @@
+[Unit]
+Description=FroodzOS Android logcat capture (fz_record=full only)
+Documentation=file:/usr/local/sbin/fz-ui-capture
+ConditionKernelCommandLine=fz_record=full
+ConditionPathExists=/usr/local/sbin/fz-ui-capture
+ConditionPathExists=/usr/bin/waydroid
+After=waydroid-container.service fz-smartlog.service
+BindsTo=waydroid-container.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/fz-ui-capture waydroid-logcat
+SyslogIdentifier=fz-ui-capture
+Restart=always
+RestartSec=15
+KillMode=mixed
+TimeoutStopSec=15
+Nice=10
+IOSchedulingClass=best-effort
+
+[Install]
+WantedBy=multi-user.target

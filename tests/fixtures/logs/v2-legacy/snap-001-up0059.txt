@@ -1,0 +1,15 @@
+fz-smartlog snapshot seq=1 uptime_s=59 boot_id=11111111-2222-3333-4444-555555555555 where=stick
+BUILD_ID=0.1.0-fztest
+KERNEL VERSION: Linux 7.3.0-rc3-fztest
+== suspend and resume statistics
+success=1
+fail=1
+failed_resume=1
+last_failed_dev=phy0
+last_failed_step=resume
+== network
+wlan0 UP 02:00:00:00:00:01 <BROADCAST,MULTICAST>
+== audio
+card 0: FZTestCard
+== failed units
+● iio-sensor-proxy.service loaded failed failed IIO Sensor Proxy
