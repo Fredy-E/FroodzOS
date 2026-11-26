@@ -1,0 +1,19 @@
+# Hazardous paths/commands from W5 section 5: fz-debug check must print BLOCK and exit 2.
+# One entry per line; '#' starts a comment.
+/sys/kernel/debug/regmap/0-0000/registers
+/sys/kernel/debug/gpio
+gpioinfo gpiochip9
+/sys/kernel/debug/pinctrl/1c00000.pinctrl/pinconf-groups
+/sys/kernel/debug/pinctrl/1c00000.pinctrl/pinmux-pins
+/sys/kernel/debug/pinctrl/1c00000.pinctrl/pinconf-pins
+/sys/bus/soundwire/devices/sdw:0:0/0:0:0:0/unbind
+/sys/bus/soundwire/drivers/sdw_driver/bind
+/sys/kernel/debug/soundwire/master-0/sdw:0:0/registers
+/sys/kernel/debug/soundwire/master-0/sdw:0:0/command
+/sys/kernel/debug/ath12k/pci-0004:01:00.0/simulate_fw_crash
+/sys/kernel/debug/usb/ucsi/ucsi0/command
+/sys/kernel/debug/usb/ucsi/ucsi0/message_out
+/sys/class/remoteproc/remoteproc0/state
+/sys/power/pm_test
+kexec
+/usr/local/sbin/fz-kexec-uki

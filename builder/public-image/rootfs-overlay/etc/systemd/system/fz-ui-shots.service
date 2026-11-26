@@ -1,0 +1,14 @@
+[Unit]
+Description=FroodzOS UI screenshot (one full-screen shot as the live user, fz_record=full only)
+Documentation=file:/usr/local/sbin/fz-ui-capture
+ConditionKernelCommandLine=fz_record=full
+ConditionPathExists=/usr/local/sbin/fz-ui-capture
+ConditionPathExists=/usr/bin/spectacle
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/fz-ui-capture shots periodic
+TimeoutStartSec=45
+Nice=15
+IOSchedulingClass=best-effort

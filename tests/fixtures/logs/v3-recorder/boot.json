@@ -1,0 +1,12 @@
+{
+  "schema": 3,
+  "boot_id": "99999999-8888-7777-6666-555555555555",
+  "started_utc": "2026-01-02T00:00:00Z",
+  "ended_utc": null,
+  "outcome": "power_loss",
+  "build_id": "0.1.0-fztest",
+  "kernel": "7.3.0-rc3-fztest",
+  "cmdline": ["kestrel_log=1", "fz_record=full", "debug"],
+  "dest": {"kind": "stick", "path": "/run/archiso/bootmnt/Logs/boot-99999999", "writable": true},
+  "degraded": false
+}

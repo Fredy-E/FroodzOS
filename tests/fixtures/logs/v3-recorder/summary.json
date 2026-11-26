@@ -1,0 +1,25 @@
+{
+  "schema": 3,
+  "boot_id": "99999999-8888-7777-6666-555555555555",
+  "build_id": "0.1.0-fztest",
+  "kernel_release": "7.3.0-rc3-fztest",
+  "dest": "stick",
+  "degraded": true,
+  "outcome": "power_loss",
+  "failed_units": ["iio-sensor-proxy.service"],
+  "suspend": {
+    "success": "0",
+    "fail": "1",
+    "failed_resume": "1",
+    "last_failed_dev": "phy0",
+    "last_failed_step": "resume"
+  },
+  "wifi": {"present": "1", "up": "0", "associated": "no", "last_error": "resume -110"},
+  "sound": {"cards": "1", "errors": "2"},
+  "waydroid": {"lines": "4", "errors": "1"},
+  "kernel": {"errors": "3", "warnings": "1"},
+  "top_signatures": [
+    {"issue": "nvme-enable-oops", "count": 1},
+    {"issue": "ath12k-resume-failure", "count": 1}
+  ]
+}

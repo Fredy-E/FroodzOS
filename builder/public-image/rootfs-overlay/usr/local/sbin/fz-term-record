@@ -1,0 +1,118 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-term-record: run one interactive shell under util-linux script in output-only mode when the kernel command line carries
+# fz_record=full. Every Konsole tab/split, tty login, ssh login, sudo -i and su - reaches either the Konsole profile or
+# /etc/bash.bashrc, so all of them land here. Output-only means the echoed command line is captured but a password typed at an
+# echo-off prompt never enters the typescript.
+#
+#   fz-term-record [interactive|login]
+#
+# Raw bytes stay in tmpfs (/run/fz-term/<uid>/<session>/): 32 MiB per session, 128 MiB per boot, then the raw and timing
+# files are rendered to a redacted transcript and JSONL records and removed. On any error the real shell is execed unchanged.
+# Test hooks: FZ_CMDLINE, FZ_RECORD_ON, FZ_REAL_SHELL, FZ_TERM_BASE, FZ_TERM_BOOT_KB, FZ_TERM_SESSION_BYTES, FZ_TERM_RENDER,
+# FZ_TERM_PROC, FZ_TERM_DISABLE.
+set -u
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+CMDLINE=${FZ_CMDLINE:-/proc/cmdline}
+BASE=${FZ_TERM_BASE:-/run/fz-term}
+BOOT_KB=${FZ_TERM_BOOT_KB:-131072}
+SESSION_BYTES=${FZ_TERM_SESSION_BYTES:-33554432}
+REAL=${FZ_REAL_SHELL:-${SHELL:-/bin/bash}}
+RENDER=${FZ_TERM_RENDER:-/usr/local/lib/fz-term-record/render.py}
+PROC=${FZ_TERM_PROC:-/proc}
+
+MODE=${1:-interactive}
+LOGIN=
+case "$MODE" in login|-l|--login) LOGIN=-l; MODE=login ;; esac
+
+fail_open() {
+    if [ -n "$LOGIN" ]; then exec "$REAL" -l; fi
+    exec "$REAL"
+}
+
+armed() {
+    on=${FZ_RECORD_ON:-/usr/local/sbin/fz-record-on}
+    if [ -x "$on" ]; then "$on" >/dev/null 2>&1; return $?; fi
+    [ -r "$CMDLINE" ] && grep -qw 'fz_record=full' "$CMDLINE" 2>/dev/null
+}
+
+under_recorder() {
+    p=${PPID:-0}
+    while [ "${p:-0}" -gt 1 ] 2>/dev/null; do
+        c=$(cat "$PROC/$p/comm" 2>/dev/null) || return 1
+        case "$c" in script|fz-term-record|fz-termwrap|asciinema*) return 0 ;; esac
+        p=$(awk '/^PPid:/{print $2; exit}' "$PROC/$p/status" 2>/dev/null)
+        case "$p" in ''|*[!0-9]*) return 1 ;; esac
+    done
+    return 1
+}
+
+[ -t 0 ] && [ -t 1 ] || fail_open
+[ -n "${FZ_TERM_DISABLE:-}" ] && fail_open
+[ -n "${FZ_TERM_ACTIVE:-}" ] && fail_open
+armed || fail_open
+under_recorder && fail_open
+command -v script >/dev/null 2>&1 || fail_open
+[ -x "$REAL" ] || REAL=/bin/bash
+
+used=$(du -sk "$BASE" 2>/dev/null | cut -f1)
+case "$used" in ''|*[!0-9]*) used=0 ;; esac
+[ "$used" -lt "$BOOT_KB" ] || fail_open
+
+umask 077
+DIR=$BASE/$(id -u)/$(date -u +%Y%m%dT%H%M%SZ)-$$-${RANDOM:-0}
+mkdir -p "$DIR" 2>/dev/null || fail_open
+chmod 700 "$DIR" 2>/dev/null
+
+{
+    printf 'session=%s\n' "${DIR##*/}"
+    printf 'start_utc=%s\n' "$(date -u +%FT%TZ)"
+    printf 'user=%s\n' "$(id -un 2>/dev/null || echo unknown)"
+    printf 'uid=%s\n' "$(id -u)"
+    printf 'tty=%s\n' "$(tty 2>/dev/null || echo none)"
+    printf 'term=%s\n' "${TERM:-unknown}"
+    printf 'shell=%s\n' "$REAL"
+    printf 'mode=%s\n' "$MODE"
+    printf 'boot_id=%s\n' "$(cat /proc/sys/kernel/random/boot_id 2>/dev/null)"
+    printf 'uname=%s\n' "$(uname -a 2>/dev/null)"
+} > "$DIR/meta" 2>/dev/null
+
+export FZ_TERM_ACTIVE=1
+export FZ_TERM_DIR="$DIR"
+export FZ_TERM_SESSION="${DIR##*/}"
+export FZ_TERM_CMDS="$DIR/commands.raw.tsv"
+
+finish() {
+    r=$?
+    trap - EXIT HUP TERM
+    printf 'end_utc=%s\n' "$(date -u +%FT%TZ)" >> "$DIR/meta" 2>/dev/null
+    sz=$(wc -c < "$DIR/session.raw" 2>/dev/null || echo 0)
+    case "$sz" in ''|*[!0-9]*) sz=0 ;; esac
+    [ "$sz" -ge "$SESSION_BYTES" ] && printf 'truncated=size\n' >> "$DIR/meta" 2>/dev/null
+    if [ -f "$RENDER" ] && command -v python3 >/dev/null 2>&1; then
+        # The boot folder on the stick belongs to root: render as root when this is a user session
+        # (passwordless sudo on the live image); otherwise fall back to rendering as the user.
+        SUDO=
+        LD=${FZ_LOG_DIR:-}
+        if [ -z "$LD" ] && [ -r "${FZ_RENDER_ENV_FILE:-/run/fz-smartlog/env}" ]; then
+            LD=$(sed -n "s/^FZ_LOG_DIR='\{0,1\}\([^']*\)'\{0,1\}\$/\1/p" "${FZ_RENDER_ENV_FILE:-/run/fz-smartlog/env}" 2>/dev/null | head -1)
+        fi
+        if [ -d "$LD" ] && [ ! -w "$LD" ] && command -v sudo >/dev/null 2>&1 && sudo -n true >/dev/null 2>&1; then SUDO="sudo -n"; fi
+        if command -v timeout >/dev/null 2>&1; then
+            $SUDO env FZ_TERM_SESSION_CAP=$SESSION_BYTES timeout 60 python3 "$RENDER" "$DIR" >/dev/null 2>&1 || true
+        else
+            $SUDO env FZ_TERM_SESSION_CAP=$SESSION_BYTES python3 "$RENDER" "$DIR" >/dev/null 2>&1 || true
+        fi
+    fi
+    : > "$DIR/.closed" 2>/dev/null
+    exit "$r"
+}
+trap finish EXIT
+trap 'exit 129' HUP TERM
+
+script -q -f -e -E auto \
+    --log-out "$DIR/session.raw" \
+    --log-timing "$DIR/session.timing" \
+    --output-limit "$SESSION_BYTES" \
+    -c "exec $REAL ${LOGIN}"
+exit $?

@@ -1,0 +1,45 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# fz-record-on: the single "record everything" switch for the FroodzOS live test system.
+#
+#   fz-record-on            exit 0 only when the kernel command line has the whole word fz_record=full
+#   fz-record-on --print    print the active profile: full or off (always exits 0)
+#   fz-record-on --help
+#
+# Other tools (terminal recorder, UI/Android capture, journald setup, the sleep hook) call this
+# instead of parsing /proc/cmdline themselves. The switch is off unless the owner explicitly adds
+# fz_record=full to a GRUB entry, so the public image keeps its normal behaviour.
+# FZ_CMDLINE overrides /proc/cmdline (unit tests and other harnesses).
+set -u
+
+if [ "${FZ_CMDLINE+set}" = set ]; then
+    CMDLINE=$FZ_CMDLINE
+else
+    CMDLINE=$(cat /proc/cmdline 2>/dev/null || true)
+fi
+
+PROFILE=off
+set -f
+for word in $CMDLINE; do
+    [ "$word" = "fz_record=full" ] && PROFILE=full
+done
+set +f
+
+case "${1:-}" in
+    --print|-p)
+        echo "$PROFILE"
+        exit 0
+        ;;
+    --help|-h)
+        sed -n '2,11p' "$0"
+        exit 0
+        ;;
+    "")
+        [ "$PROFILE" = full ]
+        exit $?
+        ;;
+    *)
+        echo "usage: fz-record-on [--print]" >&2
+        exit 2
+        ;;
+esac

@@ -1,0 +1,1499 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0-or-later
+"""fz-ui-capture: record the desktop (Plasma/KWin/Waydroid) when the kernel command line says fz_record=full.
+
+The core fz-smartlog supervisor owns the stream directories and exports the plug-in contract in
+/run/fz-smartlog/env (FZ_LOG_DIR, FZ_LOG_BOOT_ID, FZ_LOG_SEGMENT_BYTES, ...). This worker only writes JSONL
+records through fz_smartlog.writer.StreamWriter (or a small local fallback) and screenshots under
+<FZ_LOG_DIR>/ui/shots/. It writes nothing when /usr/local/sbin/fz-record-on says the boot is not a full
+recording boot, so the public image behaves exactly as before.
+
+Subcommands
+  journal-ui        drain the debug journal of the live user and of SDDM into stream 'ui' every 30 s,
+                    emit KWin/KScreen dumps on a schedule and on events, trigger event screenshots,
+                    and (optionally) log libinput event TYPES only - never key codes or key contents.
+  kwin-dump         one KWin supportInformation + kscreen-doctor -o dump into stream 'ui' (also installs
+                    the small KWin window-list script through DBus so captions and geometry reach 'ui').
+  shots [periodic|event]
+                    one Spectacle screenshot as the live user; WebP if cwebp exists, JPEG if ImageMagick
+                    convert exists, otherwise PNG. Rotates the periodic ring and keeps event shots.
+  waydroid-logcat   stream `waydroid logcat -b all -v threadtime` into stream 'waydroid' with host-side
+                    segment rotation, plus a bounded tail of /var/lib/waydroid/waydroid.log and a
+                    `waydroid status` poll.
+  enable-qt         link the curated Qt logging rules into /etc/xdg/QtProject/qtlogging.ini, but only
+                    when fz_record=full (systemd ExecStartPre; safe to run more than once).
+
+Test hooks (never used in production): FZ_CMDLINE (path or literal kernel command line), FZ_UI_ENV_FILE,
+FZ_UI_LEGACY_ENV_FILE, FZ_UI_STATE, FZ_LOG_DIR, FZ_QT_FULL, FZ_QT_LINK, FZ_UI_INPUT=0, FZ_CAPTURE_SCREEN=0.
+Safety: every external command has a timeout, every file has a cap, the service runs at Nice 10 without
+real-time or idle IO scheduling, and nothing reads stdin, the clipboard or key contents.
+Privacy: journal and logcat text is redacted (secrets and personal identifiers become stable pseudonyms);
+screenshots are inherently sensitive and are skipped while the session is locked.
+"""
+from __future__ import annotations
+
+import glob
+import hashlib
+import hmac
+import ipaddress
+import json
+import os
+import queue
+import re
+import select
+import shutil
+import signal
+import struct
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+
+try:  # POSIX user database; Windows CI only imports the parsing helpers
+    import pwd
+except ImportError:  # pragma: no cover - Windows
+    pwd = None
+
+try:
+    import fcntl
+except ImportError:  # pragma: no cover - Windows
+    fcntl = None
+
+PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+if os.name == "posix":
+    os.environ["PATH"] = PATH + ":" + os.environ.get("PATH", "")
+TICK_SEC = 30
+DRAIN_TIMEOUT = 25
+DRAIN_MAX_BYTES = 16 << 20
+JOURNAL_MESSAGE_MAX = 32 << 10
+JOURNAL_FIELD_MAX = 64 << 10
+LOGCAT_LINE_MAX = 16 << 10
+HOST_LINE_MAX = 8 << 10
+HOST_READ_MAX = 128 << 10
+SHOTS_DEFAULT_KB = 64 << 10
+SHOTS_KEEP_PERIODIC = 120
+SHOTS_KEEP_EVENTS = 20
+EVENT_MAX = 20
+EVENT_MIN_SEC = 30
+KWin_SCRIPT_NAME = "fz-windowlog"
+MARK = "<redacted:"
+
+PRIORITY_NAMES = {0: "emerg", 1: "alert", 2: "crit", 3: "err",
+                  4: "warning", 5: "notice", 6: "info", 7: "debug"}
+
+EVENT_RX = re.compile(
+    r"(?i)(dumped core|not responding|application .*(crash|segfault)|segmentation fault|"
+    r"kwin[_a-z]*.*(crash|ping|segfault)|failed to register with host portal|"
+    r"polkit.*(fail|error)|waydroid.*(fatal|anr|crash)|plasmashell.*(crash|segfault))")
+
+SAFE_USERS = {"root", "live", "nobody", "daemon", "sddm", "pipewire", "wireplumber"}
+SAFE_HOSTS = {"localhost", "localhost.localdomain", "live", "froodzos", "(none)"}
+
+STOP = threading.Event()
+_LAST_EVENT_TRIGGER = 0.0
+
+
+def log(msg):
+    sys.stderr.write("fz-ui-capture: %s\n" % msg)
+    try:
+        sys.stderr.flush()
+    except OSError:
+        pass
+
+
+# ------------------------------------------------------------------ generic helpers
+
+def have(cmd):
+    return shutil.which(cmd) is not None
+
+
+def run(cmd, timeout, env=None):
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, errors="replace",
+                              timeout=max(1, float(timeout)), env=env)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        log("command failed (%s): %s" % (" ".join(cmd), exc))
+        return None
+
+
+def utc_now():
+    now = time.time()
+    return time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(now)) + ".%03dZ" % int((now % 1) * 1000)
+
+
+def mono_now():
+    return round(time.monotonic(), 3)
+
+
+def state_dir():
+    path = os.environ.get("FZ_UI_STATE", "/run/fz-ui")
+    try:
+        os.makedirs(path, mode=0o755, exist_ok=True)
+    except OSError:
+        pass
+    return path
+
+
+def env_file():
+    return os.environ.get("FZ_UI_ENV_FILE", "/run/fz-smartlog/env")
+
+
+def legacy_env_file():
+    return os.environ.get("FZ_UI_LEGACY_ENV_FILE", "/run/fz-smartlog.env")
+
+
+def qt_full():
+    return os.environ.get("FZ_QT_FULL", "/etc/xdg/QtProject/qtlogging-froodzos-full.ini")
+
+
+def qt_link():
+    return os.environ.get("FZ_QT_LINK", "/etc/xdg/QtProject/qtlogging.ini")
+
+
+def env_int(env, key, default):
+    try:
+        return int(str(env.get(key, default)).strip())
+    except (TypeError, ValueError):
+        return default
+
+
+def counter_get(name):
+    try:
+        with open(os.path.join(state_dir(), name), encoding="ascii") as fh:
+            return int(fh.read().strip() or "0")
+    except (OSError, ValueError):
+        return 0
+
+
+def counter_set(name, value):
+    try:
+        path = os.path.join(state_dir(), name)
+        tmp = path + ".tmp"
+        with open(tmp, "w", encoding="ascii") as fh:
+            fh.write("%d\n" % value)
+        os.replace(tmp, path)
+    except OSError:
+        pass
+
+
+# ------------------------------------------------------------------ record gate
+
+def cmdline_says_full(env=None):
+    env = env if env is not None else os.environ
+    src = env.get("FZ_CMDLINE")
+    if src:
+        try:
+            if os.path.exists(src):
+                with open(src, encoding="utf-8", errors="replace") as fh:
+                    text = fh.read()
+            else:
+                text = src
+        except OSError:
+            return False
+    else:
+        try:
+            with open("/proc/cmdline", encoding="utf-8", errors="replace") as fh:
+                text = fh.read()
+        except OSError:
+            return False
+    return "fz_record=full" in text.split()
+
+
+def record_on(env=None):
+    """True only when the boot is a full recording boot (fz_record=full)."""
+    env = env if env is not None else os.environ
+    if env.get("FZ_CMDLINE") is not None:
+        return cmdline_says_full(env)
+    helper = "/usr/local/sbin/fz-record-on"
+    if os.path.isfile(helper) and os.access(helper, os.X_OK):
+        try:
+            return subprocess.run([helper], stdout=subprocess.DEVNULL,
+                                  stderr=subprocess.DEVNULL, timeout=5).returncode == 0
+        except (OSError, subprocess.TimeoutExpired):
+            pass
+    return cmdline_says_full(env)
+
+
+# ------------------------------------------------------------------ core environment
+
+def _read_env_file(path):
+    values = {}
+    try:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, value = line.split("=", 1)
+                values[key.strip()] = value.strip().strip('"').strip("'")
+    except OSError:
+        pass
+    return values
+
+
+def load_log_env(wait=0.0):
+    """The supervisor's plug-in environment; None while the core has not written it yet."""
+    deadline = time.monotonic() + max(0.0, float(wait))
+    while True:
+        values = {}
+        for path in (legacy_env_file(), env_file()):
+            values.update(_read_env_file(path))
+        values.update(os.environ)
+        if not values.get("FZ_LOG_DIR") and values.get("FZ_UI_LOG_DIR"):
+            values["FZ_LOG_DIR"] = values["FZ_UI_LOG_DIR"]
+        if values.get("FZ_LOG_DIR"):
+            return values
+        if time.monotonic() >= deadline:
+            return None
+        if STOP.wait(5):
+            return None
+
+
+def require_env(wait=0.0):
+    if not record_on():
+        return None
+    env = load_log_env(wait)
+    if not env:
+        log("waiting for the core environment (%s)" % env_file())
+        return None
+    # The core StreamWriter reads os.environ; the service does not source the env file.
+    for key in ("FZ_LOG_DIR", "FZ_LOG_BOOT_ID", "FZ_LOG_DEST_KIND", "FZ_LOG_SEGMENT_BYTES",
+                "FZ_LOG_SYNC_MS", "FZ_LOG_SYNC_BYTES", "FZ_LOG_MAX_STREAM_BYTES",
+                "FZ_LOG_PRIVACY", "FZ_LOG_SCHEMA"):
+        if env.get(key) is not None:
+            os.environ[key] = str(env[key])
+    return env
+
+
+# ------------------------------------------------------------------ redaction
+
+RE_PRIVKEY = re.compile(r"-----BEGIN (?:[A-Z0-9 ]+ )?PRIVATE KEY-----.*?"
+                        r"(?:-----END (?:[A-Z0-9 ]+ )?PRIVATE KEY-----|$)", re.S)
+RE_GITHUB = re.compile(r"\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{20,}\b|\bgithub_pat_[A-Za-z0-9_]{20,}\b")
+RE_AWS = re.compile(r"\bAKIA[0-9A-Z]{16}\b")
+RE_SK = re.compile(r"\bsk-(?:ant-|proj-)?[A-Za-z0-9_-]{20,}\b")
+RE_SLACK = re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b")
+RE_GOOGLE = re.compile(r"\bAIza[0-9A-Za-z_-]{30,}\b")
+RE_JWT = re.compile(r"\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b")
+RE_AUTH = re.compile(r"(?i)\b((?:proxy-)?authorization\s*:\s*)([A-Za-z]+\s+)?([^\s,;]+)")
+RE_COOKIE = re.compile(r"(?i)\b((?:set-)?cookie\s*:\s*)([^\r\n]+)")
+RE_URL_CRED = re.compile(r"(?P<scheme>[a-zA-Z][a-zA-Z0-9+.-]*://)(?P<info>[^/\s:@]+(?::[^/\s@]*)?)@")
+RE_BEARER = re.compile(r"(?i)\b((?:bearer|basic|token)\s+)([A-Za-z0-9._~+/=-]{8,})")
+RE_SECRET_KV = re.compile(
+    r"(?i)\b(psk|passphrase|password|wep-key[0-3]?|private_key_passwd|"
+    r"wifi-sec\.psk|802-11-wireless-security\.psk)(\s*[=:]\s*)([\"']?)([^\"'\r\n]*)(\3)")
+RE_SSID = re.compile(r"(?i)\b(ssid)(\s*[=:]\s*)([\"']?)([^\"'\r\n]*)(\3)")
+RE_SERIAL = re.compile(r"(?i)\b(serial(?:\s*number)?|serialno|s/n|iserialnumber)(\s*[=:]\s*)([\"']?)([^\"'\s]+)(\3)")
+RE_SERIAL_USB = re.compile(r"(?i)\b(iserial)(\s+\d+\s+)(\S+)")
+RE_HOST = re.compile(r"(?i)\b((?:hostname|host\s+name)\s*[=:]\s*)([\"']?)([^\"'\s]+)")
+RE_USER_KV = re.compile(r"(?i)\b((?:user|username|login)\s*=\s*)([\"']?)([^\"'\s,]+)")
+RE_EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}\b")
+RE_MAC = re.compile(r"\b(?:[0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}\b|\b[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\b")
+RE_UID_NAME = re.compile(r"\buid=\d+\((?P<name>[^)]+)\)")
+RE_HOME = re.compile(r"(?P<pre>/home/)(?P<name>[^/\s:]+)")
+RE_WINUSER = re.compile(r"(?i)(?P<pre>[A-Za-z]:\\Users\\)(?P<name>[^\\\s]+)")
+RE_IPV4 = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
+
+
+class Redactor:
+    """Small, idempotent redactor; keyed when FZ_REDACT_KEY is available, otherwise per-boot salted."""
+
+    def __init__(self, key=None, salt=""):
+        self.key = key
+        self.salt = salt or "fz-ui"
+        self.stats = {}
+
+    def token(self, kind, value):
+        value = str(value).strip()
+        if not value or MARK in value:
+            return value
+        if self.key:
+            digest = hmac.new(self.key, (kind + "\0" + value).encode("utf-8", "surrogateescape"),
+                              hashlib.sha256).hexdigest()[:12]
+        else:
+            digest = hashlib.sha256((self.salt + "\0" + kind + "\0" + value)
+                                    .encode("utf-8", "surrogateescape")).hexdigest()[:12]
+        self.stats[kind] = self.stats.get(kind, 0) + 1
+        return "%s%s:%s>" % (MARK, kind, digest)
+
+    @staticmethod
+    def _safe_user(name):
+        return name.lower() in SAFE_USERS
+
+    def text(self, value):
+        if value is None:
+            return ""
+        text = str(value)
+        if len(text) > JOURNAL_FIELD_MAX:
+            text = text[:JOURNAL_FIELD_MAX] + " <truncated-field>"
+        text = RE_PRIVKEY.sub(lambda m: self.token("private-key", m.group(0)), text)
+        text = RE_AUTH.sub(
+            lambda m: m.group(1) + (m.group(2) or "") + self.token("auth", m.group(3)), text)
+        text = RE_COOKIE.sub(
+            lambda m: m.group(1) + self.token("cookie", m.group(2)), text)
+        text = RE_URL_CRED.sub(
+            lambda m: m.group("scheme") + self.token("url-credential", m.group("info")) + "@", text)
+        text = RE_BEARER.sub(
+            lambda m: m.group(1) + self.token("bearer", m.group(2)), text)
+        for kind, rx in (("github", RE_GITHUB), ("aws", RE_AWS), ("api-key", RE_SK),
+                         ("slack", RE_SLACK), ("google", RE_GOOGLE), ("jwt", RE_JWT)):
+            text = rx.sub(lambda m, k=kind: self.token(k, m.group(0)), text)
+        text = RE_SECRET_KV.sub(
+            lambda m: m.group(1) + m.group(2) + m.group(3) + self.token("psk", m.group(4)) + m.group(3), text)
+        text = RE_SSID.sub(
+            lambda m: m.group(1) + m.group(2) + m.group(3) + self.token("ssid", m.group(4)) + m.group(3), text)
+        text = RE_SERIAL.sub(
+            lambda m: m.group(1) + m.group(2) + m.group(3) + self.token("serial", m.group(4)) + m.group(3), text)
+        text = RE_SERIAL_USB.sub(
+            lambda m: m.group(1) + m.group(2) + self.token("serial", m.group(3)), text)
+        text = RE_HOST.sub(
+            lambda m: m.group(1) + m.group(2) +
+            (m.group(3) if m.group(3).lower() in SAFE_HOSTS else self.token("host", m.group(3))), text)
+        text = RE_USER_KV.sub(
+            lambda m: m.group(1) + m.group(2) +
+            (m.group(3) if self._safe_user(m.group(3)) else self.token("user", m.group(3))), text)
+        text = RE_EMAIL.sub(lambda m: self.token("email", m.group(0)), text)
+        text = RE_MAC.sub(lambda m: self.token("mac", m.group(0)), text)
+        text = RE_UID_NAME.sub(
+            lambda m: "uid=" + re.search(r"\d+", m.group(0)).group(0) + "(" +
+            (m.group("name") if self._safe_user(m.group("name"))
+             else self.token("user", m.group("name"))) + ")", text)
+        text = RE_HOME.sub(
+            lambda m: m.group("pre") + (m.group("name") if self._safe_user(m.group("name"))
+                                        else self.token("user", m.group("name"))), text)
+        text = RE_WINUSER.sub(
+            lambda m: m.group("pre") + (m.group("name") if self._safe_user(m.group("name"))
+                                        else self.token("user", m.group("name"))), text)
+        text = RE_IPV4.sub(self._redact_public_ipv4, text)
+        return text
+
+    def _redact_public_ipv4(self, match):
+        value = match.group(0)
+        try:
+            addr = ipaddress.IPv4Address(value)
+        except ValueError:
+            return value
+        if not addr.is_global:
+            return value
+        return self.token("ip", value)
+
+
+def make_redactor(env):
+    key = None
+    key_hex = env.get("FZ_REDACT_KEY") or os.environ.get("FZ_REDACT_KEY")
+    key_file = env.get("FZ_REDACT_KEY_FILE") or os.environ.get("FZ_REDACT_KEY_FILE")
+    try:
+        if key_hex:
+            key = bytes.fromhex(key_hex.strip())
+        elif key_file and os.path.isfile(key_file):
+            with open(key_file, "rb") as fh:
+                raw = fh.read().strip()
+            try:
+                key = bytes.fromhex(raw.decode("ascii"))
+            except (ValueError, UnicodeDecodeError):
+                key = raw
+    except (ValueError, OSError):
+        key = None
+    return Redactor(key, env.get("FZ_LOG_BOOT_ID", ""))
+
+
+# ------------------------------------------------------------------ stream writer
+
+class LocationFailed(Exception):
+    pass
+
+
+class _ShimWriter:
+    """Minimal JSONL writer used only when the core fz_smartlog.writer is not importable (and by tests)."""
+
+    def __init__(self, stream, max_bytes=None, segment_bytes=None, base_dir=None):
+        base = base_dir or os.environ.get("FZ_LOG_DIR")
+        if not base:
+            raise LocationFailed("FZ_LOG_DIR is not set")
+        self.stream = stream
+        self.max_bytes = int(max_bytes if max_bytes is not None else 32 << 20)
+        self.segment_bytes = max(4096, int(segment_bytes if segment_bytes is not None else 8 << 20))
+        self.dir = os.path.join(base, stream)
+        os.makedirs(self.dir, exist_ok=True)
+        self.seq = self._next_seq()
+        self.path = self._seg_path(self.seq)
+        self.fh = open(self.path, "ab", buffering=0)
+        self.seg_bytes = os.path.getsize(self.path)
+        self.total = self._total_bytes()
+        self.closed = False
+        self.full = False
+
+    def _next_seq(self):
+        best = 0
+        for name in os.listdir(self.dir):
+            m = re.fullmatch(r"(\d{6})\.jsonl", name)
+            if m:
+                best = max(best, int(m.group(1)))
+        return best + 1
+
+    def _seg_path(self, seq):
+        return os.path.join(self.dir, "%06d.jsonl" % seq)
+
+    def _total_bytes(self):
+        total = 0
+        for name in os.listdir(self.dir):
+            if re.fullmatch(r"\d{6}\.jsonl", name):
+                try:
+                    total += os.path.getsize(os.path.join(self.dir, name))
+                except OSError:
+                    pass
+        return total
+
+    def write(self, record):
+        if self.closed or self.full:
+            return
+        line = json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n"
+        data = line.encode("utf-8", "replace")
+        if self.total + len(data) > self.max_bytes:
+            self.full = True
+            return
+        self.fh.write(data)
+        self.seg_bytes += len(data)
+        self.total += len(data)
+        if self.seg_bytes >= self.segment_bytes:
+            self.rotate("size")
+
+    def flush(self):
+        if self.closed:
+            return
+        try:
+            if hasattr(os, "fdatasync"):
+                os.fdatasync(self.fh.fileno())
+            else:  # pragma: no cover - Windows tests
+                os.fsync(self.fh.fileno())
+        except OSError:
+            pass
+
+    def rotate(self, reason="size"):
+        if self.closed:
+            return
+        self.flush()
+        try:
+            self.fh.close()
+        except OSError:
+            pass
+        self.seq += 1
+        self.path = self._seg_path(self.seq)
+        self.fh = open(self.path, "ab", buffering=0)
+        self.seg_bytes = 0
+
+    def close(self):
+        if self.closed:
+            return
+        try:
+            self.write({"_fz": "stream_closed", "reason": "close"})
+            self.flush()
+        finally:
+            self.closed = True
+            try:
+                self.fh.close()
+            except OSError:
+                pass
+
+
+def make_writer(stream, env):
+    max_bytes = env_int(env, "FZ_LOG_MAX_STREAM_BYTES", 32 << 20)
+    segment_bytes = env_int(env, "FZ_LOG_SEGMENT_BYTES", 8 << 20)
+    try:
+        path = "/usr/local/lib/fz-smartlog"
+        if path not in sys.path:
+            sys.path.insert(0, path)
+        from fz_smartlog.writer import StreamWriter  # type: ignore
+        return StreamWriter(stream, max_bytes=max_bytes, segment_bytes=segment_bytes)
+    except Exception as exc:  # ImportError, or a core that is not ready yet
+        log("core writer unavailable (%s); using the JSONL fallback" % exc)
+        return _ShimWriter(stream, max_bytes=max_bytes, segment_bytes=segment_bytes,
+                           base_dir=env.get("FZ_LOG_DIR"))
+
+
+# ------------------------------------------------------------------ live session
+
+def _pw(uid):
+    if pwd is None:
+        return (uid, "live", "/home/live")
+    try:
+        entry = pwd.getpwuid(uid)
+        return (entry.pw_uid, entry.pw_name, entry.pw_dir)
+    except KeyError:
+        return (uid, "live", "/home/live")
+
+
+def live_uid():
+    forced = os.environ.get("FZ_UI_UID")
+    if forced:
+        try:
+            return int(forced)
+        except ValueError:
+            pass
+    res = run(["loginctl", "list-sessions", "--no-legend"], 5)
+    if res is not None and res.returncode == 0:
+        for line in res.stdout.splitlines():
+            parts = line.split()
+            if len(parts) >= 2 and parts[1].isdigit():
+                uid = int(parts[1])
+                if uid >= 1000:
+                    return uid
+    if pwd is not None:
+        try:
+            for entry in pwd.getpwall():
+                if 1000 <= entry.pw_uid < 60000 and os.path.isdir("/run/user/%d" % entry.pw_uid):
+                    return entry.pw_uid
+        except OSError:
+            pass
+    return 1000
+
+
+def find_wayland(uid):
+    try:
+        sockets = sorted(glob.glob("/run/user/%d/wayland-*" % uid))
+    except OSError:
+        return None
+    for path in sockets:
+        name = os.path.basename(path)
+        if name.endswith(".lock"):
+            continue
+        if os.path.exists(path):
+            return name
+    return None
+
+
+def session_locked(uid):
+    res = run(["loginctl", "list-sessions", "--no-legend"], 5)
+    if res is None or res.returncode != 0:
+        return False
+    session = None
+    for line in res.stdout.splitlines():
+        parts = line.split()
+        if len(parts) >= 2 and parts[1].isdigit() and int(parts[1]) == uid:
+            session = parts[0]
+            break
+    if not session:
+        return False
+    res = run(["loginctl", "show-session", session, "-p", "LockedHint", "--value"], 5)
+    return bool(res is not None and res.stdout.strip() == "yes")
+
+
+def user_argv(uid, name, home, wayland, argv):
+    if hasattr(os, "geteuid") and os.geteuid() == uid:
+        return list(argv)
+    if not have("runuser"):
+        return None
+    prefix = ["runuser", "-u", name, "--", "env",
+              "HOME=%s" % home,
+              "XDG_RUNTIME_DIR=/run/user/%d" % uid,
+              "XDG_SESSION_TYPE=wayland",
+              "XDG_CURRENT_DESKTOP=KDE",
+              "QT_QPA_PLATFORM=wayland",
+              "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%d/bus" % uid,
+              "WAYLAND_DISPLAY=%s" % wayland]
+    return prefix + list(argv)
+
+
+def run_as_user(uid, name, home, wayland, argv, timeout):
+    wrapped = list(argv)
+    if have("timeout"):
+        wrapped = ["timeout", "-k", "2", str(int(timeout))] + wrapped
+    cmd = user_argv(uid, name, home, wayland, wrapped)
+    if cmd is None:
+        log("runuser is not available; cannot run as uid %d" % uid)
+        return None
+    return run(cmd, timeout + 5)
+
+
+# ------------------------------------------------------------------ journal
+
+def _decode_message(value):
+    if isinstance(value, list):
+        try:
+            return bytes(value).decode("utf-8", "replace")
+        except (TypeError, ValueError):
+            return str(value)
+    if value is None:
+        return ""
+    return str(value)
+
+
+def _int_or_none(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _us_to_iso(value):
+    try:
+        seconds = float(value) / 1e6
+    except (TypeError, ValueError):
+        return None
+    return time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(seconds)) + \
+        ".%03dZ" % int((seconds % 1) * 1000)
+
+
+def _us_to_seconds(value):
+    try:
+        return round(float(value) / 1e6, 3)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def journal_record(obj, redactor=None):
+    """Turn one journalctl -o json object into a bounded, redacted record for stream 'ui'."""
+    if not isinstance(obj, dict):
+        return None, False
+    redactor = redactor or Redactor(None, "fz-ui")
+    message = _decode_message(obj.get("MESSAGE"))
+    truncated = len(message) > JOURNAL_MESSAGE_MAX
+    if truncated:
+        message = message[:JOURNAL_MESSAGE_MAX]
+    ident = obj.get("SYSLOG_IDENTIFIER") or obj.get("_COMM") or ""
+    unit = obj.get("_SYSTEMD_USER_UNIT") or obj.get("_SYSTEMD_UNIT") or ""
+    if ident == "fz-ui-capture" or unit == "fz-ui-capture.service":
+        return None, False  # never feed our own log back into the stream
+    record = {
+        "ts": _us_to_iso(obj.get("__REALTIME_TIMESTAMP")) or utc_now(),
+        "mono": _us_to_seconds(obj.get("__MONOTONIC_TIMESTAMP")),
+        "source": "journal",
+        "app": ident or unit,
+        "ident": ident,
+        "unit": unit,
+        "pid": _int_or_none(obj.get("_PID")),
+        "uid": _int_or_none(obj.get("_UID")),
+        "severity": PRIORITY_NAMES.get(_int_or_none(obj.get("PRIORITY")), str(obj.get("PRIORITY", ""))),
+        "message": redactor.text(message),
+    }
+    if truncated:
+        record["truncated"] = True
+    event = bool(EVENT_RX.search(message))
+    if ident == "systemd-coredump" or "dumped core" in message.lower():
+        record["event"] = "coredump"
+        event = True
+    elif event:
+        record["event"] = "attention"
+    return record, event
+
+
+def parse_journal_line(line, redactor=None):
+    try:
+        obj = json.loads(line)
+    except (TypeError, ValueError):
+        return None, False
+    return journal_record(obj, redactor)
+
+
+def _drain_file(writer, redactor, cursor, matches, label):
+    cmd = ["journalctl", "-b", "-q", "--no-pager", "-o", "json", "-p", "debug",
+           "-n", "50000", "--cursor-file=%s" % cursor] + list(matches)
+    tmp = None
+    try:
+        fd, tmp = tempfile.mkstemp(prefix="drain-", dir=state_dir())
+        os.close(fd)
+        with open(tmp, "wb") as out:
+            res = subprocess.run(cmd, stdout=out, stderr=subprocess.DEVNULL,
+                                 timeout=DRAIN_TIMEOUT)
+        if res.returncode != 0:
+            log("%s drain exited %d" % (label, res.returncode))
+            try:
+                os.unlink(cursor)  # a stale or unreadable cursor must not wedge the stream
+            except OSError:
+                pass
+            return 0, False
+        size = os.path.getsize(tmp)
+        with open(tmp, "rb") as fh:
+            data = fh.read(DRAIN_MAX_BYTES)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        log("%s drain failed: %s" % (label, exc))
+        return 0, False
+    finally:
+        if tmp:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
+    count = 0
+    event = False
+    for raw in data.split(b"\n"):
+        if not raw.strip():
+            continue
+        record, hit = parse_journal_line(raw.decode("utf-8", "replace"), redactor)
+        if record is None:
+            continue
+        try:
+            writer.write(record)
+        except (OSError, LocationFailed) as exc:
+            log("writer failed: %s" % exc)
+            raise
+        count += 1
+        event = event or hit
+    if size > len(data):
+        try:
+            writer.write({"ts": utc_now(), "mono": mono_now(), "source": "journal",
+                          "event": "drain-truncated", "label": label,
+                          "bytes_read": len(data), "bytes_available": size})
+        except (OSError, LocationFailed):
+            pass
+    return count, event
+
+
+def drain_journal(writer, redactor, uid, boot_id=""):
+    suffix = ("-" + boot_id) if boot_id else ""
+    cursor_uid = os.path.join(state_dir(), "cursor-uid-%d%s" % (uid, suffix))
+    cursor_sddm = os.path.join(state_dir(), "cursor-sddm%s" % suffix)
+    count, event = _drain_file(writer, redactor, cursor_uid, ["_UID=%d" % uid], "user")
+    more, hit = _drain_file(writer, redactor, cursor_sddm,
+                            ["_SYSTEMD_UNIT=sddm.service", "+", "_COMM=sddm-greeter"], "sddm")
+    return count + more, event or hit
+
+
+# ------------------------------------------------------------------ logcat
+
+LOGCAT_RX = re.compile(
+    r"^(?P<date>\d{2}-\d{2})\s+(?P<clock>\d{2}:\d{2}:\d{2}\.\d{3})\s+"
+    r"(?P<pid>\d+)\s+(?P<tid>\d+)\s+(?P<level>[VDIWEFAS])\s+"
+    r"(?P<tag>.*?)\s*:\s?(?P<msg>.*)$")
+
+
+def parse_logcat_line(line):
+    """Parse one `logcat -v threadtime` line (or a continuation/header line)."""
+    text = line.rstrip("\r\n")
+    match = LOGCAT_RX.match(text)
+    if not match:
+        return {"continuation": True, "level": None, "pid": None, "tid": None,
+                "tag": None, "msg": text}
+    fields = match.groupdict()
+    return {
+        "continuation": False,
+        "android_ts": "%s %s" % (fields["date"], fields["clock"]),
+        "pid": int(fields["pid"]),
+        "tid": int(fields["tid"]),
+        "level": fields["level"],
+        "tag": fields["tag"].strip(),
+        "msg": fields["msg"],
+    }
+
+
+def logcat_record(line, redactor=None):
+    redactor = redactor or Redactor(None, "fz-ui")
+    parsed = parse_logcat_line(line)
+    truncated = len(parsed["msg"]) > LOGCAT_LINE_MAX
+    if truncated:
+        parsed["msg"] = parsed["msg"][:LOGCAT_LINE_MAX]
+    record = {
+        "ts": utc_now(),
+        "mono": mono_now(),
+        "source": "logcat",
+        "continuation": parsed["continuation"],
+        "android_ts": parsed.get("android_ts"),
+        "pid": parsed["pid"],
+        "tid": parsed["tid"],
+        "level": parsed["level"],
+        "tag": redactor.text(parsed["tag"]) if parsed["tag"] else None,
+        "msg": redactor.text(parsed["msg"]),
+    }
+    if truncated:
+        record["truncated"] = True
+    return record
+
+
+# ------------------------------------------------------------------ input event types
+
+if sys.byteorder == "little":
+    _EVENT = struct.Struct("<qqHHi")
+else:  # pragma: no cover - big-endian
+    _EVENT = struct.Struct(">qqHHi")
+EVENT_SIZE = _EVENT.size
+
+EV_NAMES = {0: "EV_SYN", 1: "EV_KEY", 2: "EV_REL", 3: "EV_ABS", 4: "EV_MSC",
+            5: "EV_SW", 17: "EV_LED", 21: "EV_FF"}
+
+
+def summarize_input_events(data, event_size=None):
+    """Count input event TYPES only. Codes and values are never returned (no key identity/content)."""
+    size = event_size or EVENT_SIZE
+    counts = {}
+    if size <= 0:
+        return counts
+    for offset in range(0, len(data) - size + 1, size):
+        try:
+            _sec, _usec, ev_type, _code, _value = _EVENT.unpack_from(data, offset)
+        except struct.error:
+            break
+        name = EV_NAMES.get(ev_type, "EV_%d" % ev_type)
+        counts[name] = counts.get(name, 0) + 1
+    return counts
+
+
+def find_touchpad():
+    try:
+        with open("/proc/bus/input/devices", encoding="utf-8", errors="replace") as fh:
+            text = fh.read()
+    except OSError:
+        return None
+    for block in text.split("\n\n"):
+        low = block.lower()
+        if "touchpad" not in low and "trackpad" not in low:
+            continue
+        match = re.search(r"^H: Handlers=(.*)$", block, re.M)
+        if not match:
+            continue
+        for token in match.group(1).split():
+            if re.fullmatch(r"event\d+", token):
+                return "/dev/input/" + token
+    return None
+
+
+def _input_loop(records, stop):
+    if os.environ.get("FZ_UI_INPUT", "1") == "0":
+        return
+    node = find_touchpad()
+    if not node:
+        return
+    try:
+        fd = os.open(node, os.O_RDONLY | os.O_NONBLOCK)
+    except OSError as exc:
+        log("cannot open %s: %s" % (node, exc))
+        return
+    counts = {}
+    last_emit = time.monotonic()
+    try:
+        while not stop.is_set():
+            try:
+                ready, _, _ = select.select([fd], [], [], 5)
+            except (OSError, ValueError):
+                break
+            if ready:
+                try:
+                    data = os.read(fd, EVENT_SIZE * 256)
+                except (BlockingIOError, OSError):
+                    data = b""
+                for name, number in summarize_input_events(data).items():
+                    counts[name] = counts.get(name, 0) + number
+            now = time.monotonic()
+            if counts and (now - last_emit >= 5 or sum(counts.values()) >= 500):
+                try:
+                    records.put_nowait({
+                        "ts": utc_now(), "mono": round(now, 3), "source": "input",
+                        "kind": "libinput-types", "device": "touchpad",
+                        "counts": dict(counts),
+                        "note": "event types only; key codes and values are never captured",
+                    })
+                except queue.Full:
+                    pass
+                counts = {}
+                last_emit = now
+    finally:
+        try:
+            os.close(fd)
+        except OSError:
+            pass
+
+
+# ------------------------------------------------------------------ KWin / KScreen
+
+WINDOW_SCRIPT = r"""// FroodzOS window list: captions and geometry into the user journal (read by fz-ui-capture).
+function geo(w) { var r = w.frameGeometry; return [r.x, r.y, r.width, r.height]; }
+function dump(t, w) {
+    if (!w) { return; }
+    console.info("[FZ-WINDOW] " + JSON.stringify({
+        t: t, id: String(w.internalId), pid: w.pid, cls: w.resourceClass,
+        name: w.resourceName, desktop: w.desktopFileName, title: w.caption,
+        active: w.active, min: w.minimized, modal: w.modal,
+        attention: w.demandsAttention, geo: geo(w)
+    }));
+}
+function dumpAll(t) {
+    var list = workspace.windowList();
+    for (var i = 0; i < list.length; i++) { dump(t, list[i]); }
+}
+try {
+    workspace.windowAdded.connect(function (w) {
+        dump("added", w);
+        w.captionChanged.connect(function () { dump("title", w); });
+        w.frameGeometryChanged.connect(function () { dump("geometry", w); });
+        w.activeChanged.connect(function () { if (w.active) { dump("active", w); } });
+        w.minimizedChanged.connect(function () { dump("minimized", w); });
+        w.demandsAttentionChanged.connect(function () { dump("attention", w); });
+    });
+    workspace.windowRemoved.connect(function (w) { dump("removed", w); });
+    var timer = new QTimer();
+    timer.interval = 60000;
+    timer.timeout.connect(function () { dumpAll("periodic"); });
+    timer.start();
+    dumpAll("startup");
+} catch (e) {
+    console.info("[FZ-WINDOW] script error: " + e);
+}
+"""
+
+
+def _qdbus():
+    for name in ("qdbus6", "qdbus"):
+        if have(name):
+            return name
+    return None
+
+
+def ensure_window_script(uid, name, home, wayland):
+    """Write and (re)load the KWin window-list script through the supported scripting DBus API."""
+    bus = _qdbus()
+    if not bus:
+        return False
+    path = os.path.join(state_dir(), "fz-windowlog.js")
+    try:
+        tmp = path + ".tmp"
+        with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(WINDOW_SCRIPT)
+        os.chmod(tmp, 0o644)
+        os.replace(tmp, path)
+    except OSError as exc:
+        log("cannot write the KWin script: %s" % exc)
+        return False
+    for argv in (
+        [bus, "org.kde.KWin", "/Scripting", "org.kde.kwin.Scripting.unloadScript", KWin_SCRIPT_NAME],
+        [bus, "org.kde.KWin", "/Scripting", "org.kde.kwin.Scripting.loadScript", path, KWin_SCRIPT_NAME],
+        [bus, "org.kde.KWin", "/Scripting", "org.kde.kwin.Scripting.start"],
+    ):
+        run_as_user(uid, name, home, wayland, argv, 10)
+    return True
+
+
+def _emit_text(writer, source, kind, text, extra=None):
+    text = text or ""
+    truncated = len(text) > 32768
+    record = {"ts": utc_now(), "mono": mono_now(), "source": source,
+              "kind": kind, "text": text[:32768]}
+    if truncated:
+        record["truncated"] = True
+    if extra:
+        record.update(extra)
+    writer.write(record)
+
+
+def do_kwin_dump(writer, redactor, uid=None, name=None, home=None, wayland=None,
+                 reload_script=True):
+    uid = live_uid() if uid is None else uid
+    if name is None:
+        _uid, name, home = _pw(uid)
+    wayland = wayland or find_wayland(uid)
+    if not wayland:
+        return False
+    if reload_script:
+        ensure_window_script(uid, name, home, wayland)
+    bus = _qdbus()
+    if bus:
+        res = run_as_user(uid, name, home, wayland,
+                          [bus, "org.kde.KWin", "/KWin", "supportInformation"], 8)
+        if res is not None and res.returncode == 0:
+            _emit_text(writer, "kwin", "support-information", res.stdout)
+        else:
+            _emit_text(writer, "kwin", "support-information-error",
+                       (res.stderr if res is not None else "qdbus6 unavailable"))
+    if have("kscreen-doctor"):
+        res = run_as_user(uid, name, home, wayland, ["kscreen-doctor", "-o"], 10)
+        if res is not None and res.returncode == 0:
+            _emit_text(writer, "kwin", "kscreen-outputs", res.stdout)
+        else:
+            _emit_text(writer, "kwin", "kscreen-outputs-error",
+                       (res.stderr if res is not None else "kscreen-doctor unavailable"))
+    return True
+
+
+# ------------------------------------------------------------------ screenshots
+
+SHOT_EXTENSIONS = (".webp", ".png", ".jpg", ".jpeg")
+
+
+def shot_files(directory):
+    try:
+        names = os.listdir(directory)
+    except OSError:
+        return []
+    files = [os.path.join(directory, n) for n in names
+             if n.lower().endswith(SHOT_EXTENSIONS) and os.path.isfile(os.path.join(directory, n))]
+    return sorted(files, key=os.path.basename)
+
+
+def _total_kb(files):
+    total = 0
+    for path in files:
+        try:
+            total += os.path.getsize(path)
+        except OSError:
+            pass
+    return (total + 1023) // 1024
+
+
+def gc_shots(directory, max_kb, keep_periodic, keep_events):
+    """Prune the periodic ring first, then old events; never remove the newest event shot."""
+    files = shot_files(directory)
+    periodic = [p for p in files if "-periodic" in os.path.basename(p)]
+    events = [p for p in files if "-event" in os.path.basename(p)]
+
+    def remove(path):
+        try:
+            os.unlink(path)
+        except OSError:
+            pass
+
+    keep_periodic = max(0, int(keep_periodic))
+    keep_events = max(1, int(keep_events))
+    while len(periodic) > keep_periodic:
+        remove(periodic.pop(0))
+    while _total_kb(shot_files(directory)) > max(0, int(max_kb)) and periodic:
+        remove(periodic.pop(0))
+    while len(events) > keep_events:
+        remove(events.pop(0))
+    while _total_kb(shot_files(directory)) > max(0, int(max_kb)) and len(events) > 1:
+        remove(events.pop(0))
+
+
+def _shot_lock():
+    if fcntl is None:
+        return None
+    try:
+        fd = os.open(os.path.join(state_dir(), "shots.lock"), os.O_CREAT | os.O_RDWR, 0o600)
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        return fd
+    except OSError:
+        return None
+
+
+def maybe_event_shot(env):
+    global _LAST_EVENT_TRIGGER
+    now = time.monotonic()
+    if now - _LAST_EVENT_TRIGGER < EVENT_MIN_SEC:
+        return
+    if counter_get("event-count") >= env_int(env, "FZ_UI_EVENT_MAX", EVENT_MAX):
+        return
+    _LAST_EVENT_TRIGGER = now
+    try:
+        subprocess.Popen([sys.executable, "-B", os.path.realpath(__file__), "shots", "event"],
+                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                         start_new_session=True, env=dict(os.environ))
+    except OSError as exc:
+        log("cannot start the event screenshot: %s" % exc)
+
+
+def _nonempty(path):
+    try:
+        return os.path.isfile(path) and os.path.getsize(path) > 0
+    except OSError:
+        return False
+
+
+def take_shot(mode):
+    env = require_env(wait=60)
+    if not env:
+        return 0
+    if os.environ.get("FZ_CAPTURE_SCREEN", "1") == "0":
+        return 0
+    uid = live_uid()
+    _uid, name, home = _pw(uid)
+    wayland = find_wayland(uid)
+    if not wayland:
+        log("no Wayland socket for uid %d; screenshot skipped" % uid)
+        return 0
+    if session_locked(uid):
+        log("session is locked; screenshot skipped")
+        return 0
+    shots_dir = os.path.join(env["FZ_LOG_DIR"], "ui", "shots")
+    try:
+        os.makedirs(shots_dir, exist_ok=True)
+    except OSError as exc:
+        log("cannot create %s: %s" % (shots_dir, exc))
+        return 0
+    lock = _shot_lock()
+    if fcntl is not None and lock is None:
+        return 0  # another screenshot is running
+
+    if mode == "event":
+        used = counter_get("event-count")
+        last = counter_get("last-event-shot")
+        now = int(time.time())
+        if used >= env_int(env, "FZ_UI_EVENT_MAX", EVENT_MAX):
+            return 0
+        if last and now - last < env_int(env, "FZ_UI_EVENT_MIN_SEC", EVENT_MIN_SEC):
+            return 0
+        counter_set("event-count", used + 1)
+        counter_set("last-event-shot", now)
+
+    tmpdir = "/tmp" if os.path.isdir("/tmp") else None
+    tmp = os.path.join(tmpdir or tempfile.gettempdir(),
+                       "fz-shot-%d-%d.png" % (os.getpid(), int(time.time() * 1000)))
+    try:
+        os.unlink(tmp)
+    except OSError:
+        pass
+    res = run_as_user(uid, name, home, wayland,
+                      ["spectacle", "-b", "-n", "-f", "-o", tmp], 30)
+    if res is None or res.returncode != 0 or not os.path.exists(tmp) or os.path.getsize(tmp) <= 0:
+        log("spectacle failed (%s); screenshot skipped" % mode)
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        return 0
+
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    base = os.path.join(shots_dir, "%s-%s" % (stamp, mode))
+    out = None
+    cwebp = shutil.which("cwebp")
+    convert = shutil.which("convert")
+    try:
+        if cwebp:
+            candidate = base + ".webp"
+            res = run([cwebp, "-quiet", "-q", "70", "-resize", "1280", "0", tmp, "-o", candidate], 30)
+            if res is not None and res.returncode == 0 and _nonempty(candidate):
+                out = candidate
+            else:
+                try:
+                    os.unlink(candidate)
+                except OSError:
+                    pass
+        if out is None and convert:
+            candidate = base + ".jpg"
+            res = run([convert, tmp, "-resize", "1280x>", "-quality", "70", candidate], 30)
+            if res is not None and res.returncode == 0 and _nonempty(candidate):
+                out = candidate
+            else:
+                try:
+                    os.unlink(candidate)
+                except OSError:
+                    pass
+        if out is None:
+            out = base + ".png"
+            shutil.copyfile(tmp, out)
+        try:
+            os.chmod(out, 0o600)
+        except OSError:
+            pass
+    except OSError as exc:
+        log("could not store the screenshot: %s" % exc)
+        out = None
+    finally:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+    if fcntl is not None and lock is not None:
+        try:
+            os.close(lock)
+        except OSError:
+            pass
+    if out:
+        gc_shots(shots_dir, env_int(env, "FZ_UI_SHOTS_MAX_KB", SHOTS_DEFAULT_KB),
+                 env_int(env, "FZ_UI_SHOTS_KEEP", SHOTS_KEEP_PERIODIC),
+                 env_int(env, "FZ_UI_SHOTS_EVENTS", SHOTS_KEEP_EVENTS))
+    return 0
+
+
+# ------------------------------------------------------------------ Qt rules activation
+
+def enable_qt(env=None):
+    env = env if env is not None else os.environ
+    full = env.get("FZ_QT_FULL", qt_full())
+    link = env.get("FZ_QT_LINK", qt_link())
+    try:
+        if not record_on(env):
+            if os.path.islink(link) and os.path.realpath(link) == os.path.realpath(full):
+                os.unlink(link)
+            return True
+        if not os.path.isfile(full):
+            log("curated Qt rules are missing: %s" % full)
+            return False
+        os.makedirs(os.path.dirname(link), exist_ok=True)
+        if os.path.lexists(link):
+            if os.path.islink(link) and os.path.realpath(link) == os.path.realpath(full):
+                return True
+            log("not replacing the existing %s" % link)
+            return False
+        tmp = link + ".fz-tmp"
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        os.symlink(full, tmp)
+        os.replace(tmp, link)
+        return True
+    except OSError as exc:
+        log("cannot activate the Qt rules: %s" % exc)
+        return False
+
+
+# ------------------------------------------------------------------ journal-ui
+
+def _install_stop_handlers():
+    def handler(_signum, _frame):
+        STOP.set()
+    for name in ("SIGTERM", "SIGINT", "SIGHUP"):
+        try:
+            signal.signal(getattr(signal, name), handler)
+        except (AttributeError, ValueError, OSError):
+            pass
+
+
+def cmd_journal_ui():
+    if not record_on():
+        return 0
+    env = require_env(wait=120)
+    if not env:
+        return 0
+    enable_qt()
+    writer = make_writer("ui", env)
+    redactor = make_redactor(env)
+    _install_stop_handlers()
+    input_queue = queue.Queue(maxsize=64)
+    threading.Thread(target=_input_loop, args=(input_queue, STOP), daemon=True).start()
+    ticks = 0
+    script_loaded = False
+    try:
+        while not STOP.is_set():
+            uid = live_uid()
+            _uid, name, home = _pw(uid)
+            wayland = find_wayland(uid)
+            event = False
+            if wayland and not script_loaded:
+                script_loaded = ensure_window_script(uid, name, home, wayland)
+            try:
+                count, event = drain_journal(writer, redactor, uid, env.get("FZ_LOG_BOOT_ID", ""))
+            except (OSError, LocationFailed) as exc:
+                log("journal drain stopped: %s" % exc)
+                return 1
+            if count:
+                writer.flush()
+            scheduled = ticks in (0, 2, 5, 13) or (ticks > 0 and ticks % 30 == 0)
+            if scheduled:
+                try:
+                    do_kwin_dump(writer, redactor, uid, name, home, wayland,
+                                 reload_script=True)
+                    script_loaded = bool(wayland)
+                    writer.flush()
+                except (OSError, LocationFailed) as exc:
+                    log("KWin dump stopped: %s" % exc)
+                    return 1
+            while True:
+                try:
+                    writer.write(input_queue.get_nowait())
+                except queue.Empty:
+                    break
+                except (OSError, LocationFailed):
+                    return 1
+            if event:
+                maybe_event_shot(env)
+                try:
+                    do_kwin_dump(writer, redactor, uid, name, home, wayland,
+                                 reload_script=False)
+                    writer.flush()
+                except (OSError, LocationFailed):
+                    return 1
+            ticks += 1
+            if STOP.wait(TICK_SEC):
+                break
+        try:
+            writer.flush()
+        except OSError:
+            pass
+        return 0
+    finally:
+        try:
+            writer.close()
+        except OSError:
+            pass
+
+
+# ------------------------------------------------------------------ waydroid
+
+HOST_LOGS = ("/var/lib/waydroid/waydroid.log",
+             "/var/lib/waydroid/waydroid.log.1",
+             "/var/lib/waydroid/lxc/waydroid/lxc.log")
+_host_offsets = {}
+_host_inodes = {}
+
+
+def tail_host_logs(writer, redactor):
+    for path in HOST_LOGS:
+        try:
+            st = os.stat(path)
+        except OSError:
+            continue
+        offset = _host_offsets.get(path, max(0, st.st_size - HOST_READ_MAX))
+        if _host_inodes.get(path) != st.st_ino or st.st_size < offset:
+            offset = 0
+        _host_inodes[path] = st.st_ino
+        if st.st_size <= offset:
+            _host_offsets[path] = offset
+            continue
+        try:
+            with open(path, "rb") as fh:
+                fh.seek(offset)
+                data = fh.read(HOST_READ_MAX)
+        except OSError:
+            continue
+        _host_offsets[path] = offset + len(data)
+        for line in data.decode("utf-8", "replace").splitlines():
+            if not line.strip():
+                continue
+            writer.write({
+                "ts": utc_now(), "mono": mono_now(), "source": "waydroid-host",
+                "kind": "host-log", "file": os.path.basename(path),
+                "line": redactor.text(line[:HOST_LINE_MAX]),
+            })
+
+
+def waydroid_status(writer, redactor):
+    res = run(["waydroid", "status"], 10)
+    if res is not None:
+        _emit_text(writer, "waydroid-host", "status",
+                   (res.stdout or "") + (res.stderr or ""))
+
+
+def android_ready():
+    res = run(["waydroid", "shell", "getprop", "sys.boot_completed"], 15)
+    return bool(res is not None and res.stdout.strip().endswith("1"))
+
+
+def _waydroid_side(writer, redactor, marks):
+    """Host log tail and status poll, at 30 s / 120 s, even while Android is still booting."""
+    now = time.monotonic()
+    if now >= marks["host"]:
+        tail_host_logs(writer, redactor)
+        writer.flush()
+        marks["host"] = now + 30
+    if now >= marks["status"]:
+        waydroid_status(writer, redactor)
+        writer.flush()
+        marks["status"] = now + 120
+
+
+def cmd_waydroid_logcat():
+    if not record_on():
+        return 0
+    env = require_env(wait=120)
+    if not env:
+        return 0
+    writer = make_writer("waydroid", env)
+    redactor = make_redactor(env)
+    _install_stop_handlers()
+    marks = {"host": 0.0, "status": 0.0}
+    try:
+        while not STOP.is_set():
+            if not have("waydroid"):
+                log("waydroid is not installed; waiting")
+                if STOP.wait(60):
+                    break
+                continue
+            try:
+                _waydroid_side(writer, redactor, marks)
+            except (OSError, LocationFailed) as exc:
+                log("host log/status write stopped: %s" % exc)
+                return 1
+            if not android_ready():
+                if STOP.wait(15):
+                    break
+                continue
+            proc = None
+            try:
+                proc = subprocess.Popen(
+                    ["waydroid", "logcat", "-b", "all", "-v", "threadtime"],
+                    stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, bufsize=0)
+            except OSError as exc:
+                log("cannot start waydroid logcat: %s" % exc)
+                if STOP.wait(30):
+                    break
+                continue
+            try:
+                while not STOP.is_set():
+                    try:
+                        _waydroid_side(writer, redactor, marks)
+                    except (OSError, LocationFailed) as exc:
+                        log("host log/status write stopped: %s" % exc)
+                        return 1
+                    ready, _, _ = select.select([proc.stdout], [], [], 1.0)
+                    if not ready:
+                        continue
+                    raw = proc.stdout.readline()
+                    if not raw:
+                        break
+                    line = raw.decode("utf-8", "replace")
+                    record = logcat_record(line, redactor)
+                    try:
+                        writer.write(record)
+                    except (OSError, LocationFailed) as exc:
+                        log("logcat write stopped: %s" % exc)
+                        return 1
+                    msg = record.get("msg") or ""
+                    if (record.get("level") in ("F", "A") or "ANR in" in msg
+                            or "FATAL EXCEPTION" in msg):
+                        maybe_event_shot(env)
+            finally:
+                if proc is not None:
+                    try:
+                        proc.terminate()
+                        proc.wait(timeout=5)
+                    except (OSError, subprocess.TimeoutExpired):
+                        try:
+                            proc.kill()
+                            proc.wait(timeout=2)
+                        except (OSError, subprocess.TimeoutExpired):
+                            pass
+            if not STOP.is_set():
+                STOP.wait(10)
+        return 0
+    finally:
+        try:
+            writer.close()
+        except OSError:
+            pass
+
+
+# ------------------------------------------------------------------ entry point
+
+USAGE = """usage: fz-ui-capture {journal-ui|kwin-dump|shots [periodic|event]|waydroid-logcat|enable-qt}
+
+Everything is a no-op unless the kernel command line contains fz_record=full.
+See /usr/local/sbin/fz-ui-capture (this file) for the stream contract and privacy rules."""
+
+
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if not argv or argv[0] in ("-h", "--help", "help"):
+        print(USAGE)
+        return 0
+    command, rest = argv[0], argv[1:]
+    try:
+        if command == "journal-ui":
+            return cmd_journal_ui()
+        if command == "kwin-dump":
+            if not record_on():
+                return 0
+            env = require_env(wait=30)
+            if not env:
+                return 0
+            writer = make_writer("ui", env)
+            try:
+                do_kwin_dump(writer, make_redactor(env))
+                writer.flush()
+            finally:
+                writer.close()
+            return 0
+        if command == "shots":
+            mode = rest[0] if rest and rest[0] in ("periodic", "event") else "periodic"
+            return take_shot(mode)
+        if command == "waydroid-logcat":
+            return cmd_waydroid_logcat()
+        if command == "enable-qt":
+            return 0 if enable_qt() else 1
+        log("unknown command: %s" % command)
+        print(USAGE, file=sys.stderr)
+        return 2
+    except KeyboardInterrupt:
+        return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

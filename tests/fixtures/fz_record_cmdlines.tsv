@@ -1,0 +1,10 @@
+# fz-record-on truth table: cmdline<TAB>expected exit status (0 = fz_record=full present)
+<empty>	1
+quiet splash	1
+fz_record=full	0
+quiet fz_record=full splash	0
+fz_record=fullish	1
+xfz_record=full	1
+fz_record=full=1	1
+fz_record=off fz_record=full	0
+fz_record=full=	1

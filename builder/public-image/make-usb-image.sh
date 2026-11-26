@@ -28,7 +28,7 @@ grub-mkstandalone -O arm64-efi -o "$W/BOOTAA64.EFI" --modules="$MODS" "boot/grub
 BYTES=$(stat -c %s "$SFS" "$CFG" "$W/BOOTAA64.EFI" "$@" | awk '{s+=$1} END {print s}')
 MOD_BYTES=$(du -sb "$GRUBDIR" | cut -f1)
 TOTAL=$(( (BYTES + MOD_BYTES) * 105 / 100 + 64*1024*1024 ))
-MIB=$(( (TOTAL + 1048575) / 1048576 + 2 ))
+MIB=$(( (TOTAL + 1048575) / 1048576 + 2 + ${FZ_IMG_SLACK_MB:-0} ))   # FZ_IMG_SLACK_MB: extra free MiB (QEMU recorder tests need > 3 GB free on the stick)
 rm -f "$OUT"; truncate -s "${MIB}M" "$OUT"
 printf 'label: gpt\nstart=2048, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, name="KESTREL_A64"\n' | sfdisk --quiet "$OUT"
 PART_SECT=$(( (MIB * 2048) - 2048 - 2048 ))          # leave the GPT backup area at the end

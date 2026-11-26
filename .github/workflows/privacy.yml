@@ -25,3 +25,5 @@ jobs:
           else
             python -B tools/check-privacy.py --all
           fi
+      - name: No boot-log artifacts or log-shaped identifiers
+        run: python -B tools/check-log-leaks.py

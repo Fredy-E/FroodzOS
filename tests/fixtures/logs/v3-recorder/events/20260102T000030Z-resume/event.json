@@ -1,0 +1,7 @@
+{
+  "schema": 3,
+  "utc": "2026-01-02T00:00:30Z",
+  "mono": 30.0,
+  "reason": "resume",
+  "detail": "failed_resume=1 last_failed_dev=phy0 step=resume"
+}

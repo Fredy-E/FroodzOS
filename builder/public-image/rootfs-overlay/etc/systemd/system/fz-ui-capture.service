@@ -1,0 +1,22 @@
+[Unit]
+Description=FroodzOS UI journal and KWin state capture (fz_record=full only)
+Documentation=file:/usr/local/sbin/fz-ui-capture
+ConditionKernelCommandLine=fz_record=full
+ConditionPathExists=/usr/local/sbin/fz-ui-capture
+After=local-fs.target systemd-journald.service fz-smartlog.service
+Before=sddm.service graphical.target
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/local/sbin/fz-ui-capture enable-qt
+ExecStart=/usr/local/sbin/fz-ui-capture journal-ui
+SyslogIdentifier=fz-ui-capture
+Restart=always
+RestartSec=30
+KillMode=mixed
+TimeoutStopSec=20
+Nice=10
+IOSchedulingClass=best-effort
+
+[Install]
+WantedBy=multi-user.target

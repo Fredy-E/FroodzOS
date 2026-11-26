@@ -36,3 +36,25 @@ publication-private/
 *.tar.zst
 *.pyc
 gitleaks*.json
+
+# session logs, recorder output and evidence never belong in the source tree
+/Logs/
+**/Logs/
+**/boot-*/
+**/streams/
+**/*.typescript
+**/journal-raw/
+**/journal-live-*.txt
+**/prevboot-*.txt
+**/snap-[0-9][0-9][0-9]-up*.txt
+**/event-*-up*.txt
+**/history.tsv
+**/dmesg-*.log*
+**/journal-*.log*
+**/*.journal
+**/*.kmsg
+**/screenshots/
+**/screencaps/
+# synthetic log fixtures are intentionally tracked
+!tests/fixtures/logs/
+!tests/fixtures/logs/**

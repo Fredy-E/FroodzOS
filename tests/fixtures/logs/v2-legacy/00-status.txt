@@ -1,0 +1,6 @@
+status=fztest fixture, synthetic only
+boot_id=11111111-2222-3333-4444-555555555555
+BOOT_IMAGE=/boot/vmlinuz-linux
+Linux version 7.3.0-rc3-fztest (builder@example.invalid) (gcc 14.2.0) #1 SMP PREEMPT
+cmdline: kestrel_log=1 fz_record=full fz_touchpad=0 fz_sound=0 console=ttyAMA0,115200
+KESTREL_USERSPACE_CAPTURE_WINDOW_FINISHED after a 260 s budget budget_s=260

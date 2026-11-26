@@ -1,0 +1,16 @@
+[Unit]
+Description=FroodzOS record: journald debug policy (only with fz_record=full)
+Documentation=file:/usr/local/sbin/fz-record-journald
+DefaultDependencies=no
+ConditionKernelCommandLine=fz_record=full
+After=systemd-journald.service local-fs.target
+Before=fz-smartlog.service sysinit.target shutdown.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/fz-record-journald
+
+[Install]
+WantedBy=sysinit.target
