@@ -21,7 +21,8 @@ ON=${FZ_RECORD_ON:-/usr/local/sbin/fz-record-on}
 say() { echo "fz-record-journald: $*"; }
 
 config() {
-    cat <<'EOF'
+    if is_excess; then FWD=yes; KLVL=debug; else FWD=no; KLVL=notice; fi
+    cat <<EOF
 [Journal]
 # FroodzOS record-everything policy (W1 section 6). Runtime only: written by
 # fz-record-journald.service when the kernel command line contains fz_record=full.
@@ -39,17 +40,27 @@ SplitMode=none
 ReadKMsg=yes
 MaxLevelStore=debug
 MaxLevelSyslog=debug
-MaxLevelKMsg=debug
+MaxLevelKMsg=$KLVL
 MaxLevelConsole=info
 MaxLevelWall=emerg
 ForwardToSyslog=no
-ForwardToKMsg=yes
+ForwardToKMsg=$FWD
 ForwardToConsole=no
 ForwardToWall=no
 RateLimitIntervalSec=0
 RateLimitBurst=0
 SyncIntervalSec=1s
 EOF
+}
+
+is_excess() {
+    if [ -x "$ON" ]; then
+        "$ON" --excess
+    elif [ -r "$ON" ]; then
+        sh "$ON" --excess
+    else
+        return 1
+    fi
 }
 
 is_full() {

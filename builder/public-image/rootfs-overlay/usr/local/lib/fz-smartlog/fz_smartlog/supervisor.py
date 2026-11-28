@@ -24,7 +24,7 @@ from .redact import Redactor
 from .writer import DestinationFailed, StreamWriter, utc_iso
 
 KERNEL_CRITICAL = re.compile(
-    r"(?i)(Oops|BUG:|Call trace|Kernel panic|Unable to handle|"
+    r"(?i)(\bOops\b|\bBUG:|Call trace|Kernel panic|Unable to handle|"
     r"soft lockup|hung task|rcu.*stall)")
 KERNEL_WARNING = re.compile(r"(?i)(WARNING:|tainted)")
 WIFI_ERROR = re.compile(
@@ -1001,8 +1001,10 @@ class Runtime:
             if priority <= 4 and WIFI_ERROR.search(message):
                 self.enqueue_event("wifi", "event", {"message": message[:500],
                                                      "priority": priority})
-            if "coredump" in message.lower() or record.get("SYSLOG_IDENTIFIER") == \
-                    "systemd-coredump":
+            # Only a real coredump record counts. Debug chatter that merely names systemd-coredump.socket
+            # (a D-Bus GetAll at systemd.log_level=debug) must not raise an event.
+            if record.get("SYSLOG_IDENTIFIER") == "systemd-coredump" or (
+                    priority <= 5 and "dumped core" in message.lower()):
                 self.enqueue_event("coredump", "event", {"message": message[:500]})
             if "waydroid" in message.lower() and re.search(r"(?i)(fatal|anr|crash)", message):
                 self.enqueue_event("waydroid", "event", {"message": message[:500]})

@@ -1,5 +1,5 @@
 [Unit]
-Description=FroodzOS record: raise kernel console verbosity (only with fz_record=full)
+Description=FroodzOS record: kernel logging level (only with fz_record=full; console stays quiet unless fz_excess=1)
 Documentation=file:/etc/sysctl.d/90-froodzos-record.conf
 DefaultDependencies=no
 ConditionKernelCommandLine=fz_record=full
@@ -10,7 +10,7 @@ Conflicts=shutdown.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/bin/sh -c 'if /usr/local/sbin/fz-record-on; then printf "8 4 1 7" > /proc/sys/kernel/printk; printf on > /proc/sys/kernel/printk_devkmsg; else exit 0; fi'
+ExecStart=/bin/sh -c 'if /usr/local/sbin/fz-record-on; then if /usr/local/sbin/fz-record-on --excess; then printf "8 4 1 7" > /proc/sys/kernel/printk; else printf "4 4 1 7" > /proc/sys/kernel/printk; fi; printf on > /proc/sys/kernel/printk_devkmsg; else exit 0; fi'
 
 [Install]
 WantedBy=sysinit.target

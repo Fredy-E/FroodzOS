@@ -86,6 +86,15 @@ RECORDER_MARKERS = (
     {'name': 'free_space_guard_respected', 'required': True,
      'check': lambda kv: rec_bool(kv, 'guard_ok')
                          and rec_int(kv, 'free_after_kb') >= rec_int(kv, 'reserve_kb')},
+    {'name': 'balanced_record_console_is_quiet', 'required': True,
+     'check': lambda kv: (rec_int(kv, 'printk_console', 99) <= 4) if not rec_bool(kv, 'excess')
+                         else rec_int(kv, 'printk_console') == 8},
+    {'name': 'journald_forwarding_matches_level', 'required': True,
+     'check': lambda kv: rec_bool(kv, 'excess') == (rec_int(kv, 'journald_forwards_kmsg') > 0)},
+    {'name': 'no_false_oops_or_coredump_events', 'required': True,
+     'check': lambda kv: rec_int(kv, 'false_alarm_events', 99) == 0},
+    {'name': 'smartlog_started_once', 'required': True,
+     'check': lambda kv: rec_int(kv, 'smartlog_starts', 99) == 1},
     {'name': 'ram_fallback_used', 'required': False,
      'check': lambda kv: rec_bool(kv, 'ram_fallback')},
     {'name': 'flood_cap_reached', 'required': False,
@@ -214,6 +223,16 @@ echo "reserve_kb=${RES}"
 echo "guard_ok=${GUARD:-0}"
 echo "redaction_seen=${TR}"
 echo "ram_fallback=${RAMF}"
+PRC=$(cut -f1 /proc/sys/kernel/printk 2>/dev/null)
+EXC=$(grep -qw 'fz_excess=1' /proc/cmdline && echo 1 || echo 0)
+FWD=$(fz-record-journald --print 2>/dev/null | grep -c '^ForwardToKMsg=yes')
+OOPS=$(ls "$R/events" 2>/dev/null | grep -c -e oops -e coredump)
+STARTS=$(grep -c ' start where=' "$R/events.log" 2>/dev/null)
+echo "printk_console=${PRC:-0}"
+echo "excess=${EXC}"
+echo "journald_forwards_kmsg=${FWD:-0}"
+echo "false_alarm_events=${OOPS:-0}"
+echo "smartlog_starts=${STARTS:-0}"
 echo '===RECEND==='
 echo '===RECDIAG==='
 echo "R=$R"; ls /run/fz-smartlog 2>&1 | head; cat /run/fz-smartlog/env 2>&1 | head -12
@@ -467,7 +486,7 @@ def main():
             powercut = evaluate_powercut(text, read_recorder_tree(TEST, offset=True))
             markers.update(powercut)
     if REC:
-        passed = markers['multi_user'] and recorder_markers_pass(rec_markers) and not markers['panic']
+        passed = (markers['multi_user'] or login_at is not None) and recorder_markers_pass(rec_markers) and not markers['panic']  # TCG can reach the login prompt long before Multi-User (start jobs run for minutes)
         if REC == 'power':
             passed = passed and powercut_markers_pass(powercut)
     else:
