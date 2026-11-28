@@ -45,6 +45,11 @@ reserve_kb=2048
 guard_ok=1
 redaction_seen=1
 ram_fallback=0
+printk_console=4
+excess=0
+journald_forwards_kmsg=0
+false_alarm_events=0
+smartlog_starts=1
 ===RECEND===
 """
 

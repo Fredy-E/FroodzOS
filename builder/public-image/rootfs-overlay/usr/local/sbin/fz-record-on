@@ -4,6 +4,8 @@
 #
 #   fz-record-on            exit 0 only when the kernel command line has the whole word fz_record=full
 #   fz-record-on --print    print the active profile: full or off (always exits 0)
+#   fz-record-on --excess   exit 0 only when fz_record=full AND fz_excess=1 are both on the command line
+#                           (the "excessive logs" level: console at loglevel 8, journald forwarded to kmsg)
 #   fz-record-on --help
 #
 # Other tools (terminal recorder, UI/Android capture, journald setup, the sleep hook) call this
@@ -19,9 +21,11 @@ else
 fi
 
 PROFILE=off
+EXCESS=0
 set -f
 for word in $CMDLINE; do
     [ "$word" = "fz_record=full" ] && PROFILE=full
+    [ "$word" = "fz_excess=1" ] && EXCESS=1
 done
 set +f
 
@@ -31,15 +35,19 @@ case "${1:-}" in
         exit 0
         ;;
     --help|-h)
-        sed -n '2,11p' "$0"
+        sed -n '2,13p' "$0"
         exit 0
+        ;;
+    --excess)
+        [ "$PROFILE" = full ] && [ "$EXCESS" = 1 ]
+        exit $?
         ;;
     "")
         [ "$PROFILE" = full ]
         exit $?
         ;;
     *)
-        echo "usage: fz-record-on [--print]" >&2
+        echo "usage: fz-record-on [--print|--excess]" >&2
         exit 2
         ;;
 esac

@@ -21,6 +21,28 @@ Sources: W1 sections 3, 6, 7.2 and phase 0/2/4/5; W5 sections 5, 6.6 and 7; the 
 - A kernel command line is not a log store. `log_buf_len` only keeps more in RAM until the USB
   reader/journald reads it; it does not itself write to the stick.
 
+## 0.5 Record levels (dev.11): balanced and excess
+
+The first native `fz_record=full` boot (dev.10, root r22) recorded everything and was correct, but with the entry's
+`systemd.log_level=debug udev.log_level=debug ... forward_to_kmsg=1` words and console level 8 the boot and the
+shutdown were slow and the screen was flooded (about 60 MB of journal and 16 MB of systemd stream in 22 minutes).
+From dev.11 there are two record levels, chosen only by the kernel command line:
+
+| Level | Command-line words | Console level | journald to kmsg | What it costs |
+| --- | --- | --- | --- | --- |
+| Balanced (the RECORD entry) | `fz_record=full loglevel=4` | 4 (quiet screen) | no | Terminals, UI, screenshots, Android log, full kernel ring and the journal at debug level still land on the stick. No PID 1 or udev debug. |
+| Excess (the EXCESS entry) | `fz_record=full fz_excess=1` plus the debug words of section 1 | 8 | yes | Slow boot and shutdown, a flooded screen. For chasing one hard problem only. |
+
+`fz-record-on` exits 0 for `fz_record=full`; `fz-record-on --excess` exits 0 only when `fz_excess=1` is also present
+(whole words). `fz-record-kernel.service` sets `kernel.printk` to `4 4 1 7` (balanced) or `8 4 1 7` (excess);
+`fz-record-journald` writes `ForwardToKMsg=no` (balanced) or `yes` (excess). The recorder reads the kernel ring and the
+journal directly, so a quiet screen does not lose records.
+
+Lessons from the first native record boot, fixed in dev.11: the event engine matched `BUG:` inside `dynamic_debug:`
+and `coredump` inside a D-Bus debug line (four false "oops" events and one false coredump); the recorder service start
+timeout of 20 s was exceeded under the debug flood, so systemd restarted the recorder twice (start timeout is now 120 s,
+watchdog 60 s).
+
 ## 1. BASE debug additions (owner's test entry)
 
 Append these to the existing test entry, or use them as the new entry's tail. If the entry already has

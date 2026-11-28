@@ -116,7 +116,8 @@ class JournaldLayer(unittest.TestCase):
     def test_generated_policy_is_w1_section_6(self):
         if not POSIX:
             self.skipTest('needs POSIX sh')
-        r = run_sh(JOURNALD_HELPER, '--print', env={'FZ_CMDLINE': ''})
+        r = run_sh(JOURNALD_HELPER, '--print', env={'FZ_CMDLINE': 'fz_record=full fz_excess=1',
+                                                    'FZ_RECORD_ON': str(REC_ON)})
         self.assertEqual(r.returncode, 0, r.stderr)
         for line in ('[Journal]', 'Storage=volatile', 'RuntimeMaxUse=512M',
                      'RuntimeKeepFree=128M', 'RuntimeMaxFileSize=64M', 'MaxFileSec=1h',
@@ -124,6 +125,28 @@ class JournaldLayer(unittest.TestCase):
                      'ForwardToKMsg=yes', 'RateLimitIntervalSec=0', 'RateLimitBurst=0',
                      'SyncIntervalSec=1s', 'ReadKMsg=yes'):
             self.assertIn(line, r.stdout)
+
+    def test_balanced_record_does_not_forward_journal_to_the_console_ring(self):
+        # fz_record=full without fz_excess=1 must stay quiet on screen and fast: the journal is still stored at
+        # debug level (smartlog reads the journal directly) but is not forwarded to kmsg.
+        if not POSIX:
+            self.skipTest('needs POSIX sh')
+        r = run_sh(JOURNALD_HELPER, '--print', env={'FZ_CMDLINE': 'fz_record=full',
+                                                    'FZ_RECORD_ON': str(REC_ON)})
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn('ForwardToKMsg=no', r.stdout)
+        self.assertNotIn('ForwardToKMsg=yes', r.stdout)
+        self.assertIn('MaxLevelStore=debug', r.stdout)
+        self.assertNotIn('MaxLevelKMsg=debug', r.stdout)
+
+    def test_excess_switch_needs_full_and_the_whole_word(self):
+        if not POSIX:
+            self.skipTest('needs POSIX sh')
+        for cmdline, code in (('fz_record=full fz_excess=1', 0), ('fz_excess=1', 1),
+                              ('fz_record=full', 1), ('fz_record=full fz_excess=10', 1),
+                              ('fz_record=full xfz_excess=1', 1)):
+            r = run_sh(REC_ON, '--excess', env={'FZ_CMDLINE': cmdline})
+            self.assertEqual(r.returncode, code, cmdline)
 
     def test_off_is_a_noop(self):
         if not POSIX:
@@ -147,7 +170,7 @@ class JournaldLayer(unittest.TestCase):
                                              'FZ_RECORD_JOURNALD_RUN': str(run_dir)})
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
             self.assertIn('would write', r.stdout)
-            self.assertIn('MaxLevelKMsg=debug', r.stdout)
+            self.assertIn('ForwardToKMsg=no', r.stdout)
             self.assertIn('would restart systemd-journald.service', r.stdout)
             self.assertFalse(run_dir.exists())
 
@@ -161,6 +184,8 @@ class JournaldLayer(unittest.TestCase):
         k = read(KERNEL_UNIT)
         self.assertIn('ConditionKernelCommandLine=fz_record=full', k)
         self.assertIn('printf "8 4 1 7" > /proc/sys/kernel/printk', k)
+        self.assertIn('printf "4 4 1 7" > /proc/sys/kernel/printk', k)
+        self.assertIn('fz-record-on --excess', k)
         self.assertIn('printf on > /proc/sys/kernel/printk_devkmsg', k)
         self.assertIn('/usr/local/sbin/fz-record-on', k)
         self.assertIn('WantedBy=sysinit.target', k)

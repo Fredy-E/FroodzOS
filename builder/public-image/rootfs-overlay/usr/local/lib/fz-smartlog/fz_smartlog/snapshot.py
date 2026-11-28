@@ -38,7 +38,7 @@ ANDROID_NOISE = re.compile(
     r"waydroid|gbinder|\binit:\s|uid_\d+|failed to make and chown|"
     r"failed to set task profiles|read-only file system.*(?:cgroup|uid_\d+))")
 OOPS_RE = re.compile(
-    r"(?i)(Oops|BUG:|Call trace|soft lockup|hung task|Unable to handle|"
+    r"(?i)(\bOops\b|\bBUG:|Call trace|soft lockup|hung task|Unable to handle|"
     r"Kernel panic|rcu.*stall)")
 SENSITIVE_LINE = re.compile(r"(?i)(psk|passphrase|password|private key)")
 
@@ -180,9 +180,13 @@ class Snapshotter:
         units = []
         for line in out.splitlines():
             line = line.strip()
-            if not line or line.startswith("●"):
+            if not line:
                 continue
             parts = line.split()
+            # systemctl marks a failed unit with a bullet: U+25CF, or "*" in a non-UTF-8 locale (the first
+            # native record boot logged the marker instead of the unit name)
+            if parts and parts[0] in ("●", "*", "x", "×", "○", "o"):
+                parts = parts[1:]
             if parts:
                 units.append(parts[0])
         return units

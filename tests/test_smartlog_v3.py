@@ -415,6 +415,18 @@ class SnapshotTests(TempMixin, unittest.TestCase):
         self.assertEqual(len(lines), 4)  # header + three snapshots
         self.assertEqual(lines[1].split("\t")[1], "59")
 
+    def test_failed_unit_names_survive_the_ascii_bullet(self):
+        def runner(argv, timeout=None, **kw):
+            text = " ".join(argv)
+            if "--failed" in text:
+                return "\n".join(["* archlinux-keyring-wkd-sync.service loaded failed failed Refresh keys",
+                                  "● plasma-ksplash.service loaded failed failed Splash",
+                                  "bare.service loaded failed failed Bare", ""])
+            return ""
+        snap = self.make(runner=runner)
+        self.assertEqual(snap._failed_units(),
+                         ["archlinux-keyring-wkd-sync.service", "plasma-ksplash.service", "bare.service"])
+
     def test_truncation_and_deadline_markers(self):
         snap = self.make(max_kb=1)
         body = snap.compose("header\n", ["\n== huge\n" + "x" * 5000 + "\n"])
@@ -643,6 +655,33 @@ class BootOrderingTests(unittest.TestCase):
             text = self._unit(name)
             self.assertIn("DefaultDependencies=no", text, name)
             self.assertNotIn("Before=multi-user.target", text, name)
+
+
+class FalseAlarmRules(unittest.TestCase):
+    """Measured on the first native record boot: debug chatter raised four 'oops' and one 'coredump' event."""
+
+    def test_dynamic_debug_lines_are_not_oops(self):
+        from fz_smartlog import snapshot, supervisor
+        noisy = "initramfs: dynamic_debug: Device is queued (SEQNUM=3774, ACTION=add)"
+        for rx in (supervisor.KERNEL_CRITICAL, snapshot.OOPS_RE):
+            self.assertIsNone(rx.search(noisy), rx.pattern)
+            self.assertIsNone(rx.search("echo debug: nothing"), rx.pattern)
+            self.assertIsNotNone(rx.search("kernel BUG: unable to handle"), rx.pattern)
+            self.assertIsNotNone(rx.search("[  5.1] BUG: soft lockup"), rx.pattern)
+            self.assertIsNotNone(rx.search("Internal error: Oops: 96000005"), rx.pattern)
+            self.assertIsNotNone(rx.search("Call trace:"), rx.pattern)
+
+    def test_coredump_unit_name_in_debug_chatter_is_not_an_event(self):
+        text = (PKG / "fz_smartlog/supervisor.py").read_text(encoding="utf-8")
+        self.assertNotIn('"coredump" in message.lower()', text)
+        self.assertIn('SYSLOG_IDENTIFIER") == "systemd-coredump"', text)
+
+    def test_recorder_start_timeout_survives_a_debug_flooded_boot(self):
+        text = UNIT.read_text(encoding="utf-8")
+        start = int(next(l for l in text.splitlines() if l.startswith("TimeoutStartSec=")).split("=")[1])
+        dog = int(next(l for l in text.splitlines() if l.startswith("WatchdogSec=")).split("=")[1])
+        self.assertGreaterEqual(start, 90)   # r22 timed out at 20 s twice and was restarted twice
+        self.assertGreaterEqual(dog, 60)
 
 
 if __name__ == "__main__":

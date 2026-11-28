@@ -13,9 +13,9 @@ StartLimitBurst=5
 [Service]
 Type=notify
 NotifyAccess=main
-WatchdogSec=30
+WatchdogSec=60
 ExecStart=/usr/local/sbin/fz-smartlog run
-TimeoutStartSec=20
+TimeoutStartSec=120
 TimeoutStopSec=25
 KillMode=mixed
 KillSignal=SIGTERM

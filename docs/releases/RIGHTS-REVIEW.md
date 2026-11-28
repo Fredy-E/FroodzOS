@@ -166,3 +166,9 @@ The build `maverick-public-dev-20261125.3` is derived from the dev.9 root (r21) 
 | `spectacle` and its new dependencies `tesseract`, `tesseract-data-afr`, `tesseract-data-osd`, `leptonica`, `jasper`, `kquickimageeditor`, `qt6-imageformats`, `freeglut`, `glu`, `libmng` (11 packages added, none removed, no version changes) | Unmodified Arch Linux ARM packages; licences in `pkglist.tsv`: spectacle GPL-2.0-or-later, kquickimageeditor LGPL-2.1-or-later, qt6-imageformats GPL-3.0/LGPL-3.0 (Qt), tesseract and its data Apache-2.0, freeglut X11, glu SGI-B-2.0 or MIT, and the custom permissive licences of leptonica, jasper (JasPer-2.0) and libmng. The screenshot tool is used only by the record mode. | Accepted. |
 
 Open points: those of sections 2, 3, 5, 6, 7, 8 and 9.
+
+## 14. Addendum for the 0.1.0-dev.11 build (2026-11-28): record levels
+
+The build `maverick-public-dev-20261128.1` is derived from the dev.10 root (r22) by one overlay-only `build-root.sh` run (r23, `FZ_SKIP_PACMAN=1`): no package was added, removed or upgraded, so sections 1 to 13 apply unchanged. Changed files are our own original code under GPL-2.0-or-later: `fz-record-on` (new `--excess` word check), `fz-record-journald` (journald forwarding only at the excess level), `fz-record-kernel.service` (console level 4 or 8), `fz-smartlog.service` (longer start timeout and watchdog) two regular expressions and the failed-unit parser in `fz_smartlog`. No new third-party material, no new network access, no change to what is recorded by the public boot entries (nothing beyond the bounded basic streams in RAM). Record mode remains opt-in through the kernel command line of a private test entry.
+
+Open points: those of sections 2, 3, 5, 6, 7, 8 and 9.
